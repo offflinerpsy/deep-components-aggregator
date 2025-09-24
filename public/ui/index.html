@@ -1,0 +1,63 @@
+<!doctype html><html lang="ru"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>DEEP · Поиск</title>
+<style>
+body{margin:0;background:#0b1220;color:#e5e7eb;font:14px/1.45 system-ui,Segoe UI,Roboto,Arial}
+.wrap{max-width:1200px;margin:0 auto;padding:16px}
+.h{display:flex;gap:8px;align-items:center;padding:12px 0;border-bottom:1px solid #1f2937}
+input{flex:1;padding:10px;border:1px solid #374151;background:#0f172a;color:#e5e7eb;border-radius:8px}
+button{padding:10px 14px;border:0;background:#fbbf24;color:#111827;border-radius:8px;font-weight:600}
+table{width:100%;border-collapse:collapse;margin-top:12px}
+th,td{padding:10px;border-bottom:1px solid #1f2937;text-align:left;vertical-align:top}
+.badge{display:inline-block;border:1px solid #94a3b8;border-radius:6px;padding:2px 6px;font-size:12px;margin-right:4px}
+a.link{color:#facc15;text-decoration:none}
+.small{color:#94a3b8;font-size:12px;max-width:40ch;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+</style>
+<div class="wrap">
+  <div class="h">
+    <div style="font-weight:700">DEEP</div>
+    <form id="F" style="display:flex;gap:8px;flex:1">
+      <input id="q" placeholder="Введите MPN (напр., LM317T или 1N4148W-TP)" autocomplete="off">
+      <button>Поиск</button>
+    </form>
+  </div>
+
+  <div id="sum" class="small" style="margin-top:10px"></div>
+
+  <div style="overflow:auto;border:1px solid #1f2937;border-radius:10px">
+    <table>
+      <thead style="background:#0f172a">
+        <tr>
+          <th>Image</th><th>MPN / Title</th><th>Manufacturer</th><th>Description</th>
+          <th>Package</th><th>Packaging</th><th>Regions</th><th>Stock</th><th>Min ₽</th><th>Open</th>
+        </tr>
+      </thead>
+      <tbody id="rows"></tbody>
+    </table>
+  </div>
+</div>
+<script>
+const $ = s => document.querySelector(s);
+const fmtRub = n => new Intl.NumberFormat("ru-RU",{style:"currency",currency:"RUB",maximumFractionDigits:2}).format(n);
+function cell(v){ return v ? v : ""; }
+function regions(arr){ return (arr||[]).map(r=>`<span class="badge">${r}</span>`).join(""); }
+function row(x){
+  const stock = x.stock_total>0 ? x.stock_total : (x.lead_days ? (x.lead_days+"d") : "");
+  const minR  = x.price_min_rub>0 ? fmtRub(x.price_min_rub) : "";
+  return `<tr>
+    <td><img src="${x.image||"/ui/placeholder.svg"}" style="width:48px;height:48px;object-fit:contain"></td>
+    <td><a class="link" href="/product?mpn=${encodeURIComponent(x.mpn)}">${x.mpn}</a><div class="small">${cell(x.title)}</div></td>
+    <td class="small">${cell(x.manufacturer)}</td>
+    <td class="small">${cell(x.description)}</td>
+    <td class="small">${cell(x.package)}</td>
+    <td class="small">${cell(x.packaging)}</td>
+    <td>${regions(x.regions)}</td>
+    <td>${stock}</td>
+    <td style="font-weight:700">${minR}</td>
+    <td><a class="link" href="/product?mpn=${encodeURIComponent(x.mpn)}">Open</a></td>
+  </tr>`;
+}
+function render(items){ $("#rows").innerHTML = items.map(row).join(""); $("#sum").textContent = "Найдено: " + items.length; }
+async function run(q){ const r = await fetch("/api/search?q="+encodeURIComponent(q||"")); const j = await r.json(); render(j.ok ? (j.items||[]) : []); }
+$("#F").addEventListener("submit", e=>{ e.preventDefault(); run($("#q").value.trim()); });
+run("");
+</script>

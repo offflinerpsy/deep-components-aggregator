@@ -1,0 +1,76 @@
+<!doctype html><html lang="ru"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>DEEP · Карточка</title>
+<style>
+body{margin:0;background:#0b1220;color:#e5e7eb;font:14px/1.45 system-ui,Segoe UI,Roboto,Arial}
+.wrap{max-width:1200px;margin:0 auto;padding:16px}
+.h{display:flex;gap:8px;align-items:center;padding:12px 0;border-bottom:1px solid #1f2937}
+.grid{display:grid;gap:16px;grid-template-columns:1fr}
+@media(min-width:1024px){.grid{grid-template-columns:5fr 4fr 3fr}}
+.card{background:#0f172a;border:1px solid #1f2937;border-radius:12px;padding:12px}
+.kv td{padding:6px 8px;border-bottom:1px solid #1f2937}
+.kv tr:last-child td{border-bottom:0}
+.badge{display:inline-block;border:1px solid #94a3b8;border-radius:6px;padding:2px 6px;font-size:12px;margin-right:4px}
+.btn{padding:10px 14px;border:0;background:#fbbf24;color:#111827;border-radius:8px;font-weight:700}
+.input{width:90px;padding:8px;border:1px solid #374151;background:#0b1220;color:#e5e7eb;border-radius:8px}
+.link{color:#facc15;text-decoration:none}
+.small{color:#94a3b8;font-size:12px}
+</style>
+<div class="wrap">
+  <div class="h"><a href="/" class="link" style="font-weight:700">DEEP</a><div class="small">/ Карточка товара</div></div>
+  <div class="grid">
+    <div class="card"><img id="img" src="/ui/placeholder.svg" style="width:100%;height:320px;object-fit:contain;border-radius:8px;border:1px solid #1f2937"><div id="pdfs" style="margin-top:8px"></div></div>
+    <div class="card">
+      <h1 id="h1" style="margin:0;font-size:22px"></h1>
+      <div id="meta" class="small" style="margin-top:6px"></div>
+      <div id="desc" style="margin-top:10px"></div>
+      <h3 style="margin:14px 0 8px 0">Технические параметры</h3>
+      <table id="specs" class="kv" style="width:100%"></table>
+    </div>
+    <aside class="card">
+      <div class="small">Наличие</div><div id="stock" style="font-size:22px;font-weight:700;margin-top:2px">—</div>
+      <div class="small" style="margin-top:12px">Минимальная цена</div><div id="price" style="font-size:22px;font-weight:700;margin-top:2px">—</div>
+      <div id="regions" style="margin-top:12px"></div>
+      <div style="display:flex;gap:8px;margin-top:16px"><input id="qty" class="input" type="number" min="1" value="1"><button id="orderBtn" class="btn">Заказать</button></div>
+      <div id="ok" class="small" style="color:#34d399;margin-top:8px;display:none">Заявка отправлена</div>
+    </aside>
+  </div>
+  <section style="margin-top:18px"><h3 style="margin:0 0 8px 0">Поставщики (источники)</h3><div id="sources" class="small" style="display:grid;grid-template-columns:1fr 1fr;gap:8px"></div></section>
+</div>
+<script>
+const $=s=>document.querySelector(s); const fmtRub = n=> new Intl.NumberFormat("ru-RU",{style:"currency",currency:"RUB",maximumFractionDigits:2}).format(n);
+const mpn=(new URLSearchParams(location.search)).get("mpn")?.toUpperCase()||"";
+function specsTable(specs){ const keys=Object.keys(specs||{}); if(!keys.length) return "<tr><td class=small>Нет данных</td><td></td></tr>"; return keys.map(k=>`<tr><td class=small>${k}</td><td>${specs[k]}</td></tr>`).join(""); }
+function pdfBtns(list){ return (list||[]).map((u,i)=>`<a class="btn" href="${u}" target="_blank">PDF ${i+1}</a>`).join(" "); }
+function badges(r){ return (r||[]).map(x=>`<span class="badge">${x}</span>`).join(""); }
+function srcCards(list){
+  return (list||[]).map(s=>{
+    const pr = (s.pricing&&s.pricing[0]&&s.pricing[0].price_rub>0) ? fmtRub(s.pricing[0].price_rub) : "—";
+    const stock = (s.availability&&s.availability.inStock) ? (s.availability.inStock+" шт") : (s.availability&&s.availability.lead? (s.availability.lead+"дн"):"");
+    const link = s.url ? `<a class="link" href="${s.url}" target="_blank">Перейти</a>` : "";
+    return `<div style="border:1px solid #1f2937;border-radius:10px;padding:10px;display:flex;justify-content:space-between">
+      <div><div style="font-weight:700">${s.name||""}</div><div class="small">${s.region||""}</div>${link}</div>
+      <div style="text-align:right"><div>${pr}</div><div class="small">${stock}</div></div>
+    </div>`;
+  }).join("");
+}
+async function run(){
+  if(!mpn){ location.href="/"; return; }
+  const r = await fetch("/api/product?mpn="+encodeURIComponent(mpn));
+  const j = await r.json(); if(!j.ok){ location.href="/"; return; }
+  const p = j.product;
+  $("#h1").textContent = `${p.mpn} — ${p.title||""}`;
+  $("#meta").textContent = [p.manufacturer,p.package,p.packaging].filter(Boolean).join(" • ");
+  $("#img").src = (p.images&&p.images[0]) ? p.images[0] : "/ui/placeholder.svg";
+  $("#desc").textContent = p.description||"";
+  $("#specs").innerHTML = specsTable(p.technical_specs||{});
+  $("#pdfs").innerHTML = pdfBtns(p.datasheets||[]);
+  $("#sources").innerHTML = srcCards(p.suppliers||[]);
+  $("#regions").innerHTML = badges(p.regions||[]);
+  const min = (p.pricing&&p.pricing[0]&&p.pricing[0].price_rub) ? p.pricing[0].price_rub : 0;
+  $("#price").textContent = min>0 ? fmtRub(min) : "По запросу";
+  const st = (p.availability&&p.availability.inStock) ? (p.availability.inStock+" шт") : (p.availability&&p.availability.lead ? (p.availability.lead+"дн"):"—");
+  $("#stock").textContent = st;
+  $("#orderBtn").addEventListener("click", ()=>{ const n=Number(document.querySelector("#qty").value||"1"); if(n>0){ document.querySelector("#ok").style.display="block"; } });
+}
+run();
+</script>

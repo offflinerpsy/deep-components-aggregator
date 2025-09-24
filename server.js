@@ -21,6 +21,31 @@ function readJSON(fname){
   return { ok:true, value };
 }
 
+// --- НОРМАЛИЗАЦИЯ СТРОК ДЛЯ /api/search (строгое подмножество полей) ---
+function toSearchRow(x) {
+  const S = v => (v === undefined || v === null) ? "" : String(v).trim();
+  const A = arr => Array.isArray(arr) ? arr.filter(Boolean).map(String) : [];
+
+  const regions = A(x.regions).filter(r => /^(EU|US|ASIA)$/i.test(r)).map(r => r.toUpperCase());
+  const stock   = Number.isFinite(Number(x.stock_total)) ? Number(x.stock_total) : 0;
+  const lead    = Number.isFinite(Number(x.lead_days))   ? Number(x.lead_days)   : 0;
+  const priceR  = Number.isFinite(Number(x.price_min_rub)) ? Number(x.price_min_rub) : 0;
+
+  return {
+    mpn:        S(x.mpn).toUpperCase(),
+    title:      S(x.title),
+    manufacturer:S(x.manufacturer),
+    description:S(x.description),
+    package:    S(x.package),    // ТО-220, SOD-123 и т.п.
+    packaging:  S(x.packaging),  // Tape/Tube/Reel
+    regions,                   // только EU/US/ASIA
+    stock_total: stock,        // число
+    lead_days:  lead,          // дни
+    price_min_rub: priceR,     // ₽ (пока 0 — позже сконвертируем)
+    image: S(x.image) || "/ui/placeholder.svg"
+  };
+}
+
 const app = express();
 app.use(express.json());
 app.use(express.static(PUB_DIR));
@@ -31,16 +56,19 @@ app.get("/_version", (req, res) => {
 
 app.get("/api/search", async (req, res) => {
   const q = (req.query.q || "").trim();
-  if (!q){
+  if (!q) {
     const idx = readJSON("seed-index.json");
-    res.json(idx.ok ? { ok:true, source:"seed", count: idx.value.length, items: idx.value } : { ok:false, error:"no_seed_index" });
+    const items = idx.ok ? idx.value.map(toSearchRow) : [];
+    res.json({ ok:true, source:"seed", count: items.length, items });
     return;
   }
   const qUpper = q.toUpperCase();
-  const items = await searchOEMsTrade(qUpper, 40);
-  if (!items.length){
+  const raw = await searchOEMsTrade(qUpper, 40); // уже есть из task 04
+  const items = (raw && raw.length ? raw : []).map(toSearchRow);
+
+  if (!items.length) {
     const idx = readJSON("seed-index.json");
-    const seedItems = idx.ok ? idx.value.filter(x => (x.mpn||"").toUpperCase().includes(qUpper)) : [];
+    const seedItems = idx.ok ? idx.value.filter(x => (x.mpn||"").toUpperCase().includes(qUpper)).map(toSearchRow) : [];
     res.json({ ok:true, source:"seed", count: seedItems.length, items: seedItems });
     return;
   }

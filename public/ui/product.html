@@ -1,26 +1,32 @@
 <!doctype html><html lang="ru"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>DEEP · Карточка</title>
 <style>
-:root{--bg:#0b1220;--bg2:#0f172a;--br:#1f2937;--tx:#e5e7eb;--tx2:#94a3b8;--ac:#fbbf24}
+:root{
+  --bg:#ffffff; --bg2:#f8fafc; --br:#e5e7eb; --tx:#0f172a; --tx2:#475569;
+  --ac:#f59e0b; --btn:#ef4444; /* красная кнопка в духе ChipDip "в корзину" */
+}
 *{box-sizing:border-box} html,body{height:100%}
-body{margin:0;background:var(--bg);color:var(--tx);font:14px/1.45 system-ui,Segoe UI,Roboto,Arial}
+body{margin:0;background:var(--bg);color:var(--tx);font:14px/1.5 system-ui,Segoe UI,Roboto,Arial}
 .wrap{max-width:1240px;margin:0 auto;padding:16px}
-.h{display:flex;gap:8px;align-items:center;padding:12px 0;border-bottom:1px solid var(--br)}
+.h{display:flex;gap:8px;align-items:center;padding:14px 0;border-bottom:1px solid var(--br)}
 .grid{display:grid;gap:16px;grid-template-columns:1fr}
 @media(min-width:1024px){.grid{grid-template-columns:minmax(260px,5fr) minmax(260px,4fr) minmax(220px,3fr)}}
-.card{background:var(--bg2);border:1px solid var(--br);border-radius:12px;padding:12px}
-.kv td{padding:6px 8px;border-bottom:1px solid var(--br)}
+.card{background:#fff;border:1px solid var(--br);border-radius:12px;padding:12px}
+.kv td{padding:10px;border-bottom:1px solid var(--br)}
 .kv tr:last-child td{border-bottom:0}
-.badge{display:inline-block;border:1px solid #94a3b8;border-radius:6px;padding:2px 6px;font-size:12px;margin:0 4px 4px 0;white-space:nowrap}
-.btn{padding:10px 14px;border:0;background:var(--ac);color:#111827;border-radius:8px;font-weight:700;cursor:pointer}
-.input{width:90px;padding:8px;border:1px solid #374151;background:#0b1220;color:var(--tx);border-radius:8px}
-.link{color:#facc15;text-decoration:none}
+.badge{display:inline-block;border:1px solid #cbd5e1;border-radius:6px;padding:2px 6px;font-size:12px;margin:0 4px 4px 0;white-space:nowrap;background:#fff;color:#0f172a}
+.btn{padding:10px 14px;border:0;background:var(--btn);color:#fff;border-radius:8px;font-weight:700;cursor:pointer}
+.btn:hover{filter:brightness(0.95)}
+.btn2{padding:8px 12px;border:1px solid var(--br);background:#fff;border-radius:8px;cursor:pointer}
+.input{width:90px;padding:8px;border:1px solid var(--br);background:#fff;color:var(--tx);border-radius:8px}
+.link{color:#1d4ed8;text-decoration:none}
+.link:hover{text-decoration:underline}
 .small{color:var(--tx2);font-size:12px}
-img.main{width:100%;height:320px;object-fit:contain;object-position:center;border-radius:8px;border:1px solid var(--br);background:#0b1220}
+img.main{width:100%;height:320px;object-fit:contain;object-position:center;border-radius:8px;border:1px solid var(--br);background:#fff}
 .clamp-3{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
 .k-actions{display:flex;gap:8px;flex-wrap:wrap}
-#loader{position:fixed;inset:0;background:rgba(11,18,32,.6);display:none;align-items:center;justify-content:center;z-index:50}
-.spin{width:32px;height:32px;border:3px solid #fff3;border-top-color:#fff;border-radius:50%;animation:s .9s linear infinite}
+#loader{position:fixed;inset:0;background:rgba(255,255,255,.5);display:none;align-items:center;justify-content:center;z-index:50}
+.spin{width:32px;height:32px;border:3px solid #0001;border-top-color:#111;border-radius:50%;animation:s .9s linear infinite}
 @keyframes s{to{transform:rotate(360deg)}}
 </style>
 
@@ -39,11 +45,11 @@ img.main{width:100%;height:320px;object-fit:contain;object-position:center;borde
       <h1 id="h1" style="margin:0;font-size:22px"></h1>
       <div id="meta" class="small" style="margin-top:6px"></div>
       <div id="desc" class="clamp-3" style="margin-top:10px"></div>
-      <button id="toggleDesc" class="btn" style="margin-top:8px;display:none">Показать&nbsp;всё</button>
+      <button id="toggleDesc" class="btn2" style="margin-top:8px;display:none">Показать&nbsp;всё</button>
 
       <h3 style="margin:14px 0 8px 0">Технические параметры</h3>
       <table id="specs" class="kv" style="width:100%"></table>
-      <button id="toggleSpecs" class="btn" style="margin-top:8px;display:none">Показать&nbsp;все параметры</button>
+      <button id="toggleSpecs" class="btn2" style="margin-top:8px;display:none">Показать&nbsp;все параметры</button>
     </div>
 
     <aside class="card" id="aside">
@@ -51,7 +57,7 @@ img.main{width:100%;height:320px;object-fit:contain;object-position:center;borde
       <div class="small" style="margin-top:12px">Минимальная цена</div><div id="price" style="font-size:22px;font-weight:700;margin-top:2px">—</div>
       <div id="regions" style="margin-top:12px;display:flex;flex-wrap:wrap"></div>
       <div style="display:flex;gap:8px;margin-top:16px"><input id="qty" class="input" type="number" min="1" value="1"><button id="orderBtn" class="btn">Заказать</button></div>
-      <div id="ok" class="small" style="color:#34d399;margin-top:8px;display:none">Заявка отправлена</div>
+      <div id="ok" class="small" style="color:#16a34a;margin-top:8px;display:none">Заявка отправлена</div>
     </aside>
   </div>
 
@@ -72,14 +78,14 @@ function specsTable(specs,limit){
   if(!entries.length) return "<tr><td class=small>—</td><td></td></tr>";
   return cut.map(([k,v])=>`<tr><td class=small>${k}</td><td>${nz(v)}</td></tr>`).join("");
 }
-function pdfBtns(list){ return (list||[]).map((u,i)=>`<a class="btn" href="${u}" target="_blank" rel="noopener">PDF ${i+1}</a>`).join(" "); }
+function pdfBtns(list){ return (list||[]).map((u,i)=>`<a class="btn2" href="${u}" target="_blank" rel="noopener">PDF ${i+1}</a>`).join(" "); }
 function badges(r){ return (r||[]).map(x=>`<span class="badge">${x}</span>`).join(""); }
 function srcCards(list){
   return (list||[]).map(s=>{
     const pr = (s.pricing&&s.pricing[0]&&s.pricing[0].price_rub>0) ? fmtRub(s.pricing[0].price_rub) : "—";
     const stock = (s.availability&&s.availability.inStock) ? (s.availability.inStock+" шт") : (s.availability&&s.availability.lead? (s.availability.lead+"дн"):"—");
     const link = s.url ? `<a class="link" href="${s.url}" target="_blank" rel="noopener">Перейти</a>` : "";
-    return `<div style="border:1px solid var(--br);border-radius:10px;padding:10px;display:flex;justify-content:space-between;gap:8px">
+    return `<div style="border:1px solid var(--br);border-radius:10px;padding:10px;display:flex;justify-content:space-between;gap:8px;background:#fff">
       <div><div style="font-weight:700">${nz(s.name)}</div><div class="small">${nz(s.region)}</div>${link}</div>
       <div style="text-align:right"><div>${pr}</div><div class="small">${stock}</div></div>
     </div>`;
@@ -87,10 +93,10 @@ function srcCards(list){
 }
 
 async function fetchProduct(m){
-  $("#loader").style.display="flex";
+  document.getElementById("loader").style.display="flex";
   const r = await fetch("/api/product?mpn="+encodeURIComponent(m));
   const j = await r.json();
-  $("#loader").style.display="none";
+  document.getElementById("loader").style.display="none";
   return (j && j.ok) ? j.product : null;
 }
 
@@ -125,7 +131,7 @@ function main(p){
   const st = (p.availability&&p.availability.inStock) ? (p.availability.inStock+" шт") : (p.availability&&p.availability.lead ? (p.availability.lead+"дн"):"—");
   $("#stock").textContent = st;
 
-  // Источники (скрыть секцию, если пусто)
+  // Источники
   $("#sources").innerHTML = srcCards(p.suppliers||[]);
 
   // Заказ (локальный mock)

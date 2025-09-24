@@ -1,9 +1,9 @@
 import { chromium } from 'playwright';
 
 /**
- * Парсит информацию о компоненте с сайта ChipDip
+ * Парсит детальную информацию о компоненте с сайта ChipDip
  * @param {string} mpn - Номер компонента для поиска
- * @returns {Promise<{title: string, imageUrl: string}>} Информация о компоненте
+ * @returns {Promise<Object>} Информация о компоненте
  */
 export async function parseChipDip(mpn) {
   const browser = await chromium.launch();
@@ -28,14 +28,60 @@ export async function parseChipDip(mpn) {
     // Получаем заголовок
     const title = await page.$eval(titleSelector, el => el.textContent.trim());
 
-    // Получаем URL изображения
-    const imageSelector = 'img.product-gallery__image';
-    const imageUrl = await page.$eval(imageSelector, el => el.src);
+    // Получаем описание
+    let description = null;
+    try {
+      description = await page.$eval('div.product-description__text p', el => el.textContent.trim());
+    } catch (e) {
+      console.log('Описание не найдено');
+    }
 
-    return {
+    // Получаем все изображения
+    const images = await page.$$eval('img.product-gallery__thumb-image', 
+      elements => elements.map(el => el.getAttribute('data-big-image-src')).filter(Boolean)
+    );
+
+    // Получаем все datasheet'ы
+    const datasheets = await page.$$eval('a[data-datasheet]', 
+      elements => elements.map(el => {
+        const href = el.getAttribute('href');
+        return href ? `https://www.chipdip.ru${href}` : null;
+      }).filter(Boolean)
+    );
+
+    // Получаем технические характеристики
+    const technical_specs = await page.$$eval('.product-params__table tr', 
+      rows => {
+        const specs = {};
+        rows.forEach(row => {
+          const name = row.querySelector('.product-params__name')?.textContent.trim();
+          const value = row.querySelector('.product-params__value')?.textContent.trim();
+          if (name && value) {
+            specs[name] = value;
+          }
+        });
+        return specs;
+      }
+    );
+
+    // Формируем итоговый объект
+    const result = {
       title,
-      imageUrl
+      description,
+      images: images.length > 0 ? images : null,
+      datasheets: datasheets.length > 0 ? datasheets : null,
+      technical_specs: Object.keys(technical_specs).length > 0 ? technical_specs : null
     };
+
+    // Удаляем пустые поля
+    Object.keys(result).forEach(key => {
+      if (result[key] === null) {
+        delete result[key];
+      }
+    });
+
+    return result;
+
   } catch (error) {
     console.error('Ошибка при парсинге ChipDip:', error);
     throw new Error(`Ошибка при парсинге ChipDip: ${error.message}`);

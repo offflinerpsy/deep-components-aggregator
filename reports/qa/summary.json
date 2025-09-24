@@ -1,0 +1,188 @@
+{
+  "timestamp": "2025-09-24T22:51:08.321Z",
+  "total_queries": 20,
+  "pass": 20,
+  "fail": 0,
+  "queries": [
+    {
+      "mpn": "LM317T",
+      "rows_in_dom": 2,
+      "rows_in_api": 34,
+      "invalid_rows": 0,
+      "issues": [],
+      "currency_rates_cached": false,
+      "pass": true
+    },
+    {
+      "mpn": "1N4148W-TP",
+      "rows_in_dom": 2,
+      "rows_in_api": 4,
+      "invalid_rows": 0,
+      "issues": [],
+      "currency_rates_cached": false,
+      "pass": true
+    },
+    {
+      "mpn": "NE555P",
+      "rows_in_dom": 2,
+      "rows_in_api": 25,
+      "invalid_rows": 0,
+      "issues": [],
+      "currency_rates_cached": false,
+      "pass": true
+    },
+    {
+      "mpn": "BC547B",
+      "rows_in_dom": 2,
+      "rows_in_api": 32,
+      "invalid_rows": 0,
+      "issues": [],
+      "currency_rates_cached": false,
+      "pass": true
+    },
+    {
+      "mpn": "TL071CP",
+      "rows_in_dom": 2,
+      "rows_in_api": 14,
+      "invalid_rows": 0,
+      "issues": [],
+      "currency_rates_cached": false,
+      "pass": true
+    },
+    {
+      "mpn": "LM358P",
+      "rows_in_dom": 2,
+      "rows_in_api": 29,
+      "invalid_rows": 0,
+      "issues": [],
+      "currency_rates_cached": false,
+      "pass": true
+    },
+    {
+      "mpn": "CD4017BE",
+      "rows_in_dom": 2,
+      "rows_in_api": 8,
+      "invalid_rows": 0,
+      "issues": [],
+      "currency_rates_cached": false,
+      "pass": true
+    },
+    {
+      "mpn": "74HC595",
+      "rows_in_dom": 2,
+      "rows_in_api": 23,
+      "invalid_rows": 0,
+      "issues": [],
+      "currency_rates_cached": false,
+      "pass": true
+    },
+    {
+      "mpn": "ATMEGA328P-PU",
+      "rows_in_dom": 2,
+      "rows_in_api": 11,
+      "invalid_rows": 0,
+      "issues": [],
+      "currency_rates_cached": false,
+      "pass": true
+    },
+    {
+      "mpn": "STM32F103C8T6",
+      "rows_in_dom": 2,
+      "rows_in_api": 21,
+      "invalid_rows": 0,
+      "issues": [],
+      "currency_rates_cached": false,
+      "pass": true
+    },
+    {
+      "mpn": "ESP32-WROOM-32",
+      "rows_in_dom": 2,
+      "rows_in_api": 19,
+      "invalid_rows": 0,
+      "issues": [],
+      "currency_rates_cached": false,
+      "pass": true
+    },
+    {
+      "mpn": "PIC16F628A",
+      "rows_in_dom": 2,
+      "rows_in_api": 25,
+      "invalid_rows": 0,
+      "issues": [],
+      "currency_rates_cached": false,
+      "pass": true
+    },
+    {
+      "mpn": "2N2222A",
+      "rows_in_dom": 2,
+      "rows_in_api": 33,
+      "invalid_rows": 0,
+      "issues": [],
+      "currency_rates_cached": false,
+      "pass": true
+    },
+    {
+      "mpn": "IRLZ44N",
+      "rows_in_dom": 2,
+      "rows_in_api": 19,
+      "invalid_rows": 0,
+      "issues": [],
+      "currency_rates_cached": false,
+      "pass": true
+    },
+    {
+      "mpn": "AMS1117-3.3",
+      "rows_in_dom": 2,
+      "rows_in_api": 9,
+      "invalid_rows": 0,
+      "issues": [],
+      "currency_rates_cached": false,
+      "pass": true
+    },
+    {
+      "mpn": "TL072",
+      "rows_in_dom": 2,
+      "rows_in_api": 38,
+      "invalid_rows": 0,
+      "issues": [],
+      "currency_rates_cached": false,
+      "pass": true
+    },
+    {
+      "mpn": "SN74HC14N",
+      "rows_in_dom": 2,
+      "rows_in_api": 15,
+      "invalid_rows": 0,
+      "issues": [],
+      "currency_rates_cached": false,
+      "pass": true
+    },
+    {
+      "mpn": "LM7805",
+      "rows_in_dom": 2,
+      "rows_in_api": 13,
+      "invalid_rows": 0,
+      "issues": [],
+      "currency_rates_cached": false,
+      "pass": true
+    },
+    {
+      "mpn": "SS14",
+      "rows_in_dom": 2,
+      "rows_in_api": 35,
+      "invalid_rows": 0,
+      "issues": [],
+      "currency_rates_cached": false,
+      "pass": true
+    },
+    {
+      "mpn": "BSS138",
+      "rows_in_dom": 2,
+      "rows_in_api": 33,
+      "invalid_rows": 0,
+      "issues": [],
+      "currency_rates_cached": false,
+      "pass": true
+    }
+  ]
+}

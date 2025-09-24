@@ -1,0 +1,58 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "required": ["mpn", "stock_total", "price_min_rub", "image"],
+  "properties": {
+    "mpn": {
+      "type": "string",
+      "minLength": 2,
+      "maxLength": 64
+    },
+    "title": {
+      "type": "string"
+    },
+    "manufacturer": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "package": {
+      "type": "string"
+    },
+    "packaging": {
+      "type": "string"
+    },
+    "regions": {
+      "type": "array",
+      "items": {
+        "enum": ["EU", "US", "ASIA"]
+      },
+      "minItems": 0
+    },
+    "stock_total": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "lead_days": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "price_min": {
+      "type": "number",
+      "minimum": 0
+    },
+    "price_min_currency": {
+      "type": "string",
+      "enum": ["", "USD", "EUR"]
+    },
+    "price_min_rub": {
+      "type": "number",
+      "minimum": 0
+    },
+    "image": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false
+}

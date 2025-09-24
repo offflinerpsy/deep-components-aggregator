@@ -6,7 +6,9 @@ import { chromium } from 'playwright';
  * @returns {Promise<Object>} Информация о компоненте
  */
 export async function parseChipDip(mpn) {
-  const browser = await chromium.launch();
+  const browser = await chromium.launch({
+    headless: true // Запускаем в headless режиме для производительности
+  });
 
   try {
     // Открываем новую страницу
@@ -14,7 +16,7 @@ export async function parseChipDip(mpn) {
 
     // Переходим на страницу поиска
     const searchUrl = `https://www.chipdip.ru/search?searchtext=${encodeURIComponent(mpn)}`;
-    await page.goto(searchUrl);
+    await page.goto(searchUrl, { waitUntil: 'networkidle' });
 
     // Ждем и кликаем по первому результату
     const firstResultSelector = 'a.link.item-card__name';
@@ -22,71 +24,69 @@ export async function parseChipDip(mpn) {
     await page.click(firstResultSelector);
 
     // Ждем загрузки страницы товара
-    const titleSelector = 'h1.product-title';
-    await page.waitForSelector(titleSelector);
+    await page.waitForSelector('h1.product-title');
 
-    // Получаем заголовок
-    const title = await page.$eval(titleSelector, el => el.textContent.trim());
+    // Собираем все данные
+    const data = await page.evaluate(() => {
+      // Вспомогательная функция для безопасного извлечения текста
+      const safeText = (selector) => {
+        const el = document.querySelector(selector);
+        return el ? el.textContent.trim() : null;
+      };
 
-    // Получаем описание
-    let description = null;
-    try {
-      description = await page.$eval('div.product-description__text p', el => el.textContent.trim());
-    } catch (e) {
-      console.log('Описание не найдено');
-    }
+      // Заголовок
+      const title = safeText('h1.product-title');
 
-    // Получаем все изображения
-    const images = await page.$$eval('img.product-gallery__thumb-image', 
-      elements => elements.map(el => el.getAttribute('data-big-image-src')).filter(Boolean)
-    );
+      // Описание
+      const description = safeText('.product-description-text');
 
-    // Получаем все datasheet'ы
-    const datasheets = await page.$$eval('a[data-datasheet]', 
-      elements => elements.map(el => {
-        const href = el.getAttribute('href');
-        return href ? `https://www.chipdip.ru${href}` : null;
-      }).filter(Boolean)
-    );
+      // Изображения
+      const images = Array.from(document.querySelectorAll('.product-gallery__thumb-image'))
+        .map(img => img.getAttribute('data-big-image-src'))
+        .filter(Boolean);
 
-    // Получаем технические характеристики
-    const technical_specs = await page.$$eval('.product-params__table tr', 
-      rows => {
-        const specs = {};
-        rows.forEach(row => {
-          const name = row.querySelector('.product-params__name')?.textContent.trim();
-          const value = row.querySelector('.product-params__value')?.textContent.trim();
-          if (name && value) {
-            specs[name] = value;
-          }
-        });
-        return specs;
-      }
-    );
+      // Datasheet'ы
+      const datasheets = Array.from(document.querySelectorAll('.product-reference a[data-datasheet]'))
+        .map(a => {
+          const href = a.getAttribute('href');
+          return href ? `https://www.chipdip.ru${href}` : null;
+        })
+        .filter(Boolean);
 
-    // Формируем итоговый объект
-    const result = {
-      title,
-      description,
-      images: images.length > 0 ? images : null,
-      datasheets: datasheets.length > 0 ? datasheets : null,
-      technical_specs: Object.keys(technical_specs).length > 0 ? technical_specs : null
-    };
+      // Технические характеристики
+      const technical_specs = {};
+      document.querySelectorAll('.product-params__table tr').forEach(row => {
+        const name = row.querySelector('.product-params__name')?.textContent.trim();
+        const value = row.querySelector('.product-params__value')?.textContent.trim();
+        if (name && value) {
+          technical_specs[name] = value;
+        }
+      });
+
+      return {
+        title,
+        description,
+        images,
+        datasheets,
+        technical_specs
+      };
+    });
 
     // Удаляем пустые поля
-    Object.keys(result).forEach(key => {
-      if (result[key] === null) {
-        delete result[key];
+    Object.keys(data).forEach(key => {
+      if (data[key] === null || 
+          (Array.isArray(data[key]) && data[key].length === 0) ||
+          (typeof data[key] === 'object' && !Array.isArray(data[key]) && Object.keys(data[key]).length === 0)) {
+        delete data[key];
       }
     });
 
-    return result;
+    return data;
 
   } catch (error) {
     console.error('Ошибка при парсинге ChipDip:', error);
     throw new Error(`Ошибка при парсинге ChipDip: ${error.message}`);
   } finally {
-    // Закрываем браузер в любом случае
     await browser.close();
   }
 }

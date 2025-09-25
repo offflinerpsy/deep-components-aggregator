@@ -29,10 +29,10 @@ const hide = (el) => {
   }
   
   const j = await r.json();
-  const p = j && j.product ? j.product : null;
+  const p = j && j.ok ? j : null;
   
-  if (!p) { 
-    console.error("bad canon/product"); 
+  if (!p || !p.ok) { 
+    console.error("bad canon/product", j); 
     return; 
   }
 
@@ -47,14 +47,13 @@ const hide = (el) => {
   set(qs('#origin'), p.origin || '');
 
   // order
-  const stock = (p.availability && p.availability.inStock) ? String(p.availability.inStock) : '';
-  const min = Array.isArray(p.pricing) && p.pricing.length ? p.pricing[0] : null;
-  const minRUB = min && min.price_rub ? `${min.price_rub.toFixed(2)} ₽` : '';
+  const stock = p.stock_total ? String(p.stock_total) : '';
+  const minRUB = p.price_min_rub ? `${p.price_min_rub} ₽` : '';
   
   if (!set(qs('#stock'), stock)) hide(qs('.stock'));
   if (!set(qs('#minPrice'), minRUB)) hide(qs('.price'));
   
-  const regions = Array.isArray(p.suppliers) ? [...new Set(p.suppliers.map(s => s.region).filter(Boolean))] : [];
+  const regions = Array.isArray(p.regions) ? p.regions : [];
   qs('#regions').innerHTML = regions.map(r => `<span class="badge">${r}</span>`).join('');
 
   // desc

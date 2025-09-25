@@ -47,9 +47,9 @@ PWDEBUG=0 npx playwright test $PW_FLAGS || true
 
 echo "[7/7] Summarize"
 pass_cnt=$(jq '[.suites[]?.specs[]?.tests[]?.results[]?|select(.status=="passed")]|length' \
-            "$ART_DIR/test-results/*.json" 2>/dev/null || echo 0)
+            $ART_DIR/test-results/*.json 2>/dev/null || echo 0)
 fail_cnt=$(jq '[.suites[]?.specs[]?.tests[]?.results[]?|select(.status!="passed")]|length' \
-            "$ART_DIR/test-results/*.json" 2>/dev/null || echo 0)
+            $ART_DIR/test-results/*.json 2>/dev/null || echo 0)
 {
   echo "# VERIFY SUMMARY"
   echo "- base: $BASE_URL"

@@ -100,7 +100,8 @@ app.get("/api/search", async (req, res) => {
 
   // Валидация через JSON Schema
   const validItems = [];
-  for (const row of result.items) {
+  const items = result.results || result.items || [];
+  for (const row of items) {
     if (validate(row)) {
       validItems.push(row);
     } else {
@@ -135,7 +136,7 @@ app.get("/api/product", async (req, res) => {
     return;
   }
 
-  if (!result.product || !result.product.mpn) {
+  if (!result.mpn) {
     log('warn', 'No product data found', { mpn });
     res.status(404).json({ ok: false, error: "product_not_found", mpn });
     return;
@@ -143,17 +144,16 @@ app.get("/api/product", async (req, res) => {
 
   log('info', 'Product data assembled', { 
     mpn, 
-    hasTitle: !!result.product.title,
-    hasImages: result.product.images.length > 0,
-    hasDatasheets: result.product.datasheets.length > 0,
-    hasSpecs: Object.keys(result.product.technical_specs).length > 0,
-    sourcesCount: result.product.sources.length
+    hasTitle: !!result.title,
+    hasImages: result.images.length > 0,
+    hasDatasheets: result.datasheets.length > 0,
+    hasSpecs: Object.keys(result.technical_specs).length > 0,
+    sourcesCount: result.sources ? result.sources.length : 0
   });
 
   res.json({ 
     ok: true, 
-    product: result.product,
-    orchestration: result.product.orchestration
+    product: result
   });
 });
 

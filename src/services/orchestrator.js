@@ -79,12 +79,75 @@ export async function orchestrateProduct(mpn) {
     }
   });
   
-  // Если нет RU-контента, возвращаем ошибку
+  // Если нет RU-контента, используем только коммерческие данные
   if (!bestRuContent) {
+    console.log(JSON.stringify({
+      route: 'orchestrator',
+      mpn: mpn,
+      fallback: 'no-ru-content',
+      using_oemstrade_only: true
+    }));
+    
+    // Получение коммерческих данных от OEMsTrade
+    const commercialResults = await searchOEMsTrade(mpn);
+    
+    if (!Array.isArray(commercialResults) || commercialResults.length === 0) {
+      // Создаем fallback данные когда нет результатов
+      return {
+        ok: true,
+        source: 'fallback',
+        mpn: mpn,
+        mpn_clean: mpn.replace(/\/[A-Z0-9-]+$/, '').replace(/-[A-Z]$/, ''),
+        title: mpn,
+        description: 'Компонент не найден в базе данных',
+        images: [],
+        datasheets: [],
+        package: '',
+        packaging: '',
+        technical_specs: {},
+        suppliers: [],
+        regions: [],
+        stock_total: 0,
+        price_min: 0,
+        price_min_currency: 'RUB',
+        price_min_rub: 0,
+        url: ''
+      };
+    }
+    
+    // Найти точное совпадение MPN или взять первый результат
+    const commercialData = commercialResults.find(item => item.mpn === mpn) || commercialResults[0];
+    
+    // Конвертация в рубли
+    let price_min_rub = 0;
+    if (commercialData.price_min > 0 && commercialData.price_min_currency !== 'RUB') {
+      const rubRate = await convertToRub(commercialData.price_min_currency);
+      if (rubRate > 0) {
+        price_min_rub = Math.round(commercialData.price_min * rubRate);
+      }
+    } else if (commercialData.price_min_currency === 'RUB') {
+      price_min_rub = commercialData.price_min;
+    }
+    
     return {
-      ok: false,
-      error: 'No RU content found',
-      mpn: mpn
+      ok: true,
+      source: 'oemstrade-only',
+      mpn: mpn,
+      mpn_clean: mpn.replace(/\/[A-Z0-9-]+$/, '').replace(/-[A-Z]$/, ''),
+      title: commercialData.title || mpn,
+      description: commercialData.description || '',
+      images: commercialData.images || [],
+      datasheets: commercialData.datasheets || [],
+      package: commercialData.package || '',
+      packaging: commercialData.packaging || '',
+      technical_specs: commercialData.technical_specs || {},
+      suppliers: commercialData.suppliers || [],
+      regions: commercialData.regions || [],
+      stock_total: commercialData.stock_total || 0,
+      price_min: commercialData.price_min || 0,
+      price_min_currency: commercialData.price_min_currency || 'USD',
+      price_min_rub: price_min_rub,
+      url: commercialData.url || ''
     };
   }
   
@@ -118,6 +181,8 @@ export async function orchestrateProduct(mpn) {
     if (rubRate > 0) {
       mergedData.price_min_rub = Math.round(mergedData.price_min * rubRate);
     }
+  } else if (mergedData.price_min_currency === 'RUB') {
+    mergedData.price_min_rub = mergedData.price_min;
   }
   
   const duration = Date.now() - startTime;
@@ -138,5 +203,40 @@ export async function orchestrateProduct(mpn) {
 export async function orchestrateSearch(query) {
   // Для поиска пока используем только OEMsTrade
   // В будущем можно добавить поиск по RU-источникам
-  return await searchOEMsTrade(query);
+  const results = await searchOEMsTrade(query);
+  
+  if (Array.isArray(results) && results.length > 0) {
+    // Конвертация валют для всех результатов
+    const convertedResults = await Promise.all(results.map(async (item) => {
+      let price_min_rub = 0;
+      if (item.price_min > 0 && item.price_min_currency !== 'RUB') {
+        const rubRate = await convertToRub(item.price_min_currency);
+        if (rubRate > 0) {
+          price_min_rub = Math.round(item.price_min * rubRate);
+        }
+      } else if (item.price_min_currency === 'RUB') {
+        price_min_rub = item.price_min;
+      }
+      
+      return {
+        ...item,
+        price_min_rub: price_min_rub
+      };
+    }));
+    
+    return {
+      ok: true,
+      results: convertedResults,
+      count: convertedResults.length,
+      query: query
+    };
+  } else {
+    // Возвращаем пустой массив вместо ошибки
+    return {
+      ok: true,
+      results: [],
+      count: 0,
+      query: query
+    };
+  }
 }

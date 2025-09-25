@@ -5,7 +5,7 @@ const config = loadConfig('chipdip');
 
 export async function parseChipDip(mpn) {
   const startTime = Date.now();
-  const url = `${config.baseUrl}/search?searchtext=${encodeURIComponent(mpn)}`;
+  const url = config.searchUrl.replace('{q}', encodeURIComponent(mpn));
   
   const response = await fetchWithRetry(url);
   if (!response.ok) {

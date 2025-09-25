@@ -115,6 +115,7 @@ if (initialQuery) {
   $("#q").value = initialQuery;
   run(initialQuery);
 } else {
-  run("");
+  // Не запускаем поиск если нет параметра q
+  $("#sum").textContent = "Введите MPN для поиска";
 }
 </script>

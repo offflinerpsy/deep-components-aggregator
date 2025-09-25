@@ -1,24 +1,28 @@
-// playwright.config.ts — включить trace/video на падениях
-import { defineConfig } from '@playwright/test';
+import { defineConfig, devices } from '@playwright/test';
 
 export default defineConfig({
-  testDir: 'tests/e2e',
-  reporter: [['list']],
-  use: { 
-    baseURL: 'http://127.0.0.1:9201', 
-    trace: 'retain-on-failure', 
+  testDir: 'tests',
+  timeout: 60000,
+  forbidOnly: true,
+  retries: 0,
+  reporter: [['html', { open: 'never' }], ['list']],
+  use: {
+    baseURL: 'http://127.0.0.1:9201',
+    trace: 'retain-on-failure',
     video: 'retain-on-failure',
     screenshot: 'only-on-failure',
     testIdAttribute: 'data-testid'
   },
-  timeout: 30_000,
-  retries: 1,
+  webServer: {
+    command: 'node server.js',
+    port: 9201,
+    reuseExistingServer: true,
+    timeout: 120000
+  },
   projects: [
     {
       name: 'chromium',
-      use: { 
-        viewport: { width: 1200, height: 800 }
-      }
+      use: { ...devices['Desktop Chrome'] }
     }
   ]
 });

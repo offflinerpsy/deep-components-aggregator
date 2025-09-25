@@ -2,7 +2,9 @@ import express from "express";
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
-import { orchestrateSearch, orchestrateProduct } from "./src/services/orchestrator.js";
+// Используем новый TypeScript оркестратор (компилируем в JS)
+import { contentOrchestrator } from "./src/services/contentOrchestrator.js";
+import { searchTokenizer } from "./src/services/searchTokenize.js";
 import Ajv from "ajv";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -71,6 +73,16 @@ app.get("/_version", (req, res) => {
   res.json({ ok: true, name: "deep-agg-orchestrated", version: "0.1.0", ts: Date.now() });
 });
 
+app.get("/api/health", (req, res) => {
+  res.json({ 
+    ok: true, 
+    status: "healthy", 
+    uptime: process.uptime(),
+    memory: process.memoryUsage(),
+    ts: Date.now()
+  });
+});
+
 app.get("/api/search", async (req, res) => {
   const q = (req.query.q || "").trim();
   if (!q) {
@@ -80,17 +92,15 @@ app.get("/api/search", async (req, res) => {
 
   log('info', 'Search API request', { query: q });
   
-  const result = await orchestrateSearch(q, 40);
+  // Получаем результаты из нового оркестратора
+  const rawResults = await contentOrchestrator.searchAll(q);
   
-  if (!result.ok) {
-    log('error', 'Search orchestration failed', { query: q, code: result.code });
-    res.status(500).json({ ok: false, error: result.code });
-    return;
-  }
-
+  // Фильтруем и ранжируем через умный поиск
+  const rankedResults = searchTokenizer.filterAndRank(rawResults, q);
+  
   // Валидация через JSON Schema
   const validItems = [];
-  for (const row of result.items) {
+  for (const row of rankedResults) {
     if (validate(row)) {
       validItems.push(row);
     } else {
@@ -100,11 +110,9 @@ app.get("/api/search", async (req, res) => {
 
   res.json({
     ok: true,
-    source: result.source,
+    query: q,
     count: validItems.length,
-    items: validItems,
-    rates_cached: result.rates_cached,
-    duration: result.duration
+    items: validItems
   });
 });
 
@@ -117,15 +125,10 @@ app.get("/api/product", async (req, res) => {
 
   log('info', 'Product API request', { mpn });
 
-  const result = await orchestrateProduct(mpn);
+  // Получаем карточку из нового оркестратора
+  const product = await contentOrchestrator.fetchProduct(mpn);
   
-  if (!result.ok) {
-    log('error', 'Product orchestration failed', { mpn, code: result.code });
-    res.status(500).json({ ok: false, error: result.code });
-    return;
-  }
-
-  if (!result.product || !result.product.mpn) {
+  if (!product) {
     log('warn', 'No product data found', { mpn });
     res.status(404).json({ ok: false, error: "product_not_found", mpn });
     return;
@@ -133,17 +136,17 @@ app.get("/api/product", async (req, res) => {
 
   log('info', 'Product data assembled', { 
     mpn, 
-    hasTitle: !!result.product.title,
-    hasImages: result.product.images.length > 0,
-    hasDatasheets: result.product.datasheets.length > 0,
-    hasSpecs: Object.keys(result.product.technical_specs).length > 0,
-    sourcesCount: result.product.sources.length
+    hasTitle: !!product.title,
+    hasImages: product.gallery.length > 0,
+    hasDocs: product.docs.length > 0,
+    hasSpecs: product.specs.length > 0,
+    sources: product.sources.map(s => s.source),
+    hasPrice: product.order.min_price_rub !== null
   });
 
   res.json({ 
     ok: true, 
-    product: result.product,
-    orchestration: result.product.orchestration
+    product
   });
 });
 

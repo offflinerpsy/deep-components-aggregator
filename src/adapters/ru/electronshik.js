@@ -1,204 +1,113 @@
-// src/adapters/ru/electronshik.js - Electronshik адаптер (приоритет 5)
-import * as cheerio from 'cheerio';
-import { httpGet } from '../../services/net.js';
-import { getParserConfig } from '../../config/parsers.config.js';
-import { saveSourceHtml } from '../../services/sources-storage.js';
+import { fetchWithRetry, parseHtml } from '../../services/net.js';
+import { loadConfig } from '../../config/sources.ru.js';
 
-const config = getParserConfig('electronshik');
+const config = loadConfig('electronshik');
 
-const nz = (text) => {
-  if (!text) return '';
-  return String(text).trim().replace(/\s+/g, ' ');
-};
+export async function parseElectronshik(mpn) {
+  const startTime = Date.now();
+  const url = config.searchUrl.replace('{q}', encodeURIComponent(mpn));
+  
+  const response = await fetchWithRetry(url);
+  if (!response.ok) {
+    return {
+      ok: false,
+      source: 'electronshik',
+      reason: `HTTP ${response.status}`,
+      url
+    };
+  }
 
-const extractSpecs = ($, specsSelector) => {
+  const html = await response.text();
+  const $ = parseHtml(html);
+  
+  // Поиск первой карточки в результатах
+  const firstCard = $('.product-item, .search-result-item').first();
+  if (firstCard.length === 0) {
+    return {
+      ok: false,
+      source: 'electronshik',
+      reason: 'No products found',
+      url
+    };
+  }
+
+  // Извлечение данных
+  const title = firstCard.find('h3 a, .product-title a').text().trim();
+  const productUrl = firstCard.find('h3 a, .product-title a').attr('href');
+  const fullUrl = productUrl.startsWith('http') ? productUrl : `${config.baseUrl}${productUrl}`;
+  
+  // Парсинг карточки продукта
+  const productResponse = await fetchWithRetry(fullUrl);
+  if (!productResponse.ok) {
+    return {
+      ok: false,
+      source: 'electronshik',
+      reason: `Product page HTTP ${productResponse.status}`,
+      url: fullUrl
+    };
+  }
+
+  const productHtml = await productResponse.text();
+  const $product = parseHtml(productHtml);
+  
+  // Извлечение данных карточки
+  const productTitle = $product('h1').text().trim();
+  const brand = $product('a[href*="/brand"], .breadcrumbs a:last-of-type').text().trim();
+  
+  // Описание
+  const description = $product('.description, .product-description').text().trim();
+  
+  // Технические параметры
   const specs = {};
-  
-  // Ищем секцию "Технические параметры"
-  $('h2:contains("Технические параметры")').next().find('tr, li, div').each((_, element) => {
-    const $el = $(element);
-    const text = nz($el.text());
-    
-    if (text.includes(':')) {
-      const [key, value] = text.split(':').map(s => s.trim());
-      if (key && value && key !== value) {
-        specs[key] = value;
-      }
+  $product('h2:contains("Технические параметры"), h3:contains("Технические параметры")').nextAll('table tr, .specs tr').each((i, row) => {
+    const key = $product(row).find('td').first().text().trim();
+    const value = $product(row).find('td').last().text().trim();
+    if (key && value) {
+      specs[key] = value;
     }
   });
   
-  // Альтернативный поиск в таблицах
-  $(specsSelector).find('tr').each((_, row) => {
-    const $row = $(row);
-    const cells = $row.find('td');
-    
-    if (cells.length >= 2) {
-      const key = nz($(cells[0]).text());
-      const value = nz($(cells[1]).text());
-      
-      if (key && value && key !== value && !specs[key]) {
-        specs[key] = value;
-      }
-    }
-  });
-  
-  return specs;
-};
-
-const extractImages = ($, selectors) => {
-  const images = [];
-  
-  $(selectors.images).each((_, img) => {
-    const $img = $(img);
-    const src = $img.attr('src') || $img.attr('data-src');
-    
-    if (src && !src.includes('placeholder') && !src.includes('no-photo')) {
-      const fullUrl = src.startsWith('http') ? src : `${config.baseUrl}${src}`;
-      if (!images.includes(fullUrl)) {
-        images.push(fullUrl);
-      }
-    }
-  });
-  
-  return images;
-};
-
-const extractDatasheets = ($, selectors) => {
+  // Документация
   const datasheets = [];
-  
-  // Ищем в секции документов
-  $('.docs, .documentation, .files').find('a').each((_, link) => {
-    const $link = $(link);
-    const href = $link.attr('href');
-    
-    if (href && href.toLowerCase().includes('pdf')) {
-      const fullUrl = href.startsWith('http') ? href : `${config.baseUrl}${href}`;
-      if (!datasheets.includes(fullUrl)) {
-        datasheets.push(fullUrl);
-      }
+  $product('a[href*="data.electronshik.ru"][href$=".pdf"], a[href$=".pdf"]').each((i, link) => {
+    const href = $product(link).attr('href');
+    if (href) {
+      const fullHref = href.startsWith('http') ? href : `${config.baseUrl}${href}`;
+      datasheets.push(fullHref);
     }
   });
   
-  // Общий поиск PDF
-  $(selectors.datasheets).each((_, link) => {
-    const $link = $(link);
-    const href = $link.attr('href');
-    
-    if (href && href.toLowerCase().includes('pdf')) {
-      const fullUrl = href.startsWith('http') ? href : `${config.baseUrl}${href}`;
-      if (!datasheets.includes(fullUrl)) {
-        datasheets.push(fullUrl);
-      }
+  // Изображения
+  const images = [];
+  $product('img[src*="/product"], img[alt*="LM"], img[alt*="Фото"]').each((i, img) => {
+    const src = $product(img).attr('src');
+    if (src) {
+      const fullSrc = src.startsWith('http') ? src : `${config.baseUrl}${src}`;
+      images.push(fullSrc);
     }
   });
   
-  return datasheets;
-};
+  const duration = Date.now() - startTime;
+  console.log(JSON.stringify({
+    route: 'adapter',
+    dealer: 'electronshik',
+    ok: true,
+    ms: duration,
+    url: fullUrl
+  }));
 
-const searchProduct = async (mpn) => {
-  const searchUrl = config.searchUrl(mpn);
-  const result = await httpGet(searchUrl, config.headers);
-  
-  if (!result.ok) {
-    return { ok: false, code: result.code, source: 'electronshik' };
-  }
-  
-  saveSourceHtml('electronshik', mpn, result.text, {
-    url: searchUrl,
-    status: result.status,
-    duration: result.ms
-  });
-  
-  const $ = cheerio.load(result.text);
-  const selectors = config.selectors;
-  
-  const searchResults = $(selectors.searchResults);
-  let productLink = null;
-  
-  if (searchResults.length > 0) {
-    const firstResult = searchResults.first();
-    const link = firstResult.find(selectors.searchLink).first();
-    productLink = link.attr('href');
-  } else {
-    const title = $(selectors.title).first();
-    if (title.length > 0) {
-      productLink = searchUrl;
-    }
-  }
-  
-  if (!productLink) {
-    return { ok: false, code: 'PRODUCT_NOT_FOUND', source: 'electronshik' };
-  }
-  
-  if (!productLink.startsWith('http')) {
-    productLink = `${config.baseUrl}${productLink}`;
-  }
-  
-  return { ok: true, productUrl: productLink };
-};
-
-const extractProductData = async (productUrl, mpn) => {
-  const result = await httpGet(productUrl, config.headers);
-  
-  if (!result.ok) {
-    return { ok: false, code: result.code, source: 'electronshik' };
-  }
-  
-  saveSourceHtml('electronshik-product', mpn, result.text, {
-    url: productUrl,
-    status: result.status,
-    duration: result.ms
-  });
-  
-  const $ = cheerio.load(result.text);
-  const selectors = config.selectors;
-  
-  const title = nz($(selectors.title).first().text());
-  const description = nz($(selectors.description).first().text());
-  const manufacturer = nz($(selectors.manufacturer).first().text());
-  const packageType = nz($(selectors.package).first().text());
-  const packaging = nz($(selectors.packaging).first().text());
-  
-  const technical_specs = extractSpecs($, selectors.specsTable);
-  const images = extractImages($, selectors);
-  const datasheets = extractDatasheets($, selectors);
-  
-  const productData = {
-    mpn,
-    title,
-    description,
-    manufacturer,
-    package: packageType,
-    packaging,
-    images,
-    datasheets,
-    technical_specs,
-    source: 'electronshik',
-    url: productUrl
-  };
-  
-  return { ok: true, data: productData };
-};
-
-export const parseElectronshik = async (mpn) => {
-  if (!mpn || typeof mpn !== 'string') {
-    return { ok: false, code: 'INVALID_MPN', source: 'electronshik' };
-  }
-  
-  const searchResult = await searchProduct(mpn.trim());
-  if (!searchResult.ok) {
-    return searchResult;
-  }
-  
-  const extractResult = await extractProductData(searchResult.productUrl, mpn);
-  if (!extractResult.ok) {
-    return extractResult;
-  }
-  
   return {
     ok: true,
     source: 'electronshik',
-    priority: config.priority,
-    data: extractResult.data
+    mpn: mpn,
+    mpn_clean: mpn.replace(/\/[A-Z0-9-]+$/, '').replace(/-[A-Z]$/, ''),
+    title: productTitle,
+    description: description,
+    images: images,
+    datasheets: datasheets,
+    package: '',
+    packaging: '',
+    technical_specs: specs,
+    url: fullUrl
   };
-};
+}

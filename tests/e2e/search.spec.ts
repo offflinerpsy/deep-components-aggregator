@@ -31,6 +31,28 @@ test('search table columns map correctly', async ({ page }) => {
   await expect(priceCell).toContainText(/₽/); // min ₽
 });
 
+test('search results contain RU content', async ({ page }) => {
+  await page.goto('/?q=LM317T');
+  
+  // Ждём результатов
+  await page.waitForSelector('table tbody tr', { timeout: 15000 });
+  
+  const table = page.getByRole('table');
+  const rows = await table.getByRole('row').count();
+  
+  // Должно быть минимум 5 результатов
+  expect(rows).toBeGreaterThan(5);
+  
+  // Проверяем что есть RU-контент (описания на русском языке)
+  const firstRow = table.getByRole('row').nth(1);
+  const descCell = firstRow.getByRole('cell').nth(3); // description
+  const descText = await descCell.textContent();
+  
+  // Проверяем что описание не пустое и содержит русские символы
+  expect(descText).toBeTruthy();
+  expect(descText).toMatch(/[а-яё]/i);
+});
+
 test('search results data integrity', async ({ page }) => {
   await page.goto('/?q=LM317T');
   
@@ -92,7 +114,7 @@ test('search table structure and headers', async ({ page }) => {
   await expect(table).toContainText('Packaging');
   await expect(table).toContainText('Regions');
   await expect(table).toContainText('Stock');
-  await expect(table).toContainText('Min ₽');
+  await expect(table).toContainText('MinRUB');
 });
 
 test('search no console errors', async ({ page }) => {

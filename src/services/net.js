@@ -1,5 +1,5 @@
 import { ProxyAgent } from 'undici';
-import cheerio from 'cheerio';
+import * as cheerio from 'cheerio';
 
 const DEFAULT_TIMEOUT = 10000;
 const DEFAULT_RETRIES = 3;

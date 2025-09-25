@@ -3,7 +3,7 @@ import { parsePromelec } from '../adapters/ru/promelec.js';
 import { parsePlatan } from '../adapters/ru/platan.js';
 import { parseElectronshik } from '../adapters/ru/electronshik.js';
 import { parseElitan } from '../adapters/ru/elitan.js';
-import { parseOEMsTrade } from '../adapters/oemstrade.js';
+import { searchOEMsTrade } from '../../adapters/oemstrade.js';
 import { convertToRub } from '../services/rates-cbr.js';
 import Ajv from 'ajv';
 
@@ -99,7 +99,7 @@ export async function orchestrateProduct(mpn) {
   }
   
   // Получение коммерческих данных от OEMsTrade
-  const commercialData = await parseOEMsTrade(mpn);
+  const commercialData = await searchOEMsTrade(mpn);
   
   // Слияние данных
   const mergedData = {
@@ -138,5 +138,5 @@ export async function orchestrateProduct(mpn) {
 export async function orchestrateSearch(query) {
   // Для поиска пока используем только OEMsTrade
   // В будущем можно добавить поиск по RU-источникам
-  return await parseOEMsTrade(query);
+  return await searchOEMsTrade(query);
 }

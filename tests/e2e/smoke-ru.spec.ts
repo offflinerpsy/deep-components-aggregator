@@ -1,8 +1,11 @@
 import { test, expect } from '@playwright/test';
-import smokeConfig from '../smoke/smoke-ru.json';
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
-const MPNs = smokeConfig.mpns;
-const THRESHOLD = smokeConfig.threshold;
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const MPNs = JSON.parse(fs.readFileSync(path.join(__dirname, '../smoke/smoke-ru.json'), 'utf8'));
 
 let passedCount = 0;
 let totalCount = 0;
@@ -111,6 +114,7 @@ for (const mpn of MPNs) {
 
 test('Smoke RU results: проверка порога', async () => {
   const successRate = totalCount > 0 ? (passedCount / totalCount) * 100 : 0;
+  const THRESHOLD = 8; // Минимум 8 из 12 должны пройти
   
   console.log(`\\n📊 Smoke RU Results:`);
   console.log(`✅ Успешно: ${passedCount}/${totalCount} (${successRate.toFixed(1)}%)`);

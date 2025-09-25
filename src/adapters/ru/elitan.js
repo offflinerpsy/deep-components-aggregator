@@ -1,17 +1,17 @@
 import { fetchWithRetry, parseHtml } from '../../services/net.js';
 import { loadConfig } from '../../config/sources.ru.js';
 
-const config = loadConfig('electronshik');
+const config = loadConfig('elitan');
 
-export async function parseElectronshik(mpn) {
+export async function parseElitan(mpn) {
   const startTime = Date.now();
-  const url = `${config.baseUrl}/search?q=${encodeURIComponent(mpn)}`;
+  const url = `${config.baseUrl}/search/?q=${encodeURIComponent(mpn)}`;
   
   const response = await fetchWithRetry(url);
   if (!response.ok) {
     return {
       ok: false,
-      source: 'electronshik',
+      source: 'elitan',
       reason: `HTTP ${response.status}`,
       url
     };
@@ -25,7 +25,7 @@ export async function parseElectronshik(mpn) {
   if (firstCard.length === 0) {
     return {
       ok: false,
-      source: 'electronshik',
+      source: 'elitan',
       reason: 'No products found',
       url
     };
@@ -41,7 +41,7 @@ export async function parseElectronshik(mpn) {
   if (!productResponse.ok) {
     return {
       ok: false,
-      source: 'electronshik',
+      source: 'elitan',
       reason: `Product page HTTP ${productResponse.status}`,
       url: fullUrl
     };
@@ -51,17 +51,14 @@ export async function parseElectronshik(mpn) {
   const $product = parseHtml(productHtml);
   
   // Извлечение данных карточки
-  const productTitle = $product('h1').text().trim();
-  const brand = $product('a[href*="/brand"], .breadcrumbs a:last-of-type').text().trim();
-  
-  // Описание
+  const productTitle = $product('h1, .product-title').text().trim();
   const description = $product('.description, .product-description').text().trim();
   
-  // Технические параметры
+  // Технические параметры из таблиц
   const specs = {};
-  $product('h2:contains("Технические параметры"), h3:contains("Технические параметры")').nextAll('table tr, .specs tr').each((i, row) => {
-    const key = $product(row).find('td').first().text().trim();
-    const value = $product(row).find('td').last().text().trim();
+  $product('table tr, dl').each((i, row) => {
+    const key = $product(row).find('td, dt').first().text().trim();
+    const value = $product(row).find('td, dd').last().text().trim();
     if (key && value) {
       specs[key] = value;
     }
@@ -69,7 +66,7 @@ export async function parseElectronshik(mpn) {
   
   // Документация
   const datasheets = [];
-  $product('a[href*="data.electronshik.ru"][href$=".pdf"], a[href$=".pdf"]').each((i, link) => {
+  $product('a[href$=".pdf"]').each((i, link) => {
     const href = $product(link).attr('href');
     if (href) {
       const fullHref = href.startsWith('http') ? href : `${config.baseUrl}${href}`;
@@ -90,7 +87,7 @@ export async function parseElectronshik(mpn) {
   const duration = Date.now() - startTime;
   console.log(JSON.stringify({
     route: 'adapter',
-    dealer: 'electronshik',
+    dealer: 'elitan',
     ok: true,
     ms: duration,
     url: fullUrl
@@ -98,7 +95,7 @@ export async function parseElectronshik(mpn) {
 
   return {
     ok: true,
-    source: 'electronshik',
+    source: 'elitan',
     mpn: mpn,
     mpn_clean: mpn.replace(/\/[A-Z0-9-]+$/, '').replace(/-[A-Z]$/, ''),
     title: productTitle,

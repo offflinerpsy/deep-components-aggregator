@@ -1,0 +1,229 @@
+/* product.css — сетка в точности под пейнт */
+:root {
+  --gap: 16px;
+  --border: #e5e7eb;
+  --bg: #fff;
+  --text: #111827;
+  --muted: #6b7280;
+  --accent: #ef4444;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  background: #fafafa;
+  color: var(--text);
+  font: 14px/1.5 system-ui, "Segoe UI", Roboto, Arial;
+}
+
+a {
+  color: #2563eb;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.product {
+  display: grid;
+  gap: var(--gap);
+  grid-template-columns: 380px 1fr 320px;
+  grid-template-areas:
+    "gallery meta order"
+    "desc    desc order"
+    "docs    docs order"
+    "specs   specs specs";
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--gap);
+}
+
+.breadcrumbs {
+  grid-column: 1 / -1;
+  margin-bottom: var(--gap);
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.gallery {
+  grid-area: gallery;
+  aspect-ratio: 4/3;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--bg);
+}
+
+.meta {
+  grid-area: meta;
+  padding: var(--gap);
+}
+
+.meta h1 {
+  margin: 0 0 var(--gap) 0;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.meta__list > div {
+  display: flex;
+  justify-content: space-between;
+  margin: 8px 0;
+  padding: 4px 0;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.meta__list span {
+  color: var(--muted);
+}
+
+.order {
+  grid-area: order;
+  position: sticky;
+  top: var(--gap);
+  border: 1px solid var(--border);
+  padding: var(--gap);
+  border-radius: 8px;
+  background: var(--bg);
+  height: fit-content;
+}
+
+.order > * {
+  margin: 8px 0;
+}
+
+.order .stock,
+.order .price {
+  display: flex;
+  justify-content: space-between;
+  padding: 4px 0;
+}
+
+.order .regions {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.order .regions .badge {
+  font-size: 11px;
+  padding: 2px 6px;
+  background: #f3f4f6;
+  border-radius: 12px;
+  color: var(--muted);
+}
+
+.order label {
+  display: block;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.order input {
+  width: 100%;
+  padding: 6px 8px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  margin-top: 4px;
+}
+
+.btn {
+  width: 100%;
+  padding: 12px;
+  background: var(--accent);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 8px;
+}
+
+.btn:hover {
+  filter: brightness(0.95);
+}
+
+.desc {
+  grid-area: desc;
+  padding: var(--gap);
+  background: var(--bg);
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+
+.docs {
+  grid-area: docs;
+  padding: var(--gap);
+  background: var(--bg);
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+
+.docs ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.docs li {
+  margin: 4px 0;
+}
+
+.docs a {
+  display: inline-block;
+  padding: 4px 8px;
+  background: #f3f4f6;
+  border-radius: 4px;
+  font-size: 12px;
+}
+
+.specs {
+  grid-area: specs;
+  background: var(--bg);
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+
+.specs table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.specs td {
+  padding: 8px 12px;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.specs td:first-child {
+  background: #f9fafb;
+  font-weight: 500;
+  width: 30%;
+  color: var(--muted);
+}
+
+[hidden] {
+  display: none !important;
+}
+
+/* Адаптивность */
+@media (max-width: 1080px) {
+  .product {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "meta"
+      "order"
+      "gallery"
+      "desc"
+      "docs"
+      "specs";
+  }
+  
+  .order {
+    position: static;
+  }
+}

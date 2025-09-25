@@ -20,6 +20,6 @@
   "devDependencies": {
     "@playwright/test": "^1.47.2",
     "ajv": "^8.17.1",
-    "playwright": "1.47.2"
+    "playwright": "1.55.1"
   }
 }

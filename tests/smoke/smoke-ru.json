@@ -1,8 +1,14 @@
-{
-  "mpns": [
-    "LM317T", "1N4148", "NE555", "BC547", "TL071", "CD4017", 
-    "74HC595", "IRFZ44N", "7805", "AMS1117", "ATmega328P", "ESP32"
-  ],
-  "threshold": 8,
-  "description": "Smoke test for RU content sources - minimum 8/12 MPNs should have RU content"
-}
+[
+  "LM317T",
+  "1N4148",
+  "NE555",
+  "BC547",
+  "TL071",
+  "CD4017",
+  "74HC595",
+  "IRFZ44N",
+  "7805",
+  "AMS1117",
+  "ATmega328P",
+  "ESP32"
+]

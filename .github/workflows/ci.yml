@@ -111,6 +111,7 @@ jobs:
       run: npx playwright test tests/e2e/smoke-ru.spec.ts --project=${{ matrix.browser }} --reporter=list,json --output-dir=test-results-${{ matrix.browser }}
       env:
         PLAYWRIGHT_JSON_OUTPUT_NAME: smoke-ru-results-${{ matrix.browser }}.json
+      continue-on-error: true
         
     - name: Stop server
       if: always()

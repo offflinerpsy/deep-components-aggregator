@@ -84,10 +84,13 @@ const hide = (el) => {
     hide(qs('[data-testid="specs"]'));
   }
 
-  // gallery (плейсхолдер если нет картинок)
+  // gallery - используем image или images[0] или плейсхолдер
   const g = qs('[data-testid="gallery"]');
-  const imgs = Array.isArray(p.images) ? p.images : [];
-  g.innerHTML = imgs.length ? 
-    `<img src="${imgs[0]}" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:contain;">` :
-    `<div style="width:100%;height:100%;display:grid;place-items:center;color:#9ca3af;">IMAGE</div>`;
+  const mainImage = p.image || (Array.isArray(p.images) && p.images.length > 0 ? p.images[0] : null);
+  
+  if (mainImage) {
+    g.innerHTML = `<img src="${mainImage}" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:contain;" onerror="this.onerror=null;this.src='/ui/placeholder.svg';">`;
+  } else {
+    g.innerHTML = `<img src="/ui/placeholder.svg" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:contain;">`;
+  }
 })();

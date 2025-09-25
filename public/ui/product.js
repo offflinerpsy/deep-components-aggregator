@@ -31,7 +31,7 @@ const hide = (el) => {
   const j = await r.json();
   const p = j && j.ok && j.product ? j.product : null;
   
-  if (!p || !p.ok) { 
+  if (!p) { 
     console.error("bad canon/product", j); 
     return; 
   }
@@ -45,10 +45,10 @@ const hide = (el) => {
   if (!set(qs('#manufacturer'), p.manufacturer || '')) {
     qs('#manufacturer').parentElement.style.display = 'none';
   }
-  if (!set(qs('#pkg'), p.package || '')) {
+  if (!set(qs('#pkg'), p.meta?.package || '')) {
     qs('#pkg').parentElement.style.display = 'none';
   }
-  if (!set(qs('#packaging'), p.packaging || '')) {
+  if (!set(qs('#packaging'), p.meta?.packaging || '')) {
     qs('#packaging').parentElement.style.display = 'none';
   }
   if (!set(qs('#origin'), p.origin || '')) {
@@ -56,37 +56,38 @@ const hide = (el) => {
   }
 
   // order
-  const stock = p.stock_total ? String(p.stock_total) : '';
-  const minRUB = p.price_min_rub ? `${p.price_min_rub} ₽` : '';
+  const stock = p.order?.stock ? String(p.order.stock) : '';
+  const minRUB = p.order?.min_price_rub ? `${p.order.min_price_rub} ₽` : '';
   
   if (!set(qs('#stock'), stock)) hide(qs('.stock'));
   if (!set(qs('#minPrice'), minRUB)) hide(qs('.price'));
   
-  const regions = Array.isArray(p.regions) ? p.regions : [];
+  const regions = Array.isArray(p.order?.regions) ? p.order.regions : [];
   qs('#regions').innerHTML = regions.map(r => `<span class="badge">${r}</span>`).join('');
 
   // desc
-  if (!set(qs('.desc'), p.description || '')) hide(qs('.desc'));
+  if (!set(qs('.desc'), p.description_html || '')) hide(qs('.desc'));
 
   // docs
-  const pdfs = Array.isArray(p.datasheets) ? p.datasheets : [];
+  const pdfs = Array.isArray(p.docs) ? p.docs : [];
   if (pdfs.length) { 
-    qs('#pdfList').innerHTML = pdfs.map((u, i) => `<li><a href="${u}" target="_blank" rel="noopener">PDF ${i + 1}</a></li>`).join(''); 
+    qs('#pdfList').innerHTML = pdfs.map((doc, i) => `<li><a href="${doc.url}" target="_blank" rel="noopener">${doc.label || `PDF ${i + 1}`}</a></li>`).join(''); 
   } else {
     hide(qs('[data-testid="docs"]'));
   }
 
   // specs
   const t = qs('#specTable');
-  if (p.technical_specs && typeof p.technical_specs === 'object' && Object.keys(p.technical_specs).length) {
-    t.innerHTML = Object.entries(p.technical_specs).map(([k, v]) => `<tr><td>${k}</td><td>${v}</td></tr>`).join('');
+  if (p.specs && Array.isArray(p.specs) && p.specs.length > 0) {
+    t.innerHTML = p.specs.map(spec => `<tr><td>${spec.name}</td><td>${spec.value}</td></tr>`).join('');
   } else {
     hide(qs('[data-testid="specs"]'));
   }
 
-  // gallery - используем image или images[0] или плейсхолдер
+  // gallery - используем gallery[0] или плейсхолдер
   const g = qs('[data-testid="gallery"]');
-  const mainImage = p.image || (Array.isArray(p.images) && p.images.length > 0 ? p.images[0] : null);
+  const gallery = Array.isArray(p.gallery) ? p.gallery : [];
+  const mainImage = gallery.length > 0 ? gallery[0].image_url : null;
   
   if (mainImage) {
     g.innerHTML = `<img src="${mainImage}" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:contain;" onerror="this.onerror=null;this.src='/ui/placeholder.svg';">`;

@@ -107,11 +107,26 @@ jobs:
       env:
         PLAYWRIGHT_JSON_OUTPUT_NAME: smoke-50-results-${{ matrix.browser }}.json
         
-    - name: Run Smoke-RU test
-      run: npx playwright test tests/e2e/smoke-ru.spec.ts --project=${{ matrix.browser }} --reporter=list,json --output-dir=test-results-${{ matrix.browser }}
+    - name: Run Smoke-30 test
+      run: npx playwright test tests/e2e/smoke-30.spec.ts --project=${{ matrix.browser }} --reporter=list,json --output-dir=test-results-${{ matrix.browser }}
       env:
-        PLAYWRIGHT_JSON_OUTPUT_NAME: smoke-ru-results-${{ matrix.browser }}.json
+        PLAYWRIGHT_JSON_OUTPUT_NAME: smoke-30-results-${{ matrix.browser }}.json
       continue-on-error: true
+        
+    - name: Run Smart Search test
+      run: npx playwright test tests/e2e/search-smart.spec.ts --project=${{ matrix.browser }} --reporter=list,json --output-dir=test-results-${{ matrix.browser }}
+      env:
+        PLAYWRIGHT_JSON_OUTPUT_NAME: search-smart-results-${{ matrix.browser }}.json
+        
+    - name: Run Product Content test
+      run: npx playwright test tests/e2e/product-content.spec.ts --project=${{ matrix.browser }} --reporter=list,json --output-dir=test-results-${{ matrix.browser }}
+      env:
+        PLAYWRIGHT_JSON_OUTPUT_NAME: product-content-results-${{ matrix.browser }}.json
+        
+    - name: Run AJV Validation test
+      run: npx playwright test tests/api/ajv.spec.ts --project=${{ matrix.browser }} --reporter=list,json --output-dir=test-results-${{ matrix.browser }}
+      env:
+        PLAYWRIGHT_JSON_OUTPUT_NAME: ajv-results-${{ matrix.browser }}.json
         
     - name: Stop server
       if: always()
@@ -147,6 +162,18 @@ jobs:
         name: scraped-sources-${{ matrix.browser }}
         path: reports/sources/
         retention-days: 7
+        
+    - name: Upload smoke test results
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: smoke-test-results-${{ matrix.browser }}
+        path: |
+          smoke-30-results-${{ matrix.browser }}.json
+          search-smart-results-${{ matrix.browser }}.json
+          product-content-results-${{ matrix.browser }}.json
+          ajv-results-${{ matrix.browser }}.json
+        retention-days: 30
 
   # Smoke test с популярными MPN
   smoke-test:

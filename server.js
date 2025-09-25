@@ -2,8 +2,9 @@ import express from "express";
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
-import { orchestrateSearch, orchestrateProduct } from "./src/services/orchestrator.js";
-import { enrichFromRuSources } from "./src/services/content-orchestrator.js";
+// Используем новый TypeScript оркестратор (компилируем в JS)
+import { contentOrchestrator } from "./src/services/contentOrchestrator.js";
+import { searchTokenizer } from "./src/services/searchTokenize.js";
 import Ajv from "ajv";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -91,18 +92,15 @@ app.get("/api/search", async (req, res) => {
 
   log('info', 'Search API request', { query: q });
   
-  const result = await orchestrateSearch(q, 40);
+  // Получаем результаты из нового оркестратора
+  const rawResults = await contentOrchestrator.searchAll(q);
   
-  if (!result.ok) {
-    log('error', 'Search orchestration failed', { query: q, code: result.code });
-    res.status(500).json({ ok: false, error: result.code });
-    return;
-  }
-
+  // Фильтруем и ранжируем через умный поиск
+  const rankedResults = searchTokenizer.filterAndRank(rawResults, q);
+  
   // Валидация через JSON Schema
   const validItems = [];
-  const items = result.results || result.items || [];
-  for (const row of items) {
+  for (const row of rankedResults) {
     if (validate(row)) {
       validItems.push(row);
     } else {
@@ -112,11 +110,9 @@ app.get("/api/search", async (req, res) => {
 
   res.json({
     ok: true,
-    source: result.source,
+    query: q,
     count: validItems.length,
-    items: validItems,
-    rates_cached: result.rates_cached,
-    duration: result.duration
+    items: validItems
   });
 });
 
@@ -129,51 +125,28 @@ app.get("/api/product", async (req, res) => {
 
   log('info', 'Product API request', { mpn });
 
-  const result = await orchestrateProduct(mpn);
+  // Получаем карточку из нового оркестратора
+  const product = await contentOrchestrator.fetchProduct(mpn);
   
-  if (!result.ok) {
-    log('error', 'Product orchestration failed', { mpn, code: result.code });
-    res.status(500).json({ ok: false, error: result.code });
-    return;
-  }
-
-  if (!result.mpn) {
+  if (!product) {
     log('warn', 'No product data found', { mpn });
     res.status(404).json({ ok: false, error: "product_not_found", mpn });
     return;
   }
 
-  // RU-обогащение контента
-  log('info', 'Starting RU content enrichment', { mpn });
-  const ruContent = await enrichFromRuSources(mpn);
-  
-  // Мержим RU-контент с коммерческими данными
-  const enrichedProduct = {
-    ...result,
-    // RU-контент имеет приоритет, но не затираем коммерцию
-    description: ruContent.description || result.description,
-    image: ruContent.image || result.image,
-    images: ruContent.images || result.images || [],
-    datasheets: ruContent.datasheets || result.datasheets || [],
-    technical_specs: ruContent.technical_specs || result.technical_specs || {}
-  };
-
-  log('info', 'Product data assembled with RU content', { 
+  log('info', 'Product data assembled', { 
     mpn, 
-    hasTitle: !!enrichedProduct.title,
-    hasImages: enrichedProduct.images.length > 0,
-    hasDatasheets: enrichedProduct.datasheets.length > 0,
-    hasSpecs: Object.keys(enrichedProduct.technical_specs).length > 0,
-    hasRuDescription: !!ruContent.description,
-    hasRuImage: !!ruContent.image,
-    hasRuDatasheets: (ruContent.datasheets?.length || 0) > 0,
-    hasRuSpecs: Object.keys(ruContent.technical_specs || {}).length > 0,
-    sourcesCount: enrichedProduct.sources ? enrichedProduct.sources.length : 0
+    hasTitle: !!product.title,
+    hasImages: product.gallery.length > 0,
+    hasDocs: product.docs.length > 0,
+    hasSpecs: product.specs.length > 0,
+    sources: product.sources.map(s => s.source),
+    hasPrice: product.order.min_price_rub !== null
   });
 
   res.json({ 
     ok: true, 
-    product: enrichedProduct
+    product
   });
 });
 

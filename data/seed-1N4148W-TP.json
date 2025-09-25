@@ -1,0 +1,23 @@
+{
+  "mpn":"1N4148W-TP",
+  "title":"Диод импульсный 0.15A/100V",
+  "manufacturer":"MCC",
+  "description":"Быстрый переключательный диод.",
+  "images":["/ui/placeholder.svg"],
+  "datasheets":["https://www.mccsemi.com/pdf/Products/1N4148W(SOD123).pdf"],
+  "package":"SOD-123","packaging":"Tape",
+  "technical_specs":{
+    "Обратное напряжение VR, В":"100",
+    "Прямой ток IF, А":"0.15",
+    "Время восстановления trr, нс":"4",
+    "Падение напряжения VF@IF, В":"0.9@10mA"
+  },
+  "availability":{"inStock":95841,"lead":0},
+  "pricing":[{"qty":1,"price":0.01,"currency":"USD","price_rub":1.02}],
+  "regions":["EU","ASIA"],
+  "suppliers":[
+    {"name":"ChipDip","url":"https://www.chipdip.by/search?searchtext=1N4148W-TP","region":"RU",
+     "availability":{"inStock":95841},
+     "pricing":[{"qty":1,"price":0.01,"currency":"USD","price_rub":1.02}]}
+  ]
+}

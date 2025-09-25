@@ -1,0 +1,20 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "type":"object",
+  "required":["mpn","images","datasheets","technical_specs","suppliers"],
+  "properties":{
+    "mpn":{"type":"string","minLength":1},
+    "title":{"type":"string"},
+    "description":{"type":"string"},
+    "images":{"type":"array","items":{"type":"string","format":"uri"}},
+    "datasheets":{"type":"array","items":{"type":"string","format":"uri"}},
+    "package":{"type":"string"},
+    "packaging":{"type":"string"},
+    "technical_specs":{"type":"object","additionalProperties":{"type":"string"}},
+    "availability":{"type":"object","properties":{"inStock":{"type":"integer","minimum":0},"lead":{"type":"integer","minimum":0}}},
+    "pricing":{"type":"array","items":{"type":"object","required":["qty","price","currency"],"properties":{"qty":{"type":"integer"},"price":{"type":"number"},"currency":{"type":"string"},"price_rub":{"type":"number"}}}},
+    "url":{"type":"string","format":"uri"},
+    "suppliers":{"type":"array","items":{"type":"object","required":["name","region"],"properties":{"name":{"type":"string"},"url":{"type":"string","format":"uri"},"region":{"enum":["RU","EU","US","CN","ASIA"]},"availability":{"type":"object","properties":{"inStock":{"type":"integer"},"lead":{"type":"integer"}}},"pricing":{"type":"array","items":{"type":"object","properties":{"qty":{"type":"integer"},"price":{"type":"number"},"currency":{"type":"string"},"price_rub":{"type":"number"}}}}}}}
+  },
+  "additionalProperties": true
+}

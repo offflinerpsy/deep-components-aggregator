@@ -1,24 +1,295 @@
-name: ci
+# .github/workflows/ci.yml - CI-гейт с RU-оркестратором и E2E тестами
+name: CI Gate - RU Content Orchestrator
+
 on:
-  push: { branches: [ main, feature/** ] }
-  pull_request: { branches: [ main ] }
+  push:
+    branches: [ main, develop, 'feature/**' ]
+  pull_request:
+    branches: [ main, develop ]
+
 jobs:
-  test:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix: { os: [ubuntu-latest], node: [20.x] }
+  # Проверка кода и зависимостей
+  code-quality:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with: { node-version: ${{ matrix.node }}, cache: 'npm' }
-      - run: npm ci --ignore-scripts
-      - run: npx playwright install --with-deps
-      - run: node server.js & echo $! > .server.pid
-      - run: npx playwright test --reporter=line
-      - if: always()
-        run: |
-          kill $(cat .server.pid) || true
-          mkdir -p artifacts && cp -r playwright-report artifacts/ || true
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with: { name: pw-report, path: artifacts }
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.x'
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Security audit
+      run: npm audit --audit-level=moderate
+      continue-on-error: true # Не блокируем CI из-за низкоприоритетных уязвимостей
+      
+    - name: Check package vulnerabilities
+      run: |
+        echo "::group::NPM Audit Report"
+        npm audit --json > audit-report.json || true
+        cat audit-report.json
+        echo "::endgroup::"
+        
+    - name: Upload audit report
+      uses: actions/upload-artifact@v4
+      with:
+        name: security-audit-report
+        path: audit-report.json
+        retention-days: 30
+
+  # E2E тестирование с Playwright
+  e2e-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    needs: code-quality
+    
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chromium] # Пока только Chromium для скорости
+        
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.x'
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Install Playwright browsers
+      run: npx playwright install --with-deps ${{ matrix.browser }}
+      
+    - name: Create required directories
+      run: |
+        mkdir -p data public/ui reports/sources
+        
+    - name: Setup test data
+      run: |
+        # Создаём минимальные тестовые данные если их нет
+        if [ ! -f "data/seed-index.json" ]; then
+          echo '[]' > data/seed-index.json
+        fi
+        
+        # Создаём плейсхолдер если его нет
+        if [ ! -f "public/ui/placeholder.svg" ]; then
+          echo '<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><rect width="100%" height="100%" fill="#f3f4f6"/><text x="50%" y="50%" text-anchor="middle" dy=".3em" fill="#9ca3af">IMG</text></svg>' > public/ui/placeholder.svg
+        fi
+        
+    - name: Start server in background
+      run: |
+        npm start &
+        echo $! > server.pid
+        # Ждём запуска сервера
+        timeout 30 bash -c 'until curl -f http://127.0.0.1:9201/_version; do sleep 1; done'
+      env:
+        NODE_ENV: test
+        PORT: 9201
+        
+    - name: Run E2E tests
+      run: npx playwright test --project=${{ matrix.browser }} --reporter=list,json --output-dir=test-results-${{ matrix.browser }}
+      env:
+        PLAYWRIGHT_JSON_OUTPUT_NAME: results-${{ matrix.browser }}.json
+        
+    - name: Stop server
+      if: always()
+      run: |
+        if [ -f server.pid ]; then
+          kill $(cat server.pid) || true
+          rm server.pid
+        fi
+        
+    - name: Upload test results
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: playwright-results-${{ matrix.browser }}
+        path: |
+          test-results-${{ matrix.browser }}/
+          results-${{ matrix.browser }}.json
+          playwright-report/
+        retention-days: 30
+        
+    - name: Upload trace files
+      if: failure()
+      uses: actions/upload-artifact@v4
+      with:
+        name: playwright-traces-${{ matrix.browser }}
+        path: test-results-${{ matrix.browser }}/**/*.zip
+        retention-days: 30
+        
+    - name: Upload source HTML files
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: scraped-sources-${{ matrix.browser }}
+        path: reports/sources/
+        retention-days: 7
+
+  # Smoke test с популярными MPN
+  smoke-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    needs: code-quality
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.x'
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Install Playwright browsers
+      run: npx playwright install --with-deps chromium
+      
+    - name: Create required directories
+      run: |
+        mkdir -p data public/ui reports/sources
+        echo '[]' > data/seed-index.json || true
+        echo '<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><rect width="100%" height="100%" fill="#f3f4f6"/></svg>' > public/ui/placeholder.svg || true
+        
+    - name: Start server
+      run: |
+        npm start &
+        echo $! > server.pid
+        timeout 30 bash -c 'until curl -f http://127.0.0.1:9201/_version; do sleep 1; done'
+      env:
+        NODE_ENV: test
+        PORT: 9201
+        
+    - name: Run Smoke-20 test
+      run: npx playwright test tests/e2e/smoke-20.spec.ts --reporter=list,json
+      env:
+        PLAYWRIGHT_JSON_OUTPUT_NAME: smoke-20-results.json
+        
+    - name: Stop server
+      if: always()
+      run: |
+        if [ -f server.pid ]; then
+          kill $(cat server.pid) || true
+        fi
+        
+    - name: Upload smoke test results
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: smoke-20-results
+        path: |
+          smoke-20-results.json
+          test-results/
+        retention-days: 30
+
+  # Проверка работоспособности API
+  api-health:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    needs: code-quality
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.x'
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Create required directories
+      run: |
+        mkdir -p data public/ui reports/sources
+        echo '[]' > data/seed-index.json || true
+        
+    - name: Start server
+      run: |
+        npm start &
+        echo $! > server.pid
+        timeout 30 bash -c 'until curl -f http://127.0.0.1:9201/_version; do sleep 1; done'
+      env:
+        NODE_ENV: test
+        PORT: 9201
+        
+    - name: Health check API endpoints
+      run: |
+        echo "::group::Version endpoint"
+        curl -f http://127.0.0.1:9201/_version | jq .
+        echo "::endgroup::"
+        
+        echo "::group::Search API"
+        curl -f "http://127.0.0.1:9201/api/search?q=LM317T" | jq '.count'
+        echo "::endgroup::"
+        
+        echo "::group::Product API"  
+        curl -f "http://127.0.0.1:9201/api/product?mpn=LM317T" | jq '.product.mpn'
+        echo "::endgroup::"
+        
+    - name: Stop server
+      if: always()
+      run: |
+        if [ -f server.pid ]; then
+          kill $(cat server.pid) || true
+        fi
+
+  # Финальная проверка - все тесты прошли
+  ci-gate:
+    runs-on: ubuntu-latest
+    needs: [code-quality, e2e-tests, smoke-test, api-health]
+    if: always()
+    
+    steps:
+    - name: Check all jobs status
+      run: |
+        if [[ "${{ needs.code-quality.result }}" != "success" ]]; then
+          echo "❌ Code quality check failed"
+          exit 1
+        fi
+        
+        if [[ "${{ needs.e2e-tests.result }}" != "success" ]]; then
+          echo "❌ E2E tests failed"
+          exit 1
+        fi
+        
+        if [[ "${{ needs.smoke-test.result }}" != "success" ]]; then
+          echo "❌ Smoke tests failed"  
+          exit 1
+        fi
+        
+        if [[ "${{ needs.api-health.result }}" != "success" ]]; then
+          echo "❌ API health check failed"
+          exit 1
+        fi
+        
+        echo "✅ All CI checks passed! Ready to merge."
+        
+    - name: Create CI summary
+      run: |
+        echo "## 🎯 CI Gate Results" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "| Check | Status |" >> $GITHUB_STEP_SUMMARY
+        echo "|-------|--------|" >> $GITHUB_STEP_SUMMARY
+        echo "| Code Quality | ${{ needs.code-quality.result == 'success' && '✅ Pass' || '❌ Fail' }} |" >> $GITHUB_STEP_SUMMARY
+        echo "| E2E Tests | ${{ needs.e2e-tests.result == 'success' && '✅ Pass' || '❌ Fail' }} |" >> $GITHUB_STEP_SUMMARY
+        echo "| Smoke Test | ${{ needs.smoke-test.result == 'success' && '✅ Pass' || '❌ Fail' }} |" >> $GITHUB_STEP_SUMMARY
+        echo "| API Health | ${{ needs.api-health.result == 'success' && '✅ Pass' || '❌ Fail' }} |" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "🚀 **RU Content Orchestrator** is ready for production!" >> $GITHUB_STEP_SUMMARY

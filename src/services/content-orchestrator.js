@@ -6,6 +6,42 @@ import path from 'path';
 
 // PartialCanon type removed for JS compatibility
 
+function normalizeText(value) {
+  if (!value) return '';
+  return String(value)
+    .replace(/\s+/g, ' ')
+    .replace(/\u00A0/g, ' ')
+    .trim();
+}
+
+function isPriceLike(text) {
+  const t = normalizeText(text).toLowerCase();
+  // признаки прайс-строки: много чисел/диапазоны/шт/руб/коп/процент
+  const manyNumbers = (t.match(/\d+/g) || []).length >= 6;
+  return (
+    manyNumbers ||
+    /\b(руб|р\.|коп|шт|упак|кратно|100%|предоплата)\b/.test(t) ||
+    /\d+\s*[-–]\s*\d+/.test(t)
+  );
+}
+
+function normalizeSpecs(specs) {
+  if (!specs || typeof specs !== 'object') return null;
+  const result = {};
+  for (const [rawK, rawV] of Object.entries(specs)) {
+    const k = normalizeText(rawK);
+    const v = normalizeText(rawV);
+    if (!k || !v) continue;
+    if (k.length > 50 || v.length > 80) continue;
+    if (isPriceLike(v) || isPriceLike(k)) continue;
+    // убрать повторяющиеся технические блоки
+    if (result[k]) continue;
+    result[k] = v;
+  }
+  const keys = Object.keys(result);
+  return keys.length ? result : null;
+}
+
 export async function enrichFromRuSources(mpn) {
   const acc = {};
   let inFlight = 0;
@@ -81,13 +117,14 @@ export async function enrichFromRuSources(mpn) {
       .slice(0, 6).map(href => absUrl(href, cfg.baseUrl)).filter(Boolean);
     
     // Технические характеристики
-    const specs = ph.tablePairs(cfg.selectors.specsRows);
+    const specsRaw = ph.tablePairs(cfg.selectors.specsRows);
+    const specs = normalizeSpecs(specsRaw);
 
     console.log(`✅ ${source}: найдено - title: ${!!title}, desc: ${!!desc}, img: ${!!img}, docs: ${docs.length}, specs: ${Object.keys(specs || {}).length}`);
 
     // Мержим только непустые поля
-    if (!acc.description && desc && desc.length > 16) {
-      acc.description = desc;
+    if (!acc.description && desc && normalizeText(desc).length > 16) {
+      acc.description = normalizeText(desc);
     }
     if (!acc.image && img) {
       acc.image = img;

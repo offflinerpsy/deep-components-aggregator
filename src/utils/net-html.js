@@ -27,6 +27,7 @@ export async function loadHtml(url, headers) {
     firstHtml: (sel) => { const h = $(sel).first().html(); return h && h.trim().length ? h : null; },
     firstAttr: (sel, name) => ($(sel).first().attr(name) || null),
     allHrefs:  (sel) => $(sel).map((_,a)=>$(a).attr('href')).toArray().filter(Boolean),
+    allSrcs:   (sel) => $(sel).map((_,el)=>$(el).attr('src')).toArray().filter(Boolean),
     tablePairs:(sel) => {
       const rows = $(sel); if (!rows.length) return null;
       const o = {};

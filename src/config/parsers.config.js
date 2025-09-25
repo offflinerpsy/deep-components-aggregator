@@ -10,7 +10,7 @@ export const parsersConfig = {
       // Поисковая выдача
       searchResults: '.search-item, .product-item, .catalog-item',
       searchTitle: 'h3 a, .product-name a, [data-name]',
-      searchLink: 'h3 a, .product-name a',
+      searchLink: 'a[href^="/product/"], h3 a',
       
       // Карточка продукта
       title: 'h1[itemprop="name"], h1.product-name, .product-title h1',
@@ -46,7 +46,7 @@ export const parsersConfig = {
     selectors: {
       searchResults: '.product-item, .search-result-item, .catalog-item',
       searchTitle: 'h3 a, .product-title a, .item-title a',
-      searchLink: 'h3 a, .product-title a, .item-title a',
+      searchLink: 'a[href*="/item/"] , a[href*="/product/"] , h3 a',
       
       title: 'h1, .product-name, .item-name',
       description: '.product-description, .description, .item-description',
@@ -112,7 +112,7 @@ export const parsersConfig = {
     selectors: {
       searchResults: '.product-item, .search-item, .catalog-item',
       searchTitle: 'h3 a, .product-title a, .item-title',
-      searchLink: 'h3 a, .product-title a, a[href*="/product/"]',
+      searchLink: 'a[href*="/product/"] , h3 a',
       
       title: 'h1, .product-name, .item-title',
       description: '#desc, .descr, .product-description, .description',
@@ -145,7 +145,7 @@ export const parsersConfig = {
     selectors: {
       searchResults: '.product-item, .search-item, .catalog-item',
       searchTitle: 'h3 a, .product-title, .item-name',
-      searchLink: 'h3 a, .product-link, a[href*="/item/"]',
+      searchLink: 'a[href^="/item/"], a[href^="/goods/"], h3 a',
       
       title: 'h1, .product-name, .item-title',
       description: '.product-description, .description, .item-desc',

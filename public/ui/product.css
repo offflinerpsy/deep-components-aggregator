@@ -36,7 +36,7 @@ a:hover {
     "gallery meta order"
     "desc    desc order"
     "docs    docs order"
-    "specs   specs specs";
+    "specs   specs order";
   max-width: 1200px;
   margin: 0 auto;
   padding: var(--gap);
@@ -192,11 +192,13 @@ a:hover {
 .specs table {
   width: 100%;
   border-collapse: collapse;
+  table-layout: fixed;
 }
 
 .specs td {
   padding: 8px 12px;
   border-bottom: 1px solid #f3f4f6;
+  word-break: break-word;
 }
 
 .specs td:first-child {
@@ -209,6 +211,11 @@ a:hover {
 [hidden] {
   display: none !important;
 }
+
+/* Ограничим вывод ТТХ, остальное в источник по PDF/ссылкам */
+.specs tr:nth-child(n+26) { display: none; }
+
+.desc { max-height: 240px; overflow: auto; }
 
 /* Адаптивность */
 @media (max-width: 1080px) {

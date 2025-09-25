@@ -1,20 +1,131 @@
 {
-  "$schema":"https://json-schema.org/draft/2020-12/schema",
-  "type":"object",
-  "required":["mpn","images","datasheets","technical_specs","suppliers"],
-  "properties":{
-    "mpn":{"type":"string","minLength":1},
-    "title":{"type":"string"},
-    "description":{"type":"string"},
-    "images":{"type":"array","items":{"type":"string","format":"uri"}},
-    "datasheets":{"type":"array","items":{"type":"string","format":"uri"}},
-    "package":{"type":"string"},
-    "packaging":{"type":"string"},
-    "technical_specs":{"type":"object","additionalProperties":{"type":"string"}},
-    "availability":{"type":"object","properties":{"inStock":{"type":"integer","minimum":0},"lead":{"type":"integer","minimum":0}}},
-    "pricing":{"type":"array","items":{"type":"object","required":["qty","price","currency"],"properties":{"qty":{"type":"integer"},"price":{"type":"number"},"currency":{"type":"string"},"price_rub":{"type":"number"}}}},
-    "url":{"type":"string","format":"uri"},
-    "suppliers":{"type":"array","items":{"type":"object","required":["name","region"],"properties":{"name":{"type":"string"},"url":{"type":"string","format":"uri"},"region":{"enum":["RU","EU","US","CN","ASIA"]},"availability":{"type":"object","properties":{"inStock":{"type":"integer"},"lead":{"type":"integer"}}},"pricing":{"type":"array","items":{"type":"object","properties":{"qty":{"type":"integer"},"price":{"type":"number"},"currency":{"type":"string"},"price_rub":{"type":"number"}}}}}}}
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://deep-aggregator.local/schemas/ru-canon.schema.json",
+  "title": "RU Canon Schema",
+  "description": "Схема для валидации API ответов DEEP агрегатора",
+  
+  "definitions": {
+    "searchResponse": {
+      "type": "object",
+      "required": ["ok", "source", "count", "items"],
+      "properties": {
+        "ok": { "type": "boolean", "const": true },
+        "source": { "type": "string" },
+        "count": { "type": "integer", "minimum": 0 },
+        "items": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/searchItem" }
+        },
+        "rates_cached": { "type": "boolean" },
+        "duration": { "type": "integer", "minimum": 0 }
+      },
+      "additionalProperties": false
+    },
+    
+    "searchItem": {
+      "type": "object",
+      "required": ["mpn", "price_min_rub"],
+      "properties": {
+        "mpn": { "type": "string", "minLength": 1 },
+        "title": { "type": "string" },
+        "manufacturer": { "type": "string" },
+        "description": { "type": "string" },
+        "package": { "type": "string" },
+        "packaging": { 
+          "type": "string",
+          "enum": ["Tube", "Reel", "Tape", "Cut Tape", "Tray", "Bulk", "Digi-Reel", ""]
+        },
+        "regions": {
+          "type": "array",
+          "items": { "enum": ["EU", "US", "ASIA"] }
+        },
+        "stock_total": { "type": "integer", "minimum": 0 },
+        "lead_days": { "type": "integer", "minimum": 0 },
+        "price_min": { "type": "number", "minimum": 0 },
+        "price_min_currency": { "enum": ["USD", "EUR", ""] },
+        "price_min_rub": { "type": "number", "minimum": 0 },
+        "image": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    
+    "productResponse": {
+      "type": "object",
+      "required": ["ok", "product"],
+      "properties": {
+        "ok": { "type": "boolean", "const": true },
+        "product": { "$ref": "#/definitions/product" },
+        "orchestration": { "$ref": "#/definitions/orchestrationMeta" }
+      },
+      "additionalProperties": false
+    },
+    
+    "product": {
+      "type": "object",
+      "required": ["mpn", "images", "availability", "pricing"],
+      "properties": {
+        "mpn": { "type": "string", "minLength": 1 },
+        "title": { "type": "string" },
+        "manufacturer": { "type": "string" },
+        "description": { "type": "string" },
+        "package": { "type": "string" },
+        "packaging": { "type": "string" },
+        "images": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "datasheets": {
+          "type": "array",
+          "items": { "type": "string", "format": "uri" }
+        },
+        "technical_specs": {
+          "type": "object",
+          "additionalProperties": { "type": ["string", "number"] }
+        },
+        "availability": {
+          "type": "object",
+          "required": ["inStock"],
+          "properties": {
+            "inStock": { "type": "integer", "minimum": 0 },
+            "lead": { "type": "integer", "minimum": 0 }
+          }
+        },
+        "pricing": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["qty", "price", "currency", "price_rub"],
+            "properties": {
+              "qty": { "type": "integer", "minimum": 1 },
+              "price": { "type": "number", "minimum": 0 },
+              "currency": { "enum": ["USD", "EUR"] },
+              "price_rub": { "type": "number", "exclusiveMinimum": 0 }
+            }
+          }
+        },
+        "regions": {
+          "type": "array",
+          "items": { "enum": ["EU", "US", "ASIA"] }
+        },
+        "suppliers": { "type": "array" },
+        "sources": { "type": "array" }
+      },
+      "additionalProperties": true
+    },
+    
+    "orchestrationMeta": {
+      "type": "object",
+      "properties": {
+        "duration": { "type": "integer", "minimum": 0 },
+        "ru_content": { "type": "object" },
+        "commerce": { "type": "object" },
+        "pricing": { "type": "object" }
+      }
+    }
   },
-  "additionalProperties": true
+  
+  "oneOf": [
+    { "$ref": "#/definitions/searchResponse" },
+    { "$ref": "#/definitions/productResponse" }
+  ]
 }

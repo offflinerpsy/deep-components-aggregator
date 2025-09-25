@@ -3,6 +3,7 @@ import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
 import { orchestrateSearch, orchestrateProduct } from "./src/services/orchestrator.js";
+import { enrichFromRuSources } from "./src/services/content-orchestrator.js";
 import Ajv from "ajv";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -142,18 +143,37 @@ app.get("/api/product", async (req, res) => {
     return;
   }
 
-  log('info', 'Product data assembled', { 
+  // RU-обогащение контента
+  log('info', 'Starting RU content enrichment', { mpn });
+  const ruContent = await enrichFromRuSources(mpn);
+  
+  // Мержим RU-контент с коммерческими данными
+  const enrichedProduct = {
+    ...result,
+    // RU-контент имеет приоритет, но не затираем коммерцию
+    description: ruContent.description || result.description,
+    image: ruContent.image || result.image,
+    images: ruContent.images || result.images || [],
+    datasheets: ruContent.datasheets || result.datasheets || [],
+    technical_specs: ruContent.technical_specs || result.technical_specs || {}
+  };
+
+  log('info', 'Product data assembled with RU content', { 
     mpn, 
-    hasTitle: !!result.title,
-    hasImages: result.images.length > 0,
-    hasDatasheets: result.datasheets.length > 0,
-    hasSpecs: Object.keys(result.technical_specs).length > 0,
-    sourcesCount: result.sources ? result.sources.length : 0
+    hasTitle: !!enrichedProduct.title,
+    hasImages: enrichedProduct.images.length > 0,
+    hasDatasheets: enrichedProduct.datasheets.length > 0,
+    hasSpecs: Object.keys(enrichedProduct.technical_specs).length > 0,
+    hasRuDescription: !!ruContent.description,
+    hasRuImage: !!ruContent.image,
+    hasRuDatasheets: (ruContent.datasheets?.length || 0) > 0,
+    hasRuSpecs: Object.keys(ruContent.technical_specs || {}).length > 0,
+    sourcesCount: enrichedProduct.sources ? enrichedProduct.sources.length : 0
   });
 
   res.json({ 
     ok: true, 
-    product: result
+    product: enrichedProduct
   });
 });
 

@@ -41,8 +41,8 @@ Thumbs.db
 *~
 
 # Test results
-test-results/
-playwright-report/
+# test-results/  # Temporarily allow for audit
+# playwright-report/  # Temporarily allow for audit
 coverage/
 
 # Temporary files

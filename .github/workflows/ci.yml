@@ -107,6 +107,11 @@ jobs:
       env:
         PLAYWRIGHT_JSON_OUTPUT_NAME: smoke-50-results-${{ matrix.browser }}.json
         
+    - name: Run Smoke-RU test
+      run: npx playwright test tests/e2e/smoke-ru.spec.ts --project=${{ matrix.browser }} --reporter=list,json --output-dir=test-results-${{ matrix.browser }}
+      env:
+        PLAYWRIGHT_JSON_OUTPUT_NAME: smoke-ru-results-${{ matrix.browser }}.json
+        
     - name: Stop server
       if: always()
       run: |
@@ -291,6 +296,20 @@ jobs:
           fi
         else
           echo "⚠️ Smoke-50 results not found, skipping check"
+        fi
+        
+        # Проверяем smoke-ru результаты
+        echo "🔍 Checking smoke-ru results..."
+        if [ -f "test-results-chromium/smoke-ru-results-chromium.json" ]; then
+          passed_count=$(jq -r '.stats.passed' test-results-chromium/smoke-ru-results-chromium.json 2>/dev/null || echo "0")
+          if (( passed_count < 8 )); then
+            echo "❌ Smoke-RU passed ${passed_count} < 8 required"
+            exit 1
+          else
+            echo "✅ Smoke-RU passed ${passed_count} >= 8"
+          fi
+        else
+          echo "⚠️ Smoke-RU results not found, skipping check"
         fi
         
         if [[ "${{ needs.api-health.result }}" != "success" ]]; then

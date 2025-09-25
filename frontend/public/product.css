@@ -1,0 +1,70 @@
+:root{
+  --gap:16px; --border:#e5e7eb; --bg:#fff; --text:#111827; --muted:#6b7280; --accent:#ef4444;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:#fafafa;color:var(--text);font:14px/1.5 system-ui,Segoe UI,Roboto,Arial}
+a{color:#2563eb;text-decoration:none} a:hover{text-decoration:underline}
+
+.searchbar{max-width:1180px;margin:12px auto;padding:8px 12px;display:flex;justify-content:space-between;align-items:center}
+.search-form{display:flex;gap:8px} .search-form input{padding:6px 8px;border:1px solid var(--border);border-radius:8px}
+
+.grid{
+  max-width:1180px; margin:0 auto 24px; display:grid; gap:var(--gap);
+  grid-template-columns: 380px 1fr 320px;
+  grid-template-areas:
+    "search  search  search"
+    "gallery meta    order"
+    "desc    desc    docs"
+    "specs   specs   order";
+}
+[data-area="gallery"]{grid-area:gallery}
+[data-area="meta"]   {grid-area:meta}
+[data-area="order"]  {grid-area:order}
+[data-area="desc"]   {grid-area:desc}
+[data-area="docs"]   {grid-area:docs}
+[data-area="specs"]  {grid-area:specs}
+
+.gallery,.meta,.order,.desc,.docs,.specs{
+  background:var(--bg); border:1px solid var(--border); border-radius:12px; padding:12px;
+}
+
+.order{ position:sticky; top:16px; } /* sticky заказ — по спецификации */ /* MDN */ 
+/* https://developer.mozilla.org/en-US/docs/Web/CSS/position */
+.h1{margin:0 0 8px;font-size:20px}
+.kv{display:grid;grid-template-columns:180px 1fr;gap:6px}
+.kv > dt{color:var(--muted)} .kv > dd{margin:0}
+
+.table{width:100%;border-collapse:collapse;border:1px solid var(--border)}
+.table td{border-top:1px solid var(--border);padding:6px 8px}
+.table tr td:first-child{width:52%;color:#374151}
+
+.image-main{aspect-ratio:4/3;border:1px dashed var(--border);border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:8px;overflow:hidden}
+.image-main img{width:100%;height:100%;object-fit:contain}
+.thumbs{display:grid;grid-template-columns:repeat(6,1fr);gap:6px}
+.thumbs img{height:56px;object-fit:cover;border:1px solid var(--border);border-radius:6px;cursor:pointer}
+.pdfs{display:flex;flex-wrap:wrap;gap:6px}
+.pdfs a{display:inline-block;border:1px solid var(--border);border-radius:6px;padding:6px 8px;background:#fff}
+
+.btn{background:var(--accent);color:#fff;border:0;border-radius:8px;padding:8px 12px;cursor:pointer}
+.btn:hover{filter:brightness(.95)}
+.kvrow{display:flex;justify-content:space-between;margin:6px 0}
+.regions{display:flex;gap:6px;margin:8px 0}
+.regions .badge{font-size:12px;border:1px solid var(--border);border-radius:999px;padding:2px 8px;background:#fff}
+.qtyrow{display:flex;gap:8px;align-items:center}
+.qtyrow input{width:70px;border:1px solid var(--border);border-radius:6px;padding:6px}
+
+.hidden{display:none!important}
+
+@media (max-width:1080px){
+  .grid{
+    grid-template-columns: 1fr; 
+    grid-template-areas:
+      "search"
+      "order"
+      "gallery"
+      "meta"
+      "desc"
+      "docs"
+      "specs";
+  }
+}

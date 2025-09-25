@@ -2,17 +2,101 @@
 
 ## Supported Versions
 
+Мы поддерживаем следующие версии проекта DEEP Components Aggregator:
+
 | Version | Supported          |
 | ------- | ------------------ |
-| main    | :white_check_mark: |
+| 0.1.x   | :white_check_mark: |
+| < 0.1   | :x:                |
 
 ## Reporting a Vulnerability
 
-Report vulnerabilities to security@company.tld. 
+Если вы обнаружили уязвимость в безопасности, пожалуйста:
 
-We follow coordinated disclosure practices:
-- Report issues privately first
-- Allow reasonable time for fixes
-- Public disclosure only after fix is available
+1. **НЕ создавайте публичный Issue** - это может подвергнуть риску других пользователей
+2. Отправьте email на адрес: security@deep-aggregator.local
+3. Укажите детальное описание уязвимости
+4. Приложите шаги для воспроизведения (если применимо)
+5. Укажите версию системы, где обнаружена проблема
 
-Response time: 48-72 hours for initial acknowledgment.
+## Security Measures
+
+### Implemented Security Features
+
+- ✅ **Input Validation**: Все входные данные API валидируются через AJV схемы
+- ✅ **Rate Limiting**: Троттлинг запросов к внешним источникам (600-1200мс)
+- ✅ **Proxy Support**: Поддержка HTTP/HTTPS прокси для изоляции сетевых запросов
+- ✅ **Timeout Protection**: Все сетевые запросы имеют таймауты (15 сек)
+- ✅ **Error Handling**: Структурированная обработка ошибок без утечки стека
+- ✅ **Content Security**: Валидация и санитизация HTML контента от парсеров
+- ✅ **Dependency Scanning**: Автоматический аудит зависимостей в CI
+
+### Network Security
+
+- Все внешние запросы проходят через единый сетевой слой (`src/services/net.js`)
+- Поддержка User-Agent и Accept-Language заголовков для легитимности
+- Ограничение количества одновременных запросов к одному домену
+- Экспоненциальный backoff при ошибках сети
+
+### Data Security
+
+- Минимизация хранения персональных данных
+- Кеширование курсов валют с TTL (12 часов)
+- Сохранение исходного HTML только для отладки (reports/sources/)
+- JSON Schema валидация всех API ответов
+
+### Infrastructure Security
+
+- Graceful shutdown обработка (SIGINT/SIGTERM)
+- Structured logging без чувствительных данных
+- Environment variables для конфигурации
+- Отсутствие hardcoded credentials
+
+## Security Best Practices
+
+При разработке и деплое следуйте этим рекомендациям:
+
+1. **Environment Variables**: Используйте переменные окружения для всех секретов
+2. **HTTPS Only**: В продакшене используйте только HTTPS
+3. **Regular Updates**: Регулярно обновляйте зависимости
+4. **Access Control**: Ограничивайте доступ к API через reverse proxy
+5. **Monitoring**: Настройте мониторинг на подозрительную активность
+
+## Known Security Considerations
+
+### External Dependencies
+
+- **cheerio**: Используется для парсинга HTML - потенциальный XSS вектор
+  - Митигация: Валидация и санитизация всех извлекаемых данных
+- **undici**: HTTP клиент с поддержкой прокси
+  - Митигация: Настроенные таймауты и ограничения
+
+### Rate Limiting
+
+Система реализует вежливое поведение к внешним сайтам:
+- Минимальная задержка 600мс между запросами
+- Случайный джиттер для избежания детектирования
+- Соблюдение robots.txt (планируется)
+
+### Data Validation
+
+Все данные от внешних источников проходят валидацию:
+- JSON Schema для API ответов
+- Санитизация HTML контента
+- Проверка URL на валидность
+- Ограничение размера ответов
+
+## Response Timeline
+
+- **Initial Response**: В течение 48 часов
+- **Assessment**: В течение 7 дней  
+- **Fix Development**: В зависимости от критичности (1-30 дней)
+- **Public Disclosure**: После выпуска патча
+
+## Bug Bounty
+
+В настоящее время у нас нет программы Bug Bounty, но мы благодарны за любые сообщения о проблемах безопасности.
+
+---
+
+*Последнее обновление: 25 сентября 2025*

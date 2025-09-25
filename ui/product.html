@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DEEP · Карточка товара</title>
+  <link rel="stylesheet" href="/ui/product.css">
+</head>
+<body>
+  <div class="container" data-testid="product-container">
+    <!-- Навигация -->
+    <nav class="breadcrumbs" data-testid="breadcrumbs">
+      <a href="/">DEEP</a> / <span>Карточка товара</span>
+    </nav>
+
+    <!-- Основная сетка карточки -->
+    <main class="product-grid" data-testid="product-grid">
+      
+      <!-- Галерея изображений -->
+      <section class="gallery" data-testid="gallery" data-area="gallery">
+        <div class="image-main" data-testid="image-main">
+          <img id="main-image" alt="Изображение товара" loading="lazy" decoding="async">
+        </div>
+        <div class="image-thumbs" data-testid="image-thumbs" id="image-thumbs"></div>
+        <div class="gallery-docs" data-testid="gallery-docs" id="gallery-docs"></div>
+      </section>
+
+      <!-- Метаинформация -->
+      <section class="meta" data-testid="meta" data-area="meta">
+        <h1 id="product-title" data-testid="product-title"></h1>
+        <div class="meta-list" data-testid="meta-list" id="meta-list">
+          <div class="meta-item" data-testid="meta-mpn">
+            <span class="meta-label">Номенклатурный номер:</span>
+            <span class="meta-value" id="meta-mpn-value">—</span>
+          </div>
+          <div class="meta-item" data-testid="meta-manufacturer">
+            <span class="meta-label">Производитель:</span>
+            <span class="meta-value" id="meta-manufacturer-value">—</span>
+          </div>
+          <div class="meta-item" data-testid="meta-package">
+            <span class="meta-label">Корпус:</span>
+            <span class="meta-value" id="meta-package-value">—</span>
+          </div>
+          <div class="meta-item" data-testid="meta-packaging">
+            <span class="meta-label">Упаковка:</span>
+            <span class="meta-value" id="meta-packaging-value">—</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Блок заказа (sticky) -->
+      <aside class="order" data-testid="order" data-area="order">
+        <div class="order-content">
+          <div class="order-item" data-testid="order-stock">
+            <span class="order-label">Наличие:</span>
+            <span class="order-value" id="order-stock-value">—</span>
+          </div>
+          <div class="order-item" data-testid="order-price">
+            <span class="order-label">Мин. цена:</span>
+            <span class="order-value" id="order-price-value">— ₽</span>
+          </div>
+          <div class="order-regions" data-testid="order-regions" id="order-regions"></div>
+          <div class="order-quantity">
+            <label for="quantity-input">Количество:</label>
+            <input id="quantity-input" type="number" min="1" value="1" inputmode="numeric">
+          </div>
+          <button class="order-button" data-testid="order-button">ЗАКАЗАТЬ</button>
+        </div>
+      </aside>
+
+      <!-- Описание -->
+      <section class="desc" data-testid="desc" data-area="desc">
+        <h2>Описание</h2>
+        <div class="desc-content" data-testid="desc-content" id="desc-content">
+          <p>Загрузка описания...</p>
+        </div>
+      </section>
+
+      <!-- Документация -->
+      <section class="docs" data-testid="docs" data-area="docs">
+        <h2>Документация</h2>
+        <div class="docs-list" data-testid="docs-list" id="docs-list">
+          <p>Документация не найдена</p>
+        </div>
+      </section>
+
+      <!-- Технические параметры -->
+      <section class="specs" data-testid="specs" data-area="specs">
+        <h2>Технические параметры</h2>
+        <table class="specs-table" data-testid="specs-table">
+          <tbody id="specs-tbody" data-testid="specs-tbody">
+            <tr>
+              <td colspan="2" style="text-align:center;padding:24px;color:#6b7280;">
+                Загрузка технических параметров...
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+    </main>
+  </div>
+
+  <script src="/ui/product.js"></script>
+</body>
+</html>

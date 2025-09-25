@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DEEP · Поиск компонентов</title>
+  <link rel="stylesheet" href="/ui/search.css">
+</head>
+<body>
+  <div class="container" data-testid="search-container">
+    <header class="header">
+      <h1><a href="/">DEEP</a></h1>
+      <form id="search-form" data-testid="search-form">
+        <input 
+          id="search-input" 
+          data-testid="search-input"
+          type="text" 
+          placeholder="Введите MPN (например, LM317T или 1N4148W-TP)" 
+          autocomplete="off"
+        >
+        <button type="submit" data-testid="search-button">Поиск</button>
+      </form>
+    </header>
+
+    <main class="main">
+      <div id="results-summary" data-testid="results-summary" class="summary"></div>
+      
+      <div class="table-wrapper" data-testid="table-wrapper">
+        <table data-testid="results-table">
+          <thead>
+            <tr>
+              <th data-testid="col-image">Image</th>
+              <th data-testid="col-mpn">MPN/Title</th>
+              <th data-testid="col-manufacturer">Manufacturer</th>
+              <th data-testid="col-description">Description</th>
+              <th data-testid="col-package">Package</th>
+              <th data-testid="col-packaging">Packaging</th>
+              <th data-testid="col-regions">Regions</th>
+              <th data-testid="col-stock">Stock</th>
+              <th data-testid="col-minrub">MinRUB</th>
+              <th data-testid="col-open">Open</th>
+            </tr>
+          </thead>
+          <tbody id="results-tbody" data-testid="results-tbody"></tbody>
+        </table>
+      </div>
+    </main>
+  </div>
+
+  <script src="/ui/search.js"></script>
+</body>
+</html>

@@ -16,96 +16,74 @@ function debugLog(msg, data = null) {
   }
 }
 
-// Улучшенная функция извлечения данных из HTML элемента
+// Полностью переписанная функция извлечения данных
 function parseProductElement($, element, qUpper) {
   const $el = $(element);
-  
-  // Пробуем различные селекторы для названия/MPN
-  let mpn = qUpper;
-  let title = "";
-  let manufacturer = "";
-  let description = "";
-  let packageType = "";
-  let packaging = "";
-  
-  // Извлекаем текст элемента для анализа
   const elementText = $el.text().replace(/\s+/g, " ").trim();
   
-  if (elementText.length < 50) return null; // Слишком короткий блок
+  if (elementText.length < 30) return null;
   
-  debugLog("Parsing element text", elementText.substring(0, 200));
+  debugLog("Parsing element text", elementText);
   
-  // Ищем MPN в тексте (улучшенные паттерны)
-  const mpnPatterns = [
-    /\b([A-Z0-9][A-Z0-9\-._]{2,20})\b(?=\s*(?:STMicroelectronics|Texas|Analog|Linear|National|Maxim|Infineon|NXP|ON|Microchip|Vishay|Rohm|Toshiba|Renesas))/i,
-    /\b([A-Z0-9][A-Z0-9\-._]{2,20})\b(?=\s*(?:D#|RoHS|Min Qty|Container|Tube|Reel|Cut Tape))/i,
-    new RegExp(`\\b(${qUpper}[A-Z0-9\\-._]*)\\b`, 'i'),
-    /\b([A-Z]{2,4}\d{2,6}[A-Z0-9\-._]*)\b/i
-  ];
+  // Точное извлечение MPN - ищем D# префикс или прямое совпадение
+  let mpn = "";
+  const mpnMatch = elementText.match(/D#:\s*([A-Z0-9\-_:]+)/i) || 
+                   elementText.match(new RegExp(`\\b(${qUpper}[A-Z0-9\\-_/]*)\\b`, 'i')) ||
+                   elementText.match(/\b([A-Z0-9]{3,}[\-_/][A-Z0-9\-_/]+)\b/i);
   
-  for (const pattern of mpnPatterns) {
-    const match = pattern.exec(elementText);
-    if (match && match[1] && match[1].length <= 25) {
-      mpn = match[1].toUpperCase();
-      break;
+  if (mpnMatch) {
+    mpn = mpnMatch[1].replace(/^[A-Z0-9]+:/, ''); // убираем префиксы типа "E02:"
+  } else {
+    mpn = qUpper; // fallback
+  }
+  
+  // Производитель - точные названия
+  let manufacturer = "";
+  const mfgMatch = elementText.match(/\b(STMicroelectronics|Texas Instruments|onsemi|ON Semiconductor|Analog Devices|Infineon|NXP|Microchip|Vishay|Rohm|Toshiba|Renesas|National Semiconductor|Linear Technology|Maxim Integrated)\b/i);
+  if (mfgMatch) {
+    manufacturer = mfgMatch[1];
+  }
+  
+  // Описание - извлекаем полный блок без обрезки
+  let description = "";
+  let title = "";
+  
+  // Ищем описание типа продукта
+  const descMatch = elementText.match(/((?:Standard |Linear |Switching |IC |)(?:Regulator|Voltage Regulator|Current Regulator|Power Supply|Amplifier|Transistor|Diode|Controller|Driver|Switch|Converter)[\w\s\-,\.]{0,80})/i);
+  if (descMatch) {
+    description = descMatch[1].trim();
+    title = description.length > 50 ? description.substring(0, 47) + "..." : description;
+  }
+  
+  // Если не нашли стандартное описание, берем первую значимую часть
+  if (!description) {
+    const parts = elementText.split(/\s+/);
+    const meaningfulParts = parts.filter(p => p.length > 3 && !/^(D#|RoHS|Min|Qty|Lead|time|Date|Code|Multiple|Package)$/i.test(p));
+    if (meaningfulParts.length >= 3) {
+      description = meaningfulParts.slice(0, 8).join(" ");
+      title = description.length > 50 ? description.substring(0, 47) + "..." : description;
     }
   }
   
-  // Ищем производителя
-  const mfgPatterns = [
-    /\b(STMicroelectronics|Texas Instruments?|Analog Devices|Linear Technology|National Semiconductor|Maxim Integrated|Infineon|NXP|ON Semiconductor|Microchip|Vishay|Rohm|Toshiba|Renesas|Intel|AMD|Qualcomm|Broadcom)\b/i,
-    /\b(STM|TI|ADI|LT|NS|MAX|IFX|NXP|ONS|MCHP|VSH|ROHM|TOSH|REN)\b/i
-  ];
+  // Корпус - точные паттерны
+  let packageType = "";
+  const packageMatch = elementText.match(/\b(TO-220AB|TO-220|TO-\d+[A-Z]*|SOT-\d+|SOD-\d+|SOIC-?\d+|TSSOP-?\d+|QFN-?\d+|PDIP|MSOP|QFP|BGA)\b/i) ||
+                       elementText.match(/(\d+)\-Pin\((\d+)\+Tab\)\s+([A-Z0-9\-]+)/i);
   
-  for (const pattern of mfgPatterns) {
-    const match = pattern.exec(elementText);
-    if (match && match[1]) {
-      manufacturer = match[1];
-      break;
+  if (packageMatch) {
+    if (packageMatch[3]) {
+      // Формат "3-Pin(3+Tab) TO-220AB" 
+      packageType = packageMatch[3];
+    } else {
+      packageType = packageMatch[1];
     }
   }
   
-  // Ищем описание (обычно идет после MPN)
-  const descPatterns = [
-    /(?:Regulator|Voltage|Current|Power|Amplifier|Transistor|Diode|Capacitor|Resistor|Inductor|IC|Controller|Driver|Switch|Converter|Oscillator|Timer|Counter|Memory|Processor|Microcontroller)[\w\s\-,\.]{10,80}/i,
-    /(?:Linear|Switching|Step-down|Step-up|Buck|Boost|LDO)[\w\s\-,\.]{10,60}/i
-  ];
-  
-  for (const pattern of descPatterns) {
-    const match = pattern.exec(elementText);
-    if (match && match[0]) {
-      description = match[0].trim();
-      if (description.length > 100) description = description.substring(0, 97) + "...";
-      break;
-    }
-  }
-  
-  // Ищем корпус
-  const packagePatterns = [
-    /\b(TO-\d+|SOT-\d+|SOD-\d+|SOIC-?\d+|TSSOP-?\d+|QFN-?\d+|BGA-?\d+|DIP-?\d+|SIP-?\d+|PLCC-?\d+)\b/i,
-    /\b(PDIP|SOIC|TSSOP|MSOP|QFN|QFP|BGA|CSP|WLCSP)\b/i,
-    /\b(\d+\-pin\s+\w+|\w+\-\d+)\b/i
-  ];
-  
-  for (const pattern of packagePatterns) {
-    const match = pattern.exec(elementText);
-    if (match && match[1]) {
-      packageType = match[1];
-      break;
-    }
-  }
-  
-  // Ищем упаковку
-  const packagingPatterns = [
-    /\b(Tube|Tray|Reel|Cut Tape|Bulk|Digi-Reel)\b/i
-  ];
-  
-  for (const pattern of packagingPatterns) {
-    const match = pattern.exec(elementText);
-    if (match && match[1]) {
-      packaging = match[1];
-      break;
-    }
+  // Упаковка - точные паттерны
+  let packaging = "";
+  const packagingMatch = elementText.match(/\b(Tube|Tray|Reel|Cut Tape|Tape|Bulk|Digi-Reel)\b/i);
+  if (packagingMatch) {
+    packaging = packagingMatch[1];
   }
   
   // Извлекаем регионы и сток
@@ -129,29 +107,31 @@ function parseProductElement($, element, qUpper) {
     }
   }
   
-  // Извлекаем минимальную цену
+  // Извлекаем минимальную цену - улучшенная логика
   let minPrice = 0;
-  let currency = "";
+  let currency = "USD";
   
-  const pricePatterns = [
-    /(\d+)\s*([€$])\s*([\d.]+)/g,
-    /([€$])\s*([\d.]+)/g
-  ];
-  
-  for (const pattern of pricePatterns) {
-    let match;
-    while ((match = pattern.exec(elementText))) {
-      const price = match[3] ? Number(match[3]) : Number(match[2]);
-      if (Number.isFinite(price) && (minPrice === 0 || price < minPrice)) {
-        minPrice = price;
-        currency = (match[2] === "€" || match[1] === "€") ? "EUR" : "USD";
-      }
+  // Ищем цены в разных форматах
+  const priceMatches = elementText.matchAll(/([€$])([\d.]+)/g);
+  for (const match of priceMatches) {
+    const price = Number(match[2]);
+    if (Number.isFinite(price) && price > 0 && (minPrice === 0 || price < minPrice)) {
+      minPrice = price;
+      currency = match[1] === "€" ? "EUR" : "USD";
     }
-    if (minPrice > 0) break;
+  }
+  
+  // Альтернативный формат: "1000 $0.2510"
+  if (minPrice === 0) {
+    const altPriceMatch = elementText.match(/\d+\s+([€$])([\d.]+)/);
+    if (altPriceMatch) {
+      minPrice = Number(altPriceMatch[2]);
+      currency = altPriceMatch[1] === "€" ? "EUR" : "USD";
+    }
   }
   
   // Проверяем минимальные требования для валидного результата
-  if (regions.length === 0 && stock === 0 && minPrice === 0) {
+  if (!mpn || (regions.length === 0 && stock === 0 && minPrice === 0)) {
     debugLog("Skipping element - no useful data found");
     return null;
   }

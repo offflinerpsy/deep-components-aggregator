@@ -97,14 +97,20 @@ function toSearchRow(x) {
     lead_days: lead,               // дни
     price_min: price,              // исходная цена
     price_min_currency: currency,  // USD/EUR
-    price_min_rub: priceRub,       // берем из seed или конвертируем
+    price_min_rub: 0,              // будет заполнено после конвертации
     image: nz(x.image) || "/ui/placeholder.svg"
   };
 }
 
 const app = express();
-app.use(express.json());
+app.use(express.json({ charset: 'utf-8' }));
 app.use(express.static(PUB_DIR));
+
+// Устанавливаем правильную кодировку для всех ответов
+app.use((req, res, next) => {
+  res.setHeader('Content-Type', 'application/json; charset=utf-8');
+  next();
+});
 
 app.get("/_version", (req, res) => {
   res.json({ ok:true, name:"deep-agg-alpha", version:"0.0.3", ts:Date.now() });
@@ -127,6 +133,13 @@ app.get("/api/search", async (req, res) => {
   for (const row of normalized) {
     if (row.price_min > 0 && row.price_min_currency && rates.ok) {
       row.price_min_rub = applyRub(row.price_min, row.price_min_currency, rates);
+      log('debug', 'Currency conversion applied', { 
+        mpn: row.mpn, 
+        price: row.price_min, 
+        currency: row.price_min_currency, 
+        rate: rates[row.price_min_currency], 
+        result: row.price_min_rub 
+      });
     }
   }
 
@@ -156,17 +169,77 @@ app.get("/api/search", async (req, res) => {
   });
 });
 
-app.get("/api/product", (req, res) => {
+app.get("/api/product", async (req, res) => {
   const mpn = (req.query.mpn || "").trim();
-  if (!mpn) { res.status(400).json({ ok:false, error:"mpn_required" }); return; }
-  const fname = "seed-" + mpn.replace(/[^A-Za-z0-9_.-]/g, "").toUpperCase() + ".json";
-  const got = readJSON(fname);
-  if (!got.ok) { res.status(404).json({ ok:false, error:"mpn_not_seeded", mpn }); return; }
+  if (!mpn) { 
+    res.status(400).json({ ok:false, error:"mpn_required" }); 
+    return; 
+  }
+
+  log('info', 'Product API request', { mpn });
+
+  // Получаем данные с OEMsTrade
+  const oemsData = await searchOEMsTrade(mpn.toUpperCase(), 10);
+  if (!oemsData || oemsData.length === 0) {
+    log('warn', 'No OEMsTrade data found', { mpn });
+    res.status(404).json({ ok:false, error:"product_not_found", mpn });
+    return;
+  }
+
+  // Берем первый результат как основной
+  const primaryOems = oemsData[0];
   
-  // Валидация через RU-канон схему
-  if (!ensureCanon(res, got.value)) return;
-  
-  res.json({ ok:true, product: got.value });
+  // Получаем курсы валют для конвертации
+  const rates = await getRates();
+  let priceRub = 0;
+  if (rates.ok && primaryOems.price_min > 0) {
+    priceRub = applyRub(primaryOems.price_min, primaryOems.price_min_currency, rates);
+  }
+
+  // Формируем объединенную карточку продукта (ChipDip стиль)
+  const product = {
+    mpn: primaryOems.mpn,
+    title: primaryOems.title || primaryOems.description || mpn,
+    manufacturer: primaryOems.manufacturer || "",
+    description: primaryOems.description || "",
+    package: primaryOems.package || "",
+    packaging: primaryOems.packaging || "",
+    
+    // ChipDip стиль данных
+    images: [primaryOems.image || "/ui/placeholder.svg"],
+    datasheets: [], // TODO: интеграция с ChipDip для PDF
+    technical_specs: {
+      "MPN": primaryOems.mpn,
+      "Производитель": primaryOems.manufacturer || "—",
+      "Корпус": primaryOems.package || "—",
+      "Упаковка": primaryOems.packaging || "—"
+    },
+    
+    // Данные о наличии и ценах
+    availability: {
+      inStock: primaryOems.stock_total || 0,
+      lead: primaryOems.lead_days || 0
+    },
+    pricing: [{
+      qty: 1,
+      price: primaryOems.price_min,
+      currency: primaryOems.price_min_currency,
+      price_rub: priceRub
+    }],
+    regions: primaryOems.regions || [],
+    
+    // Источники данных
+    suppliers: [{
+      name: "OEMsTrade",
+      url: `https://www.oemstrade.com/search/${encodeURIComponent(mpn)}`,
+      region: primaryOems.regions && primaryOems.regions.length > 0 ? primaryOems.regions[0] : "",
+      availability: { inStock: primaryOems.stock_total || 0 },
+      pricing: [{ qty: 1, price: primaryOems.price_min, currency: primaryOems.price_min_currency, price_rub: priceRub }]
+    }]
+  };
+
+  log('info', 'Product data assembled', { mpn, hasData: !!product.title });
+  res.json({ ok: true, product });
 });
 
 app.get("/",        (req,res)=> res.sendFile(path.join(PUB_DIR, "ui", "index.html")));

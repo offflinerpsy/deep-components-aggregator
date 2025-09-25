@@ -24,9 +24,7 @@ jobs:
         cache: 'npm'
         
     - name: Install dependencies
-      run: |
-        cd deep-components-aggregator
-        npm ci
+      run: npm ci
       
     - name: Security audit
       run: npm audit --audit-level=moderate
@@ -68,21 +66,17 @@ jobs:
         cache: 'npm'
         
     - name: Install dependencies
-      run: |
-        cd deep-components-aggregator
-        npm ci
+      run: npm ci
       
     - name: Install Playwright browsers
       run: npx playwright install --with-deps ${{ matrix.browser }}
       
     - name: Create required directories
       run: |
-        cd deep-components-aggregator
         mkdir -p data public/ui reports/sources
         
     - name: Setup test data
       run: |
-        cd deep-components-aggregator
         # Создаём минимальные тестовые данные если их нет
         if [ ! -f "data/seed-index.json" ]; then
           echo '[]' > data/seed-index.json
@@ -95,7 +89,6 @@ jobs:
         
     - name: Start server in background
       run: |
-        cd deep-components-aggregator
         npm start &
         echo $! > server.pid
         # Ждём запуска сервера
@@ -105,9 +98,7 @@ jobs:
         PORT: 9201
         
     - name: Run E2E tests
-      run: |
-        cd deep-components-aggregator
-        npx playwright test --project=${{ matrix.browser }} --reporter=list,json --output-dir=test-results-${{ matrix.browser }}
+      run: npx playwright test --project=${{ matrix.browser }} --reporter=list,json --output-dir=test-results-${{ matrix.browser }}
       env:
         PLAYWRIGHT_JSON_OUTPUT_NAME: results-${{ matrix.browser }}.json
         
@@ -125,9 +116,9 @@ jobs:
       with:
         name: playwright-results-${{ matrix.browser }}
         path: |
-          deep-components-aggregator/test-results-${{ matrix.browser }}/
-          deep-components-aggregator/results-${{ matrix.browser }}.json
-          deep-components-aggregator/playwright-report/
+          test-results-${{ matrix.browser }}/
+          results-${{ matrix.browser }}.json
+          playwright-report/
         retention-days: 30
         
     - name: Upload trace files
@@ -135,7 +126,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: playwright-traces-${{ matrix.browser }}
-        path: deep-components-aggregator/test-results-${{ matrix.browser }}/**/*.zip
+        path: test-results-${{ matrix.browser }}/**/*.zip
         retention-days: 30
         
     - name: Upload source HTML files
@@ -143,7 +134,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: scraped-sources-${{ matrix.browser }}
-        path: deep-components-aggregator/reports/sources/
+        path: reports/sources/
         retention-days: 7
 
   # Smoke test с популярными MPN
@@ -163,23 +154,19 @@ jobs:
         cache: 'npm'
         
     - name: Install dependencies
-      run: |
-        cd deep-components-aggregator
-        npm ci
+      run: npm ci
       
     - name: Install Playwright browsers
       run: npx playwright install --with-deps chromium
       
     - name: Create required directories
       run: |
-        cd deep-components-aggregator
         mkdir -p data public/ui reports/sources
         echo '[]' > data/seed-index.json || true
         echo '<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><rect width="100%" height="100%" fill="#f3f4f6"/></svg>' > public/ui/placeholder.svg || true
         
     - name: Start server
       run: |
-        cd deep-components-aggregator
         npm start &
         echo $! > server.pid
         timeout 30 bash -c 'until curl -f http://127.0.0.1:9201/_version; do sleep 1; done'
@@ -188,9 +175,7 @@ jobs:
         PORT: 9201
         
     - name: Run Smoke-20 test
-      run: |
-        cd deep-components-aggregator
-        npx playwright test tests/e2e/smoke-20.spec.ts --reporter=list,json
+      run: npx playwright test tests/e2e/smoke-20.spec.ts --reporter=list,json
       env:
         PLAYWRIGHT_JSON_OUTPUT_NAME: smoke-20-results.json
         
@@ -207,8 +192,8 @@ jobs:
       with:
         name: smoke-20-results
         path: |
-          deep-components-aggregator/smoke-20-results.json
-          deep-components-aggregator/test-results/
+          smoke-20-results.json
+          test-results/
         retention-days: 30
 
   # Проверка работоспособности API
@@ -228,19 +213,15 @@ jobs:
         cache: 'npm'
         
     - name: Install dependencies
-      run: |
-        cd deep-components-aggregator
-        npm ci
+      run: npm ci
       
     - name: Create required directories
       run: |
-        cd deep-components-aggregator
         mkdir -p data public/ui reports/sources
         echo '[]' > data/seed-index.json || true
         
     - name: Start server
       run: |
-        cd deep-components-aggregator
         npm start &
         echo $! > server.pid
         timeout 30 bash -c 'until curl -f http://127.0.0.1:9201/_version; do sleep 1; done'

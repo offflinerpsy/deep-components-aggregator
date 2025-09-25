@@ -1,4 +1,4 @@
-import { fetchWithRetry } from '../../services/net.js';
+import { fetchWithRetry, parseHtml } from '../../services/net.js';
 import { loadConfig } from '../../config/sources.ru.js';
 
 const config = loadConfig('chipdip');
@@ -18,7 +18,7 @@ export async function parseChipDip(mpn) {
   }
 
   const html = await response.text();
-  const $ = cheerio.load(html);
+  const $ = parseHtml(html);
   
   // Поиск первой карточки в результатах
   const firstCard = $('.product-item').first();
@@ -48,7 +48,7 @@ export async function parseChipDip(mpn) {
   }
 
   const productHtml = await productResponse.text();
-  const $product = cheerio.load(productHtml);
+  const $product = parseHtml(productHtml);
   
   // Извлечение данных карточки
   const productTitle = $product('h1[itemprop="name"]').text().trim() || $product('h1').text().trim();

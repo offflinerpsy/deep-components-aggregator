@@ -29,10 +29,10 @@ const hide = (el) => {
   }
   
   const j = await r.json();
-  const p = j && j.product ? j.product : null;
+  const p = j && j.ok && j.product ? j.product : null;
   
   if (!p) { 
-    console.error("bad canon/product"); 
+    console.error("bad canon/product", j); 
     return; 
   }
 
@@ -41,45 +41,57 @@ const hide = (el) => {
   const okTitle = set(qs('[data-testid="title"]'), titleText);
   if (!okTitle) hide(qs('[data-testid="meta"]'));
 
-  set(qs('#manufacturer'), p.manufacturer || '');
-  set(qs('#pkg'), p.package || '');
-  set(qs('#packaging'), p.packaging || '');
-  set(qs('#origin'), p.origin || '');
+  // Скрываем пустые поля в мета-секции
+  if (!set(qs('#manufacturer'), p.manufacturer || '')) {
+    qs('#manufacturer').parentElement.style.display = 'none';
+  }
+  if (!set(qs('#pkg'), p.meta?.package || '')) {
+    qs('#pkg').parentElement.style.display = 'none';
+  }
+  if (!set(qs('#packaging'), p.meta?.packaging || '')) {
+    qs('#packaging').parentElement.style.display = 'none';
+  }
+  if (!set(qs('#origin'), p.origin || '')) {
+    qs('#origin').parentElement.style.display = 'none';
+  }
 
   // order
-  const stock = (p.availability && p.availability.inStock) ? String(p.availability.inStock) : '';
-  const min = Array.isArray(p.pricing) && p.pricing.length ? p.pricing[0] : null;
-  const minRUB = min && min.price_rub ? `${min.price_rub.toFixed(2)} ₽` : '';
+  const stock = p.order?.stock ? String(p.order.stock) : '';
+  const minRUB = p.order?.min_price_rub ? `${p.order.min_price_rub} ₽` : '';
   
   if (!set(qs('#stock'), stock)) hide(qs('.stock'));
   if (!set(qs('#minPrice'), minRUB)) hide(qs('.price'));
   
-  const regions = Array.isArray(p.suppliers) ? [...new Set(p.suppliers.map(s => s.region).filter(Boolean))] : [];
+  const regions = Array.isArray(p.order?.regions) ? p.order.regions : [];
   qs('#regions').innerHTML = regions.map(r => `<span class="badge">${r}</span>`).join('');
 
   // desc
-  if (!set(qs('.desc'), p.description || '')) hide(qs('.desc'));
+  if (!set(qs('.desc'), p.description_html || '')) hide(qs('.desc'));
 
   // docs
-  const pdfs = Array.isArray(p.datasheets) ? p.datasheets : [];
+  const pdfs = Array.isArray(p.docs) ? p.docs : [];
   if (pdfs.length) { 
-    qs('#pdfList').innerHTML = pdfs.map((u, i) => `<li><a href="${u}" target="_blank" rel="noopener">PDF ${i + 1}</a></li>`).join(''); 
+    qs('#pdfList').innerHTML = pdfs.map((doc, i) => `<li><a href="${doc.url}" target="_blank" rel="noopener">${doc.label || `PDF ${i + 1}`}</a></li>`).join(''); 
   } else {
     hide(qs('[data-testid="docs"]'));
   }
 
   // specs
   const t = qs('#specTable');
-  if (p.technical_specs && typeof p.technical_specs === 'object' && Object.keys(p.technical_specs).length) {
-    t.innerHTML = Object.entries(p.technical_specs).map(([k, v]) => `<tr><td>${k}</td><td>${v}</td></tr>`).join('');
+  if (p.specs && Array.isArray(p.specs) && p.specs.length > 0) {
+    t.innerHTML = p.specs.map(spec => `<tr><td>${spec.name}</td><td>${spec.value}</td></tr>`).join('');
   } else {
     hide(qs('[data-testid="specs"]'));
   }
 
-  // gallery (плейсхолдер если нет картинок)
+  // gallery - используем gallery[0] или плейсхолдер
   const g = qs('[data-testid="gallery"]');
-  const imgs = Array.isArray(p.images) ? p.images : [];
-  g.innerHTML = imgs.length ? 
-    `<img src="${imgs[0]}" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:contain;">` :
-    `<div style="width:100%;height:100%;display:grid;place-items:center;color:#9ca3af;">IMAGE</div>`;
+  const gallery = Array.isArray(p.gallery) ? p.gallery : [];
+  const mainImage = gallery.length > 0 ? gallery[0].image_url : null;
+  
+  if (mainImage) {
+    g.innerHTML = `<img src="${mainImage}" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:contain;" onerror="this.onerror=null;this.src='/ui/placeholder.svg';">`;
+  } else {
+    g.innerHTML = `<img src="/ui/placeholder.svg" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:contain;">`;
+  }
 })();

@@ -8,13 +8,20 @@
     "qa": "node src/qa/runner.js",
     "qa:headless": "node src/qa/runner.js --headless",
     "qa:report": "node -e \"console.log(require('fs').readFileSync('reports/qa/summary.json','utf8'))\"",
-    "test:e2e": "PLAYWRIGHT_JSON_OUTPUT_NAME=report.json npx playwright test --reporter=line",
-    "test:e2e:trace": "npx playwright test --reporter=list --trace=on"
+    "test:e2e": "npx playwright test --reporter=line",
+    "test:e2e:trace": "npx playwright test --reporter=list --trace=on",
+    "test:smoke-50": "npx playwright test tests/e2e/smoke-50.spec.ts --reporter=line",
+    "verify:prod": "playwright test --reporter=list,html",
+    "verify:report": "playwright show-report",
+    "generate:memory": "node scripts/generate-project-memory.mjs",
+    "generate:artifacts": "bash scripts/generate-artifacts.sh"
   },
   "dependencies": {
     "ajv-formats": "3.0.1",
     "cheerio": "^1.1.2",
     "express": "^5.1.0",
+    "fast-xml-parser": "^4.3.2",
+    "iconv-lite": "^0.7.0",
     "undici": "^7.16.0"
   },
   "devDependencies": {

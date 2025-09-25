@@ -116,7 +116,7 @@ function parseProductElement($, element, qUpper) {
   for (const match of priceMatches) {
     const price = Number(match[2]);
     if (Number.isFinite(price) && price > 0 && (minPrice === 0 || price < minPrice)) {
-      minPrice = price;
+        minPrice = price;
       currency = match[1] === "€" ? "EUR" : "USD";
     }
   }

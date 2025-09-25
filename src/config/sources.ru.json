@@ -1,0 +1,54 @@
+{
+  "chipdip": {
+    "baseUrl": "https://www.chipdip.ru",
+    "searchUrl": "https://www.chipdip.ru/search?searchtext={q}",
+    "selectors": {
+      "title": "h1[itemprop='name'], h1",
+      "brandLabel": "text=Бренд",
+      "docsText": "a:contains('Datasheet'), a:contains('Документация')",
+      "specsHeader": "text=Технические параметры",
+      "descHeader": "h3:has-text('Описание'), h3:has-text('Описание') + *",
+      "imageScope": "img[src*='/product'] , img[alt*='LM'], img[alt*='Фото']"
+    }
+  },
+  "promelec": {
+    "baseUrl": "https://www.promelec.ru",
+    "searchUrl": "https://www.promelec.ru/search/?q={q}",
+    "selectors": {
+      "title": "h1",
+      "brandLabel": "text=Производитель:",
+      "packageLabel": "text=Корпус:",
+      "packagingLabel": "text=Тип упаковки:",
+      "docsTab": "a:contains('Документация'), a:contains('Datasheet')",
+      "specsHeader": "h2:has-text('Описание') ~ *, h2:has-text('Описание LM') ~ *"
+    }
+  },
+  "platan": {
+    "baseUrl": "https://www.platan.ru",
+    "searchUrl": "https://www.platan.ru/cgi-bin/qwery_i.pl?code={q}",
+    "selectors": {
+      "title": "h1, #page h1",
+      "kvPairs": "#page table, #page .card  ",
+      "docs": "a[href$='.pdf']"
+    }
+  },
+  "electronshik": {
+    "baseUrl": "https://www.electronshik.ru",
+    "searchUrl": "https://www.electronshik.ru/search?q={q}",
+    "selectors": {
+      "title": "h1",
+      "brandLabel": "a[href*='/brand'], .breadcrumbs a:last-of-type",
+      "docs": "a[href*='data.electronshik.ru'][href$='.pdf'], a[href$='.pdf']",
+      "specsHeader": "h2:has-text('Технические параметры'), h3:has-text('Технические параметры')"
+    }
+  },
+  "elitan": {
+    "baseUrl": "https://www.elitan.ru",
+    "searchUrl": "https://www.elitan.ru/search/?q={q}",
+    "selectors": {
+      "title": "h1, .product-title",
+      "docs": "a[href$='.pdf']",
+      "specs": "table, dl"
+    }
+  }
+}

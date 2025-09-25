@@ -44,7 +44,7 @@ img.thumb{width:48px;height:48px;object-fit:contain;object-position:center;borde
   <div id="sum" class="small" style="margin-top:10px"></div>
 
   <div class="tableWrap">
-    <table>
+    <table data-testid="search-table">
       <thead>
         <tr>
           <th data-testid="col-image">Image</th>
@@ -70,6 +70,15 @@ const fmtRub = n => new Intl.NumberFormat("ru-RU",{style:"currency",currency:"RU
 
 function nz(v){ return (v===null||v===undefined||v==='') ? '—' : v; }
 function badges(arr){ return (arr||[]).map(r=>`<span class="badge">${r}</span>`).join(""); }
+function stripTags(html){ 
+  const tmp = document.createElement("div"); 
+  tmp.innerHTML = html || ''; 
+  return tmp.textContent || tmp.innerText || ''; 
+}
+function clamp(text, length){ 
+  if (!text) return ''; 
+  return text.length > length ? text.substring(0, length) + '...' : text; 
+}
 
 function row(x){
   const stock = (x.stock_total && x.stock_total>0) ? x.stock_total : (x.lead_days ? (x.lead_days+"d") : "—");
@@ -83,7 +92,7 @@ function row(x){
       <div class="small clamp-1">${nz(x.title)}</div>
     </td>
     <td data-testid="cell-manufacturer" class="opt small clamp-1">${nz(x.manufacturer)}</td>
-    <td data-testid="cell-description" class="opt small clamp-2">${nz(x.description)}</td>
+    <td data-testid="cell-description" class="opt small clamp-2">${clamp(stripTags(x.description), 140)}</td>
     <td data-testid="cell-package" class="opt small clamp-1">${nz(x.package)}</td>
     <td data-testid="cell-packaging" class="opt small clamp-1">${nz(x.packaging)}</td>
     <td data-testid="cell-regions">${badges(x.regions)}</td>
@@ -115,6 +124,7 @@ if (initialQuery) {
   $("#q").value = initialQuery;
   run(initialQuery);
 } else {
-  run("");
+  // Не запускаем поиск если нет параметра q
+  $("#sum").textContent = "Введите MPN для поиска";
 }
 </script>

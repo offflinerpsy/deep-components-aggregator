@@ -101,3 +101,30 @@ test('product data mapping correctness', async ({ page }) => {
   expect(stock).toMatch(/\d+/); // должно содержать цифры
   expect(minPrice).toMatch(/₽/); // должно содержать символ рубля
 });
+
+test('product contains RU content', async ({ page }) => {
+  await page.goto('/product?mpn=LM317T');
+
+  const root = page.getByTestId('product-root');
+  await expect(root).toBeVisible();
+
+  // Проверяем что есть RU-контент
+  const title = page.getByTestId('title');
+  const titleText = await title.textContent();
+  expect(titleText).toBeTruthy();
+  expect(titleText).toMatch(/[а-яё]/i);
+
+  // Проверяем описание
+  const desc = page.getByTestId('desc');
+  const descText = await desc.textContent();
+  if (descText && descText.trim()) {
+    expect(descText).toMatch(/[а-яё]/i);
+  }
+
+  // Проверяем технические параметры
+  const specs = page.getByTestId('specs');
+  const specsText = await specs.textContent();
+  if (specsText && specsText.trim()) {
+    expect(specsText).toMatch(/[а-яё]/i);
+  }
+});

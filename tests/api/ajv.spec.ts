@@ -1,8 +1,14 @@
 import { test, expect } from '@playwright/test';
 import Ajv from 'ajv';
 import addFormats from 'ajv-formats';
-import searchRowSchema from '../../src/schemas/search-row.schema.json';
-import productCanonSchema from '../../src/schemas/product-canon.schema.json';
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const searchRowSchema = JSON.parse(fs.readFileSync(path.join(__dirname, '../../src/schemas/search-row.schema.json'), 'utf8'));
+const productCanonSchema = JSON.parse(fs.readFileSync(path.join(__dirname, '../../src/schemas/product-canon.schema.json'), 'utf8'));
 
 // Инициализация AJV
 const ajv = new Ajv({ strict: false, allErrors: true });

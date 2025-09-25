@@ -110,7 +110,11 @@ export async function enrichFromRuSources(mpn) {
     // 2) собрать поля
     const title = ph.firstText(cfg.selectors.title);
     const desc = ph.firstHtml(cfg.selectors.description);
-    const img = absUrl(ph.firstAttr(cfg.selectors.images, 'src'), cfg.baseUrl);
+    let img = absUrl(ph.firstAttr(cfg.selectors.images, 'src'), cfg.baseUrl);
+    if (!img) {
+      const candidates = (ph.allSrcs ? ph.allSrcs('img') : []).map(s => absUrl(s, cfg.baseUrl)).filter(Boolean);
+      img = candidates.find(u => /\.(png|jpe?g|webp|svg)(\?|$)/i.test(u || '')) || null;
+    }
     
     // PDF документы
     const docs = ph.allHrefs(cfg.selectors.datasheets)

@@ -5,7 +5,7 @@ const config = loadConfig('promelec');
 
 export async function parsePromelec(mpn) {
   const startTime = Date.now();
-  const url = `${config.baseUrl}/search/?q=${encodeURIComponent(mpn)}`;
+  const url = config.searchUrl.replace('{q}', encodeURIComponent(mpn));
   
   const response = await fetchWithRetry(url);
   if (!response.ok) {

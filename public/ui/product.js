@@ -29,7 +29,7 @@ const hide = (el) => {
   }
   
   const j = await r.json();
-  const p = j && j.ok ? j : null;
+  const p = j && j.ok && j.product ? j.product : null;
   
   if (!p || !p.ok) { 
     console.error("bad canon/product", j); 
@@ -41,10 +41,19 @@ const hide = (el) => {
   const okTitle = set(qs('[data-testid="title"]'), titleText);
   if (!okTitle) hide(qs('[data-testid="meta"]'));
 
-  set(qs('#manufacturer'), p.manufacturer || '');
-  set(qs('#pkg'), p.package || '');
-  set(qs('#packaging'), p.packaging || '');
-  set(qs('#origin'), p.origin || '');
+  // Скрываем пустые поля в мета-секции
+  if (!set(qs('#manufacturer'), p.manufacturer || '')) {
+    qs('#manufacturer').parentElement.style.display = 'none';
+  }
+  if (!set(qs('#pkg'), p.package || '')) {
+    qs('#pkg').parentElement.style.display = 'none';
+  }
+  if (!set(qs('#packaging'), p.packaging || '')) {
+    qs('#packaging').parentElement.style.display = 'none';
+  }
+  if (!set(qs('#origin'), p.origin || '')) {
+    qs('#origin').parentElement.style.display = 'none';
+  }
 
   // order
   const stock = p.stock_total ? String(p.stock_total) : '';

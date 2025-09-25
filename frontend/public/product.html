@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="ru">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>DEEP · Карточка товара</title>
+<link rel="stylesheet" href="/product.css" />
+<body class="page">
+
+  <!-- верхняя полоса: поиск + хлебные крошки -->
+  <header class="searchbar" data-testid="search"> 
+    <nav><a href="/">DEEP</a> / <span>Карточка товара</span></nav>
+    <form action="/" method="get" class="search-form" role="search">
+      <input name="q" placeholder="Введите MPN…" />
+      <button>Поиск</button>
+    </form>
+  </header>
+
+  <!-- СЕТКА ПО ОБЛАСТЯМ -->
+  <main class="grid" data-testid="card-grid">
+
+    <!-- ЛЕВО: галерея -->
+    <section class="gallery" data-testid="gallery" data-area="gallery">
+      <div class="image-main">
+        <img id="img-main" alt="Изображение товара" loading="lazy" decoding="async" />
+      </div>
+      <div id="thumbs" class="thumbs" aria-label="Галерея миниатюр"></div>
+      <div id="pdfs-top" class="pdfs"></div>
+    </section>
+
+    <!-- ЦЕНТР ВВЕРХУ: «вот эта вся хуйня» (META) -->
+    <section class="meta" data-testid="meta" data-area="meta">
+      <h1 id="h1" class="h1"></h1>
+      <dl class="kv" id="meta-kv"></dl> <!-- заполняется списком ключ/значение -->
+    </section>
+
+    <!-- ПРАВО: ЗАКАЗ (sticky) -->
+    <aside class="order" data-testid="order" data-area="order">
+      <div class="stack">
+        <div class="kvrow"><span class="k">Наличие</span><span id="inStock" class="v">—</span></div>
+        <div class="kvrow"><span class="k">Мин. цена</span><span id="minRub" class="v">— ₽</span></div>
+        <div class="regions" id="regions"></div>
+        <div class="qtyrow">
+          <label for="qty">Qty</label>
+          <input id="qty" type="number" min="1" step="1" value="1" />
+          <button class="btn" id="buy">ЗАКАЗАТЬ</button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- СРЕДНЯЯ ПОЛОСА: описание на 2 колонки -->
+    <section class="desc" data-testid="desc" data-area="desc">
+      <h2>Описание</h2>
+      <article id="description" class="descr"></article>
+    </section>
+
+    <!-- СРЕДНЯЯ ПРАВАЯ КОЛОНКА: «сюда пойдут все!» (PDF/ссылки) -->
+    <section class="docs" data-testid="docs" data-area="docs">
+      <h2>Документация</h2>
+      <div id="pdfs" class="pdfs"></div>
+    </section>
+
+    <!-- НИЗ: Технические параметры (на 2 колонки слева) -->
+    <section class="specs" data-testid="specs" data-area="specs">
+      <h2>Технические параметры</h2>
+      <table class="table" role="table" aria-label="Технические параметры">
+        <tbody id="specs-body"></tbody>
+      </table>
+    </section>
+
+  </main>
+
+  <script type="module" src="/product.js"></script>
+</body>
+</html>

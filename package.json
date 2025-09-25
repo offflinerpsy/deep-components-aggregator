@@ -7,16 +7,19 @@
     "start": "node server.js",
     "qa": "node src/qa/runner.js",
     "qa:headless": "node src/qa/runner.js --headless",
-    "qa:report": "node -e \"console.log(require('fs').readFileSync('reports/qa/summary.json','utf8'))\""
+    "qa:report": "node -e \"console.log(require('fs').readFileSync('reports/qa/summary.json','utf8'))\"",
+    "test:e2e": "PLAYWRIGHT_JSON_OUTPUT_NAME=report.json npx playwright test --reporter=line",
+    "test:e2e:trace": "npx playwright test --reporter=list --trace=on"
   },
   "dependencies": {
-    "ajv": "8.17.1",
     "ajv-formats": "3.0.1",
     "cheerio": "^1.1.2",
     "express": "^4.19.2",
     "undici": "^7.16.0"
   },
   "devDependencies": {
+    "@playwright/test": "^1.47.2",
+    "ajv": "^8.17.1",
     "playwright": "1.47.2"
   }
 }

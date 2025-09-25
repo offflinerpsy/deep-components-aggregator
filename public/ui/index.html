@@ -107,5 +107,14 @@ async function run(q){
 }
 
 $("#F").addEventListener("submit", e=>{ e.preventDefault(); run($("#q").value.trim()); });
-run("");
+
+// Читаем параметр q из URL при загрузке страницы
+const urlParams = new URLSearchParams(window.location.search);
+const initialQuery = urlParams.get('q') || '';
+if (initialQuery) {
+  $("#q").value = initialQuery;
+  run(initialQuery);
+} else {
+  run("");
+}
 </script>

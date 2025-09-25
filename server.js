@@ -105,9 +105,10 @@ function toSearchRow(x) {
 const app = express();
 app.use(express.json({ charset: 'utf-8' }));
 app.use(express.static(PUB_DIR));
+app.use(express.static(path.join(__dirname, "frontend", "public")));
 
-// Устанавливаем правильную кодировку для всех ответов
-app.use((req, res, next) => {
+// Устанавливаем правильную кодировку только для API ответов
+app.use('/api', (req, res, next) => {
   res.setHeader('Content-Type', 'application/json; charset=utf-8');
   next();
 });
@@ -243,7 +244,7 @@ app.get("/api/product", async (req, res) => {
 });
 
 app.get("/",        (req,res)=> res.sendFile(path.join(PUB_DIR, "ui", "index.html")));
-app.get("/product", (req,res)=> res.sendFile(path.join(PUB_DIR, "ui", "product.html")));
+app.get("/product", (req,res)=> res.sendFile(path.join(__dirname, "frontend", "public", "product.html")));
 
 // --- Graceful shutdown ---
 let server;

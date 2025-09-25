@@ -102,6 +102,11 @@ jobs:
       env:
         PLAYWRIGHT_JSON_OUTPUT_NAME: results-${{ matrix.browser }}.json
         
+    - name: Run Smoke-50 test
+      run: npx playwright test tests/e2e/smoke-50.spec.ts --project=${{ matrix.browser }} --reporter=list,json --output-dir=test-results-${{ matrix.browser }}
+      env:
+        PLAYWRIGHT_JSON_OUTPUT_NAME: smoke-50-results-${{ matrix.browser }}.json
+        
     - name: Stop server
       if: always()
       run: |
@@ -272,6 +277,20 @@ jobs:
         if [[ "${{ needs.smoke-test.result }}" != "success" ]]; then
           echo "❌ Smoke tests failed"  
           exit 1
+        fi
+        
+        # Проверяем smoke-50 результаты
+        echo "🔍 Checking smoke-50 results..."
+        if [ -f "test-results-chromium/smoke-50-results-chromium.json" ]; then
+          success_rate=$(jq -r '.stats.passed / .stats.total * 100' test-results-chromium/smoke-50-results-chromium.json 2>/dev/null || echo "0")
+          if (( $(echo "$success_rate < 80" | bc -l) )); then
+            echo "❌ Smoke-50 success rate ${success_rate}% < 80% required"
+            exit 1
+          else
+            echo "✅ Smoke-50 success rate ${success_rate}% >= 80%"
+          fi
+        else
+          echo "⚠️ Smoke-50 results not found, skipping check"
         fi
         
         if [[ "${{ needs.api-health.result }}" != "success" ]]; then

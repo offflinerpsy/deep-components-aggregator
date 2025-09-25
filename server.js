@@ -244,7 +244,7 @@ app.get("/api/product", async (req, res) => {
 });
 
 app.get("/",        (req,res)=> res.sendFile(path.join(PUB_DIR, "ui", "index.html")));
-app.get("/product", (req,res)=> res.sendFile(path.join(__dirname, "frontend", "public", "product.html")));
+app.get("/product", (req,res)=> res.sendFile(path.join(PUB_DIR, "ui", "product.html")));
 
 // --- Graceful shutdown ---
 let server;

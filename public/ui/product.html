@@ -1,155 +1,45 @@
-<!doctype html><html lang="ru"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>DEEP · Карточка</title>
-<style>
-:root{
-  --bg:#ffffff; --bg2:#f8fafc; --br:#e5e7eb; --tx:#0f172a; --tx2:#475569;
-  --ac:#f59e0b; --btn:#ef4444; /* красная кнопка в духе ChipDip "в корзину" */
-}
-*{box-sizing:border-box} html,body{height:100%}
-body{margin:0;background:var(--bg);color:var(--tx);font:14px/1.5 system-ui,Segoe UI,Roboto,Arial}
-.wrap{max-width:1240px;margin:0 auto;padding:16px}
-.h{display:flex;gap:8px;align-items:center;padding:14px 0;border-bottom:1px solid var(--br)}
-.grid{display:grid;gap:16px;
-  grid-template-areas:
-    "media"
-    "info"
-    "aside";
-}
-@media(min-width:1024px){
-  .grid{
-    grid-template-columns: minmax(260px,5fr) minmax(260px,4fr) minmax(220px,3fr);
-    grid-template-areas: "media info aside";
-  }
-}
-.media{grid-area:media}
-.info{grid-area:info}
-.aside{grid-area:aside}
-.card{background:#fff;border:1px solid var(--br);border-radius:12px;padding:12px}
-.kv td{padding:10px;border-bottom:1px solid var(--br)}
-.kv tr:last-child td{border-bottom:0}
-.badge{display:inline-block;border:1px solid #cbd5e1;border-radius:6px;padding:2px 6px;font-size:12px;margin:0 4px 4px 0;white-space:nowrap;background:#fff;color:#0f172a}
-.btn{padding:10px 14px;border:0;background:var(--btn);color:#fff;border-radius:8px;font-weight:700;cursor:pointer}
-.btn:hover{filter:brightness(0.95)}
-.btn2{padding:8px 12px;border:1px solid var(--br);background:#fff;border-radius:8px;cursor:pointer}
-.input{width:90px;padding:8px;border:1px solid var(--br);background:#fff;color:var(--tx);border-radius:8px}
-.link{color:#1d4ed8;text-decoration:none}
-.link:hover{text-decoration:underline}
-.small{color:var(--tx2);font-size:12px}
-img.main{width:100%;height:320px;object-fit:contain;object-position:center;border-radius:8px;border:1px solid var(--br);background:#fff}
-.clamp-3{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
-.k-actions{display:flex;gap:8px;flex-wrap:wrap}
-#loader{position:fixed;inset:0;background:rgba(255,255,255,.5);display:none;align-items:center;justify-content:center;z-index:50}
-.spin{width:32px;height:32px;border:3px solid #0001;border-top-color:#111;border-radius:50%;animation:s .9s linear infinite}
-@keyframes s{to{transform:rotate(360deg)}}
-</style>
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DEEP · Карточка товара</title>
+  <link rel="stylesheet" href="/ui/product.css">
+</head>
+<body>
+  <!-- product.html -->
+  <main class="product" data-testid="product-root">
+    <nav class="breadcrumbs"><a href="/">DEEP</a> / <span>Карточка товара</span></nav>
 
-<div id="loader"><div class="spin"></div></div>
+    <section class="gallery" data-testid="gallery"></section>
 
-<div class="wrap">
-  <div class="h"><a href="/" class="link" style="font-weight:700">DEEP</a><div class="small">/ Карточка товара</div></div>
-  <div class="grid">
-    <div class="card media">
-      <img id="img" class="main" src="/ui/placeholder.svg" loading="lazy" decoding="async"
-           onerror="this.onerror=null;this.src='/ui/placeholder.svg'">
-      <div id="pdfs" class="k-actions" style="margin-top:8px"></div>
-    </div>
+    <section class="meta" data-testid="meta">
+      <h1 data-testid="title"></h1>
+      <div class="meta__list">
+        <div><span>Производитель:</span> <strong id="manufacturer"></strong></div>
+        <div><span>Корпус:</span> <strong id="pkg"></strong></div>
+        <div><span>Упаковка:</span> <strong id="packaging"></strong></div>
+        <div><span>Страна:</span> <strong id="origin"></strong></div>
+      </div>
+    </section>
 
-    <div class="card info">
-      <h1 id="h1" style="margin:0;font-size:22px"></h1>
-      <div id="meta" class="small" style="margin-top:6px"></div>
-      <div id="desc" class="clamp-3" style="margin-top:10px"></div>
-      <button id="toggleDesc" class="btn2" style="margin-top:8px;display:none">Показать&nbsp;всё</button>
-
-      <h3 style="margin:14px 0 8px 0">Технические параметры</h3>
-      <table id="specs" class="kv" style="width:100%"></table>
-      <button id="toggleSpecs" class="btn2" style="margin-top:8px;display:none">Показать&nbsp;все параметры</button>
-    </div>
-
-    <aside class="card aside">
-      <div class="small">Наличие</div><div id="stock" style="font-size:22px;font-weight:700;margin-top:2px">—</div>
-      <div class="small" style="margin-top:12px">Минимальная цена</div><div id="price" style="font-size:22px;font-weight:700;margin-top:2px">—</div>
-      <div id="regions" style="margin-top:12px;display:flex;flex-wrap:wrap"></div>
-      <div style="display:flex;gap:8px;margin-top:16px"><input id="qty" class="input" type="number" min="1" value="1"><button id="orderBtn" class="btn">Заказать</button></div>
-      <div id="ok" class="small" style="color:#16a34a;margin-top:8px;display:none">Заявка отправлена</div>
+    <aside class="order" data-testid="order">
+      <div class="stock"><span>Наличие</span> <strong id="stock"></strong></div>
+      <div class="price"><span>Мин. цена</span> <strong id="minPrice"></strong></div>
+      <div class="regions" id="regions"></div>
+      <label>Qty <input id="qty" type="number" min="1" value="1" inputmode="numeric"></label>
+      <button id="buy" class="btn btn-buy">ЗАКАЗАТЬ</button>
     </aside>
-  </div>
 
-  <section id="sourcesWrap" style="margin-top:18px;display:none">
-    <h3 style="margin:0 0 8px 0">Поставщики (источники)</h3>
-    <div id="sources" class="small" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:8px"></div>
-  </section>
-</div>
+    <section class="desc" data-testid="desc"></section>
 
-<script>
-const $=s=>document.querySelector(s); const fmtRub = n=> new Intl.NumberFormat("ru-RU",{style:"currency",currency:"RUB",maximumFractionDigits:2}).format(n);
-const mpn=(new URLSearchParams(location.search)).get("mpn")?.toUpperCase()||"";
+    <section class="docs" data-testid="docs"><ul id="pdfList"></ul></section>
 
-function nz(v){ return (v===null||v===undefined||v==='') ? '—' : v; }
-function specsTable(specs,limit){
-  const entries = Object.entries(specs||{});
-  const cut = (limit && entries.length>limit) ? entries.slice(0,limit) : entries;
-  if(!entries.length) return "<tr><td class=small>—</td><td></td></tr>";
-  return cut.map(([k,v])=>`<tr><td class=small>${k}</td><td>${nz(v)}</td></tr>`).join("");
-}
-function pdfBtns(list){ return (list||[]).map((u,i)=>`<a class="btn2" href="${u}" target="_blank" rel="noopener">PDF ${i+1}</a>`).join(" "); }
-function badges(r){ return (r||[]).map(x=>`<span class="badge">${x}</span>`).join(""); }
-function srcCards(list){
-  return (list||[]).map(s=>{
-    const pr = (s.pricing&&s.pricing[0]&&s.pricing[0].price_rub>0) ? fmtRub(s.pricing[0].price_rub) : "—";
-    const stock = (s.availability&&s.availability.inStock) ? (s.availability.inStock+" шт") : (s.availability&&s.availability.lead? (s.availability.lead+"дн"):"—");
-    const link = s.url ? `<a class="link" href="${s.url}" target="_blank" rel="noopener">Перейти</a>` : "";
-    return `<div style="border:1px solid var(--br);border-radius:10px;padding:10px;display:flex;justify-content:space-between;gap:8px;background:#fff">
-      <div><div style="font-weight:700">${nz(s.name)}</div><div class="small">${nz(s.region)}</div>${link}</div>
-      <div style="text-align:right"><div>${pr}</div><div class="small">${stock}</div></div>
-    </div>`;
-  }).join("");
-}
+    <section class="specs" data-testid="specs">
+      <table id="specTable" aria-label="Технические параметры"></table>
+    </section>
+  </main>
 
-async function fetchProduct(m){
-  document.getElementById("loader").style.display="flex";
-  const r = await fetch("/api/product?mpn="+encodeURIComponent(m));
-  const j = await r.json();
-  document.getElementById("loader").style.display="none";
-  return (j && j.ok) ? j.product : null;
-}
-
-function showOrHide(id,cond){ const el=$(id); if(!el) return; el.style.display = cond ? "" : "none"; }
-
-function main(p){
-  if(!p){ location.href="/"; return; }
-  $("#h1").textContent = `${p.mpn} — ${nz(p.title)}`;
-  $("#meta").textContent = [p.manufacturer,p.package,p.packaging].filter(Boolean).join(" • ");
-  $("#img").src = (p.images&&p.images[0]) ? p.images[0] : "/ui/placeholder.svg";
-
-  // Описание (clamp + toggle)
-  const desc = nz(p.description);
-  $("#desc").textContent = desc;
-  if(desc !== "—" && desc.length > 180){ $("#toggleDesc").style.display="inline-block"; }
-  let descOpen=false; $("#toggleDesc").onclick=()=>{ descOpen=!descOpen; $("#desc").classList.toggle("clamp-3", !descOpen); $("#toggleDesc").textContent = descOpen ? "Скрыть" : "Показать всё"; };
-
-  // Спеки (ограничение на 12 строк + toggle)
-  const totalSpecs = Object.keys(p.technical_specs||{}).length;
-  $("#specs").innerHTML = specsTable(p.technical_specs, 12);
-  showOrHide("#toggleSpecs", totalSpecs>12);
-  let specsOpen=false; $("#toggleSpecs").onclick=()=>{ specsOpen=!specsOpen; $("#specs").innerHTML = specsTable(p.technical_specs, specsOpen?null:12); $("#toggleSpecs").textContent = specsOpen ? "Скрыть параметры" : "Показать все параметры"; };
-
-  // PDF/Regions
-  $("#pdfs").innerHTML = pdfBtns(p.datasheets||[]);
-  $("#regions").innerHTML = badges(p.regions||[]);
-  showOrHide("#sourcesWrap", (p.suppliers||[]).length>0);
-
-  // Цена/наличие
-  const min = (p.pricing&&p.pricing[0]&&p.pricing[0].price_rub) ? p.pricing[0].price_rub : 0;
-  $("#price").textContent = min>0 ? fmtRub(min) : "По запросу";
-  const st = (p.availability&&p.availability.inStock) ? (p.availability.inStock+" шт") : (p.availability&&p.availability.lead ? (p.availability.lead+"дн"):"—");
-  $("#stock").textContent = st;
-
-  // Источники
-  $("#sources").innerHTML = srcCards(p.suppliers||[]);
-
-  // Заказ (локальный mock)
-  $("#orderBtn").addEventListener("click", ()=>{ const n=Number(document.querySelector("#qty").value||"1"); if(n>0){ $("#ok").style.display="block"; } });
-}
-
-fetchProduct(mpn).then(main);
-</script>
+  <script src="/ui/product.js"></script>
+</body>
+</html>

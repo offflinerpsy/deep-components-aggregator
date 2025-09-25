@@ -71,6 +71,16 @@ app.get("/_version", (req, res) => {
   res.json({ ok: true, name: "deep-agg-orchestrated", version: "0.1.0", ts: Date.now() });
 });
 
+app.get("/api/health", (req, res) => {
+  res.json({ 
+    ok: true, 
+    status: "healthy", 
+    uptime: process.uptime(),
+    memory: process.memoryUsage(),
+    ts: Date.now()
+  });
+});
+
 app.get("/api/search", async (req, res) => {
   const q = (req.query.q || "").trim();
   if (!q) {

@@ -9,7 +9,8 @@
     "qa:headless": "node src/qa/runner.js --headless",
     "qa:report": "node -e \"console.log(require('fs').readFileSync('reports/qa/summary.json','utf8'))\"",
     "test:e2e": "PLAYWRIGHT_JSON_OUTPUT_NAME=report.json npx playwright test --reporter=line",
-    "test:e2e:trace": "npx playwright test --reporter=list --trace=on"
+    "test:e2e:trace": "npx playwright test --reporter=list --trace=on",
+    "verify:prod": "powershell -ExecutionPolicy Bypass -File scripts/verify-prod-win.ps1"
   },
   "dependencies": {
     "ajv-formats": "3.0.1",

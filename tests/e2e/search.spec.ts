@@ -92,7 +92,7 @@ test('search table structure and headers', async ({ page }) => {
   await expect(table).toContainText('Packaging');
   await expect(table).toContainText('Regions');
   await expect(table).toContainText('Stock');
-  await expect(table).toContainText('Min ₽');
+  await expect(table).toContainText('MinRUB');
 });
 
 test('search no console errors', async ({ page }) => {

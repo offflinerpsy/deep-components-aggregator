@@ -1,6 +1,6 @@
 // adapters/oemstrade.js — улучшенный парсер выдачи OEMsTrade с Cheerio селекторами
 import * as cheerio from "cheerio";
-import { httpGet, politeDelay } from "../lib/net.js";
+import { httpGet, politeDelay, buildLocalProxyUrl } from "../lib/net.js";
 
 const UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123 Safari/537.36";
 const HDRS = { "User-Agent": UA, "Accept-Language": "en-US,en;q=0.8" };
@@ -157,9 +157,10 @@ function parseProductElement($, element, qUpper) {
 }
 
 export async function searchOEMsTrade(qUpper, maxItems = 40){
-  const url = "https://www.oemstrade.com/search/" + encodeURIComponent(qUpper);
+  const originalUrl = "https://www.oemstrade.com/search/" + encodeURIComponent(qUpper);
+  const url = buildLocalProxyUrl(originalUrl);
   
-  debugLog(`Searching for: ${qUpper}`, { url });
+  debugLog(`Searching for: ${qUpper}`, { originalUrl, proxyUrl: url });
   
   await politeDelay(); // уважительный интервал перед запросом
   const r = await httpGet(url, HDRS, 15000);

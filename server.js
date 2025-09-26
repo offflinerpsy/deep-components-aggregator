@@ -73,7 +73,7 @@ app.use('/api', (req, res, next) => {
 });
 
 app.get("/_version", (req, res) => {
-  res.json({ ok: true, name: "deep-agg-orchestrated", version: "0.1.0", ts: Date.now() });
+  res.json({ ok: true, name: "deep-agg-alpha", version: "0.1.0", ts: Date.now() });
 });
 
 app.get("/api/health", (req, res) => {

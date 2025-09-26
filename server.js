@@ -3,8 +3,8 @@ import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
 // Используем новый TypeScript оркестратор (компилируем в JS)
-import { contentOrchestrator } from "./src/services/contentOrchestrator.js";
-import { searchTokenizer } from "./src/services/searchTokenize.js";
+import { contentOrchestrator } from "./src/services/content-orchestrator.js";
+import { searchTokenizer } from "./src/services/search-tokenizer.js";
 import Ajv from "ajv";
 
 const __filename = fileURLToPath(import.meta.url);

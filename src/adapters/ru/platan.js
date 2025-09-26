@@ -20,9 +20,9 @@ export async function parsePlatan(mpn) {
   const html = await response.text();
   const $ = parseHtml(html);
   
-  // Поиск карточки продукта
-  const productCard = $('#page .card, .product-card').first();
-  if (productCard.length === 0) {
+  // Поиск первой карточки в результатах
+  const firstCard = $('.product-item, .item, .search-result').first();
+  if (firstCard.length === 0) {
     return {
       ok: false,
       source: 'platan',
@@ -31,61 +31,89 @@ export async function parsePlatan(mpn) {
     };
   }
 
-  // Извлечение данных
-  const title = productCard.find('h1, #page h1').text().trim();
-  const description = productCard.find('p, .description').text().trim();
+  // Извлекаем ссылку на товар
+  const productLink = firstCard.find('a').attr('href');
+  if (!productLink) {
+    return {
+      ok: false,
+      source: 'platan',
+      reason: 'No product link found',
+      url
+    };
+  }
+
+  // Переходим на страницу товара
+  const fullUrl = productLink.startsWith('http') ? productLink : config.baseUrl + productLink;
+  const productResponse = await fetchWithRetry(fullUrl);
+  if (!productResponse.ok) {
+    return {
+      ok: false,
+      source: 'platan',
+      reason: `Product page HTTP ${productResponse.status}`,
+      url: fullUrl
+    };
+  }
+
+  const productHtml = await productResponse.text();
+  const $product = parseHtml(productHtml);
   
-  // Технические параметры из таблиц
-  const specs = {};
-  productCard.find('table tr, .kv-pairs tr').each((i, row) => {
-    const key = $(row).find('td').first().text().trim();
-    const value = $(row).find('td').last().text().trim();
-    if (key && value) {
-      specs[key] = value;
-    }
-  });
-  
-  // Документация
-  const datasheets = [];
-  productCard.find('a[href$=".pdf"]').each((i, link) => {
-    const href = $(link).attr('href');
-    if (href) {
-      const fullHref = href.startsWith('http') ? href : `${config.baseUrl}${href}`;
-      datasheets.push(fullHref);
-    }
-  });
+  // Извлекаем данные
+  const title = $product('h1, .product-title, .title').first().text().trim();
+  const description = $product('.description, .product-description, #tab_description').first().text().trim();
   
   // Изображения
   const images = [];
-  productCard.find('img[src*="/product"], img[alt*="LM"]').each((i, img) => {
+  $product('img').each((i, img) => {
     const src = $(img).attr('src');
-    if (src) {
-      const fullSrc = src.startsWith('http') ? src : `${config.baseUrl}${src}`;
+    if (src && (src.includes('/images/') || src.includes('/photos/'))) {
+      const fullSrc = src.startsWith('http') ? src : config.baseUrl + src;
       images.push(fullSrc);
     }
   });
-  
-  const duration = Date.now() - startTime;
-  console.log(JSON.stringify({
-    route: 'adapter',
-    dealer: 'platan',
-    ok: true,
-    ms: duration,
-    url: url
-  }));
 
+  // Технические характеристики
+  const specs = {};
+  $product('table.product-props tr, .props tr, .characteristics tr').each((i, row) => {
+    const cells = $(row).find('td, th');
+    if (cells.length >= 2) {
+      const key = $(cells[0]).text().trim();
+      const value = $(cells[1]).text().trim();
+      if (key && value && key !== value) {
+        specs[key] = value;
+      }
+    }
+  });
+
+  // PDF документы
+  const docs = [];
+  $product('a[href$=".pdf"], a[href*="datasheet"], a[href*="doc"]').each((i, link) => {
+    const href = $(link).attr('href');
+    if (href) {
+      const fullHref = href.startsWith('http') ? href : config.baseUrl + href;
+      docs.push(fullHref);
+    }
+  });
+
+  const endTime = Date.now();
+  
   return {
     ok: true,
     source: 'platan',
-    mpn: mpn,
-    mpn_clean: mpn.replace(/\/[A-Z0-9-]+$/, '').replace(/-[A-Z]$/, ''),
-    title: title,
-    description: description,
-    images: images,
-    datasheets: datasheets,
-    package: '',
-    packaging: '',
-    technical_specs: specs,
-    url: url
+    priority: config.priority || 4,
+    data: {
+      title: title || mpn,
+      description: description || '',
+      images: images.slice(0, 5), // Максимум 5 изображений
+      technical_specs: specs,
+      datasheets: docs.slice(0, 3), // Максимум 3 PDF
+      manufacturer: '', // Platan не всегда указывает производителя
+      package: '',
+      packaging: ''
+    },
+    timing: endTime - startTime,
+    url: fullUrl
   };
 }
+
+// Экспорт для совместимости
+export const parsePlatanProduct = parsePlatan;

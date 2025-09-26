@@ -95,3 +95,17 @@ export function getRates(){
     };
   });
 }
+
+// Конвертация валюты в рубли
+export async function convertToRub(currency) {
+  if (currency === 'RUB') return 1;
+  
+  const rates = await getRates();
+  if (!rates.ok) return null;
+  
+  switch (currency) {
+    case 'USD': return rates.USD;
+    case 'EUR': return rates.EUR;
+    default: return null;
+  }
+}

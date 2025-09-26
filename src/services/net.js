@@ -53,3 +53,6 @@ export async function fetchWithRetry(url, options = {}) {
 export function parseHtml(html) {
   return cheerio.load(html);
 }
+
+// Alias для обратной совместимости
+export const httpGet = fetchWithRetry;

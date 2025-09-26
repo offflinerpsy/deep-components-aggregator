@@ -174,3 +174,5 @@ export const parseCompel = async (mpn) => {
     data: extractResult.data
   };
 };
+
+// parseCompel уже экспортирован выше

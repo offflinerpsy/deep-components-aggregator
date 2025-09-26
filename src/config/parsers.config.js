@@ -213,3 +213,5 @@ export const defaultParserSettings = {
     viewport: { width: 1280, height: 720 }
   }
 };
+
+// getParserConfig уже экспортирован выше

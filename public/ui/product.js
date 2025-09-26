@@ -56,11 +56,11 @@ const hide = (el) => {
   }
 
   // order
-  const stock = p.order?.stock ? String(p.order.stock) : '';
-  const minRUB = p.order?.min_price_rub ? `${p.order.min_price_rub} ₽` : '';
+  const stock = p.order?.stock ? String(p.order.stock) : (p.order?.stock === 0 ? '0' : 'Нет данных');
+  const minRUB = p.order?.min_price_rub ? `${p.order.min_price_rub} ₽` : '—';
   
-  if (!set(qs('#stock'), stock)) hide(qs('.stock'));
-  if (!set(qs('#minPrice'), minRUB)) hide(qs('.price'));
+  set(qs('#stock'), stock);
+  set(qs('#minPrice'), minRUB);
   
   const regions = Array.isArray(p.order?.regions) ? p.order.regions : [];
   qs('#regions').innerHTML = regions.map(r => `<span class="badge">${r}</span>`).join('');
@@ -71,17 +71,17 @@ const hide = (el) => {
   // docs
   const pdfs = Array.isArray(p.docs) ? p.docs : [];
   if (pdfs.length) { 
-    qs('#pdfList').innerHTML = pdfs.map((doc, i) => `<li><a href="${doc.url}" target="_blank" rel="noopener">${doc.label || `PDF ${i + 1}`}</a></li>`).join(''); 
+    qs('#pdfList').innerHTML = pdfs.map((doc, i) => `<li><a href="${doc.doc_url || doc.url}" target="_blank" rel="noopener">${doc.title || doc.label || `PDF ${i + 1}`}</a></li>`).join(''); 
   } else {
-    hide(qs('[data-testid="docs"]'));
+    qs('#pdfList').innerHTML = '<li style="color: #666;">Документы не найдены</li>';
   }
 
   // specs
   const t = qs('#specTable');
   if (p.specs && Array.isArray(p.specs) && p.specs.length > 0) {
-    t.innerHTML = p.specs.map(spec => `<tr><td>${spec.name}</td><td>${spec.value}</td></tr>`).join('');
+    t.innerHTML = p.specs.map(spec => `<tr><td>${spec.key || spec.name}</td><td>${spec.value}</td></tr>`).join('');
   } else {
-    hide(qs('[data-testid="specs"]'));
+    t.innerHTML = '<tr><td colspan="2" style="color: #666; text-align: center;">Технические характеристики не найдены</td></tr>';
   }
 
   // gallery - используем gallery[0] или плейсхолдер

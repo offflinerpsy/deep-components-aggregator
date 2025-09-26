@@ -14,10 +14,12 @@ export default defineConfig({
     testIdAttribute: 'data-testid'
   },
   webServer: {
-    command: 'npm run start',
+    command: 'node server.js',
     url: 'http://127.0.0.1:9201',
     reuseExistingServer: true,
-    timeout: 120000
+    timeout: 120000,
+    stdout: 'pipe',
+    stderr: 'pipe'
   },
   projects: [
     {

@@ -79,7 +79,9 @@ export class ContentOrchestrator {
           regions: item.regions || [],
           stock_total: item.stock_total || 0,
           price_min_rub: priceRub || 0,
-          image: item.image || "/ui/placeholder.svg"
+          image: item.image || "/ui/placeholder.svg",
+          product_url: item.product_url || '',
+          source: 'oemstrade'
         });
       }
     }
@@ -299,7 +301,7 @@ export class ContentOrchestrator {
       manufacturer: item.manufacturer || '',
       gallery: item.images?.length > 0 
         ? item.images.map(url => ({ image_url: url }))
-        : [{ image_url: item.image || '' }],
+        : (item.image && item.image !== '/ui/placeholder.svg' ? [{ image_url: item.image }] : []),
       meta: {
         package: item.package || '',
         packaging: item.packaging || ''

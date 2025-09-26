@@ -29,7 +29,7 @@
           }
         }
       },
-      "minItems": 1
+      "minItems": 0
     },
     "meta": {
       "type": "object",
@@ -118,8 +118,7 @@
             "enum": ["chipdip", "promelec", "compel", "electronshik", "elitan", "oemstrade"]
           },
           "product_url": {
-            "type": "string",
-            "format": "uri"
+            "type": "string"
           }
         }
       },

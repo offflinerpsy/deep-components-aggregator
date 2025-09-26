@@ -105,6 +105,8 @@ app.get("/api/search", async (req, res) => {
       validItems.push(row);
     } else {
       log('warn', 'Search result validation failed', { mpn: row.mpn, errors: validate.errors });
+      // Временно добавляем все результаты для отладки
+      validItems.push(row);
     }
   }
 

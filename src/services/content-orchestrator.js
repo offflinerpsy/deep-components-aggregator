@@ -1,5 +1,5 @@
 // content-orchestrator.js - оркестратор контента из всех источников
-import { parseChipDip } from '../adapters/ru/chipdip.js';
+import { parseChipDipFast } from '../adapters/ru/chipdip-fast.js';
 import { parsePromelec } from '../adapters/ru/promelec.js';
 import { parseElectronshik } from '../adapters/ru/electronshik.js';
 import { parseElitan } from '../adapters/ru/elitan.js';
@@ -11,7 +11,7 @@ import { searchTokenizer } from './search-tokenizer.js';
 
 // Функциональные адаптеры
 const adapters = {
-  chipdip: parseChipDip,
+  chipdip: parseChipDipFast,
   promelec: parsePromelec,
   compel: parseCompel,
   electronshik: parseElectronshik,
@@ -79,7 +79,9 @@ export class ContentOrchestrator {
           regions: item.regions || [],
           stock_total: item.stock_total || 0,
           price_min_rub: priceRub || 0,
-          image: item.image || "/ui/placeholder.svg"
+          image: item.image || "/ui/placeholder.svg",
+          product_url: item.product_url || '',
+          source: 'oemstrade'
         });
       }
     }
@@ -299,7 +301,7 @@ export class ContentOrchestrator {
       manufacturer: item.manufacturer || '',
       gallery: item.images?.length > 0 
         ? item.images.map(url => ({ image_url: url }))
-        : [{ image_url: item.image || '' }],
+        : (item.image && item.image !== '/ui/placeholder.svg' ? [{ image_url: item.image }] : []),
       meta: {
         package: item.package || '',
         packaging: item.packaging || ''

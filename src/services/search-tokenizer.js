@@ -9,30 +9,92 @@ const RU_TO_EN = {
   'ъ': '', 'ы': 'y', 'ь': '', 'э': 'e', 'ю': 'yu', 'я': 'ya'
 };
 
-// Словарь синонимов RU <-> EN
+// Словарь синонимов RU <-> EN (расширенный)
 const SYNONYMS = {
-  'резистор': ['resistor', 'резистор', 'сопротивление', 'resistance'],
-  'resistor': ['резистор', 'resistor', 'сопротивление', 'resistance'],
-  'диод': ['diode', 'диод', 'выпрямитель', 'rectifier'],
+  // Резисторы
+  'резистор': ['resistor', 'резистор', 'сопротивление', 'resistance', 'сопр', 'сопротивление'],
+  'resistor': ['резистор', 'resistor', 'сопротивление', 'resistance', 'сопр'],
+  'сопротивление': ['resistance', 'сопротивление', 'резистор', 'resistor'],
+  'resistance': ['сопротивление', 'resistance', 'резистор', 'resistor'],
+  
+  // Диоды
+  'диод': ['diode', 'диод', 'выпрямитель', 'rectifier', 'выпрямительный'],
   'diode': ['диод', 'diode', 'выпрямитель', 'rectifier'],
-  'транзистор': ['transistor', 'транзистор', 'полевик', 'mosfet', 'bjt'],
+  'выпрямитель': ['rectifier', 'выпрямитель', 'диод', 'diode'],
+  'rectifier': ['выпрямитель', 'rectifier', 'диод', 'diode'],
+  
+  // Транзисторы
+  'транзистор': ['transistor', 'транзистор', 'полевик', 'mosfet', 'bjt', 'биполярный', 'полевой'],
   'transistor': ['транзистор', 'transistor', 'полевик', 'mosfet', 'bjt'],
-  'конденсатор': ['capacitor', 'конденсатор', 'емкость', 'cap'],
+  'полевик': ['mosfet', 'полевик', 'транзистор', 'transistor', 'полевой'],
+  'mosfet': ['полевик', 'mosfet', 'транзистор', 'transistor', 'полевой'],
+  'bjt': ['биполярный', 'bjt', 'транзистор', 'transistor'],
+  
+  // Конденсаторы
+  'конденсатор': ['capacitor', 'конденсатор', 'емкость', 'cap', 'кондер'],
   'capacitor': ['конденсатор', 'capacitor', 'емкость', 'cap'],
-  'микросхема': ['ic', 'микросхема', 'чип', 'chip', 'integrated', 'circuit'],
+  'емкость': ['capacitance', 'емкость', 'конденсатор', 'capacitor'],
+  
+  // Микросхемы
+  'микросхема': ['ic', 'микросхема', 'чип', 'chip', 'integrated', 'circuit', 'схема'],
   'ic': ['микросхема', 'ic', 'чип', 'chip', 'integrated', 'circuit'],
-  'операционный': ['operational', 'операционный', 'opamp', 'op-amp'],
-  'усилитель': ['amplifier', 'усилитель', 'amp', 'opamp'],
-  'стабилизатор': ['regulator', 'стабилизатор', 'ldo', 'vreg'],
+  'чип': ['chip', 'чип', 'микросхема', 'ic'],
+  'chip': ['чип', 'chip', 'микросхема', 'ic'],
+  
+  // Операционные усилители
+  'операционный': ['operational', 'операционный', 'opamp', 'op-amp', 'оп'],
+  'усилитель': ['amplifier', 'усилитель', 'amp', 'opamp', 'усил'],
+  'opamp': ['операционный', 'opamp', 'усилитель', 'amplifier'],
+  'amplifier': ['усилитель', 'amplifier', 'операционный', 'opamp'],
+  
+  // Стабилизаторы
+  'стабилизатор': ['regulator', 'стабилизатор', 'ldo', 'vreg', 'стаб'],
   'regulator': ['стабилизатор', 'regulator', 'ldo', 'vreg'],
-  'светодиод': ['led', 'светодиод', 'light', 'emitting', 'diode'],
+  'ldo': ['стабилизатор', 'ldo', 'regulator'],
+  'vreg': ['стабилизатор', 'vreg', 'regulator'],
+  
+  // Светодиоды
+  'светодиод': ['led', 'светодиод', 'light', 'emitting', 'diode', 'свет'],
   'led': ['светодиод', 'led', 'light', 'emitting', 'diode'],
-  'реле': ['relay', 'реле', 'переключатель', 'switch'],
+  'свет': ['light', 'свет', 'светодиод', 'led'],
+  
+  // Реле
+  'реле': ['relay', 'реле', 'переключатель', 'switch', 'коммутатор'],
   'relay': ['реле', 'relay', 'переключатель', 'switch'],
-  'индуктивность': ['inductor', 'индуктивность', 'катушка', 'coil', 'дроссель'],
+  'переключатель': ['switch', 'переключатель', 'реле', 'relay'],
+  'switch': ['переключатель', 'switch', 'реле', 'relay'],
+  
+  // Индуктивности
+  'индуктивность': ['inductor', 'индуктивность', 'катушка', 'coil', 'дроссель', 'индуктор'],
   'inductor': ['индуктивность', 'inductor', 'катушка', 'coil', 'дроссель'],
-  'кварц': ['crystal', 'кварц', 'резонатор', 'oscillator', 'xtal'],
-  'crystal': ['кварц', 'crystal', 'резонатор', 'oscillator', 'xtal']
+  'катушка': ['coil', 'катушка', 'индуктивность', 'inductor'],
+  'дроссель': ['choke', 'дроссель', 'индуктивность', 'inductor'],
+  
+  // Кварцы
+  'кварц': ['crystal', 'кварц', 'резонатор', 'oscillator', 'xtal', 'генератор'],
+  'crystal': ['кварц', 'crystal', 'резонатор', 'oscillator', 'xtal'],
+  'резонатор': ['oscillator', 'резонатор', 'кварц', 'crystal'],
+  'oscillator': ['резонатор', 'oscillator', 'кварц', 'crystal'],
+  
+  // Дополнительные термины
+  'микроконтроллер': ['microcontroller', 'микроконтроллер', 'mcu', 'контроллер'],
+  'microcontroller': ['микроконтроллер', 'microcontroller', 'mcu'],
+  'mcu': ['микроконтроллер', 'mcu', 'microcontroller'],
+  
+  'датчик': ['sensor', 'датчик', 'сенсор'],
+  'sensor': ['датчик', 'sensor', 'сенсор'],
+  
+  'разъем': ['connector', 'разъем', 'коннектор', 'соединитель'],
+  'connector': ['разъем', 'connector', 'коннектор'],
+  
+  'кнопка': ['button', 'кнопка', 'переключатель', 'switch'],
+  'button': ['кнопка', 'button', 'переключатель'],
+  
+  'индикатор': ['indicator', 'индикатор', 'дисплей', 'display'],
+  'indicator': ['индикатор', 'indicator', 'дисплей'],
+  
+  'фильтр': ['filter', 'фильтр', 'фильтрация'],
+  'filter': ['фильтр', 'filter', 'фильтрация']
 };
 
 // Стоп-слова
@@ -97,47 +159,57 @@ export class SearchTokenizer {
     return Array.from(expandedTokens);
   }
   
-  // Скоринг результата
+  // Скоринг результата - УНИВЕРСАЛЬНЫЙ ПОИСК ПО СОДЕРЖИМОМУ
   scoreResult(item, tokens) {
     let score = 0;
     const itemText = this.normalize(
       `${item.mpn || ''} ${item.title || ''} ${item.manufacturer || ''} ${item.description || ''}`
     );
     
+    // Проверяем каждый токен запроса
     for (const token of tokens) {
-      // Точное совпадение MPN
-      if (item.mpn.toLowerCase() === token) {
+      // 1. ТОЧНОЕ СОВПАДЕНИЕ MPN (высший приоритет)
+      if (item.mpn && item.mpn.toLowerCase() === token) {
+        score += 1000;
+      } else if (item.mpn && item.mpn.toLowerCase().includes(token)) {
+        score += 500;
+      }
+      
+      // 2. СОВПАДЕНИЕ В ЗАГОЛОВКЕ (высокий приоритет)
+      if (item.title && item.title.toLowerCase().includes(token)) {
         score += 100;
-      } else if (item.mpn.toLowerCase().includes(token)) {
+      }
+      
+      // 3. СОВПАДЕНИЕ В ПРОИЗВОДИТЕЛЕ
+      if (item.manufacturer && item.manufacturer.toLowerCase().includes(token)) {
+        score += 80;
+      }
+      
+      // 4. СОВПАДЕНИЕ В ОПИСАНИИ
+      if (item.description && item.description.toLowerCase().includes(token)) {
         score += 50;
       }
       
-      // Совпадение в заголовке
-      if (item.title.toLowerCase().includes(token)) {
-        score += 30;
-      }
-      
-      // Совпадение в производителе
-      if (item.manufacturer && item.manufacturer.toLowerCase().includes(token)) {
-        score += 20;
-      }
-      
-      // Совпадение в описании
-      if (item.description && item.description.toLowerCase().includes(token)) {
+      // 5. ОБЩЕЕ СОВПАДЕНИЕ В ТЕКСТЕ (низкий приоритет, но все равно учитываем)
+      if (itemText.includes(token)) {
         score += 10;
       }
       
-      // Общее совпадение в тексте
-      if (itemText.includes(token)) {
-        score += 5;
+      // 6. СИНОНИМЫ И ТРАНСЛИТЕРАЦИЯ
+      const synonyms = this.getSynonyms(token);
+      for (const synonym of synonyms) {
+        if (itemText.includes(synonym)) {
+          score += 30; // Бонус за синонимы
+        }
       }
     }
     
-    // Бонус за наличие данных
-    if (item.stock && item.stock > 0) score += 15;
-    if (item.min_price_rub) score += 10;
-    if (item.image_url) score += 5;
+    // БОНУСЫ ЗА КАЧЕСТВО ДАННЫХ
+    if (item.stock_total && item.stock_total > 0) score += 20;
+    if (item.price_min_rub && item.price_min_rub > 0) score += 15;
+    if (item.image && item.image !== '/ui/placeholder.svg') score += 10;
     if (item.manufacturer) score += 5;
+    if (item.description && item.description.length > 50) score += 5;
     
     return score;
   }
@@ -169,6 +241,52 @@ export class SearchTokenizer {
     return mpnPattern.test(query.replace(/\s+/g, ''));
   }
   
+  // Получение синонимов для токена
+  getSynonyms(token) {
+    const normalized = token.toLowerCase();
+    const synonyms = [];
+    
+    // Прямые синонимы из словаря
+    if (SYNONYMS[normalized]) {
+      synonyms.push(...SYNONYMS[normalized]);
+    }
+    
+    // Транслитерация для русских слов
+    if (/[а-я]/i.test(token)) {
+      const transliterated = this.transliterate(token);
+      if (transliterated !== token) {
+        synonyms.push(transliterated);
+        // Добавляем синонимы для транслитерированного слова
+        if (SYNONYMS[transliterated]) {
+          synonyms.push(...SYNONYMS[transliterated]);
+        }
+      }
+    }
+    
+    // Транслитерация для английских слов
+    if (/[a-z]/i.test(token) && !/[а-я]/i.test(token)) {
+      const reverseTransliterated = this.reverseTransliterate(token);
+      if (reverseTransliterated !== token) {
+        synonyms.push(reverseTransliterated);
+        // Добавляем синонимы для обратно транслитерированного слова
+        if (SYNONYMS[reverseTransliterated]) {
+          synonyms.push(...SYNONYMS[reverseTransliterated]);
+        }
+      }
+    }
+    
+    return [...new Set(synonyms)]; // Убираем дубликаты
+  }
+  
+  // Обратная транслитерация EN -> RU
+  reverseTransliterate(text) {
+    let result = text.toLowerCase();
+    for (const [ru, en] of Object.entries(RU_TO_EN)) {
+      result = result.replace(new RegExp(en, 'g'), ru);
+    }
+    return result;
+  }
+
   // Извлечение ключевых слов для поиска
   extractKeywords(query) {
     const normalized = this.normalize(query);
@@ -184,16 +302,12 @@ export class SearchTokenizer {
       
       keywords.push(token);
       
-      // Добавляем транслитерацию для русских слов
-      if (/[а-я]/i.test(token)) {
-        const transliterated = this.transliterate(token);
-        if (transliterated !== token) {
-          keywords.push(transliterated);
-        }
-      }
+      // Добавляем синонимы (включая транслитерацию)
+      const synonyms = this.getSynonyms(token);
+      keywords.push(...synonyms);
     }
     
-    return keywords;
+    return [...new Set(keywords)]; // Убираем дубликаты
   }
 }
 

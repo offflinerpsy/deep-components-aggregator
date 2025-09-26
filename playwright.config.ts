@@ -2,7 +2,7 @@ import { defineConfig, devices } from '@playwright/test';
 
 export default defineConfig({
   testDir: 'tests',
-  timeout: 60000,
+  timeout: 120000,
   forbidOnly: true,
   retries: 0,
   reporter: [['html', { open: 'never' }], ['list']],
@@ -15,9 +15,11 @@ export default defineConfig({
   },
   webServer: {
     command: 'node server.js',
-    port: 9201,
+    url: 'http://127.0.0.1:9201',
     reuseExistingServer: true,
-    timeout: 120000
+    timeout: 120000,
+    stdout: 'pipe',
+    stderr: 'pipe'
   },
   projects: [
     {

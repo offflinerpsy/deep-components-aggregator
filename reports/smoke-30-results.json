@@ -1,0 +1,161 @@
+{
+  "timestamp": "2025-09-26T09:19:32.300Z",
+  "total": 30,
+  "passed": 0,
+  "failed": 30,
+  "passRate": "0.0%",
+  "threshold": "80%",
+  "success": false,
+  "results": [
+    {
+      "mpn": "LM317T",
+      "passed": false,
+      "reason": "No search results found"
+    },
+    {
+      "mpn": "1N4148",
+      "passed": false,
+      "reason": "No search results found"
+    },
+    {
+      "mpn": "NE555",
+      "passed": false,
+      "reason": "No search results found"
+    },
+    {
+      "mpn": "BC547",
+      "passed": false,
+      "reason": "No search results found"
+    },
+    {
+      "mpn": "TL071",
+      "passed": false,
+      "reason": "No search results found"
+    },
+    {
+      "mpn": "CD4017",
+      "passed": false,
+      "reason": "No search results found"
+    },
+    {
+      "mpn": "74HC595",
+      "passed": false,
+      "reason": "No search results found"
+    },
+    {
+      "mpn": "IRFZ44N",
+      "passed": false,
+      "reason": "No search results found"
+    },
+    {
+      "mpn": "7805",
+      "passed": false,
+      "reason": "No search results found"
+    },
+    {
+      "mpn": "AMS1117",
+      "passed": false,
+      "reason": "No search results found"
+    },
+    {
+      "mpn": "ATmega328P",
+      "passed": false,
+      "reason": "No search results found"
+    },
+    {
+      "mpn": "ESP32",
+      "passed": false,
+      "reason": "No search results found"
+    },
+    {
+      "mpn": "STM32F103",
+      "passed": false,
+      "reason": "No search results found"
+    },
+    {
+      "mpn": "LM358",
+      "passed": false,
+      "reason": "No search results found"
+    },
+    {
+      "mpn": "TL072",
+      "passed": false,
+      "reason": "No search results found"
+    },
+    {
+      "mpn": "2N3904",
+      "passed": false,
+      "reason": "No search results found"
+    },
+    {
+      "mpn": "2N7000",
+      "passed": false,
+      "reason": "No search results found"
+    },
+    {
+      "mpn": "IRF540",
+      "passed": false,
+      "reason": "No search results found"
+    },
+    {
+      "mpn": "1N5819",
+      "passed": false,
+      "reason": "No search results found"
+    },
+    {
+      "mpn": "1N4007",
+      "passed": false,
+      "reason": "No search results found"
+    },
+    {
+      "mpn": "BAT54",
+      "passed": false,
+      "reason": "No search results found"
+    },
+    {
+      "mpn": "LM339",
+      "passed": false,
+      "reason": "No search results found"
+    },
+    {
+      "mpn": "TL084",
+      "passed": false,
+      "reason": "No search results found"
+    },
+    {
+      "mpn": "2N2222",
+      "passed": false,
+      "reason": "No search results found"
+    },
+    {
+      "mpn": "BC337",
+      "passed": false,
+      "reason": "No search results found"
+    },
+    {
+      "mpn": "1N5408",
+      "passed": false,
+      "reason": "No search results found"
+    },
+    {
+      "mpn": "1N914",
+      "passed": false,
+      "reason": "No search results found"
+    },
+    {
+      "mpn": "74HC14",
+      "passed": false,
+      "reason": "No search results found"
+    },
+    {
+      "mpn": "74HC04",
+      "passed": false,
+      "reason": "No search results found"
+    },
+    {
+      "mpn": "LM393",
+      "passed": false,
+      "reason": "No search results found"
+    }
+  ]
+}

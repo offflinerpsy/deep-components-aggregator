@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DEEP AGGREGATOR - Поиск электронных компонентов</title>
+    <link rel="stylesheet" href="global.css">
+</head>
+<body>
+    <!-- Header -->
+    <div id="header-container"></div>
+    
+    <!-- Main Content -->
+    <main class="search-container">
+        <div class="search-box">
+            <h1 class="search-title">Поиск электронных компонентов</h1>
+            <form class="search-form" id="searchForm">
+                <div class="search-input-group">
+                    <input 
+                        type="text" 
+                        class="search-input" 
+                        id="searchInput"
+                        placeholder="Введите MPN, название или описание компонента..."
+                        required
+                    >
+                    <button type="submit" class="search-button">Найти</button>
+                </div>
+            </form>
+        </div>
+    </main>
+    
+    <!-- Footer -->
+    <div id="footer-container"></div>
+    
+    <!-- Preloader -->
+    <div class="preloader" id="preloader">
+        <div class="chip-loader"></div>
+    </div>
+
+    <script>
+        // Загружаем header и footer
+        async function loadLayout() {
+            try {
+                const headerResponse = await fetch('layout/header.html');
+                const headerHtml = await headerResponse.text();
+                document.getElementById('header-container').innerHTML = headerHtml;
+                
+                const footerResponse = await fetch('layout/footer.html');
+                const footerHtml = await footerResponse.text();
+                document.getElementById('footer-container').innerHTML = footerHtml;
+            } catch (error) {
+                console.error('Ошибка загрузки layout:', error);
+            }
+        }
+        
+        // Обработка формы поиска
+        document.getElementById('searchForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const query = document.getElementById('searchInput').value.trim();
+            if (query) {
+                window.location.href = `search.html?q=${encodeURIComponent(query)}`;
+            }
+        });
+        
+        // Загружаем layout при загрузке страницы
+        loadLayout();
+    </script>
+</body>
+</html>

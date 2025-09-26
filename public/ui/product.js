@@ -11,6 +11,17 @@ const hide = (el) => {
   if (el) el.hidden = true; 
 };
 
+// Показываем/скрываем прелоадер
+function showPreloader() {
+  const preloader = document.getElementById('preloader');
+  if (preloader) preloader.classList.add('show');
+}
+
+function hidePreloader() {
+  const preloader = document.getElementById('preloader');
+  if (preloader) preloader.classList.remove('show');
+}
+
 (async function main() {
   const url = new URL(location.href);
   const mpn = url.searchParams.get('mpn');
@@ -19,12 +30,15 @@ const hide = (el) => {
     return; 
   }
 
+  showPreloader();
+  
   const r = await fetch(`/api/product?mpn=${encodeURIComponent(mpn)}`, {
     headers: {'Accept': 'application/json'}
   });
   
   if (!r.ok) { 
     console.error("api error", r.status); 
+    hidePreloader();
     return; 
   }
   
@@ -33,6 +47,7 @@ const hide = (el) => {
   
   if (!p) { 
     console.error("bad canon/product", j); 
+    hidePreloader();
     return; 
   }
 
@@ -94,4 +109,6 @@ const hide = (el) => {
   } else {
     g.innerHTML = `<img src="/ui/placeholder.svg" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:contain;">`;
   }
+  
+  hidePreloader();
 })();

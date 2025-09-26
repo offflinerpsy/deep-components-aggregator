@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { fetchChipDipPageHtml } from '../../services/fetcher.js';
 import { chipdipHtmlToCanon } from '../../adapters/chipdip/html-to-canon.js';
+import { cacheService } from '../../../backend/src/services/cache.js';
 
 const productRouter = Router();
 
@@ -23,6 +24,23 @@ productRouter.get('/:mpn', async (req, res) => {
   console.log(`🚀 Live ChipDip parsing started for MPN: ${mpn}`);
 
   try {
+    // Шаг 0: Проверяем кэш
+    const cacheKey = `product:${mpn}`;
+    const cachedData = cacheService.get(cacheKey);
+    
+    if (cachedData) {
+      console.log(`⚡ Cache hit for ${mpn}, returning cached data`);
+      return res.status(200).json({
+        success: true,
+        product: cachedData.product,
+        meta: {
+          ...cachedData.meta,
+          mode: 'cached',
+          timestamp: new Date().toISOString()
+        }
+      });
+    }
+
     // Шаг 1: Загружаем "живой" HTML с ChipDip
     console.log(`📡 Fetching live HTML for ${mpn}...`);
     const fetchResult = await fetchChipDipPageHtml(mpn);
@@ -53,11 +71,11 @@ productRouter.get('/:mpn', async (req, res) => {
       });
     }
 
-    // Шаг 3: Возвращаем успешный результат
+    // Шаг 3: Сохраняем в кэш и возвращаем результат
     const processingTime = Date.now() - startTime;
     console.log(`🎉 Live parsing completed for ${mpn} in ${processingTime}ms`);
 
-    return res.status(200).json({
+    const responseData = {
       success: true,
       product: parseResult.doc,
       meta: {
@@ -67,7 +85,13 @@ productRouter.get('/:mpn', async (req, res) => {
         mode: 'live',
         timestamp: new Date().toISOString()
       }
-    });
+    };
+
+    // Сохраняем в кэш на 1 час (3600 секунд)
+    cacheService.set(cacheKey, responseData, 3600);
+    console.log(`💾 Cached data for ${mpn} (TTL: 1 hour)`);
+
+    return res.status(200).json(responseData);
 
   } catch (error) {
     const processingTime = Date.now() - startTime;

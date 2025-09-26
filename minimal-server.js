@@ -141,6 +141,57 @@ const server = createServer((req, res) => {
     return;
   }
   
+  // Статические файлы
+  if (url.pathname === '/global.css' && req.method === 'GET') {
+    const cssPath = join(__dirname, 'frontend', 'public', 'global.css');
+    if (existsSync(cssPath)) {
+      res.setHeader('Content-Type', 'text/css');
+      res.writeHead(200);
+      res.end(readFileSync(cssPath, 'utf8'));
+      return;
+    }
+  }
+  
+  if (url.pathname === '/layout/header.html' && req.method === 'GET') {
+    const headerPath = join(__dirname, 'frontend', 'public', 'layout', 'header.html');
+    if (existsSync(headerPath)) {
+      res.setHeader('Content-Type', 'text/html');
+      res.writeHead(200);
+      res.end(readFileSync(headerPath, 'utf8'));
+      return;
+    }
+  }
+  
+  if (url.pathname === '/layout/footer.html' && req.method === 'GET') {
+    const footerPath = join(__dirname, 'frontend', 'public', 'layout', 'footer.html');
+    if (existsSync(footerPath)) {
+      res.setHeader('Content-Type', 'text/html');
+      res.writeHead(200);
+      res.end(readFileSync(footerPath, 'utf8'));
+      return;
+    }
+  }
+  
+  if (url.pathname === '/search.html' && req.method === 'GET') {
+    const searchPath = join(__dirname, 'frontend', 'public', 'search.html');
+    if (existsSync(searchPath)) {
+      res.setHeader('Content-Type', 'text/html');
+      res.writeHead(200);
+      res.end(readFileSync(searchPath, 'utf8'));
+      return;
+    }
+  }
+  
+  if (url.pathname === '/search.js' && req.method === 'GET') {
+    const searchJsPath = join(__dirname, 'frontend', 'public', 'search.js');
+    if (existsSync(searchJsPath)) {
+      res.setHeader('Content-Type', 'application/javascript');
+      res.writeHead(200);
+      res.end(readFileSync(searchJsPath, 'utf8'));
+      return;
+    }
+  }
+
   // Главная страница
   if (url.pathname === '/' && req.method === 'GET') {
     const indexPath = join(__dirname, 'frontend', 'public', 'index.html');

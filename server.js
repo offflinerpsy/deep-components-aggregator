@@ -7,6 +7,7 @@ import { contentOrchestrator } from "./src/services/content-orchestrator.js";
 import { searchTokenizer } from "./src/services/search-tokenizer.js";
 import productTestRouter from "./src/api/routes/product-test.js";
 import productRouter from "./src/api/routes/product.js";
+import searchRouter from "./backend/src/api/routes/search.js";
 import Ajv from "ajv";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -159,6 +160,9 @@ app.use("/api/product-test", productTestRouter);
 
 // Основной роут для live-парсера ChipDip
 app.use("/api/product", productRouter);
+
+// Роут для поиска
+app.use("/api/search", searchRouter);
 
 app.get("/", (req, res) => res.sendFile(path.join(PUB_DIR, "ui", "index.html")));
 app.get("/product", (req, res) => res.sendFile(path.join(PUB_DIR, "ui", "product.html")));

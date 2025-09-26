@@ -1,0 +1,212 @@
+:root {
+  --bg-main: #111827; /* Темно-синий */
+  --bg-surface: #1F2937; /* Чуть светлее */
+  --border-color: #374151;
+  --text-main: #F9FAFB; /* Почти белый */
+  --text-muted: #9CA3AF; /* Серый */
+  --accent-color: #22d3ee; /* Яркий циан */
+}
+
+body {
+  background-color: var(--bg-main);
+  color: var(--text-main);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  margin: 0;
+  padding: 1rem;
+}
+
+header, footer {
+  max-width: 1200px; 
+  margin: 0 auto; 
+  padding: 1rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+footer { 
+  border-top: 1px solid var(--border-color); 
+  border-bottom: none; 
+  text-align: center; 
+  color: var(--text-muted); 
+  font-size: 0.9rem; 
+  margin-top: 2rem; 
+}
+
+header nav { 
+  display: flex; 
+  gap: 1.5rem; 
+}
+
+header nav a { 
+  color: var(--text-muted); 
+  text-decoration: none; 
+  transition: color 0.2s; 
+}
+
+header nav a:hover { 
+  color: var(--accent-color); 
+}
+
+main { 
+  max-width: 1200px; 
+  margin: 2rem auto; 
+}
+
+a { 
+  color: var(--accent-color); 
+}
+
+/* Прелоадер стили */
+.preloader {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(17, 24, 39, 0.9);
+  z-index: 9999;
+  justify-content: center;
+  align-items: center;
+}
+
+.preloader.show {
+  display: flex;
+}
+
+.chip-loader {
+  width: 60px;
+  height: 60px;
+  position: relative;
+}
+
+.chip-loader::before,
+.chip-loader::after {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background: var(--accent-color);
+  border-radius: 2px;
+  animation: chip-bounce 1.4s ease-in-out infinite both;
+}
+
+.chip-loader::before {
+  left: 0;
+  animation-delay: -0.32s;
+}
+
+.chip-loader::after {
+  left: 30px;
+  animation-delay: -0.16s;
+}
+
+@keyframes chip-bounce {
+  0%, 80%, 100% {
+    transform: scale(0);
+  }
+  40% {
+    transform: scale(1);
+  }
+}
+
+/* Поиск стили */
+.search-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 60vh;
+}
+
+.search-box {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 2rem;
+  width: 100%;
+  max-width: 600px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.search-title {
+  text-align: center;
+  margin-bottom: 2rem;
+  color: var(--text-main);
+  font-size: 2rem;
+  font-weight: 600;
+}
+
+.search-input-group {
+  position: relative;
+  margin-bottom: 1rem;
+}
+
+.search-input {
+  width: 100%;
+  padding: 1rem 1.5rem;
+  background: var(--bg-main);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  color: var(--text-main);
+  font-size: 1rem;
+  transition: border-color 0.2s;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: var(--accent-color);
+}
+
+.search-button {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: var(--accent-color);
+  border: none;
+  border-radius: 4px;
+  padding: 0.5rem 1rem;
+  color: var(--bg-main);
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.2s;
+}
+
+.search-button:hover {
+  background: #06b6d4;
+}
+
+/* Таблица результатов */
+.results-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--bg-surface);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.results-table th,
+.results-table td {
+  padding: 1rem;
+  text-align: left;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.results-table th {
+  background: var(--bg-main);
+  color: var(--text-main);
+  font-weight: 600;
+}
+
+.results-table tr:hover {
+  background: rgba(34, 211, 238, 0.05);
+}
+
+.results-table a {
+  color: var(--accent-color);
+  text-decoration: none;
+}
+
+.results-table a:hover {
+  text-decoration: underline;
+}

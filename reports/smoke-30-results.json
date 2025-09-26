@@ -1,161 +1,150 @@
 {
-  "timestamp": "2025-09-26T09:19:32.300Z",
+  "timestamp": "2025-09-26T10:26:28.135Z",
   "total": 30,
-  "passed": 0,
-  "failed": 30,
-  "passRate": "0.0%",
+  "passed": 11,
+  "failed": 19,
+  "passRate": "36.7%",
   "threshold": "80%",
   "success": false,
   "results": [
     {
       "mpn": "LM317T",
       "passed": false,
-      "reason": "No search results found"
+      "reason": "\u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByTestId('title')\nExpected: visible\nReceived: hidden\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByTestId('title')\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n"
     },
     {
       "mpn": "1N4148",
       "passed": false,
-      "reason": "No search results found"
+      "reason": "\u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByTestId('title')\nExpected: visible\nReceived: hidden\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByTestId('title')\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n"
     },
     {
       "mpn": "NE555",
       "passed": false,
-      "reason": "No search results found"
+      "reason": "\u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByTestId('title')\nExpected: visible\nReceived: hidden\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByTestId('title')\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n"
     },
     {
       "mpn": "BC547",
       "passed": false,
-      "reason": "No search results found"
+      "reason": "\u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByTestId('title')\nExpected: visible\nReceived: hidden\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByTestId('title')\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n"
     },
     {
       "mpn": "TL071",
       "passed": false,
-      "reason": "No search results found"
+      "reason": "\u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByTestId('title')\nExpected: visible\nReceived: hidden\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByTestId('title')\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n"
     },
     {
       "mpn": "CD4017",
       "passed": false,
-      "reason": "No search results found"
+      "reason": "\u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByTestId('title')\nExpected: visible\nReceived: hidden\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByTestId('title')\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n"
     },
     {
       "mpn": "74HC595",
-      "passed": false,
-      "reason": "No search results found"
+      "passed": true
     },
     {
       "mpn": "IRFZ44N",
-      "passed": false,
-      "reason": "No search results found"
+      "passed": true
     },
     {
       "mpn": "7805",
-      "passed": false,
-      "reason": "No search results found"
+      "passed": true
     },
     {
       "mpn": "AMS1117",
-      "passed": false,
-      "reason": "No search results found"
+      "passed": true
     },
     {
       "mpn": "ATmega328P",
       "passed": false,
-      "reason": "No search results found"
+      "reason": "\u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByTestId('title')\nExpected: visible\nReceived: hidden\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByTestId('title')\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n"
     },
     {
       "mpn": "ESP32",
       "passed": false,
-      "reason": "No search results found"
+      "reason": "\u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByTestId('title')\nExpected: visible\nReceived: hidden\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByTestId('title')\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n"
     },
     {
       "mpn": "STM32F103",
-      "passed": false,
-      "reason": "No search results found"
+      "passed": true
     },
     {
       "mpn": "LM358",
       "passed": false,
-      "reason": "No search results found"
+      "reason": "\u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByTestId('title')\nExpected: visible\nReceived: hidden\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByTestId('title')\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n"
     },
     {
       "mpn": "TL072",
       "passed": false,
-      "reason": "No search results found"
+      "reason": "\u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByTestId('title')\nExpected: visible\nReceived: hidden\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByTestId('title')\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n"
     },
     {
       "mpn": "2N3904",
-      "passed": false,
-      "reason": "No search results found"
+      "passed": true
     },
     {
       "mpn": "2N7000",
       "passed": false,
-      "reason": "No search results found"
+      "reason": "\u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByTestId('title')\nExpected: visible\nReceived: hidden\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByTestId('title')\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n"
     },
     {
       "mpn": "IRF540",
       "passed": false,
-      "reason": "No search results found"
+      "reason": "\u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByTestId('title')\nExpected: visible\nReceived: hidden\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByTestId('title')\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n"
     },
     {
       "mpn": "1N5819",
       "passed": false,
-      "reason": "No search results found"
+      "reason": "\u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByTestId('title')\nExpected: visible\nReceived: hidden\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByTestId('title')\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n"
     },
     {
       "mpn": "1N4007",
-      "passed": false,
-      "reason": "No search results found"
+      "passed": true
     },
     {
       "mpn": "BAT54",
       "passed": false,
-      "reason": "No search results found"
+      "reason": "\u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByTestId('title')\nExpected: visible\nReceived: hidden\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByTestId('title')\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n"
     },
     {
       "mpn": "LM339",
       "passed": false,
-      "reason": "No search results found"
+      "reason": "\u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByTestId('title')\nExpected: visible\nReceived: hidden\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByTestId('title')\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n"
     },
     {
       "mpn": "TL084",
-      "passed": false,
-      "reason": "No search results found"
+      "passed": true
     },
     {
       "mpn": "2N2222",
       "passed": false,
-      "reason": "No search results found"
+      "reason": "\u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByTestId('title')\nExpected: visible\nReceived: hidden\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByTestId('title')\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n"
     },
     {
       "mpn": "BC337",
-      "passed": false,
-      "reason": "No search results found"
+      "passed": true
     },
     {
       "mpn": "1N5408",
       "passed": false,
-      "reason": "No search results found"
+      "reason": "\u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByTestId('title')\nExpected: visible\nReceived: hidden\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByTestId('title')\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n"
     },
     {
       "mpn": "1N914",
       "passed": false,
-      "reason": "No search results found"
+      "reason": "\u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByTestId('title')\nExpected: visible\nReceived: hidden\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByTestId('title')\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n"
     },
     {
       "mpn": "74HC14",
-      "passed": false,
-      "reason": "No search results found"
+      "passed": true
     },
     {
       "mpn": "74HC04",
       "passed": false,
-      "reason": "No search results found"
+      "reason": "\u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByTestId('title')\nExpected: visible\nReceived: hidden\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByTestId('title')\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n\u001b[2m  -   locator resolved to <h1 data-testid=\"title\"></h1>\u001b[22m\n\u001b[2m  -   unexpected value \"hidden\"\u001b[22m\n"
     },
     {
       "mpn": "LM393",
-      "passed": false,
-      "reason": "No search results found"
+      "passed": true
     }
   ]
 }

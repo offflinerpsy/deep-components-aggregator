@@ -5,6 +5,7 @@ import { fileURLToPath } from "url";
 // Используем новый TypeScript оркестратор (компилируем в JS)
 import { contentOrchestrator } from "./src/services/content-orchestrator.js";
 import { searchTokenizer } from "./src/services/search-tokenizer.js";
+import productTestRouter from "./src/api/routes/product-test.js";
 import Ajv from "ajv";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -151,6 +152,9 @@ app.get("/api/product", async (req, res) => {
     product
   });
 });
+
+// Тестовый роут для offline-парсера ChipDip
+app.use("/api/product-test", productTestRouter);
 
 app.get("/", (req, res) => res.sendFile(path.join(PUB_DIR, "ui", "index.html")));
 app.get("/product", (req, res) => res.sendFile(path.join(PUB_DIR, "ui", "product.html")));

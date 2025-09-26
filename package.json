@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "start": "node server.js",
+    "test": "jest",
     "qa": "node src/qa/runner.js",
     "qa:headless": "node src/qa/runner.js --headless",
     "qa:report": "node -e \"console.log(require('fs').readFileSync('reports/qa/summary.json','utf8'))\"",
@@ -28,6 +29,7 @@
   "devDependencies": {
     "@playwright/test": "^1.46.1",
     "ajv": "^8.17.1",
+    "jest": "^30.1.3",
     "playwright": "1.55.1"
   }
 }

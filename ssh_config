@@ -1,0 +1,8 @@
+Host your-prod
+  HostName 89.104.69.77
+  User root
+  ServerAliveInterval 30
+  ServerAliveCountMax 4
+  TCPKeepAlive yes
+  ControlMaster auto
+  ControlPersist 10m

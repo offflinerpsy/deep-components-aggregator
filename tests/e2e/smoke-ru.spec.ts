@@ -68,7 +68,7 @@ for (const mpn of MPNs) {
       const specsText = await specs.textContent();
       if (specsText && specsText.length > 20) {
         ruContentFound = true;
-        console.log(`✅ ${mpn}: RU характеристики найдены (${Object.keys(JSON.parse(specsText || '{}')).length} параметров)`);
+        console.log(`✅ ${mpn}: RU характеристики найдены (${specsText.length} символов)`);
       }
     }
     

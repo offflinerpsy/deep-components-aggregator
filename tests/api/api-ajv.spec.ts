@@ -13,7 +13,7 @@ const ajv = new Ajv({
 addFormats(ajv);
 
 // Загружаем схему
-const schemaPath = path.join(process.cwd(), 'schemas', 'ru-canon.schema.json');
+const schemaPath = path.join(process.cwd(), 'src', 'schemas', 'product-canon.schema.json');
 const schema = JSON.parse(fs.readFileSync(schemaPath, 'utf8'));
 
 // Отдельные валидаторы для search и product

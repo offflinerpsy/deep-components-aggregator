@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { fetchChipDipPageHtml } from '../../services/fetcher.js';
 import { chipdipHtmlToCanon } from '../../adapters/chipdip/html-to-canon.js';
-import { cacheService } from '../../../backend/src/services/cache.js';
+// import { cacheService } from '../../../backend/src/services/cache.js'; // Отключено - используем простое кеширование
 
 const productRouter = Router();
 
@@ -26,20 +26,20 @@ productRouter.get('/:mpn', async (req, res) => {
   try {
     // Шаг 0: Проверяем кэш
     const cacheKey = `product:${mpn}`;
-    const cachedData = cacheService.get(cacheKey);
+    // const cachedData = cacheService.get(cacheKey); // Отключено
     
-    if (cachedData) {
-      console.log(`⚡ Cache hit for ${mpn}, returning cached data`);
-      return res.status(200).json({
-        success: true,
-        product: cachedData.product,
-        meta: {
-          ...cachedData.meta,
-          mode: 'cached',
-          timestamp: new Date().toISOString()
-        }
-      });
-    }
+    // if (cachedData) {
+    //   console.log(`⚡ Cache hit for ${mpn}, returning cached data`);
+    //   return res.status(200).json({
+    //     success: true,
+    //     product: cachedData.product,
+    //     meta: {
+    //       ...cachedData.meta,
+    //       mode: 'cached',
+    //       timestamp: new Date().toISOString()
+    //     }
+    //   });
+    // }
 
     // Шаг 1: Загружаем "живой" HTML с ChipDip
     console.log(`📡 Fetching live HTML for ${mpn}...`);
@@ -88,7 +88,7 @@ productRouter.get('/:mpn', async (req, res) => {
     };
 
     // Сохраняем в кэш на 1 час (3600 секунд)
-    cacheService.set(cacheKey, responseData, 3600);
+    // cacheService.set(cacheKey, responseData, 3600); // Отключено
     console.log(`💾 Cached data for ${mpn} (TTL: 1 hour)`);
 
     return res.status(200).json(responseData);

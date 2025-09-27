@@ -169,7 +169,7 @@ export async function searchOEMsTrade(qUpper, maxItems = 40){
     return [];
   }
   
-  const text = await r.text();
+  const text = r.text;
   if (!text || text.length < 1000) {
     debugLog("Response too short or empty", { length: text?.length || 0 });
     return [];

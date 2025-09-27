@@ -7,7 +7,7 @@ import { contentOrchestrator } from "./src/services/content-orchestrator.js";
 import { searchTokenizer } from "./src/services/search-tokenizer.js";
 import productTestRouter from "./src/api/routes/product-test.js";
 import productRouter from "./src/api/routes/product.js";
-import searchRouter from "./backend/src/api/routes/search.js";
+// import searchRouter from "./backend/src/api/routes/search.js"; // Отключено - используем встроенные роуты
 import Ajv from "ajv";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -188,7 +188,7 @@ app.use("/api/product-test", productTestRouter);
 app.use("/api/product", productRouter);
 
 // Роут для поиска
-app.use("/api/search", searchRouter);
+// app.use("/api/search", searchRouter); // Отключено - используем встроенные роуты
 
 // SSE helper без try/catch
 function sseHeaders(res) {

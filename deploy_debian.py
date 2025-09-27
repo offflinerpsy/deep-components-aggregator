@@ -66,33 +66,26 @@ def run_command(ssh_client, command, timeout=120):
         return False, ""
 
 def copy_files(ssh_client):
-    """Копирование файлов проекта"""
+    """Копирование файлов проекта через GitHub"""
     try:
-        log("Copying project files...")
+        log("Downloading project from GitHub...")
         
-        # Создаем архив проекта
-        import zipfile
-        with zipfile.ZipFile('/tmp/project.zip', 'w', zipfile.ZIP_DEFLATED) as zipf:
-            files_to_copy = ['server.js', 'package.json']
-            dirs_to_copy = ['src', 'adapters', 'public', 'lib']
+        # Скачиваем проект с GitHub напрямую на сервер
+        success, output = run_command(ssh_client, """
+cd /tmp
+rm -rf project.zip deep-components-aggregator-main
+wget https://github.com/offflinerpsy/deep-components-aggregator/archive/refs/heads/main.zip -O project.zip
+unzip -o project.zip
+ls -la deep-components-aggregator-main/
+""")
+        
+        if success and "server.js" in output:
+            log("✅ Project files downloaded from GitHub")
+            return True
+        else:
+            log("❌ Failed to download from GitHub")
+            return False
             
-            for file in files_to_copy:
-                if os.path.exists(file):
-                    zipf.write(file)
-            
-            for dir_name in dirs_to_copy:
-                if os.path.exists(dir_name):
-                    for root, dirs, files in os.walk(dir_name):
-                        for file in files:
-                            file_path = os.path.join(root, file)
-                            zipf.write(file_path)
-        
-        # Копируем архив на сервер
-        with SCPClient(ssh_client.get_transport()) as scp:
-            scp.put('/tmp/project.zip', '/tmp/project.zip')
-        
-        log("✅ Project files copied")
-        return True
     except Exception as e:
         log(f"❌ File copy failed: {e}")
         return False
@@ -133,10 +126,9 @@ npm --version
             log("Deploying project...")
             run_command(ssh_client, """
 cd /tmp
-unzip -o project.zip
 rm -rf /opt/deep-agg
 mkdir -p /opt/deep-agg
-cp -r * /opt/deep-agg/
+cp -r deep-components-aggregator-main/* /opt/deep-agg/
 cd /opt/deep-agg
 ls -la
 """)

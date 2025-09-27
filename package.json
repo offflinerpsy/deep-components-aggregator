@@ -15,7 +15,8 @@
     "verify:prod": "playwright test --reporter=list,html",
     "verify:report": "playwright show-report",
     "generate:memory": "node scripts/generate-project-memory.mjs",
-    "generate:artifacts": "bash scripts/generate-artifacts.sh"
+    "generate:artifacts": "bash scripts/generate-artifacts.sh",
+    "deploy:prod": "git push prod main && sleep 2 && git fetch prod diag/latest:diag/latest && git push origin diag/latest"
   },
   "dependencies": {
     "ajv-formats": "3.0.1",

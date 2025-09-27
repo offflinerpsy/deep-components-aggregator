@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { fetchChipDipPageHtml } from '../../services/fetcher.js';
 import { chipdipHtmlToCanon } from '../../adapters/chipdip/html-to-canon.js';
-import { cacheService } from '../../../backend/src/services/cache.js';
+import { cacheService } from '../../services/cache.js';
 
 const productRouter = Router();
 

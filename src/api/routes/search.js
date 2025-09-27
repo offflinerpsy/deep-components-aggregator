@@ -1,6 +1,6 @@
 // search.js - API endpoint для поиска
-import { contentOrchestrator } from '../../services/contentOrchestrator.js';
-import { searchTokenizer } from '../../services/searchTokenize.js';
+import { contentOrchestrator } from '../../services/content-orchestrator.js';
+import { searchTokenizer } from '../../services/search-tokenizer.js';
 import Ajv from 'ajv';
 import addFormats from 'ajv-formats';
 import searchRowSchema from '../../schemas/search-row.schema.json' with { type: 'json' };

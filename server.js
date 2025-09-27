@@ -198,6 +198,15 @@ app.get("/api/live/search", async (req, res) => {
   res.end();
 });
 
+// Новый внутренний live-обработчик с MPN детекцией и Orama
+app.get("/__internal/live-search", async (req, res) => {
+  const q = (req.query.q || "").toString();
+  
+  // Импортируем live search модули
+  const { handleLiveSearch } = await import('./src/live/http.mjs');
+  await handleLiveSearch(req, res, q);
+});
+
 app.get("/", (req, res) => res.sendFile(path.join(PUB_DIR, "ui", "index.html")));
 app.get("/product", (req, res) => res.sendFile(path.join(PUB_DIR, "ui", "product.html")));
 

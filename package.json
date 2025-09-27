@@ -19,6 +19,7 @@
     "deploy:prod": "git push prod main && sleep 2 && git fetch prod diag/latest:diag/latest && git push origin diag/latest"
   },
   "dependencies": {
+    "@orama/orama": "^3.0.0",
     "ajv-formats": "3.0.1",
     "cheerio": "^1.0.0-rc.12",
     "express": "^4.19.2",

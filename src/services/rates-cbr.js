@@ -12,6 +12,27 @@ export async function convertToRub(currency) {
   return ratesCache[currency] || 0;
 }
 
+export async function getRates() {
+  if (!ratesCache || !cacheTimestamp || Date.now() - cacheTimestamp > CACHE_TTL) {
+    await loadRates();
+  }
+  
+  return {
+    ok: true,
+    cached: !!ratesCache,
+    rates: ratesCache
+  };
+}
+
+export function applyRub(price, currency, rates) {
+  if (!rates.ok || !rates.rates || !rates.rates[currency]) {
+    return 0;
+  }
+  
+  const rate = rates.rates[currency];
+  return Math.round(price * rate);
+}
+
 async function loadRates() {
   try {
     const response = await fetchWithRetry('https://www.cbr.ru/scripts/XML_daily.asp');

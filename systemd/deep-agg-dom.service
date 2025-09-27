@@ -1,0 +1,15 @@
+[Unit]
+Description=Deep Agg DOM nightly pipeline
+
+[Service]
+Type=oneshot
+WorkingDirectory=/opt/deep-agg
+Environment=HEADLESS=1
+# при наличии внешнего прокси раскомментировать:
+# Environment=HTTPS_PROXY=http://user:pass@host:port
+ExecStart=/usr/bin/npm run seed:chipdip
+ExecStart=/usr/bin/npm run snap:chipdip
+ExecStart=/usr/bin/npm run parse:chipdip
+ExecStart=/usr/bin/npm run build:corpus
+# мягкий рестарт только если corpus.json изменился:
+ExecStart=/usr/bin/bash -lc 'cmp -s data/corpus.json /opt/deep-agg/.last-corpus || { pm2 restart deep-aggregator && pm2 save && cp -f data/corpus.json /opt/deep-agg/.last-corpus; }'

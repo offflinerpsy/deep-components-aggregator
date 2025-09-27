@@ -1,12 +1,15 @@
 module.exports = {
   apps: [{
     name: 'deep-aggregator',
-    script: '/root/aggregator-v2/server.js',
+    script: '/opt/deep-agg/server.js',
     instances: 1,
     exec_mode: 'fork',
     autorestart: true,
+    min_uptime: '10s',
     max_restarts: 10,
-    max_memory_restart: '600M',
+    restart_delay: 5000,
+    max_memory_restart: '500M',
+    kill_timeout: 5000,
     env: {
       PORT: '9201',
       NODE_ENV: 'production',

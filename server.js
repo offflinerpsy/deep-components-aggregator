@@ -5,6 +5,7 @@ import { fileURLToPath } from "url";
 // Используем новый TypeScript оркестратор (компилируем в JS)
 import { contentOrchestrator } from "./src/services/content-orchestrator.js";
 import { searchTokenizer } from "./src/services/search-tokenizer.js";
+import { getRates, applyRub } from "./src/services/rates-cbr.js";
 import productTestRouter from "./src/api/routes/product-test.js";
 import productRouter from "./src/api/routes/product.js";
 import searchRouter from "./src/api/routes/search.js";
@@ -101,15 +102,29 @@ app.get("/api/search", async (req, res) => {
   // Фильтруем и ранжируем через умный поиск
   const rankedResults = searchTokenizer.filterAndRank(rawResults, q);
   
-  // Валидация через JSON Schema
+  // Получаем курсы валют для конвертации
+  const rates = await getRates();
+  
+  // Конвертация в рубли и маппинг под контракт
   const validItems = [];
   for (const row of rankedResults) {
     if (validate(row)) {
-      validItems.push(row);
+      // Добавляем конвертацию в ₽
+      const item = { ...row };
+      if (item.price_raw > 0 && item.currency && rates.ok) {
+        item.price_rub = applyRub(item.price_raw, item.currency, rates);
+        item.price_rub_fmt = `${item.price_rub} ₽`;
+      }
+      validItems.push(item);
     } else {
       log('warn', 'Search result validation failed', { mpn: row.mpn, errors: validate.errors });
       // Временно добавляем все результаты для отладки
-      validItems.push(row);
+      const item = { ...row };
+      if (item.price_raw > 0 && item.currency && rates.ok) {
+        item.price_rub = applyRub(item.price_raw, item.currency, rates);
+        item.price_rub_fmt = `${item.price_rub} ₽`;
+      }
+      validItems.push(item);
     }
   }
 
@@ -117,7 +132,8 @@ app.get("/api/search", async (req, res) => {
     ok: true,
     query: q,
     count: validItems.length,
-    items: validItems
+    items: validItems,
+    rates_cached: rates.cached || false
   });
 });
 

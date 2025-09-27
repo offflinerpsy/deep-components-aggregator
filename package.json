@@ -17,7 +17,11 @@
     "generate:memory": "node scripts/generate-project-memory.mjs",
     "generate:artifacts": "bash scripts/generate-artifacts.sh",
     "proxy:dev": "node proxy-rotator/server.mjs",
-    "proxy:local": "node proxy-rotator/rotator.mjs"
+    "proxy:local": "node proxy-rotator/rotator.mjs",
+    "seed:chipdip": "node scripts/chipdip/seedFromSitemaps.mjs",
+    "snap:chipdip": "node scripts/chipdip/snapshotBatch.mjs",
+    "parse:chipdip": "node scripts/chipdip/parseSnapshots.mjs",
+    "build:corpus": "node scripts/buildCorpusFromProducts.mjs"
   },
   "dependencies": {
     "@orama/orama": "^3.1.14",
@@ -39,6 +43,8 @@
     "ajv": "^8.17.1",
     "allure-playwright": "^3.4.1",
     "jest": "^30.1.3",
-    "playwright": "1.55.1"
+    "playwright": "1.55.1",
+    "jsdom": "^24.1.0",
+    "glob": "^11.0.0"
   }
 }

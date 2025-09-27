@@ -15,9 +15,9 @@ productRouter.get('/:mpn', async (req, res) => {
 
   // Валидация входных данных
   if (!mpn || typeof mpn !== 'string' || mpn.trim().length === 0) {
-    return res.status(400).json({ 
+    return res.status(400).json({
       message: 'Invalid MPN parameter',
-      error: 'MPN must be a non-empty string' 
+      error: 'MPN must be a non-empty string'
     });
   }
 
@@ -27,7 +27,7 @@ productRouter.get('/:mpn', async (req, res) => {
     // Шаг 0: Проверяем кэш
     const cacheKey = `product:${mpn}`;
     // const cachedData = cacheService.get(cacheKey); // Отключено
-    
+
     // if (cachedData) {
     //   console.log(`⚡ Cache hit for ${mpn}, returning cached data`);
     //   return res.status(200).json({
@@ -47,7 +47,7 @@ productRouter.get('/:mpn', async (req, res) => {
 
     if (!fetchResult.ok) {
       console.error(`❌ Failed to fetch HTML for ${mpn}:`, fetchResult.error);
-      return res.status(404).json({ 
+      return res.status(404).json({
         message: 'Failed to fetch product page',
         error: fetchResult.error,
         mpn
@@ -63,7 +63,7 @@ productRouter.get('/:mpn', async (req, res) => {
 
     if (!parseResult.ok) {
       console.error(`❌ Failed to parse HTML for ${mpn}:`, parseResult.reason);
-      return res.status(422).json({ 
+      return res.status(422).json({
         message: 'Failed to parse product data',
         error: parseResult.reason,
         mpn,
@@ -96,8 +96,8 @@ productRouter.get('/:mpn', async (req, res) => {
   } catch (error) {
     const processingTime = Date.now() - startTime;
     console.error(`💥 Unexpected error during live parsing for ${mpn}:`, error);
-    
-    return res.status(500).json({ 
+
+    return res.status(500).json({
       message: 'Internal server error during live parsing',
       error: error.message,
       mpn,
@@ -111,7 +111,7 @@ productRouter.get('/:mpn', async (req, res) => {
  * GET /api/product/_health
  */
 productRouter.get('/_health', (req, res) => {
-  res.status(200).json({ 
+  res.status(200).json({
     status: 'ok',
     service: 'live-chipdip-parser',
     timestamp: new Date().toISOString()

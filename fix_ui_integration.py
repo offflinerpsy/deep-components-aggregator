@@ -35,11 +35,11 @@ def run_command(ssh_client, command, timeout=120):
 
 def main():
     log("🔧 ИСПРАВЛЯЕМ ИНТЕГРАЦИЮ UI С API")
-    
+
     ssh_client = create_ssh_client()
     if not ssh_client:
         return
-    
+
     try:
         # 1. ИСПРАВЛЯЕМ SEARCH.HTML - делаем его работающим
         log("🔧 Исправляем search.html для работы с нашим API...")
@@ -87,15 +87,15 @@ cat > public/ui/search-fixed.html << 'EOF'
                 <button type="submit" class="search-btn">Найти</button>
             </form>
         </div>
-        
+
         <div id="loading" class="loading" style="display: none;">
             🔍 Поиск компонентов...
         </div>
-        
+
         <div id="results" class="results" style="display: none;">
             <!-- Результаты будут здесь -->
         </div>
-        
+
         <div id="noResults" class="no-results" style="display: none;">
             Компоненты не найдены. Попробуйте изменить запрос.
         </div>
@@ -114,28 +114,28 @@ cat > public/ui/search-fixed.html << 'EOF'
             event.preventDefault();
             const query = document.getElementById('searchInput').value.trim();
             if (!query) return;
-            
+
             // Обновляем URL
             const newUrl = window.location.pathname + '?q=' + encodeURIComponent(query);
             window.history.pushState({}, '', newUrl);
-            
+
             await performSearchDirect(query);
         }
 
         async function performSearchDirect(query) {
             console.log('Поиск:', query);
-            
+
             // Показываем загрузку
             document.getElementById('loading').style.display = 'block';
             document.getElementById('results').style.display = 'none';
             document.getElementById('noResults').style.display = 'none';
-            
+
             try {
                 const response = await fetch('/api/search?q=' + encodeURIComponent(query));
                 const data = await response.json();
-                
+
                 console.log('Ответ API:', data);
-                
+
                 if (data.ok && data.items && data.items.length > 0) {
                     displayResults(data.items);
                 } else {
@@ -145,7 +145,7 @@ cat > public/ui/search-fixed.html << 'EOF'
                 console.error('Ошибка поиска:', error);
                 showNoResults();
             }
-            
+
             // Скрываем загрузку
             document.getElementById('loading').style.display = 'none';
         }
@@ -153,11 +153,11 @@ cat > public/ui/search-fixed.html << 'EOF'
         function displayResults(items) {
             const resultsDiv = document.getElementById('results');
             resultsDiv.innerHTML = '';
-            
+
             items.forEach(item => {
                 const resultDiv = document.createElement('div');
                 resultDiv.className = 'result-item';
-                
+
                 // Формируем HTML для офферов
                 let offersHtml = '';
                 if (item.offers && item.offers.length > 0) {
@@ -169,9 +169,9 @@ cat > public/ui/search-fixed.html << 'EOF'
                         </div>
                     `).join('');
                 }
-                
+
                 resultDiv.innerHTML = `
-                    <img src="${item.image || item.thumb || 'https://via.placeholder.com/120x90/cccccc/666666?text=No+Image'}" 
+                    <img src="${item.image || item.thumb || 'https://via.placeholder.com/120x90/cccccc/666666?text=No+Image'}"
                          alt="${item.title}" class="result-image" onerror="this.src='https://via.placeholder.com/120x90/cccccc/666666?text=No+Image'">
                     <div class="result-content">
                         <div class="result-title">${item.title}</div>
@@ -183,10 +183,10 @@ cat > public/ui/search-fixed.html << 'EOF'
                         <a href="/ui/product.html?mpn=${encodeURIComponent(item.mpn)}" style="display: inline-block; margin-top: 10px; padding: 8px 16px; background: #007bff; color: white; text-decoration: none; border-radius: 4px; font-size: 14px;">Подробнее</a>
                     </div>
                 `;
-                
+
                 resultsDiv.appendChild(resultDiv);
             });
-            
+
             document.getElementById('results').style.display = 'block';
         }
 
@@ -201,7 +201,7 @@ EOF
 # Копируем исправленную версию
 cp public/ui/search-fixed.html public/ui/search.html
 """)
-        
+
         # 2. ИСПРАВЛЯЕМ PRODUCT.HTML
         log("🔧 Исправляем product.html для работы с нашим API...")
         run_command(ssh_client, """
@@ -244,7 +244,7 @@ cat > public/ui/product-fixed.html << 'EOF'
         .breadcrumb { margin-bottom: 20px; font-size: 14px; color: #666; }
         .breadcrumb a { color: #007bff; text-decoration: none; }
         .breadcrumb a:hover { text-decoration: underline; }
-        
+
         @media (max-width: 768px) {
             .product-card { grid-template-columns: 1fr; gap: 20px; }
             .order-panel { position: static; }
@@ -256,37 +256,37 @@ cat > public/ui/product-fixed.html << 'EOF'
         <div class="breadcrumb">
             <a href="/">Главная</a> / <a href="/ui/search.html">Поиск</a> / <span id="breadcrumbTitle">Товар</span>
         </div>
-        
+
         <div id="loading" class="loading">
             📦 Загрузка информации о товаре...
         </div>
-        
+
         <div id="error" class="error" style="display: none;">
             ❌ Ошибка загрузки товара
         </div>
-        
+
         <div id="productCard" class="product-card" style="display: none;">
             <div class="gallery">
                 <img id="mainImage" src="" alt="">
                 <div id="thumbs" class="gallery-thumbs"></div>
             </div>
-            
+
             <div class="content">
                 <h1 id="productTitle" class="product-title"></h1>
                 <div id="productBrand" class="product-brand"></div>
                 <div id="productDescription" class="product-description"></div>
-                
+
                 <h3>Технические характеристики</h3>
                 <table id="specsTable" class="specs-table">
                     <tbody></tbody>
                 </table>
-                
+
                 <div id="docs" class="docs" style="display: none;">
                     <h3>Документация</h3>
                     <div id="docsLinks"></div>
                 </div>
             </div>
-            
+
             <div class="order-panel">
                 <div id="orderPrice" class="order-price"></div>
                 <div id="orderInfo" class="order-info"></div>
@@ -299,7 +299,7 @@ cat > public/ui/product-fixed.html << 'EOF'
         // Получаем MPN из URL
         const urlParams = new URLSearchParams(window.location.search);
         const mpn = urlParams.get('mpn');
-        
+
         if (mpn) {
             loadProduct(mpn);
         } else {
@@ -310,13 +310,13 @@ cat > public/ui/product-fixed.html << 'EOF'
 
         async function loadProduct(mpn) {
             console.log('Загружаем товар:', mpn);
-            
+
             try {
                 const response = await fetch('/api/product?mpn=' + encodeURIComponent(mpn));
                 const data = await response.json();
-                
+
                 console.log('Ответ API:', data);
-                
+
                 if (data.ok && data.product) {
                     displayProduct(data.product);
                 } else {
@@ -332,21 +332,21 @@ cat > public/ui/product-fixed.html << 'EOF'
             // Заголовок и хлебные крошки
             document.title = product.title + ' - DeepAgg';
             document.getElementById('breadcrumbTitle').textContent = product.mpn;
-            
+
             // Основная информация
             document.getElementById('productTitle').textContent = product.title;
             document.getElementById('productBrand').textContent = product.brand + ' • ' + product.mpn;
             document.getElementById('productDescription').textContent = product.description || '';
-            
+
             // Галерея
             if (product.gallery && product.gallery.length > 0) {
                 const mainImg = document.getElementById('mainImage');
                 mainImg.src = product.gallery[0];
                 mainImg.alt = product.title;
-                
+
                 const thumbsDiv = document.getElementById('thumbs');
                 thumbsDiv.innerHTML = '';
-                
+
                 product.gallery.forEach((imageUrl, index) => {
                     const thumb = document.createElement('img');
                     thumb.src = imageUrl;
@@ -355,11 +355,11 @@ cat > public/ui/product-fixed.html << 'EOF'
                     thumbsDiv.appendChild(thumb);
                 });
             }
-            
+
             // Технические характеристики
             const specsBody = document.getElementById('specsTable').querySelector('tbody');
             specsBody.innerHTML = '';
-            
+
             if (product.specs && product.specs.length > 0) {
                 product.specs.forEach(spec => {
                     const row = document.createElement('tr');
@@ -370,13 +370,13 @@ cat > public/ui/product-fixed.html << 'EOF'
                     specsBody.appendChild(row);
                 });
             }
-            
+
             // Документация
             if (product.docs && product.docs.length > 0) {
                 const docsDiv = document.getElementById('docs');
                 const docsLinks = document.getElementById('docsLinks');
                 docsLinks.innerHTML = '';
-                
+
                 product.docs.forEach(doc => {
                     const link = document.createElement('a');
                     link.href = doc.url;
@@ -385,10 +385,10 @@ cat > public/ui/product-fixed.html << 'EOF'
                     link.target = '_blank';
                     docsLinks.appendChild(link);
                 });
-                
+
                 docsDiv.style.display = 'block';
             }
-            
+
             // Панель заказа
             if (product.order) {
                 document.getElementById('orderPrice').textContent = 'от ' + product.order.min_price_rub + '₽';
@@ -398,7 +398,7 @@ cat > public/ui/product-fixed.html << 'EOF'
                     Всего в наличии: ${product.order.total_stock} шт.
                 `;
             }
-            
+
             // Показываем карточку
             document.getElementById('loading').style.display = 'none';
             document.getElementById('productCard').style.display = 'grid';
@@ -421,7 +421,7 @@ EOF
 # Копируем исправленную версию
 cp public/ui/product-fixed.html public/ui/product.html
 """)
-        
+
         # 3. ИСПРАВЛЯЕМ ГЛАВНУЮ СТРАНИЦУ - добавляем рабочую форму поиска
         log("🔧 Исправляем главную страницу...")
         run_command(ssh_client, """
@@ -462,13 +462,13 @@ cat > public/index-fixed.html << 'EOF'
             <h1>DeepAgg</h1>
             <p>Поиск электронных компонентов с лучшими ценами</p>
         </div>
-        
+
         <div class="search-section">
             <form class="search-form" onsubmit="performSearch(event)">
                 <input type="text" id="searchInput" class="search-input" placeholder="Введите артикул или название компонента (например, LM317T)" required>
                 <button type="submit" class="search-btn">🔍 Найти</button>
             </form>
-            
+
             <div class="quick-search">
                 <span style="color: #666; margin-right: 10px;">Популярные запросы:</span>
                 <a href="#" class="quick-btn" onclick="quickSearch('LM317T')">LM317T</a>
@@ -479,7 +479,7 @@ cat > public/index-fixed.html << 'EOF'
                 <a href="#" class="quick-btn" onclick="quickSearch('резистор')">Резисторы</a>
             </div>
         </div>
-        
+
         <div class="features">
             <div class="feature">
                 <h3>🌍 Глобальный поиск</h3>
@@ -494,7 +494,7 @@ cat > public/index-fixed.html << 'EOF'
                 <p>Техническая документация, даташиты и подробные характеристики для каждого компонента</p>
             </div>
         </div>
-        
+
         <div class="footer">
             <p>&copy; 2025 DeepAgg. Поиск электронных компонентов.</p>
         </div>
@@ -520,13 +520,13 @@ EOF
 # Копируем исправленную версию
 cp public/index-fixed.html public/index.html
 """)
-        
+
         # 4. ПЕРЕЗАПУСКАЕМ СЕРВЕР
         log("🔄 Перезапускаем сервер...")
         run_command(ssh_client, "systemctl restart deep-agg")
         run_command(ssh_client, "sleep 3")
         run_command(ssh_client, "systemctl status deep-agg --no-pager -l")
-        
+
         # 5. ТЕСТИРУЕМ ИСПРАВЛЕНИЯ
         log("🧪 Тестируем исправленный UI...")
         success, output, _ = run_command(ssh_client, f"curl -s 'http://{SERVER}/' | head -5")
@@ -534,22 +534,22 @@ cp public/index-fixed.html public/index.html
             log("✅ Главная страница работает")
         else:
             log("❌ Главная страница не работает")
-            
+
         success, output, _ = run_command(ssh_client, f"curl -s 'http://{SERVER}/ui/search.html?q=LM317T' | head -5")
         if success and "search" in output.lower():
             log("✅ Страница поиска работает")
         else:
             log("❌ Страница поиска не работает")
-            
+
         success, output, _ = run_command(ssh_client, f"curl -s 'http://{SERVER}/ui/product.html?mpn=LM317T' | head -5")
         if success and "product" in output.lower():
             log("✅ Страница товара работает")
         else:
             log("❌ Страница товара не работает")
-            
+
         log("✅ UI ИСПРАВЛЕН И ИНТЕГРИРОВАН С API!")
         log(f"🌐 Тестируйте: http://{SERVER}/")
-        
+
     except Exception as e:
         log(f"❌ Критическая ошибка: {e}")
     finally:

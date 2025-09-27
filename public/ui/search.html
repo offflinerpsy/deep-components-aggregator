@@ -1,0 +1,75 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>DeepAgg — поиск</title>
+<style>
+  :root { --bg:#0b1220; --card:#111827; --mut:#9CA3AF; --fg:#F9FAFB; --line:#1f2937; --accent:#22d3ee; }
+  body { margin:0; background:var(--bg); color:var(--fg); font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial; }
+  header { padding:16px; border-bottom:1px solid var(--line); display:flex; gap:10px; align-items:center; }
+  input[type="search"]{ flex:1; padding:10px 12px; border-radius:10px; border:1px solid var(--line); background:#0f172a; color:#e5e7eb; }
+  .grid { display:grid; gap:14px; padding:16px; grid-template-columns: repeat(auto-fill, minmax(260px,1fr)); }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:16px; overflow:hidden; }
+  .thumb-wrap { background:#0f172a; border-bottom:1px solid var(--line); }
+  .thumb { display:block; width:100%; aspect-ratio: 4 / 3; object-fit: contain; }
+  .pad { padding:12px 14px; }
+  .title { margin:0 0 6px; font-weight:600; line-height:1.25; font-size:16px; }
+  .meta { margin:0 8px 8px 0; color:var(--mut); font-size:12px; display:inline-block; }
+  .chips { display:flex; flex-wrap:wrap; gap:6px; }
+  .chip { font-size:12px; color:#cbd5e1; background:#0f172a; border:1px solid var(--line); padding:6px 8px; border-radius:999px; }
+  .price { margin-top:10px; font-weight:700; color:var(--accent); }
+  .sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); border:0; }
+</style>
+
+<header>
+  <form id="f" role="search" aria-label="Поиск">
+    <input id="q" type="search" name="q" placeholder="что ищем? (mpn, название, бренд…)" value="">
+  </form>
+</header>
+
+<section aria-label="Результаты поиска">
+  <p id="stat" class="sr-only"></p>
+  <ul id="results" class="grid" role="list"></ul>
+</section>
+
+<script type="module">
+  const $ = sel => document.querySelector(sel);
+  const list = $('#results'); const stat = $('#stat'); const inp = $('#q'); const form = $('#f');
+
+  function chip(k,v){ const s=document.createElement('span'); s.className='chip';
+    const t=(k?k+': ':'')+v; s.textContent = t.length>48? t.slice(0,45)+'…' : t; return s; }
+
+  function topSpecs(specs){ if(!specs||typeof specs!=='object') return [];
+    const ks=Object.keys(specs).slice(0,6); const out=[]; let i=0; while(i<ks.length){ out.push([ks[i], String(specs[ks[i]])]); i++; } return out; }
+
+  function card(p, i){
+    const li=document.createElement('li'); li.className='card'; li.role='article'; li.setAttribute('aria-labelledby','t'+i);
+    const wrap=document.createElement('div'); wrap.className='thumb-wrap';
+    const img=document.createElement('img'); img.className='thumb'; img.alt=p.title||p.mpn||'product';
+    img.src=p.image||''; img.loading='lazy'; img.width=800; img.height=600; wrap.appendChild(img);
+    const pad=document.createElement('div'); pad.className='pad';
+    const h=document.createElement('h3'); h.className='title'; h.id='t'+i; h.textContent=p.title||p.mpn||'Без названия';
+    const m1=document.createElement('span'); m1.className='meta'; m1.textContent=[p.manufacturer,p.mpn].filter(Boolean).join(' · ');
+    const chips=document.createElement('div'); chips.className='chips';
+    const ts=topSpecs(p.specs||{}); let k=0; while(k<ts.length){ chips.appendChild(chip(ts[k][0], ts[k][1])); k++; }
+    const price=document.createElement('div'); price.className='price'; price.textContent=p.price_rub_fmt || p.price || '';
+    const a=document.createElement('a'); a.href=p.url||'#'; a.style.textDecoration='none'; a.style.color='inherit';
+    a.setAttribute('aria-label',(p.title||p.mpn||'товар')+' — открыть'); a.appendChild(wrap); a.appendChild(pad);
+    pad.appendChild(h); pad.appendChild(m1); pad.appendChild(chips); if (price.textContent) pad.appendChild(price);
+    li.appendChild(a); return li;
+  }
+
+  function render(hits, q){ list.innerHTML=''; stat.textContent='Найдено: '+String(hits.length)+(q?(' — '+q):'');
+    const frag=document.createDocumentFragment(); let i=0; while(i<hits.length){ frag.appendChild(card(hits[i], i)); i++; } list.appendChild(frag); }
+
+  function readQ(){ const u=new URL(location.href); return u.searchParams.get('q')||''; }
+  function setQ(v){ const u=new URL(location.href); u.searchParams.set('q', v); history.replaceState(null,'',u.toString()); }
+
+  function pull(q){
+    fetch('/api/search?q='+encodeURIComponent(q), { cache:'no-store' })
+      .then(r=>r.ok?r.json():{},{})
+      .then(j=>{ const hits = Array.isArray(j.hits)? j.hits : (Array.isArray(j.items)? j.items : []); render(hits, q); });
+  }
+
+  const q0 = readQ(); if (q0) { inp.value=q0; pull(q0); }
+  form.addEventListener('submit', (e)=>{ e.preventDefault(); const q=inp.value.trim(); if(!q) return; setQ(q); pull(q); });
+</script>

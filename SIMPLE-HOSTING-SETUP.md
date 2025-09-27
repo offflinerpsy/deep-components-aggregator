@@ -17,7 +17,7 @@ cd /tmp && wget https://github.com/offflinerpsy/deep-components-aggregator/archi
 ### Рекомендуемые ОС (по надежности):
 
 1. **CentOS 7/8** - очень стабильная, простая
-2. **Debian 11** - надежная, без капризов  
+2. **Debian 11** - надежная, без капризов
 3. **Ubuntu 20.04 LTS** - если хочешь Ubuntu
 4. **Rocky Linux** - замена CentOS, современная
 
@@ -41,7 +41,7 @@ cd /tmp && wget https://github.com/offflinerpsy/deep-components-aggregator/archi
 Если текущий хостинг капризный, можно быстро перенести на:
 
 - **DigitalOcean** - $5/месяц, очень стабильно
-- **Vultr** - $2.50/месяц, простая настройка  
+- **Vultr** - $2.50/месяц, простая настройка
 - **Linode** - надежно, хорошая поддержка
 - **Hetzner** - дешево, европейские серверы
 
@@ -55,7 +55,7 @@ cd /tmp && wget https://github.com/offflinerpsy/deep-components-aggregator/archi
 
 **Сколько времени потратим:**
 - Вариант 1: 5 минут
-- Вариант 2: 15 минут  
+- Вариант 2: 15 минут
 - Вариант 3: 30 минут
 
 **Твой выбор?**

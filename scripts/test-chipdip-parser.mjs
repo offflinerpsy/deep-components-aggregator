@@ -5,21 +5,21 @@ const testQueries = ['LM317', '1N4148', 'BC547', 'NE555', 'TL072'];
 
 async function testParser() {
   console.log('🧪 Testing real ChipDip parser...\n');
-  
+
   // Включаем отладочные логи
   process.env.DEBUG_PARSER = 'true';
-  
+
   for (const query of testQueries) {
     console.log(`🔍 Testing query: "${query}"`);
     console.log('─'.repeat(50));
-    
+
     const startTime = Date.now();
     const results = await searchChipDip(query, 5); // берем первые 5 результатов
     const elapsed = Date.now() - startTime;
-    
+
     console.log(`⏱️  Completed in ${elapsed}ms`);
     console.log(`📊 Found ${results.length} results\n`);
-    
+
     if (results.length > 0) {
       results.forEach((item, i) => {
         console.log(`${i + 1}. ${item.title}`);
@@ -31,11 +31,11 @@ async function testParser() {
     } else {
       console.log('❌ No results found\n');
     }
-    
+
     // Пауза между запросами
     await new Promise(resolve => setTimeout(resolve, 2000));
   }
-  
+
   console.log('✅ ChipDip parser testing completed!');
 }
 

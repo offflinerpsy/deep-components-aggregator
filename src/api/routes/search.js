@@ -1,4 +1,5 @@
 // search.js - API endpoint для поиска
+import { Router } from 'express';
 import { contentOrchestrator } from '../../services/content-orchestrator.js';
 import { searchTokenizer } from '../../services/search-tokenizer.js';
 import Ajv from 'ajv';
@@ -73,6 +74,8 @@ export async function handleSearch(req, res) {
   }
 }
 
-export default {
-  handleSearch
-};
+const searchRouter = Router();
+
+searchRouter.get('/', handleSearch);
+
+export default searchRouter;

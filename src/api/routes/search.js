@@ -3,7 +3,7 @@ import { contentOrchestrator } from '../../services/contentOrchestrator.js';
 import { searchTokenizer } from '../../services/searchTokenize.js';
 import Ajv from 'ajv';
 import addFormats from 'ajv-formats';
-import searchRowSchema from '../../schemas/search-row.schema.json' assert { type: 'json' };
+import searchRowSchema from '../../schemas/search-row.schema.json' with { type: 'json' };
 
 // Инициализация AJV
 const ajv = new Ajv({ strict: false, allErrors: true });

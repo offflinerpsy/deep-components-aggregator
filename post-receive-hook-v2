@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+set -euo pipefail
+TARGET="/opt/deep-agg"
+GIT_DIR="/opt/deploy/deep-agg.git"
+BRANCH="main"
+
+read oldrev newrev refname
+[ "$refname" = "refs/heads/$BRANCH" ] || exit 0
+
+echo "[deploy] $newrev"
+git --work-tree="$TARGET" --git-dir="$GIT_DIR" checkout -f "$BRANCH"
+echo "$newrev" > "$TARGET/.deployed-sha"
+
+cd "$TARGET"
+if [ -f package-lock.json ]; then npm ci; fi
+if command -v pm2 >/dev/null 2>&1; then
+  pm2 restart deep-aggregator || pm2 start ecosystem.config.cjs
+  pm2 save
+fi

@@ -1,0 +1,11 @@
+Host deep-prod
+  HostName 89.104.69.77
+  User root
+  IdentityFile ~/.ssh/id_ed25519_deploy
+  IdentitiesOnly yes
+  ServerAliveInterval 30
+  ServerAliveCountMax 4
+  TCPKeepAlive yes
+  ControlMaster auto
+  ControlPersist 10m
+  ControlPath ~/.ssh/cm-%r@%h:%p

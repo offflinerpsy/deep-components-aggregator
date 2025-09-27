@@ -7,7 +7,7 @@ import { contentOrchestrator } from "./src/services/content-orchestrator.js";
 import { searchTokenizer } from "./src/services/search-tokenizer.js";
 import productTestRouter from "./src/api/routes/product-test.js";
 import productRouter from "./src/api/routes/product.js";
-import searchRouter from "./backend/src/api/routes/search.js";
+import searchRouter from "./src/api/routes/search.js";
 import Ajv from "ajv";
 
 const __filename = fileURLToPath(import.meta.url);

@@ -1,0 +1,15 @@
+# Добавить в ~/.ssh/config на локальной машине:
+
+Host deep-prod
+  HostName 89.104.69.77
+  User root
+  ServerAliveInterval 30
+  ServerAliveCountMax 4
+  TCPKeepAlive yes
+  ControlMaster auto
+  ControlPersist 10m
+  ControlPath ~/.ssh/cm-%r@%h:%p
+
+# Генерация ключа (если нет):
+# ssh-keygen -t ed25519 -C "deep-sync"
+# ssh-copy-id deep-prod

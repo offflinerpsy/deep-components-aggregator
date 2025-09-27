@@ -15,7 +15,9 @@
     "verify:prod": "playwright test --reporter=list,html",
     "verify:report": "playwright show-report",
     "generate:memory": "node scripts/generate-project-memory.mjs",
-    "generate:artifacts": "bash scripts/generate-artifacts.sh"
+    "generate:artifacts": "bash scripts/generate-artifacts.sh",
+    "proxy:dev": "node proxy-rotator/server.mjs",
+    "proxy:local": "node proxy-rotator/rotator.mjs"
   },
   "dependencies": {
     "@orama/orama": "^3.1.14",
@@ -27,7 +29,9 @@
     "fast-xml-parser": "^4.3.2",
     "iconv-lite": "^0.7.0",
     "node-fetch": "^3.3.2",
+    "proxy-chain": "^2.5.0",
     "snowball-stemmers": "^0.6.0",
+    "socks-proxy-agent": "^8.0.2",
     "undici": "^7.16.0"
   },
   "devDependencies": {

@@ -8,6 +8,7 @@ import { parsePlatan } from '../adapters/ru/platan.js';
 import { searchOEMsTrade } from '../../adapters/oemstrade.js';
 import { convertToRub } from '../currency.js';
 import { searchTokenizer } from './search-tokenizer.js';
+import { createDb, queryDb } from '../search/db.js';
 
 // Функциональные адаптеры
 const adapters = {
@@ -31,17 +32,38 @@ const NETWORK_LIMITS = {
 };
 
 export class ContentOrchestrator {
-  // Поиск по всем источникам
+  constructor() {
+    this.oramaDb = null;
+  }
+
+  // Инициализация Orama DB с данными
+  async initOramaDb(docs = []) {
+    if (!this.oramaDb) {
+      this.oramaDb = await createDb(docs);
+      console.log(`🔍 Orama DB initialized with ${docs.length} documents`);
+    }
+    return this.oramaDb;
+  }
+
+  // Поиск по всем источникам с приоритетом Orama
   async searchAll(query) {
     const results = [];
     
-    // Добавляем OEMsTrade результаты
-    const oemsResults = await this.searchOEMsTrade(query);
-    results.push(...oemsResults);
+    // Сначала пробуем Orama (быстрый локальный поиск с MPN-бустингом)
+    if (this.oramaDb) {
+      const oramaResults = await queryDb(this.oramaDb, query);
+      if (oramaResults.hits && oramaResults.hits.length > 0) {
+        results.push(...oramaResults.hits.map(hit => hit.document));
+        console.log(`🔍 Orama found ${oramaResults.hits.length} results for "${query}"`);
+      }
+    }
     
-    // Пока что возвращаем только OEMsTrade результаты
-    // RU-источники будут добавлены позже
-    console.log(`🔍 Search completed for "${query}": ${results.length} results from OEMsTrade`);
+    // Если Orama не дала результатов, идём к OEMsTrade
+    if (results.length === 0) {
+      const oemsResults = await this.searchOEMsTrade(query);
+      results.push(...oemsResults);
+      console.log(`🔍 OEMsTrade found ${oemsResults.length} results for "${query}"`);
+    }
     
     return this.deduplicateAndSort(results, query);
   }

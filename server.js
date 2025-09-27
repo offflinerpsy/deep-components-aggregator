@@ -145,28 +145,31 @@ app.get("/api/search", async (req, res) => {
 });
 
 app.get("/api/product", async (req, res) => {
-  const mpn = (req.query.mpn || "").trim();
+  const id = (req.query.id || "").trim();
+  const mpn = (req.query.mpn || id).trim(); // поддержка обоих параметров
+  
   if (!mpn) {
-    res.status(400).json({ ok: false, error: "mpn_required" });
+    res.status(400).json({ ok: false, error: "id_or_mpn_required" });
     return;
   }
 
-  log('info', 'Product API request', { mpn });
+  log('info', 'Product API request', { id, mpn });
 
   // Получаем карточку из нового оркестратора
   const product = await contentOrchestrator.fetchProduct(mpn);
 
   if (!product) {
-    log('warn', 'No product data found', { mpn });
+    log('warn', 'No product data found', { id, mpn });
     res.status(404).json({ ok: false, error: "product_not_found", mpn });
     return;
   }
 
   log('info', 'Product data assembled', {
+    id,
     mpn,
     hasTitle: !!product.title,
-    hasImages: product.gallery.length > 0,
-    hasDocs: product.docs.length > 0,
+    hasImages: product.gallery?.length > 0,
+    hasDocs: product.docs?.length > 0,
     hasSpecs: product.specs.length > 0,
     sources: product.sources.map(s => s.source),
     hasPrice: product.order.min_price_rub !== null

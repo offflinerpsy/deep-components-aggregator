@@ -13,7 +13,7 @@ export async function handleLiveSearch(req, res, q) {
   res.write(`event: tick\ndata: ${JSON.stringify({phase:"start", q})}\n\n`);
 
   const items = [];
-  
+
   // Фаза 2: live поиск
   const urls = await candidates(q);
   for (const url of urls) {
@@ -31,6 +31,6 @@ export async function handleLiveSearch(req, res, q) {
   } else {
     res.write(`event: results\ndata: ${JSON.stringify({ok:true, query:q, count:items.length, items})}\n\n`);
   }
-  
+
   res.end();
 }

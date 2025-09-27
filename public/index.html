@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>DeepAgg — поиск компонентов</title>
+  <link rel="stylesheet" href="/css/home.css"/>
+</head>
+<body>
+<header class="wrap">
+  <h1>Поиск электронных компонентов</h1>
+  <form id="searchForm" class="searchbar" action="/ui/search.html" method="get">
+    <input id="q" name="q" type="text" placeholder="Введите номер детали, например LM317, 1N4148…">
+    <button type="submit">Поиск</button>
+  </form>
+</header>
+
+<main class="wrap">
+  <section>
+    <h2>Что сейчас ищут</h2>
+    <ul id="trending" class="tiles"></ul>
+  </section>
+
+  <section>
+    <h2>Популярные компоненты</h2>
+    <ul id="popular" class="tiles tiles--grid"></ul>
+  </section>
+</main>
+
+<footer class="wrap footer">
+  <nav>
+    <a href="/legal/privacy.html">Политика конфиденциальности</a>
+    <span>·</span>
+    <a href="/legal/terms.html">Пользовательское соглашение</a>
+  </nav>
+  <small>© <span id="y"></span> DeepAgg</small>
+</footer>
+
+<script type="module" src="/js/home.js"></script>
+</body>
+</html>

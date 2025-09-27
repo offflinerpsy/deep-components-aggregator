@@ -19,12 +19,12 @@ const PUB_DIR  = path.join(__dirname, "public");
 
 // --- Structured logging (без исключений) ---
 function log(level, msg, meta = {}) {
-  const entry = { 
-    ts: new Date().toISOString(), 
-    level, 
-    msg, 
+  const entry = {
+    ts: new Date().toISOString(),
+    level,
+    msg,
     pid: process.pid,
-    ...meta 
+    ...meta
   };
   console.log(JSON.stringify(entry));
 }
@@ -35,17 +35,17 @@ function validateStartup() {
     log('error', 'Invalid PORT configuration', { port: PORT });
     return { ok: false, error: 'invalid_port' };
   }
-  
+
   if (!fs.existsSync(DATA_DIR)) {
     log('error', 'DATA_DIR not found', { path: DATA_DIR });
     return { ok: false, error: 'missing_data_dir' };
   }
-  
+
   if (!fs.existsSync(PUB_DIR)) {
     log('error', 'PUB_DIR not found', { path: PUB_DIR });
     return { ok: false, error: 'missing_public_dir' };
   }
-  
+
   return { ok: true };
 }
 
@@ -77,13 +77,36 @@ app.get("/_version", (req, res) => {
 });
 
 app.get("/api/health", (req, res) => {
-  res.json({ 
-    ok: true, 
-    status: "healthy", 
+  res.json({
+    ok: true,
+    status: "healthy",
     uptime: process.uptime(),
     memory: process.memoryUsage(),
     ts: Date.now()
   });
+});
+
+// API эндпоинты для популярного/трендов
+app.get("/api/popular", (req, res) => {
+  const popularPath = path.join(PUB_DIR, "data", "popular.json");
+  if (fs.existsSync(popularPath)) {
+    const buf = fs.readFileSync(popularPath, "utf8");
+    res.setHeader("Content-Type", "application/json");
+    res.end(buf);
+  } else {
+    res.json([]);
+  }
+});
+
+app.get("/api/trending", (req, res) => {
+  const trendingPath = path.join(PUB_DIR, "data", "trending.json");
+  if (fs.existsSync(trendingPath)) {
+    const buf = fs.readFileSync(trendingPath, "utf8");
+    res.setHeader("Content-Type", "application/json");
+    res.end(buf);
+  } else {
+    res.json([]);
+  }
 });
 
 app.get("/api/search", async (req, res) => {
@@ -94,13 +117,13 @@ app.get("/api/search", async (req, res) => {
   }
 
   log('info', 'Search API request', { query: q });
-  
+
   // Получаем результаты из нового оркестратора
   const rawResults = await contentOrchestrator.searchAll(q);
-  
+
   // Фильтруем и ранжируем через умный поиск
   const rankedResults = searchTokenizer.filterAndRank(rawResults, q);
-  
+
   // Валидация через JSON Schema
   const validItems = [];
   for (const row of rankedResults) {
@@ -132,15 +155,15 @@ app.get("/api/product", async (req, res) => {
 
   // Получаем карточку из нового оркестратора
   const product = await contentOrchestrator.fetchProduct(mpn);
-  
+
   if (!product) {
     log('warn', 'No product data found', { mpn });
     res.status(404).json({ ok: false, error: "product_not_found", mpn });
     return;
   }
 
-  log('info', 'Product data assembled', { 
-    mpn, 
+  log('info', 'Product data assembled', {
+    mpn,
     hasTitle: !!product.title,
     hasImages: product.gallery.length > 0,
     hasDocs: product.docs.length > 0,
@@ -149,8 +172,8 @@ app.get("/api/product", async (req, res) => {
     hasPrice: product.order.min_price_rub !== null
   });
 
-  res.json({ 
-    ok: true, 
+  res.json({
+    ok: true,
     product
   });
 });
@@ -201,7 +224,7 @@ app.get("/api/live/search", async (req, res) => {
 // Новый внутренний live-обработчик с MPN детекцией и Orama
 app.get("/__internal/live-search", async (req, res) => {
   const q = (req.query.q || "").toString();
-  
+
   // Импортируем live search модули
   const { handleLiveSearch } = await import('./src/live/http.mjs');
   await handleLiveSearch(req, res, q);
@@ -264,10 +287,10 @@ if (!startupResult.ok) {
 
 server = app.listen(PORT, () => {
   log('info', 'Starting server', { port: PORT, nodeVersion: process.version });
-  log('info', 'Server started successfully', { 
-    port: PORT, 
-    url: `http://127.0.0.1:${PORT}/`, 
-    features: ["RU-orchestrator", "5-sources", "CBR-rates", "cheerio", "throttle", "proxy-hook"] 
+  log('info', 'Server started successfully', {
+    port: PORT,
+    url: `http://127.0.0.1:${PORT}/`,
+    features: ["RU-orchestrator", "5-sources", "CBR-rates", "cheerio", "throttle", "proxy-hook"]
   });
 });
 

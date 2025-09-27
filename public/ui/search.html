@@ -122,7 +122,7 @@
             <input type="text" class="search-input" id="searchInput" placeholder="Введите MPN или название компонента..." value="">
             <button class="search-button" onclick="performSearch()">Поиск</button>
         </div>
-        
+
         <div id="results"></div>
     </div>
 
@@ -134,13 +134,13 @@
 
         const out = $('#results');
         const msg = (t, cls='') => out.insertAdjacentHTML('beforeend', `<p class="${cls}">${t}</p>`);
-        
+
         function renderResults(list) {
-            if (!Array.isArray(list) || list.length===0) { 
-                out.innerHTML = '<div class="loading">Ничего не найдено.</div>'; 
-                return; 
+            if (!Array.isArray(list) || list.length===0) {
+                out.innerHTML = '<div class="loading">Ничего не найдено.</div>';
+                return;
             }
-            
+
             const html = list.map(x => `
                 <div class="product-card">
                     <div class="product-title">${x.title || x.mpn || x.sku || 'Без названия'}</div>
@@ -160,22 +160,22 @@
                 out.innerHTML = '<div class="loading">Введите запрос для поиска</div>';
                 return;
             }
-            
+
             out.innerHTML = '<div class="loading">Поиск...</div>';
-            
+
             // 1) Сначала запускаем SSE (live)
             const src = `/api/live/search?q=${enc(query)}`;
             const es = new EventSource(src);
             let got = false;
-            es.addEventListener("results", ev => { 
-                got = true; 
-                const j = JSON.parse(ev.data); 
-                renderResults(j.items || j.hits || []); 
+            es.addEventListener("results", ev => {
+                got = true;
+                const j = JSON.parse(ev.data);
+                renderResults(j.items || j.hits || []);
                 es.close();
             });
-            es.addEventListener("error", () => { 
-                es.close(); 
-                if (!got) fallback(); 
+            es.addEventListener("error", () => {
+                es.close();
+                if (!got) fallback();
             });
 
             // 2) Через 3000 мс — фолбэк на синхронный поиск (если стрим не дал результатов)
@@ -189,19 +189,19 @@
                 });
             }
         }
-        
+
         // Автопоиск при вводе
         $('#searchInput').addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
                 performSearch();
             }
         });
-        
+
         // Автопоиск при загрузке, если есть параметр q
         if (q) {
             performSearch();
         }
-        
+
         window.performSearch = performSearch;
     </script>
 </body>

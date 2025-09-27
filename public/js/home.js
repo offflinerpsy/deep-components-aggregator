@@ -1,5 +1,5 @@
 const $ = s => document.querySelector(s);
-const enc = encodeURIComponent; // MDN рекомендует для query. 
+const enc = encodeURIComponent; // MDN рекомендует для query.
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent
 
 document.getElementById('y').textContent = new Date().getFullYear();

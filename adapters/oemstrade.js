@@ -157,27 +157,27 @@ function parseProductElement($, element, qUpper) {
 }
 
 export async function searchOEMsTrade(qUpper, maxItems = 40){
-  const originalUrl = "https://www.oemstrade.com/search/" + encodeURIComponent(qUpper);
-  const url = buildLocalProxyUrl(originalUrl);
+  const url = "https://www.oemstrade.com/search/" + encodeURIComponent(qUpper);
   
-  debugLog(`Searching for: ${qUpper}`, { originalUrl, proxyUrl: url });
+  debugLog(`Searching for: ${qUpper}`, { originalUrl: url });
   
   await politeDelay(); // уважительный интервал перед запросом
   const r = await httpGet(url, HDRS, 15000);
   
-  if (!r.ok) {
-    debugLog(`HTTP request failed: ${r.status}`);
+  if (!r || !r.ok) {
+    debugLog(`HTTP request failed: ${r?.status || 'no response'}`);
     return [];
   }
   
-  if (!r.text || r.text.length < 1000) {
-    debugLog("Response too short or empty");
+  const text = await r.text();
+  if (!text || text.length < 1000) {
+    debugLog("Response too short or empty", { length: text?.length || 0 });
     return [];
   }
   
-  debugLog(`HTML response length: ${r.text.length}`);
+  debugLog(`HTML response length: ${text.length}`);
   
-  const $ = cheerio.load(r.text);
+  const $ = cheerio.load(text);
   
   // Пробуем различные стратегии поиска элементов товаров
   const searchStrategies = [

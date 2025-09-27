@@ -1,0 +1,83 @@
+[
+  {
+    "id": "1N4148W-TP",
+    "url": "#1N4148W-TP",
+    "title": "Диод импульсный 0.15A/100V",
+    "brand": "MCC",
+    "sku": "1N4148W-TP",
+    "mpn": "1N4148W-TP",
+    "text": "Диод импульсный 0.15A/100V Быстрый переключательный диод. MCC SOD-123 Tape 100 0.15 4 0.9@10mA"
+  },
+  {
+    "id": "LM317T",
+    "url": "#LM317T",
+    "title": "Регулятор напряжения 1.2–37В, 1.5A",
+    "brand": "STMicroelectronics",
+    "sku": "LM317T",
+    "mpn": "LM317T",
+    "text": "Регулятор напряжения 1.2–37В, 1.5A Adjustable Regulator LM317T STMicroelectronics TO-220 Tube"
+  },
+  {
+    "id": "1N4148W-TP",
+    "url": "#1N4148W-TP",
+    "title": "Диод импульсный 0.15A/100V [SOD-123]",
+    "brand": "MCC",
+    "sku": "1N4148W-TP",
+    "mpn": "1N4148W-TP",
+    "text": "Диод импульсный 0.15A/100V [SOD-123] Switching diode 1N4148W-TP MCC SOD-123 Tape"
+  },
+  {
+    "id": "LM317T",
+    "url": "#LM317T",
+    "title": "Регулятор напряжения 1.2–37В, 1.5A",
+    "brand": "STMicroelectronics",
+    "sku": "LM317T",
+    "mpn": "LM317T",
+    "text": "Регулятор напряжения 1.2–37В, 1.5A Классический линейный стабилизатор с регулируемым выходом. STMicroelectronics TO-220 Tube 1.5 1.2–37 ≈3 ±1 TO-220 -40…125"
+  },
+  {
+    "id": "1N4148",
+    "url": "#1N4148",
+    "title": "Диод быстродействующий 75V 150mA",
+    "brand": "Various",
+    "sku": "1N4148",
+    "mpn": "1N4148",
+    "text": "Диод быстродействующий 75V 150mA Стандартный кремниевый диод общего назначения Various DO-35 75 150 DO-35"
+  },
+  {
+    "id": "BC547",
+    "url": "#BC547",
+    "title": "Транзистор NPN 45V 100mA",
+    "brand": "Various",
+    "sku": "BC547",
+    "mpn": "BC547",
+    "text": "Транзистор NPN 45V 100mA Биполярный транзистор общего назначения Various TO-92 NPN 45 100"
+  },
+  {
+    "id": "2N7002",
+    "url": "#2N7002",
+    "title": "MOSFET N-канальный 60V 300mA",
+    "brand": "Various",
+    "sku": "2N7002",
+    "mpn": "2N7002",
+    "text": "MOSFET N-канальный 60V 300mA Малосигнальный MOSFET транзистор Various SOT-23 N-Channel MOSFET 60 300"
+  },
+  {
+    "id": "NE555",
+    "url": "#NE555",
+    "title": "Таймер универсальный",
+    "brand": "Various",
+    "sku": "NE555",
+    "mpn": "NE555",
+    "text": "Таймер универсальный Классическая микросхема таймера Various DIP-8 4.5-16 DIP-8"
+  },
+  {
+    "id": "ATmega328P",
+    "url": "#ATmega328P",
+    "title": "Микроконтроллер 8-бит AVR",
+    "brand": "Microchip",
+    "sku": "ATmega328P",
+    "mpn": "ATmega328P",
+    "text": "Микроконтроллер 8-бит AVR 8-битный микроконтроллер семейства AVR Microchip DIP-28 8-bit 32 2"
+  }
+]

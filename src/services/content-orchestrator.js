@@ -48,7 +48,7 @@ export class ContentOrchestrator {
   // Поиск по всем источникам с приоритетом Orama
   async searchAll(query) {
     const results = [];
-    
+
     // Сначала пробуем Orama (быстрый локальный поиск с MPN-бустингом)
     if (this.oramaDb) {
       const oramaResults = await queryDb(this.oramaDb, query);
@@ -57,26 +57,26 @@ export class ContentOrchestrator {
         console.log(`🔍 Orama found ${oramaResults.hits.length} results for "${query}"`);
       }
     }
-    
+
     // Если Orama не дала результатов, идём к OEMsTrade
     if (results.length === 0) {
       const oemsResults = await this.searchOEMsTrade(query);
       results.push(...oemsResults);
       console.log(`🔍 OEMsTrade found ${oemsResults.length} results for "${query}"`);
     }
-    
+
     return this.deduplicateAndSort(results, query);
   }
-  
+
   // Поиск в OEMsTrade
   async searchOEMsTrade(query) {
     // Преобразуем русские запросы в английские для OEMsTrade
     const transformedQuery = this.transformQueryForOEMsTrade(query);
     console.log(`🔄 Transformed query "${query}" → "${transformedQuery}"`);
-    
+
     const oemsResults = await searchOEMsTrade(transformedQuery);
     const results = [];
-    
+
     if (Array.isArray(oemsResults)) {
       for (const item of oemsResults) {
         let priceRub = 0;
@@ -90,7 +90,7 @@ export class ContentOrchestrator {
             }
           }
         }
-        
+
         results.push({
           mpn: item.mpn || query,
           title: item.title || item.mpn || query,
@@ -107,27 +107,27 @@ export class ContentOrchestrator {
         });
       }
     }
-    
+
     return results;
   }
-  
+
   // Получение карточки товара
   async fetchProduct(mpn) {
     console.log(`📄 Fetching product for MPN: ${mpn}`);
-    
+
     // Начинаем с OEMsTrade данных
     const baseProduct = await this.fetchFromOEMsTrade(mpn);
-    
+
     // Обогащаем данными из RU-источников
     const enrichedProduct = await this.enrichProductFromRU(baseProduct, mpn);
-    
+
     return enrichedProduct;
   }
-  
+
   // Обогащение продукта данными из RU-источников
   async enrichProductFromRU(baseProduct, mpn) {
     if (!baseProduct) return null;
-    
+
     const ruData = {
       images: [],
       docs: [],
@@ -135,50 +135,50 @@ export class ContentOrchestrator {
       description: '',
       sources: []
     };
-    
+
     // Пробуем получить данные из каждого RU-источника
     for (const source of SOURCE_PRIORITY.slice(0, 3)) { // Ограничиваем 3 источниками
       const adapter = adapters[source];
       if (!adapter) continue;
-      
+
       console.log(`🔍 Trying RU source: ${source} for ${mpn}`);
-      
+
       const result = await adapter(mpn).catch(err => {
         console.log(`❌ ${source} failed:`, err.message);
         return { ok: false };
       });
-      
+
       if (result.ok && result.data) {
         const data = result.data;
         ruData.sources.push(source);
-        
+
         // Собираем изображения
         if (data.images && data.images.length > 0) {
           ruData.images.push(...data.images.slice(0, 3));
         }
-        
+
         // Собираем документы
         if (data.datasheets && data.datasheets.length > 0) {
           ruData.docs.push(...data.datasheets.slice(0, 2));
         }
-        
+
         // Собираем спецификации
         if (data.technical_specs && Object.keys(data.technical_specs).length > 0) {
           Object.assign(ruData.specs, data.technical_specs);
         }
-        
+
         // Берем описание из первого источника
         if (!ruData.description && data.description) {
           ruData.description = data.description;
         }
-        
+
         console.log(`✅ ${source} provided: ${data.images?.length || 0} images, ${data.datasheets?.length || 0} docs, ${Object.keys(data.technical_specs || {}).length} specs`);
       }
-      
+
       // Добавляем задержку между запросами
       await new Promise(resolve => setTimeout(resolve, NETWORK_LIMITS.minDelay));
     }
-    
+
     // Объединяем базовые данные с RU-контентом
     const enrichedProduct = {
       ...baseProduct,
@@ -188,23 +188,23 @@ export class ContentOrchestrator {
       description_html: ruData.description || baseProduct.description || '',
       sources: [...(baseProduct.sources || ['oemstrade']), ...ruData.sources]
     };
-    
+
     console.log(`🎯 Product enriched with ${ruData.sources.length} RU sources: ${enrichedProduct.gallery.length} images, ${enrichedProduct.docs.length} docs, ${enrichedProduct.specs.length} specs`);
-    
+
     return enrichedProduct;
   }
-  
+
   // Преобразование запроса для OEMsTrade (RU -> EN)
   transformQueryForOEMsTrade(query) {
     // Если запрос содержит только латиницу и цифры, возвращаем как есть
     if (!/[а-яё]/i.test(query)) {
       return query;
     }
-    
+
     // Нормализуем и получаем синонимы
     const normalized = searchTokenizer.normalize(query);
     const tokens = searchTokenizer.tokenize(normalized);
-    
+
     // Преобразуем токены в английские эквиваленты
     const transformedTokens = tokens.map(token => {
       // Проверяем словарь синонимов
@@ -216,36 +216,36 @@ export class ContentOrchestrator {
           return englishSynonym;
         }
       }
-      
+
       // Если нет синонимов, используем транслитерацию
       return searchTokenizer.transliterate(token);
     });
-    
+
     return transformedTokens.join(' ');
   }
-  
+
   // Обогащение карточки из других источников
   async enrichProduct(product, mpn) {
     const enrichPromises = [];
-    
+
     // Если не хватает изображений, документов или спеков
     const needImages = product.gallery.length === 0 || !product.gallery[0].image_url;
     const needDocs = product.docs.length === 0;
     const needSpecs = product.specs.length < 5;
     const needDescription = !product.description_html;
-    
+
     if (needImages || needDocs || needSpecs || needDescription) {
       for (const source of SOURCE_PRIORITY) {
         if (product.sources.some(s => s.source === source)) continue;
-        
+
         const adapter = adapters[source];
         if (!adapter) continue;
-        
+
         const promise = adapter.fetchProduct(mpn).then(result => {
           if (result.status !== 'OK' || !result.data) return;
-          
+
           const data = result.data;
-          
+
           // Дополняем изображения
           if (needImages && data.gallery.length > 0) {
             for (const img of data.gallery) {
@@ -254,7 +254,7 @@ export class ContentOrchestrator {
               }
             }
           }
-          
+
           // Дополняем документы
           if (needDocs && data.docs.length > 0) {
             for (const doc of data.docs) {
@@ -263,7 +263,7 @@ export class ContentOrchestrator {
               }
             }
           }
-          
+
           // Дополняем спеки
           if (needSpecs && data.specs.length > 0) {
             for (const spec of data.specs) {
@@ -272,12 +272,12 @@ export class ContentOrchestrator {
               }
             }
           }
-          
+
           // Дополняем описание
           if (needDescription && data.description_html) {
             product.description_html = data.description_html;
           }
-          
+
           // Добавляем источник
           product.sources.push({
             source: source,
@@ -286,25 +286,25 @@ export class ContentOrchestrator {
         }).catch(err => {
           console.log(`[${source}] Enrich error:`, err.message);
         });
-        
+
         enrichPromises.push(promise);
-        
+
         if (enrichPromises.length >= NETWORK_LIMITS.maxConcurrent) {
           await Promise.race(enrichPromises);
         }
       }
-      
+
       await Promise.allSettled(enrichPromises);
     }
   }
-  
+
   // Получение из OEMsTrade
   async fetchFromOEMsTrade(mpn) {
     const results = await searchOEMsTrade(mpn);
     if (!Array.isArray(results) || results.length === 0) return null;
-    
+
     const item = results.find(r => r.mpn === mpn) || results[0];
-    
+
     let priceRub = 0;
     if (item.price_min > 0 && item.price_min_currency) {
       if (item.price_min_currency === 'RUB') {
@@ -316,12 +316,12 @@ export class ContentOrchestrator {
         }
       }
     }
-    
+
     return {
       mpn: item.mpn || mpn,
       title: item.title || item.mpn || mpn,
       manufacturer: item.manufacturer || '',
-      gallery: item.images?.length > 0 
+      gallery: item.images?.length > 0
         ? item.images.map(url => ({ image_url: url }))
         : (item.image && item.image !== '/ui/placeholder.svg' ? [{ image_url: item.image }] : []),
       meta: {
@@ -346,24 +346,24 @@ export class ContentOrchestrator {
       }]
     };
   }
-  
+
   // Дедупликация и сортировка результатов поиска
   deduplicateAndSort(results, query) {
     // Группируем по MPN + manufacturer + package
     const grouped = new Map();
-    
+
     for (const item of results) {
       const key = `${item.mpn}|${item.manufacturer}|${item.package}`;
       const existing = grouped.get(key);
-      
+
       if (!existing || this.isBetterResult(item, existing)) {
         grouped.set(key, item);
       }
     }
-    
+
     // Преобразуем обратно в массив
     const deduplicated = Array.from(grouped.values());
-    
+
     // Сортировка
     deduplicated.sort((a, b) => {
       // Точное совпадение MPN
@@ -371,23 +371,23 @@ export class ContentOrchestrator {
       const bExact = b.mpn.toUpperCase() === query.toUpperCase();
       if (aExact && !bExact) return -1;
       if (!aExact && bExact) return 1;
-      
+
       // Наличие на складе
       const aHasStock = (a.stock || 0) > 0;
       const bHasStock = (b.stock || 0) > 0;
       if (aHasStock && !bHasStock) return -1;
       if (!aHasStock && bHasStock) return 1;
-      
+
       // Минимальная цена
       const aPrice = a.min_price_rub || Number.MAX_VALUE;
       const bPrice = b.min_price_rub || Number.MAX_VALUE;
       return aPrice - bPrice;
     });
-    
+
     // Ограничиваем до 40 результатов
     return deduplicated.slice(0, 40);
   }
-  
+
   // Определение лучшего результата
   isBetterResult(a, b) {
     // Приоритет RU-источников
@@ -395,28 +395,28 @@ export class ContentOrchestrator {
     const bIsRu = b.source !== 'oemstrade';
     if (aIsRu && !bIsRu) return true;
     if (!aIsRu && bIsRu) return false;
-    
+
     // Больше информации
-    const aInfo = (a.description_short ? 1 : 0) + 
-                  (a.image_url ? 1 : 0) + 
+    const aInfo = (a.description_short ? 1 : 0) +
+                  (a.image_url ? 1 : 0) +
                   (a.manufacturer ? 1 : 0);
-    const bInfo = (b.description_short ? 1 : 0) + 
-                  (b.image_url ? 1 : 0) + 
+    const bInfo = (b.description_short ? 1 : 0) +
+                  (b.image_url ? 1 : 0) +
                   (b.manufacturer ? 1 : 0);
     if (aInfo > bInfo) return true;
     if (aInfo < bInfo) return false;
-    
+
     // Наличие и цена
     const aHasStock = (a.stock || 0) > 0;
     const bHasStock = (b.stock || 0) > 0;
     if (aHasStock && !bHasStock) return true;
     if (!aHasStock && bHasStock) return false;
-    
+
     const aPrice = a.min_price_rub || Number.MAX_VALUE;
     const bPrice = b.min_price_rub || Number.MAX_VALUE;
     return aPrice < bPrice;
   }
-  
+
   truncateText(text, maxLength) {
     if (!text) return '';
     const clean = text.replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim();
@@ -425,4 +425,4 @@ export class ContentOrchestrator {
 }
 
 // Экспорт синглтона
-export const contentOrchestrator = new ContentOrchestrator(); 
+export const contentOrchestrator = new ContentOrchestrator();

@@ -16,7 +16,7 @@ def run_command(command):
 
 def main():
     log("🔄 СИНХРОНИЗАЦИЯ ВСЕХ РЕПОЗИТОРИЕВ")
-    
+
     # 1. Добавляем все изменения
     log("📝 Добавляем изменения...")
     success, output, error = run_command("git add .")
@@ -25,7 +25,7 @@ def main():
     else:
         log(f"❌ Ошибка git add: {error}")
         return
-    
+
     # 2. Коммитим
     commit_msg = f"fix: полная синхронизация всех репозиториев ({datetime.now().strftime('%Y-%m-%d %H:%M')})"
     success, output, error = run_command(f'git commit -m "{commit_msg}"')
@@ -33,7 +33,7 @@ def main():
         log("✅ Изменения закоммичены")
     else:
         log(f"⚠️ Коммит: {error}")
-    
+
     # 3. Пушим в origin (GitHub)
     log("📤 Отправляем в GitHub...")
     success, output, error = run_command("git push origin main")
@@ -42,7 +42,7 @@ def main():
     else:
         log(f"❌ Ошибка push в GitHub: {error}")
         return
-    
+
     # 4. Пушим в prod (основной сервер)
     log("📤 Отправляем на prod сервер...")
     success, output, error = run_command("git push prod main")
@@ -50,7 +50,7 @@ def main():
         log("✅ Изменения отправлены на prod")
     else:
         log(f"❌ Ошибка push на prod: {error}")
-    
+
     # 5. Пушим в diag (диагностический сервер)
     log("📤 Отправляем на diag сервер...")
     success, output, error = run_command("git push diag main")
@@ -58,20 +58,20 @@ def main():
         log("✅ Изменения отправлены на diag")
     else:
         log(f"❌ Ошибка push на diag: {error}")
-    
+
     # 6. Проверяем статус
     log("🔍 Проверяем статус...")
     success, output, error = run_command("git status")
     if success:
         log("=== GIT STATUS ===")
         print(output)
-    
+
     # 7. Проверяем remote
     success, output, error = run_command("git remote -v")
     if success:
         log("=== REMOTE REPOS ===")
         print(output)
-    
+
     log("✅ СИНХРОНИЗАЦИЯ ЗАВЕРШЕНА")
     log("")
     log("🌐 ПРОВЕРЬТЕ:")

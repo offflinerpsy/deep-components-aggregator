@@ -164,6 +164,40 @@ app.use("/api/product", productRouter);
 // Роут для поиска
 app.use("/api/search", searchRouter);
 
+// SSE helper без try/catch
+function sseHeaders(res) {
+  res.status(200);
+  res.setHeader("Content-Type", "text/event-stream");
+  res.setHeader("Cache-Control", "no-cache");
+  res.setHeader("Connection", "keep-alive");
+  res.flushHeaders?.();
+}
+
+// Универсальный роут: если есть live-пайплайн — используем его; иначе шлём быстрый фолбэк из /api/search
+app.get("/api/live/search", async (req, res) => {
+  const q = (req.query.q || "").toString();
+  sseHeaders(res);
+  // фаза 1: моментальный тик, чтобы UI снял лоадер
+  res.write(`event: tick\ndata: ${JSON.stringify({phase:"start", q})}\n\n`);
+
+  // есть ли наш live-обработчик?
+  const live = app._router?.stack?.find(l =>
+    l.route && l.route.path && String(l.route.path).includes("/__internal/live-search"));
+  if (live) {
+    // передаём управление внутреннему live-роуту, если он есть
+    res.write(`event: note\ndata: ${JSON.stringify({phase:"handoff"})}\n\n`);
+    // внутренний обработчик должен сам дописать результаты/закрыть поток
+    app.handle({ ...req, url: "/__internal/live-search?q=" + encodeURIComponent(q) }, res, () => {});
+    return;
+  }
+
+  // фаза 2: фолбэк — обычный поиск и единичная посылка
+  const origin = await fetch(`http://127.0.0.1:9201/api/search?q=${encodeURIComponent(q)}`);
+  const json = await origin.json();
+  res.write(`event: results\ndata: ${JSON.stringify(json)}\n\n`);
+  res.end();
+});
+
 app.get("/", (req, res) => res.sendFile(path.join(PUB_DIR, "ui", "index.html")));
 app.get("/product", (req, res) => res.sendFile(path.join(PUB_DIR, "ui", "product.html")));
 

@@ -1,7 +1,7 @@
 // adapters/oemstrade.js — улучшенный парсер выдачи OEMsTrade с Cheerio селекторами
 import * as cheerio from "cheerio";
 import { httpGet, politeDelay } from "../lib/net.js";
-import { proxyManager } from "../src/proxy/proxy-manager.js";
+// import { proxyManager } from "../src/proxy/proxy-manager.js";
 
 const UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123 Safari/537.36";
 const HDRS = { "User-Agent": UA, "Accept-Language": "en-US,en;q=0.8" };
@@ -162,15 +162,19 @@ export async function searchOEMsTrade(qUpper, maxItems = 40){
   
   debugLog(`Searching for: ${qUpper}`, { originalUrl: url });
   
-  // Используем прокси-менеджер для получения fetch options
+  // Простой запрос без прокси
   await politeDelay(); // уважительный интервал перед запросом
   
-  const fetchOptions = await proxyManager.createFetchOptions(url, {
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 15000);
+  
+  const response = await fetch(url, {
     headers: HDRS,
-    timeout: 15000
+    signal: controller.signal
   });
   
-  const response = await fetch(url, fetchOptions);
+  clearTimeout(timeoutId);
+  
   const r = {
     ok: response.ok,
     status: response.status,

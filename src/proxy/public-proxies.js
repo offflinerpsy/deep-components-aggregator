@@ -70,25 +70,32 @@ export async function testProxy(proxyUrl, timeout = 5000) {
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), timeout);
   
-  const testUrl = 'http://httpbin.org/ip'; // простой тест
-  
-  const response = await fetch(testUrl, {
-    signal: controller.signal,
-    headers: {
-      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+  try {
+    const testUrl = 'http://httpbin.org/ip'; // простой тест
+    
+    const response = await fetch(testUrl, {
+      signal: controller.signal,
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+      }
+    });
+    
+    clearTimeout(timeoutId);
+    const responseTime = Date.now() - startTime;
+    
+    if (!response.ok) {
+      updateProxyStats(proxyUrl, false, responseTime);
+      return { ok: false, responseTime, status: response.status };
     }
-  });
-  
-  clearTimeout(timeoutId);
-  const responseTime = Date.now() - startTime;
-  
-  if (!response.ok) {
+    
+    updateProxyStats(proxyUrl, true, responseTime);
+    return { ok: true, responseTime, status: response.status };
+  } catch (error) {
+    clearTimeout(timeoutId);
+    const responseTime = Date.now() - startTime;
     updateProxyStats(proxyUrl, false, responseTime);
-    return { ok: false, responseTime, status: response.status };
+    return { ok: false, responseTime, error: error.message };
   }
-  
-  updateProxyStats(proxyUrl, true, responseTime);
-  return { ok: true, responseTime, status: response.status };
 }
 
 // Логирование состояния прокси

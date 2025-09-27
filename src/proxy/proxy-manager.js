@@ -29,13 +29,18 @@ export class ProxyManager {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 3000);
     
-    const response = await fetch(`${this.localProxyUrl}/proxy/http://httpbin.org/ip`, {
-      signal: controller.signal,
-      headers: { 'User-Agent': 'DeepAgg/1.0' }
-    });
-    
-    clearTimeout(timeoutId);
-    return response.ok;
+    try {
+      const response = await fetch(`${this.localProxyUrl}/proxy/http://httpbin.org/ip`, {
+        signal: controller.signal,
+        headers: { 'User-Agent': 'DeepAgg/1.0' }
+      });
+      
+      clearTimeout(timeoutId);
+      return response.ok;
+    } catch (error) {
+      clearTimeout(timeoutId);
+      return false;
+    }
   }
 
   // Получить лучший доступный прокси

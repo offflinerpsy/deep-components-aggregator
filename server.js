@@ -147,7 +147,7 @@ app.get("/api/search", async (req, res) => {
 app.get("/api/product", async (req, res) => {
   const id = (req.query.id || "").trim();
   const mpn = (req.query.mpn || id).trim(); // поддержка обоих параметров
-  
+
   if (!mpn) {
     res.status(400).json({ ok: false, error: "id_or_mpn_required" });
     return;
@@ -228,12 +228,18 @@ app.get("/api/live/search", async (req, res) => {
 app.get("/__internal/live-search", async (req, res) => {
   const q = (req.query.q || "").toString();
 
+  // Устанавливаем SSE заголовки сразу
+  res.setHeader('Content-Type', 'text/event-stream');
+  res.setHeader('Cache-Control', 'no-cache');
+  res.setHeader('Connection', 'keep-alive');
+  res.setHeader('Access-Control-Allow-Origin', '*');
+
   // Импортируем live search модули
   const { handleLiveSearch } = await import('./src/live/http.mjs');
   await handleLiveSearch(req, res, q);
 });
 
-app.get("/", (req, res) => res.sendFile(path.join(PUB_DIR, "ui", "index.html")));
+app.get("/", (req, res) => res.sendFile(path.join(PUB_DIR, "index.html")));
 app.get("/product", (req, res) => res.sendFile(path.join(PUB_DIR, "ui", "product.html")));
 
 // 404 handler

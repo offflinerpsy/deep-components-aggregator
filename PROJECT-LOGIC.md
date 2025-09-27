@@ -119,7 +119,7 @@
 ```
 
 **2. Сайт-исследователь:**
-```javascript  
+```javascript
 // scripts/workers/site-researcher.mjs
 // Изучает структуру русских сайтов
 // Делает скриншоты + HTML дампы
@@ -129,7 +129,7 @@
 
 **3. Тест-воркер:**
 ```javascript
-// scripts/workers/parser-tester.mjs  
+// scripts/workers/parser-tester.mjs
 // Тестирует парсеры на 50 товарах
 // Проверяет полноту извлеченных данных
 // Генерирует отчеты успешности

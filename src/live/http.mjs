@@ -1,5 +1,5 @@
-// src/live/http.mjs - обработчик SSE live search с прокси
-import { proxyManager } from '../proxy/proxy-manager.js';
+// src/live/http.mjs - обработчик SSE live search без прокси (упрощенная версия)
+// import { proxyManager } from '../proxy/proxy-manager.js';
 
 export async function handleLiveSearch(req, res, q) {
   console.log(`🔍 Live search started for: "${q}"`);
@@ -8,7 +8,7 @@ export async function handleLiveSearch(req, res, q) {
   res.write(`event: note\ndata: ${JSON.stringify({phase:"init", query: q})}\n\n`);
   
   let totalResults = 0;
-  const searchSources = ['oemstrade', 'chipdip', 'elitan']; // расширили список источников
+  const searchSources = ['oemstrade', 'chipdip']; // упрощенный список источников
   
   // Фаза 2: Поиск по источникам с прокси
   for (const source of searchSources) {
@@ -57,52 +57,31 @@ async function searchWithSource(source, query) {
   const startTime = Date.now();
   
   if (source === 'oemstrade') {
-    const { searchOEMsTrade } = await import('../../adapters/oemstrade.js');
-    
-    // Устанавливаем прокси для этого источника
-    const proxyUrl = await proxyManager.getBestProxy();
-    if (proxyUrl) {
-      process.env.HTTPS_PROXY = proxyUrl;
-      console.log(`🔄 Using proxy for OEMsTrade: ${proxyUrl}`);
+    try {
+      const { searchOEMsTrade } = await import('../../adapters/oemstrade.js');
+      const results = await searchOEMsTrade(query);
+      const elapsed = Date.now() - startTime;
+      
+      console.log(`⏱️ OEMsTrade search completed in ${elapsed}ms, found ${results.length} items`);
+      return results || [];
+    } catch (error) {
+      console.log(`❌ OEMsTrade search failed: ${error.message}`);
+      return [];
     }
-    
-    const results = await searchOEMsTrade(query);
-    const elapsed = Date.now() - startTime;
-    
-    console.log(`⏱️ OEMsTrade search completed in ${elapsed}ms, found ${results.length} items`);
-    return results || [];
   }
   
   if (source === 'chipdip') {
-    const { searchChipDip } = await import('../adapters/chipdip.js');
-    
-    const proxyUrl = await proxyManager.getBestProxy();
-    if (proxyUrl) {
-      process.env.HTTPS_PROXY = proxyUrl;
-      console.log(`🔄 Using proxy for ChipDip: ${proxyUrl}`);
+    try {
+      const { searchChipDip } = await import('../adapters/chipdip.js');
+      const results = await searchChipDip(query);
+      const elapsed = Date.now() - startTime;
+      
+      console.log(`⏱️ ChipDip search completed in ${elapsed}ms, found ${results.length} items`);
+      return results || [];
+    } catch (error) {
+      console.log(`❌ ChipDip search failed: ${error.message}`);
+      return [];
     }
-    
-    const results = await searchChipDip(query);
-    const elapsed = Date.now() - startTime;
-    
-    console.log(`⏱️ ChipDip search completed in ${elapsed}ms, found ${results.length} items`);
-    return results || [];
-  }
-  
-  if (source === 'elitan') {
-    const { searchElitan } = await import('../adapters/elitan.js');
-    
-    const proxyUrl = await proxyManager.getBestProxy();
-    if (proxyUrl) {
-      process.env.HTTPS_PROXY = proxyUrl;
-      console.log(`🔄 Using proxy for Elitan: ${proxyUrl}`);
-    }
-    
-    const results = await searchElitan(query);
-    const elapsed = Date.now() - startTime;
-    
-    console.log(`⏱️ Elitan search completed in ${elapsed}ms, found ${results.length} items`);
-    return results || [];
   }
   
   return [];

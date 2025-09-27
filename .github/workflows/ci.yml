@@ -1,6 +1,10 @@
 # .github/workflows/ci.yml - CI-гейт с RU-оркестратором и E2E тестами
 name: CI Gate - RU Content Orchestrator
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 on:
   push:
     branches: [ main, develop, 'feature/**' ]

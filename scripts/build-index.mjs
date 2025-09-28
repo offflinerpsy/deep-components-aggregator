@@ -2,10 +2,10 @@
 
 /**
  * Скрипт для построения поискового индекса
- * 
+ *
  * Использование:
  * node scripts/build-index.mjs [--backup]
- * 
+ *
  * Опции:
  * --backup - создать резервную копию существующего индекса (по умолчанию false)
  */
@@ -24,11 +24,11 @@ const BACKUP_PATH = 'data/idx/search-index.json.bak';
  */
 async function main() {
   console.log('Starting index build...');
-  
+
   // Парсим аргументы командной строки
   const args = process.argv.slice(2);
   const backup = args.includes('--backup');
-  
+
   // Создаем резервную копию индекса, если указана опция
   if (backup && existsSync(INDEX_PATH)) {
     console.log('Creating backup of existing index...');
@@ -39,35 +39,35 @@ async function main() {
       console.warn(`Failed to create backup: ${error.message}`);
     }
   }
-  
+
   // Загружаем все продукты
   console.log('Loading products...');
   const items = loadAllProducts();
   console.log(`Loaded ${items.length} products`);
-  
+
   // Строим индекс
   console.log('Building search index...');
   const startTime = Date.now();
   await buildIndex(items);
   const endTime = Date.now();
-  
+
   // Создаем метаданные индекса
   const indexMeta = {
     ts: Date.now(),
     count: items.length,
     build_time_ms: endTime - startTime
   };
-  
+
   // Создаем директорию, если она не существует
   const dir = path.dirname(INDEX_PATH);
   if (!existsSync(dir)) {
     const { mkdirSync } = await import('node:fs');
     mkdirSync(dir, { recursive: true });
   }
-  
+
   // Сохраняем метаданные индекса
   writeFileSync(INDEX_PATH, JSON.stringify(indexMeta, null, 2));
-  
+
   console.log(`Index built successfully with ${items.length} items in ${(endTime - startTime) / 1000} seconds`);
   console.log(`Index metadata saved to ${INDEX_PATH}`);
 }

@@ -25,16 +25,16 @@
           <option value="price-desc">Цена: по убыванию</option>
           <option value="brand">Производитель: A-Z</option>
         </select>
-        
+
         <input type="text" id="filter-region" placeholder="Фильтр по региону">
-        
+
         <select id="filter-pkg-type">
           <option value="">Тип корпуса: все</option>
           <option value="SMD">SMD</option>
           <option value="THT">THT</option>
         </select>
       </div>
-      
+
       <div id="results-count">
         Найдено: <span>0</span> результатов
       </div>
@@ -58,16 +58,16 @@
         <!-- Результаты будут добавлены через JavaScript -->
       </tbody>
     </table>
-    
+
     <div id="pagination" class="pagination">
       <!-- Пагинация будет добавлена через JavaScript -->
     </div>
-    
+
     <div id="no-results" class="no-results hidden">
       <p>По вашему запросу ничего не найдено.</p>
       <p>Попробуйте изменить запрос или проверить правильность написания.</p>
     </div>
-    
+
     <div id="loading" class="loading hidden">
       <div class="spinner"></div>
       <p>Загрузка результатов...</p>
@@ -81,7 +81,7 @@
         <h2 id="modal-title">Название товара</h2>
         <button id="modal-close" class="close-btn">&times;</button>
       </div>
-      
+
       <div class="modal-body">
         <div class="product-card">
           <div class="product-gallery">
@@ -92,26 +92,26 @@
               <!-- Миниатюры будут добавлены через JavaScript -->
             </div>
           </div>
-          
+
           <div class="product-info">
             <div class="product-meta">
               <p id="modal-mpn" class="mpn">MPN: </p>
               <p id="modal-brand" class="brand">Производитель: </p>
               <p id="modal-pkg" class="package">Корпус: </p>
             </div>
-            
+
             <div class="product-description">
               <h3>Описание</h3>
               <p id="modal-description"></p>
             </div>
-            
+
             <div class="product-specs">
               <h3>Технические характеристики</h3>
               <table id="modal-specs">
                 <!-- Характеристики будут добавлены через JavaScript -->
               </table>
             </div>
-            
+
             <div class="product-docs">
               <h3>Документация</h3>
               <ul id="modal-docs">
@@ -119,27 +119,27 @@
               </ul>
             </div>
           </div>
-          
+
           <div class="product-order">
             <div class="price-box">
               <h3>Цена</h3>
               <p id="modal-price" class="price">0 ₽</p>
             </div>
-            
+
             <div class="stock-box">
               <h3>Наличие</h3>
               <table id="modal-stock">
                 <!-- Наличие будет добавлено через JavaScript -->
               </table>
             </div>
-            
+
             <div class="order-form">
               <h3>Заказ</h3>
               <div class="form-group">
                 <label for="modal-quantity">Количество</label>
                 <input type="number" id="modal-quantity" min="1" value="1">
               </div>
-              
+
               <button id="modal-order-btn" class="order-btn">Оформить заказ</button>
             </div>
           </div>
@@ -155,29 +155,29 @@
         <h2>Оформление заказа</h2>
         <button id="order-modal-close" class="close-btn">&times;</button>
       </div>
-      
+
       <div class="modal-body">
         <form id="order-form">
           <div class="form-group">
             <label for="order-name">ФИО</label>
             <input type="text" id="order-name" required>
           </div>
-          
+
           <div class="form-group">
             <label for="order-email">Email</label>
             <input type="email" id="order-email" required>
           </div>
-          
+
           <div class="form-group">
             <label for="order-phone">Телефон</label>
             <input type="tel" id="order-phone">
           </div>
-          
+
           <div class="form-group">
             <label for="order-comment">Комментарий</label>
             <textarea id="order-comment"></textarea>
           </div>
-          
+
           <div class="form-actions">
             <button type="submit" class="submit-btn">Отправить заявку</button>
           </div>

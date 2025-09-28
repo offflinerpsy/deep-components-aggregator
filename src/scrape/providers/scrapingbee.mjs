@@ -25,23 +25,23 @@ export async function fetchViaScrapingBee({ key, url, params = {}, timeout = DEF
     premium_proxy: 'true', // Используем премиум прокси
     country_code: 'ru', // Используем русские IP
   };
-  
-  const usp = new URLSearchParams({ 
-    api_key: key, 
-    url, 
-    ...defaultParams, 
-    ...params 
+
+  const usp = new URLSearchParams({
+    api_key: key,
+    url,
+    ...defaultParams,
+    ...params
   });
-  
+
   let lastErr;
-  
+
   // Выполняем запрос с повторными попытками
   for (let i = 0; i <= retries; i++) {
     try {
       // Создаем контроллер для таймаута
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), timeout);
-      
+
       // Выполняем запрос
       const response = await fetch(`${BASE}?${usp.toString()}`, {
         redirect: 'follow',
@@ -50,19 +50,19 @@ export async function fetchViaScrapingBee({ key, url, params = {}, timeout = DEF
           'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36'
         })
       });
-      
+
       clearTimeout(timeoutId);
-      
+
       // Проверяем статус ответа
       if (!response.ok) {
         throw new Error(`ScrapingBee error: ${response.status}`);
       }
-      
+
       // Возвращаем текст ответа
       return await response.text();
     } catch (err) {
       lastErr = err;
-      
+
       // Если это не последняя попытка, ждем перед повторной попыткой
       if (i < retries) {
         // Экспоненциальный backoff с джиттером
@@ -71,7 +71,7 @@ export async function fetchViaScrapingBee({ key, url, params = {}, timeout = DEF
       }
     }
   }
-  
+
   // Если все попытки не удались, выбрасываем последнюю ошибку
   throw lastErr || new Error('SCRAPINGBEE_FAILED_AFTER_RETRIES');
 }

@@ -16,20 +16,20 @@ export function loadAllProducts() {
     console.warn(`Directory ${PRODUCTS_DIR} does not exist`);
     return [];
   }
-  
+
   // Получаем список файлов JSON
   const files = readdirSync(PRODUCTS_DIR).filter(f => f.endsWith('.json'));
   console.log(`Found ${files.length} product files`);
-  
+
   // Загружаем данные из каждого файла
   const products = [];
-  
+
   for (const file of files) {
     try {
       const filePath = path.join(PRODUCTS_DIR, file);
       const content = readFileSync(filePath, 'utf8');
       const product = JSON.parse(content);
-      
+
       // Проверяем наличие обязательных полей
       if (product && product.mpn) {
         products.push(product);
@@ -40,7 +40,7 @@ export function loadAllProducts() {
       console.error(`Error loading product from ${file}: ${error.message}`);
     }
   }
-  
+
   console.log(`Loaded ${products.length} valid products`);
   return products;
 }
@@ -54,16 +54,16 @@ export function loadProduct(mpn) {
   if (!mpn) {
     return null;
   }
-  
+
   // Нормализуем MPN для использования в имени файла
   const safeMpn = mpn.replace(/[\/\\?%*:|"<>]/g, '_');
   const filePath = path.join(PRODUCTS_DIR, `${safeMpn}.json`);
-  
+
   // Проверяем существование файла
   if (!existsSync(filePath)) {
     return null;
   }
-  
+
   try {
     // Загружаем данные из файла
     const content = readFileSync(filePath, 'utf8');

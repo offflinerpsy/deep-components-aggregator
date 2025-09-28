@@ -24,16 +24,16 @@ export async function fetchViaScrapingBot({ key, url, params = {}, timeout = DEF
     url,
     ...params
   };
-  
+
   let lastErr;
-  
+
   // Выполняем запрос с повторными попытками
   for (let i = 0; i <= retries; i++) {
     try {
       // Создаем контроллер для таймаута
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), timeout);
-      
+
       // Выполняем запрос
       const response = await fetch(BASE, {
         method: 'POST',
@@ -46,20 +46,20 @@ export async function fetchViaScrapingBot({ key, url, params = {}, timeout = DEF
         }),
         body: JSON.stringify(requestBody)
       });
-      
+
       clearTimeout(timeoutId);
-      
+
       // Проверяем статус ответа
       if (!response.ok) {
         throw new Error(`Scraping-Bot error: ${response.status}`);
       }
-      
+
       // Возвращаем текст ответа
       const responseData = await response.json();
       return responseData.body || '';
     } catch (err) {
       lastErr = err;
-      
+
       // Если это не последняя попытка, ждем перед повторной попыткой
       if (i < retries) {
         // Экспоненциальный backoff с джиттером
@@ -68,7 +68,7 @@ export async function fetchViaScrapingBot({ key, url, params = {}, timeout = DEF
       }
     }
   }
-  
+
   // Если все попытки не удались, выбрасываем последнюю ошибку
   throw lastErr || new Error('SCRAPINGBOT_FAILED_AFTER_RETRIES');
 }

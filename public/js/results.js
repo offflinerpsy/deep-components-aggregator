@@ -49,13 +49,13 @@ document.addEventListener('DOMContentLoaded', () => {
   // Получаем параметры из URL
   const urlParams = new URLSearchParams(window.location.search);
   const query = urlParams.get('q');
-  
+
   // Если есть запрос в URL, выполняем поиск
   if (query) {
     searchInput.value = query;
     performSearch(query);
   }
-  
+
   // Обработчики событий
   searchButton.addEventListener('click', () => {
     const query = searchInput.value.trim();
@@ -67,7 +67,7 @@ document.addEventListener('DOMContentLoaded', () => {
       window.history.pushState({}, '', url);
     }
   });
-  
+
   searchInput.addEventListener('keydown', (e) => {
     if (e.key === 'Enter') {
       const query = searchInput.value.trim();
@@ -80,30 +80,30 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
   });
-  
+
   // Обработчики фильтрации и сортировки
   sortByEl.addEventListener('change', updateResults);
   filterRegionEl.addEventListener('input', updateResults);
   filterPkgTypeEl.addEventListener('change', updateResults);
-  
+
   // Обработчики модальных окон
   modalClose.addEventListener('click', () => {
     productModal.classList.add('hidden');
   });
-  
+
   orderModalClose.addEventListener('click', () => {
     orderModal.classList.add('hidden');
   });
-  
+
   modalOrderBtn.addEventListener('click', () => {
     orderModal.classList.remove('hidden');
   });
-  
+
   orderForm.addEventListener('submit', (e) => {
     e.preventDefault();
     submitOrder();
   });
-  
+
   // Закрытие модальных окон при клике вне их содержимого
   window.addEventListener('click', (e) => {
     if (e.target === productModal) {
@@ -124,15 +124,15 @@ async function performSearch(query) {
   loadingEl.classList.remove('hidden');
   noResultsEl.classList.add('hidden');
   resultsBody.innerHTML = '';
-  
+
   try {
     // Выполняем запрос к API
     const response = await fetch(`/api/search?q=${encodeURIComponent(query)}`);
     const data = await response.json();
-    
+
     // Сохраняем результаты
     searchResults = data.items || [];
-    
+
     // Обновляем интерфейс
     updateResults();
   } catch (error) {
@@ -150,25 +150,25 @@ async function performSearch(query) {
 function updateResults() {
   // Применяем фильтры
   let filteredResults = [...searchResults];
-  
+
   // Фильтр по региону
   const regionFilter = filterRegionEl.value.trim().toLowerCase();
   if (regionFilter) {
     filteredResults = filteredResults.filter(item => {
-      return (item.regions || []).some(region => 
+      return (item.regions || []).some(region =>
         region.toLowerCase().includes(regionFilter)
       );
     });
   }
-  
+
   // Фильтр по типу корпуса
   const pkgTypeFilter = filterPkgTypeEl.value;
   if (pkgTypeFilter) {
-    filteredResults = filteredResults.filter(item => 
+    filteredResults = filteredResults.filter(item =>
       item.pkg_type === pkgTypeFilter
     );
   }
-  
+
   // Применяем сортировку
   const sortBy = sortByEl.value;
   switch (sortBy) {
@@ -195,10 +195,10 @@ function updateResults() {
       break;
     // По умолчанию - сортировка по релевантности (как вернул API)
   }
-  
+
   // Обновляем счетчик результатов
   resultsCount.textContent = filteredResults.length;
-  
+
   // Если результатов нет, показываем сообщение
   if (filteredResults.length === 0) {
     noResultsEl.classList.remove('hidden');
@@ -206,26 +206,26 @@ function updateResults() {
     resultsBody.innerHTML = '';
     return;
   }
-  
+
   // Скрываем сообщение об отсутствии результатов
   noResultsEl.classList.add('hidden');
-  
+
   // Вычисляем общее количество страниц
   const totalPages = Math.ceil(filteredResults.length / resultsPerPage);
-  
+
   // Если текущая страница больше общего количества страниц, устанавливаем последнюю страницу
   if (currentPage > totalPages) {
     currentPage = totalPages;
   }
-  
+
   // Получаем результаты для текущей страницы
   const startIndex = (currentPage - 1) * resultsPerPage;
   const endIndex = startIndex + resultsPerPage;
   const pageResults = filteredResults.slice(startIndex, endIndex);
-  
+
   // Отображаем результаты
   renderResults(pageResults);
-  
+
   // Обновляем пагинацию
   renderPagination(totalPages);
 }
@@ -237,11 +237,11 @@ function updateResults() {
 function renderResults(results) {
   // Очищаем таблицу
   resultsBody.innerHTML = '';
-  
+
   // Добавляем строки с результатами
   results.forEach(item => {
     const row = document.createElement('tr');
-    
+
     // Изображение
     const imageCell = document.createElement('td');
     const image = document.createElement('img');
@@ -249,7 +249,7 @@ function renderResults(results) {
     image.src = item.image || '/img/no-image.png';
     image.alt = item.title || item.mpn || '';
     imageCell.appendChild(image);
-    
+
     // MPN и название
     const mpnCell = document.createElement('td');
     const mpnEl = document.createElement('div');
@@ -260,15 +260,15 @@ function renderResults(results) {
     titleEl.textContent = item.title || '';
     mpnCell.appendChild(mpnEl);
     mpnCell.appendChild(titleEl);
-    
+
     // Производитель
     const brandCell = document.createElement('td');
     brandCell.textContent = item.brand || '';
-    
+
     // Описание
     const descCell = document.createElement('td');
     descCell.textContent = item.desc || '';
-    
+
     // Корпус
     const pkgCell = document.createElement('td');
     if (item.pkg) {
@@ -280,7 +280,7 @@ function renderResults(results) {
         pkgCell.appendChild(pkgTypeEl);
       }
     }
-    
+
     // Регионы
     const regionsCell = document.createElement('td');
     if (item.regions && item.regions.length > 0) {
@@ -290,7 +290,7 @@ function renderResults(results) {
         badge.textContent = region;
         regionsCell.appendChild(badge);
       });
-      
+
       if (item.regions.length > 3) {
         const more = document.createElement('span');
         more.className = 'badge';
@@ -298,7 +298,7 @@ function renderResults(results) {
         regionsCell.appendChild(more);
       }
     }
-    
+
     // Наличие
     const stockCell = document.createElement('td');
     if (item.stock_total !== null && item.stock_total !== undefined) {
@@ -306,7 +306,7 @@ function renderResults(results) {
     } else {
       stockCell.textContent = 'По запросу';
     }
-    
+
     // Цена
     const priceCell = document.createElement('td');
     if (item.price_rub) {
@@ -314,7 +314,7 @@ function renderResults(results) {
     } else {
       priceCell.textContent = 'По запросу';
     }
-    
+
     // Кнопка "Открыть"
     const actionCell = document.createElement('td');
     const openButton = document.createElement('button');
@@ -324,7 +324,7 @@ function renderResults(results) {
       openProductModal(item.mpn);
     });
     actionCell.appendChild(openButton);
-    
+
     // Добавляем ячейки в строку
     row.appendChild(imageCell);
     row.appendChild(mpnCell);
@@ -335,7 +335,7 @@ function renderResults(results) {
     row.appendChild(stockCell);
     row.appendChild(priceCell);
     row.appendChild(actionCell);
-    
+
     // Добавляем строку в таблицу
     resultsBody.appendChild(row);
   });
@@ -348,12 +348,12 @@ function renderResults(results) {
 function renderPagination(totalPages) {
   // Очищаем пагинацию
   paginationEl.innerHTML = '';
-  
+
   // Если страница только одна, не отображаем пагинацию
   if (totalPages <= 1) {
     return;
   }
-  
+
   // Кнопка "Предыдущая"
   if (currentPage > 1) {
     const prevButton = document.createElement('button');
@@ -365,16 +365,16 @@ function renderPagination(totalPages) {
     });
     paginationEl.appendChild(prevButton);
   }
-  
+
   // Номера страниц
   const maxButtons = 5; // Максимальное количество кнопок с номерами страниц
   let startPage = Math.max(1, currentPage - Math.floor(maxButtons / 2));
   let endPage = Math.min(totalPages, startPage + maxButtons - 1);
-  
+
   if (endPage - startPage + 1 < maxButtons) {
     startPage = Math.max(1, endPage - maxButtons + 1);
   }
-  
+
   for (let i = startPage; i <= endPage; i++) {
     const pageButton = document.createElement('button');
     pageButton.textContent = i;
@@ -388,7 +388,7 @@ function renderPagination(totalPages) {
     });
     paginationEl.appendChild(pageButton);
   }
-  
+
   // Кнопка "Следующая"
   if (currentPage < totalPages) {
     const nextButton = document.createElement('button');
@@ -420,31 +420,31 @@ async function openProductModal(mpn) {
   modalDocs.innerHTML = '';
   modalPrice.textContent = '0 ₽';
   modalStock.innerHTML = '';
-  
+
   try {
     // Загружаем данные о товаре
     const response = await fetch(`/api/product?mpn=${encodeURIComponent(mpn)}`);
     if (!response.ok) {
       throw new Error(`Error loading product: ${response.status}`);
     }
-    
+
     const product = await response.json();
     currentProduct = product;
-    
+
     // Заполняем модальное окно данными о товаре
     modalTitle.textContent = product.title || product.mpn || '';
     modalMpn.textContent = `MPN: ${product.mpn || ''}`;
     modalBrand.textContent = `Производитель: ${product.brand || ''}`;
     modalPkg.textContent = `Корпус: ${product.pkg || ''}${product.pkg_type ? ` (${product.pkg_type})` : ''}`;
     modalDescription.textContent = product.desc_short || '';
-    
+
     // Изображения
     if (product.image) {
       modalMainImage.src = product.image;
     } else {
       modalMainImage.src = '/img/no-image.png';
     }
-    
+
     // Миниатюры
     if (product.images && product.images.length > 0) {
       product.images.forEach((imgUrl, index) => {
@@ -453,41 +453,41 @@ async function openProductModal(mpn) {
         if (index === 0) {
           thumbnail.classList.add('active');
         }
-        
+
         const img = document.createElement('img');
         img.src = imgUrl;
         img.alt = '';
-        
+
         thumbnail.appendChild(img);
         thumbnail.addEventListener('click', () => {
           // Обновляем главное изображение
           modalMainImage.src = imgUrl;
-          
+
           // Обновляем активную миниатюру
           document.querySelectorAll('.thumbnail').forEach(el => {
             el.classList.remove('active');
           });
           thumbnail.classList.add('active');
         });
-        
+
         modalThumbnails.appendChild(thumbnail);
       });
     }
-    
+
     // Технические характеристики
     if (product.specs && Object.keys(product.specs).length > 0) {
       for (const [key, value] of Object.entries(product.specs)) {
         const row = document.createElement('tr');
-        
+
         const keyCell = document.createElement('td');
         keyCell.textContent = key;
-        
+
         const valueCell = document.createElement('td');
         valueCell.textContent = value;
-        
+
         row.appendChild(keyCell);
         row.appendChild(valueCell);
-        
+
         modalSpecs.appendChild(row);
       }
     } else {
@@ -498,7 +498,7 @@ async function openProductModal(mpn) {
       row.appendChild(cell);
       modalSpecs.appendChild(row);
     }
-    
+
     // Документы
     if (product.docs && product.docs.length > 0) {
       product.docs.forEach(doc => {
@@ -516,32 +516,32 @@ async function openProductModal(mpn) {
       li.textContent = 'Нет документов';
       modalDocs.appendChild(li);
     }
-    
+
     // Цена
     if (product.price_min_rub) {
       modalPrice.textContent = `${product.price_min_rub.toLocaleString('ru-RU')} ₽`;
     } else {
       modalPrice.textContent = 'По запросу';
     }
-    
+
     // Наличие
     if (product.offers && product.offers.length > 0) {
       product.offers.forEach(offer => {
         const row = document.createElement('tr');
-        
+
         const regionCell = document.createElement('td');
         regionCell.textContent = offer.region || '';
-        
+
         const stockCell = document.createElement('td');
         if (offer.stock !== null && offer.stock !== undefined) {
           stockCell.textContent = offer.stock;
         } else {
           stockCell.textContent = 'По запросу';
         }
-        
+
         row.appendChild(regionCell);
         row.appendChild(stockCell);
-        
+
         modalStock.appendChild(row);
       });
     } else {
@@ -570,13 +570,13 @@ async function submitOrder() {
     const phone = document.getElementById('order-phone').value;
     const comment = document.getElementById('order-comment').value;
     const quantity = parseInt(modalQuantity.value, 10) || 1;
-    
+
     // Проверяем наличие товара
     if (!currentProduct || !currentProduct.mpn) {
       alert('Ошибка: товар не выбран');
       return;
     }
-    
+
     // Отправляем заказ
     const response = await fetch('/api/order', {
       method: 'POST',
@@ -592,9 +592,9 @@ async function submitOrder() {
         comment
       })
     });
-    
+
     const result = await response.json();
-    
+
     if (result.ok) {
       alert('Заказ успешно отправлен!');
       orderModal.classList.add('hidden');

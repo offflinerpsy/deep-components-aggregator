@@ -24,23 +24,23 @@ export async function fetchViaScraperAPI({ key, url, params = {}, timeout = DEFA
     render: 'false', // Не рендерим JavaScript по умолчанию
     keep_headers: 'true', // Сохраняем заголовки
   };
-  
-  const usp = new URLSearchParams({ 
-    api_key: key, 
-    url, 
-    ...defaultParams, 
-    ...params 
+
+  const usp = new URLSearchParams({
+    api_key: key,
+    url,
+    ...defaultParams,
+    ...params
   });
-  
+
   let lastErr;
-  
+
   // Выполняем запрос с повторными попытками
   for (let i = 0; i <= retries; i++) {
     try {
       // Создаем контроллер для таймаута
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), timeout);
-      
+
       // Выполняем запрос
       const response = await fetch(`${BASE}?${usp.toString()}`, {
         redirect: 'follow',
@@ -49,19 +49,19 @@ export async function fetchViaScraperAPI({ key, url, params = {}, timeout = DEFA
           'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36'
         })
       });
-      
+
       clearTimeout(timeoutId);
-      
+
       // Проверяем статус ответа
       if (!response.ok) {
         throw new Error(`ScraperAPI error: ${response.status}`);
       }
-      
+
       // Возвращаем текст ответа
       return await response.text();
     } catch (err) {
       lastErr = err;
-      
+
       // Если это не последняя попытка, ждем перед повторной попыткой
       if (i < retries) {
         // Экспоненциальный backoff с джиттером
@@ -70,7 +70,7 @@ export async function fetchViaScraperAPI({ key, url, params = {}, timeout = DEFA
       }
     }
   }
-  
+
   // Если все попытки не удались, выбрасываем последнюю ошибку
   throw lastErr || new Error('SCRAPERAPI_FAILED_AFTER_RETRIES');
 }

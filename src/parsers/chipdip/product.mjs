@@ -6,7 +6,7 @@ function hashName(u){ return crypto.createHash('sha1').update(u).digest('hex'); 
 
 /**
  * Нормализует MPN: убирает невидимые символы, заменяет non-breaking space
- * @param {string} mpn 
+ * @param {string} mpn
  * @returns {string}
  */
 function normalizeMpn(mpn) {
@@ -26,7 +26,7 @@ function normalizeMpn(mpn) {
  */
 export function parseChipDipProduct(html, url) {
   const $ = cheerio.load(html);
-  
+
   // Извлечение MPN (артикул) - приоритет у артикула, затем номенклатурный номер
   let mpn = '';
   // Проверяем артикул в таблице характеристик
@@ -36,18 +36,18 @@ export function parseChipDipProduct(html, url) {
   if (articleRow.length) {
     mpn = articleRow.find('td:last-child').text().trim();
   }
-  
+
   // Если артикул не найден, ищем в других местах
   if (!mpn) {
     // Ищем в блоке с артикулом (обычно рядом с заголовком)
     mpn = $('.product__artikul').text().trim().replace(/^Арт\.?\s*:?\s*/i, '');
   }
-  
+
   // Если артикул всё еще не найден, используем номенклатурный номер
   if (!mpn) {
     mpn = $('td:contains("Номенклатурный номер")').next().text().trim();
   }
-  
+
   // Если и это не помогло, используем последнюю часть URL
   if (!mpn) {
     const urlParts = url.split('/');
@@ -58,13 +58,13 @@ export function parseChipDipProduct(html, url) {
       mpn = urlParts[urlParts.length - 2];
     }
   }
-  
+
   // Нормализация MPN
   mpn = normalizeMpn(mpn);
-  
+
   // Извлечение заголовка (название товара)
   const title = $('h1').first().text().trim();
-  
+
   // Извлечение бренда (производителя)
   let brand = '';
   // Ищем бренд в ссылке на производителя
@@ -72,25 +72,25 @@ export function parseChipDipProduct(html, url) {
   if (brandLink.length) {
     brand = brandLink.text().trim();
   }
-  
+
   // Если бренд не найден, ищем в таблице характеристик
   if (!brand) {
     brand = $('td:contains("Производитель")').next().text().trim();
   }
-  
+
   // Если бренд не найден, ищем в мета-тегах
   if (!brand) {
     brand = $('meta[itemprop="brand"]').attr('content') || '';
   }
-  
+
   // Извлечение SKU (номенклатурный номер)
   const sku = $('td:contains("Номенклатурный номер")').next().text().trim() || '';
-  
+
   // Извлечение изображений
   const ogImg = $('meta[property="og:image"]').attr('content') || '';
   const imgEl = $('img[src*="/images/"]').first().attr('src') || '';
   const image = (ogImg || imgEl) ? new URL((ogImg || imgEl), url).toString() : '';
-  
+
   // Собираем все изображения
   const images = [];
   $('img').each((_, e) => {
@@ -102,7 +102,7 @@ export function parseChipDipProduct(html, url) {
       images.push(abs);
     }
   });
-  
+
   // Извлечение краткого описания
   let short = '';
   const descBlock = $('div:contains("Описание")').first().next();
@@ -111,22 +111,22 @@ export function parseChipDipProduct(html, url) {
   } else {
     short = $('meta[name="description"]').attr('content') || '';
   }
-  
+
   // Извлечение цен и наличия
   const offers = [];
   let stockTotal = 0;
-  
+
   // Ищем таблицу с ценами и наличием
   $('table:contains("Сроки доставки") tr, table:contains("Цена") tr').each((_, tr) => {
     const tds = $(tr).find('td');
     if (tds.length >= 3) {
       const region = $(tds[0]).text().trim();
       const eta = $(tds[1]).text().trim();
-      
+
       // Извлечение цены
       let price = 0;
       let currency = 'RUB';
-      
+
       // Ищем цену в формате "1234 р"
       const priceText = $(tds[2]).text().trim();
       const priceMatch = priceText.match(/[\d\s.,]+\s*(?:р|₽|руб)/i);
@@ -139,7 +139,7 @@ export function parseChipDipProduct(html, url) {
           price = parseFloat(numMatch[0].replace(/[^\d.,]/g, '').replace(',', '.'));
         }
       }
-      
+
       // Извлечение наличия
       let stock = null;
       const stockText = $(tds[3] || tds[2]).text().trim();
@@ -148,20 +148,20 @@ export function parseChipDipProduct(html, url) {
         stock = parseInt(stockMatch[1], 10);
         stockTotal += stock;
       }
-      
+
       // Добавляем предложение, если есть регион и цена
       if (region && price > 0) {
-        offers.push({ 
-          region, 
-          currency, 
-          price, 
-          stock, 
-          eta 
+        offers.push({
+          region,
+          currency,
+          price,
+          stock,
+          eta
         });
       }
     }
   });
-  
+
   // Если не нашли цены в таблице, ищем в других местах
   if (offers.length === 0) {
     // Ищем цену в блоке с ценой
@@ -183,10 +183,10 @@ export function parseChipDipProduct(html, url) {
       }
     }
   }
-  
+
   // Извлечение технических характеристик
   const specs = {};
-  
+
   // Ищем таблицу с техническими характеристиками
   $('table.product-params tr').each((_, el) => {
     const tds = $(el).find('td');
@@ -198,7 +198,7 @@ export function parseChipDipProduct(html, url) {
       }
     }
   });
-  
+
   // Если не нашли в таблице, ищем в dl/dt/dd
   if (Object.keys(specs).length === 0) {
     $('dl dt').each((_, el) => {
@@ -209,11 +209,11 @@ export function parseChipDipProduct(html, url) {
       }
     });
   }
-  
+
   // Извлечение информации о корпусе
   let pkg = '';
   let pkgType = '';
-  
+
   // Ищем информацию о корпусе в технических характеристиках
   for (const key in specs) {
     const lowerKey = key.toLowerCase();
@@ -222,7 +222,7 @@ export function parseChipDipProduct(html, url) {
       break;
     }
   }
-  
+
   // Если не нашли в характеристиках, ищем в заголовке
   if (!pkg && title) {
     const pkgMatch = title.match(/\[(.*?)\]/);
@@ -230,7 +230,7 @@ export function parseChipDipProduct(html, url) {
       pkg = pkgMatch[1].trim();
     }
   }
-  
+
   // Определяем тип корпуса на основе его названия
   if (pkg) {
     if (/^(SO|SOIC|SOP|SSOP|TSSOP|MSOP|QFP|LQFP|TQFP|QFN|DFN|BGA|CSP)/i.test(pkg)) {
@@ -239,7 +239,7 @@ export function parseChipDipProduct(html, url) {
       pkgType = 'THT';
     }
   }
-  
+
   // Извлечение PDF документов
   const docs = [];
   $('a[href$=".pdf"]').each((_, a) => {
@@ -247,14 +247,14 @@ export function parseChipDipProduct(html, url) {
     if (!href) return;
     const abs = new URL(href, url).toString();
     const h = hashName(abs);
-    docs.push({ 
-      title: $(a).text().trim() || 'PDF', 
-      url: `/files/pdf/${h}.pdf`, 
-      _src: abs, 
-      _hash: h 
+    docs.push({
+      title: $(a).text().trim() || 'PDF',
+      url: `/files/pdf/${h}.pdf`,
+      _src: abs,
+      _hash: h
     });
   });
-  
+
   // Формируем каноническое представление продукта
   const canon = normCanon({
     url,
@@ -273,6 +273,6 @@ export function parseChipDipProduct(html, url) {
     pkg_type: pkgType,
     source: 'chipdip'
   });
-  
+
   return canon;
 }

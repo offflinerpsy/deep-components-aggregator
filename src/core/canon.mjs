@@ -6,11 +6,11 @@
 export function normCanon(o){
   // Вычисляем минимальную цену в рублях
   const price_min_rub = computeMinRub(o.offers||[]);
-  
+
   // Находим минимальную цену и ее валюту
   let price_min = null;
   let price_min_currency = null;
-  
+
   if (o.offers && o.offers.length > 0) {
     // Сортируем предложения по цене
     const sortedOffers = [...o.offers].sort((a, b) => {
@@ -18,14 +18,14 @@ export function normCanon(o){
       if (!b.price) return -1;
       return a.price - b.price;
     });
-    
+
     // Берем минимальную цену и ее валюту
     if (sortedOffers[0] && sortedOffers[0].price) {
       price_min = sortedOffers[0].price;
       price_min_currency = sortedOffers[0].currency;
     }
   }
-  
+
   return {
     mpn: o.mpn || '',
     brand: o.brand || '',

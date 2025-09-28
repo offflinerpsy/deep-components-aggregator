@@ -1,10 +1,11 @@
 import express from 'express';
-import { loadAllProducts } from '../core/store.mjs';
+import { loadAllProducts, loadProduct } from '../core/store.mjs';
 import { buildIndex, searchIndex } from '../core/search.mjs';
 import { readFileSync, existsSync, readdirSync, mkdirSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { nanoid } from 'nanoid';
 import { spawn } from 'node:child_process';
+import { liveSearch } from '../scrape/live-search.mjs';
 
 const router = express.Router();
 const pendingTasks = new Map(); // taskId -> {status, q, ts, ...}
@@ -94,35 +95,92 @@ router.get('/task/:id', (req, res) => {
 router.get('/product', (req, res) => {
   const mpn = String(req.query.mpn||'').trim();
   if (!mpn) { res.status(400).json({ error: 'MPN_REQUIRED' }); return; }
-  const ppath = `data/db/products/${mpn}.json`;
-  if (!existsSync(ppath)) { res.status(404).json({ error: 'NOT_FOUND' }); return; }
-  const p = JSON.parse(readFileSync(ppath, 'utf8'));
-  res.json(p);
+  
+  try {
+    // Используем функцию loadProduct из store.mjs, которая корректно обрабатывает специальные символы
+    const product = loadProduct(mpn);
+    
+    if (!product) {
+      res.status(404).json({ error: 'NOT_FOUND' });
+      return;
+    }
+    
+    res.json(product);
+  } catch (error) {
+    console.error(`Error loading product ${mpn}:`, error);
+    res.status(500).json({ error: 'INTERNAL_ERROR' });
+  }
 });
 
-// SSE mock: /api/live/search
+// /api/live/search - полноценный LIVE-поток с SSE
 router.get('/live/search', (req, res) => {
+  // Устанавливаем заголовки для SSE
   res.setHeader('Content-Type', 'text/event-stream');
   res.setHeader('Cache-Control', 'no-cache');
   res.setHeader('Connection', 'keep-alive');
   res.setHeader('X-Accel-Buffering', 'no');
-
-  const q = String(req.query.q||'').trim();
-  let n = 0;
-  const timer = setInterval(() => {
-    n += 1;
-    const data = { type: 'progress', step: n, q };
-    res.write(`event: progress\n`);
-    res.write(`data: ${JSON.stringify(data)}\n\n`);
-    if (n >= 3) {
-      res.write(`event: done\n`);
-      res.write(`data: {\"ok\":true}\n\n`);
-      clearInterval(timer);
+  
+  // Получаем параметры запроса
+  const q = String(req.query.q || '').trim();
+  const limit = parseInt(req.query.limit || '20', 10);
+  const timeout = parseInt(req.query.timeout || '10000', 10);
+  
+  // Проверяем наличие запроса
+  if (!q) {
+    res.write(`event: error\n`);
+    res.write(`data: ${JSON.stringify({ error: 'Q_REQUIRED' })}\n\n`);
+    res.end();
+    return;
+  }
+  
+  // Отправляем начальное сообщение для поддержания соединения
+  res.write(':\n\n');
+  
+  // Отправляем событие начала поиска
+  res.write(`event: tick\n`);
+  res.write(`data: ${JSON.stringify({ phase: "start", q })}\n\n`);
+  
+  // Запускаем живой поиск
+  liveSearch({
+    query: q,
+    maxItems: limit,
+    timeout,
+    
+    // Обработчик для каждого найденного элемента
+    onItem: (item) => {
+      res.write(`event: item\n`);
+      res.write(`data: ${JSON.stringify(item)}\n\n`);
+    },
+    
+    // Обработчик для заметок
+    onNote: (note) => {
+      res.write(`event: note\n`);
+      res.write(`data: ${JSON.stringify(note)}\n\n`);
+    },
+    
+    // Обработчик для ошибок
+    onError: (error) => {
+      res.write(`event: error\n`);
+      res.write(`data: ${JSON.stringify(error)}\n\n`);
+    },
+    
+    // Обработчик для завершения
+    onEnd: (result) => {
+      res.write(`event: end\n`);
+      res.write(`data: ${JSON.stringify(result)}\n\n`);
       res.end();
     }
-  }, 500);
-
-  req.on('close', () => { clearInterval(timer); });
+  }).catch(error => {
+    console.error('Live search error:', error);
+    res.write(`event: error\n`);
+    res.write(`data: ${JSON.stringify({ error: 'SEARCH_ERROR', message: error.message })}\n\n`);
+    res.end();
+  });
+  
+  // Обработчик закрытия соединения
+  req.on('close', () => {
+    console.log(`SSE connection closed for query "${q}"`);
+  });
 });
 
 // /api/order (MVP)

@@ -489,20 +489,20 @@ main {
     align-items: flex-start;
     gap: 12px;
   }
-  
+
   .filters {
     width: 100%;
   }
-  
+
   .results-table {
     display: block;
     overflow-x: auto;
   }
-  
+
   .product-card {
     grid-template-columns: 1fr;
   }
-  
+
   .product-order {
     position: static;
   }

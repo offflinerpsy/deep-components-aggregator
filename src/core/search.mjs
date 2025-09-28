@@ -17,7 +17,7 @@ let sourceItems = [];
  */
 function transliterate(text) {
   if (!text) return '';
-  
+
   const map = {
     'а': 'a', 'б': 'b', 'в': 'v', 'г': 'g', 'д': 'd', 'е': 'e', 'ё': 'e',
     'ж': 'zh', 'з': 'z', 'и': 'i', 'й': 'y', 'к': 'k', 'л': 'l', 'м': 'm',
@@ -25,7 +25,7 @@ function transliterate(text) {
     'ф': 'f', 'х': 'h', 'ц': 'ts', 'ч': 'ch', 'ш': 'sh', 'щ': 'sch', 'ъ': '',
     'ы': 'y', 'ь': '', 'э': 'e', 'ю': 'yu', 'я': 'ya'
   };
-  
+
   return text.toLowerCase().split('').map(char => {
     return map[char] || char;
   }).join('');
@@ -38,7 +38,7 @@ function transliterate(text) {
  */
 export async function buildIndex(items) {
   sourceItems = items || [];
-  
+
   // Создаем индекс с расширенной схемой
   db = await create({
     schema: {
@@ -56,7 +56,7 @@ export async function buildIndex(items) {
       translit: 'string' // Поле для транслитерации
     }
   });
-  
+
   // Подготавливаем данные для индексации
   const indexItems = sourceItems.map(p => {
     // Собираем все текстовые поля для транслитерации
@@ -67,7 +67,7 @@ export async function buildIndex(items) {
       p.desc_short || '',
       p.sku || ''
     ].join(' ');
-    
+
     // Подготавливаем технические характеристики
     const techSpecs = [];
     if (p.specs) {
@@ -75,7 +75,7 @@ export async function buildIndex(items) {
         techSpecs.push(`${key}: ${value}`);
       }
     }
-    
+
     return {
       mpn: p.mpn || '',
       brand: p.brand || '',
@@ -91,10 +91,10 @@ export async function buildIndex(items) {
       translit: transliterate(textFields) // Добавляем транслитерацию
     };
   });
-  
+
   // Добавляем элементы в индекс
   await insertMultiple(db, indexItems);
-  
+
   return db;
 }
 
@@ -110,17 +110,17 @@ export async function searchIndex(q, { limit = 50 } = {}) {
   if (!db) {
     throw new Error('INDEX_NOT_READY');
   }
-  
+
   // Нормализуем запрос
   const term = String(q || '').trim();
   if (!term) {
     return { hits: [] };
   }
-  
+
   // Транслитерируем запрос для поиска по кириллице/латинице
   const translitTerm = transliterate(term);
   const lc = term.toLowerCase();
-  
+
   // Ищем точные совпадения по MPN или SKU
   const exactMatches = await search(db, {
     term,
@@ -132,11 +132,11 @@ export async function searchIndex(q, { limit = 50 } = {}) {
     },
     limit: 10
   });
-  
+
   // Если есть точные совпадения, возвращаем их первыми
   if (exactMatches.count > 0) {
     const exactDocs = exactMatches.hits.map(h => h.document);
-    
+
     // Выполняем общий поиск для дополнения результатов
     const fuzzyResult = await search(db, {
       term,
@@ -151,21 +151,21 @@ export async function searchIndex(q, { limit = 50 } = {}) {
         translit: 1.2 // Повышаем релевантность транслитерации
       }
     });
-    
+
     // Фильтруем результаты, исключая точные совпадения
     const fuzzyDocs = fuzzyResult.hits
       .map(h => h.document)
       .filter(d => !exactDocs.some(e => e.mpn === d.mpn));
-    
+
     // Объединяем результаты и ограничиваем количество
     const merged = [...exactDocs, ...fuzzyDocs].slice(0, limit);
-    
-    return { 
+
+    return {
       count: merged.length,
       hits: merged.map(document => ({ document }))
     };
   }
-  
+
   // Если точных совпадений нет, выполняем обычный поиск с бустами
   const result = await search(db, {
     term,
@@ -180,7 +180,7 @@ export async function searchIndex(q, { limit = 50 } = {}) {
       translit: 1.2 // Повышаем релевантность транслитерации
     }
   });
-  
+
   return {
     count: result.count,
     hits: result.hits

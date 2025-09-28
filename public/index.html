@@ -74,6 +74,23 @@
       background: #f0f7ff;
     }
     
+    .search-options {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 20px;
+    }
+    
+    .search-option {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .search-option input {
+      margin: 0;
+    }
+    
     footer {
       padding: 40px 0;
       background: #212529;
@@ -93,6 +110,17 @@
           <input id="search-input" type="search" placeholder="Введите MPN, название или производителя..." autofocus>
           <button id="search-button">Поиск</button>
         </div>
+        
+        <div class="search-options">
+          <label class="search-option">
+            <input type="radio" name="search-type" value="standard" checked>
+            Стандартный поиск
+          </label>
+          <label class="search-option">
+            <input type="radio" name="search-type" value="live">
+            Живой поиск
+          </label>
+        </div>
       </div>
     </div>
   </section>
@@ -103,10 +131,10 @@
       <p>Попробуйте поиск по этим популярным компонентам:</p>
       
       <div class="example-links">
-        <a href="/results.html?q=LM317" class="example-link">LM317</a>
-        <a href="/results.html?q=1N4148W-TP" class="example-link">1N4148W-TP</a>
-        <a href="/results.html?q=LDD-700L" class="example-link">LDD-700L</a>
-        <a href="/results.html?q=AD637ARZ" class="example-link">AD637ARZ</a>
+        <a href="/live-search.html?q=LM317" class="example-link">LM317 (живой поиск)</a>
+        <a href="/results.html?q=LM317" class="example-link">LM317 (стандартный поиск)</a>
+        <a href="/live-search.html?q=1N4148" class="example-link">1N4148 (живой поиск)</a>
+        <a href="/live-search.html?q=LDB-500L" class="example-link">LDB-500L (живой поиск)</a>
         <a href="/results.html?q=транзистор" class="example-link">Транзистор</a>
         <a href="/results.html?q=микроконтроллер" class="example-link">Микроконтроллер</a>
       </div>
@@ -121,6 +149,11 @@
         <div class="feature-card">
           <h3>Единый поиск</h3>
           <p>Ищите компоненты по всем основным российским поставщикам в одном месте</p>
+        </div>
+        
+        <div class="feature-card">
+          <h3>Живой поиск</h3>
+          <p>Получайте результаты в реальном времени, по мере их поступления от провайдеров</p>
         </div>
         
         <div class="feature-card">
@@ -146,11 +179,16 @@
     document.addEventListener('DOMContentLoaded', () => {
       const searchInput = document.getElementById('search-input');
       const searchButton = document.getElementById('search-button');
+      const searchTypeRadios = document.getElementsByName('search-type');
       
       searchButton.addEventListener('click', () => {
         const query = searchInput.value.trim();
         if (query) {
-          window.location.href = `/results.html?q=${encodeURIComponent(query)}`;
+          const searchType = Array.from(searchTypeRadios).find(radio => radio.checked).value;
+          const url = searchType === 'live' ? 
+            `/live-search.html?q=${encodeURIComponent(query)}` : 
+            `/results.html?q=${encodeURIComponent(query)}`;
+          window.location.href = url;
         }
       });
       
@@ -158,7 +196,11 @@
         if (e.key === 'Enter') {
           const query = searchInput.value.trim();
           if (query) {
-            window.location.href = `/results.html?q=${encodeURIComponent(query)}`;
+            const searchType = Array.from(searchTypeRadios).find(radio => radio.checked).value;
+            const url = searchType === 'live' ? 
+              `/live-search.html?q=${encodeURIComponent(query)}` : 
+              `/results.html?q=${encodeURIComponent(query)}`;
+            window.location.href = url;
           }
         }
       });

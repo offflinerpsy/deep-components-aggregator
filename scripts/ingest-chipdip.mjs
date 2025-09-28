@@ -2,10 +2,10 @@
 
 /**
  * Скрипт для инжеста данных с ChipDip
- * 
+ *
  * Использование:
  * node scripts/ingest-chipdip.mjs [--limit=N] [--force]
- * 
+ *
  * Опции:
  * --limit=N - ограничить количество URL для обработки (по умолчанию без ограничений)
  * --force - принудительно обновить кеш HTML (по умолчанию false)
@@ -39,21 +39,21 @@ mkdirSync(path.dirname(INGEST_REPORT_PATH), { recursive: true });
 async function downloadPdf(pdfUrl) {
   const hash = crypto.createHash('sha1').update(pdfUrl).digest('hex');
   const filePath = `${PDF_DIR}/${hash}.pdf`;
-  
+
   // Если файл уже существует, возвращаем его путь
   if (existsSync(filePath)) {
     return `/files/pdf/${hash}.pdf`;
   }
-  
+
   try {
     const response = await fetch(pdfUrl);
     if (!response.ok) {
       throw new Error(`Failed to download PDF: ${response.status}`);
     }
-    
+
     const buffer = Buffer.from(await response.arrayBuffer());
     writeFileSync(filePath, buffer);
-    
+
     return `/files/pdf/${hash}.pdf`;
   } catch (e) {
     console.error(`Error downloading PDF ${pdfUrl}: ${e.message}`);
@@ -72,11 +72,11 @@ function* linesFromDir(dir) {
     console.warn(`Directory ${dir} does not exist`);
     return;
   }
-  
+
   // Читаем все файлы с URL
   for (const f of readdirSync(dir)) {
     if (!f.endsWith('.txt')) continue;
-    
+
     const body = readFileSync(`${dir}/${f}`, 'utf8');
     for (const line of body.split(/\r?\n/)) {
       const u = line.trim();
@@ -93,7 +93,7 @@ async function main() {
   const args = process.argv.slice(2);
   let limit = 0;
   let force = false;
-  
+
   for (let i = 0; i < args.length; i++) {
     const arg = args[i];
     if (arg.startsWith('--limit=')) {
@@ -102,13 +102,13 @@ async function main() {
       force = true;
     }
   }
-  
+
   console.log(`Starting ChipDip ingest${limit ? ` with limit ${limit}` : ''} ${force ? '(force update)' : ''}`);
-  
+
   // Загружаем курсы валют
   const rates = getRates();
   console.log(`Loaded currency rates: ${Object.keys(rates).length} currencies`);
-  
+
   // Статистика
   let totals = 0;
   let ok = 0;
@@ -116,27 +116,27 @@ async function main() {
   let cached = 0;
   let cacheBytes = 0;
   const seen = new Set();
-  
+
   // Собираем URL для обработки
   const urls = Array.from(linesFromDir(URL_DIR));
   console.log(`Found ${urls.length} URLs to process`);
-  
+
   // Ограничиваем количество URL, если указан лимит
   const urlsToProcess = limit > 0 ? urls.slice(0, limit) : urls;
-  
+
   // Обрабатываем каждый URL
   for (const url of urlsToProcess) {
     totals++;
     console.log(`[${totals}/${urlsToProcess.length}] Processing ${url}`);
-    
+
     try {
       // Получаем HTML из кеша или скачиваем
-      const result = await getHtmlCached(url, { 
-        ttl: TTL, 
-        params: {}, 
-        force 
+      const result = await getHtmlCached(url, {
+        ttl: TTL,
+        params: {},
+        force
       });
-      
+
       // Обновляем статистику кеша
       if (result.fromCache) {
         cached++;
@@ -145,15 +145,15 @@ async function main() {
         console.log(`  Downloaded: ${result.size} bytes from ${result.provider}`);
       }
       cacheBytes += result.size || 0;
-      
+
       // Парсим HTML
       const canon = parseChipDipProduct(result.html, url);
-      
+
       // Проверяем наличие MPN
       if (!canon.mpn) {
         throw new Error('no mpn');
       }
-      
+
       // Скачиваем PDF документы
       if (Array.isArray(canon.docs)) {
         for (const doc of canon.docs) {
@@ -168,7 +168,7 @@ async function main() {
           }
         }
       }
-      
+
       // Конвертируем цены в рубли
       if (Array.isArray(canon.offers)) {
         for (const offer of canon.offers) {
@@ -180,7 +180,7 @@ async function main() {
           }
         }
       }
-      
+
       // Сохраняем результат, если MPN уникальный
       if (!seen.has(canon.mpn)) {
         const safeFilename = canon.mpn.replace(/[\/\\?%*:|"<>]/g, '_');
@@ -195,11 +195,11 @@ async function main() {
       console.error(`  ERROR: ${e.message}`);
       fail++;
     }
-    
+
     // Добавляем небольшую паузу между запросами
     await new Promise(resolve => setTimeout(resolve, 100));
   }
-  
+
   // Формируем отчет
   const report = {
     ts: Date.now(),
@@ -210,10 +210,10 @@ async function main() {
     cacheBytes,
     unique: seen.size
   };
-  
+
   // Сохраняем отчет
   writeFileSync(INGEST_REPORT_PATH, JSON.stringify(report, null, 2));
-  
+
   // Выводим итоги
   console.log('\nIngest completed:');
   console.log(`  Total URLs: ${totals}`);

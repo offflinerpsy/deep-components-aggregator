@@ -87,36 +87,36 @@ export async function liveSearch({
   // Создаем сборщик диагностики
   const diagnostics = new DiagnosticsCollector(query);
   diagnostics.addEvent('start', `Starting live search for "${query}"`);
-  
+
   // Создаем таймер для общего таймаута
   const timeoutId = setTimeout(() => {
     diagnostics.addEvent('timeout', `Search timeout after ${timeout}ms`);
     onEnd && onEnd({ reason: 'timeout' });
   }, timeout);
-  
+
   // Счетчик найденных элементов
   let itemCount = 0;
-  
+
   // Множество для отслеживания уникальных MPN
   const seenMpns = new Set();
-  
+
   // Функция для обработки найденного элемента
   const processItem = (item) => {
     // Проверяем, не превышен ли лимит
     if (itemCount >= maxItems) {
       return false;
     }
-    
+
     // Проверяем, не видели ли мы уже этот MPN
     if (item.mpn && seenMpns.has(item.mpn)) {
       return false;
     }
-    
+
     // Добавляем MPN в множество
     if (item.mpn) {
       seenMpns.add(item.mpn);
     }
-    
+
     // Преобразуем цену в рубли, если нужно
     if (item.price && item.currency && item.currency !== 'RUB') {
       const rubPrice = toRUB({ amount: item.price, currency: item.currency });
@@ -126,20 +126,20 @@ export async function liveSearch({
     } else if (item.price && item.currency === 'RUB') {
       item.price_rub = item.price;
     }
-    
+
     // Вызываем обратный вызов
     onItem && onItem(item);
-    
+
     // Увеличиваем счетчик
     itemCount++;
-    
+
     // Добавляем событие в диагностику
     diagnostics.addEvent('item', `Found item ${itemCount}: ${item.mpn || 'unknown'}`);
-    
+
     // Возвращаем true, если можно продолжать
     return itemCount < maxItems;
   };
-  
+
   try {
     // Проверяем, есть ли тестовые данные для этого запроса
     const testData = TEST_DATA[query];
@@ -147,7 +147,7 @@ export async function liveSearch({
       // Отправляем заметку о том, что используем тестовые данные
       onNote && onNote({ message: "Используем тестовые данные" });
       diagnostics.addEvent('test', `Using test data for "${query}"`);
-      
+
       // Обрабатываем тестовые данные с небольшой задержкой для имитации реального поиска
       for (const item of testData) {
         await new Promise(resolve => setTimeout(resolve, 500));
@@ -160,7 +160,7 @@ export async function liveSearch({
           searchChipDip(query, diagnostics, processItem),
           searchPromelec(query, diagnostics, processItem)
         ]);
-        
+
         // Если оба поиска завершились с ошибкой, отправляем заметку
         if (chipDipResult.status === 'rejected' && promelecResult.status === 'rejected') {
           onNote && onNote({ message: "Не удалось выполнить поиск ни в одном из источников" });
@@ -169,7 +169,7 @@ export async function liveSearch({
         // Игнорируем ошибки, так как они уже обрабатываются в searchChipDip и searchPromelec
       }
     }
-    
+
     // Если не нашли ни одного элемента, отправляем заметку
     if (itemCount === 0) {
       diagnostics.addEvent('empty', 'No items found');
@@ -181,10 +181,10 @@ export async function liveSearch({
   } finally {
     // Очищаем таймер
     clearTimeout(timeoutId);
-    
+
     // Сохраняем диагностику
     const tracePath = diagnostics.save();
-    
+
     // Отправляем событие завершения
     onEnd && onEnd({
       count: itemCount,
@@ -192,7 +192,7 @@ export async function liveSearch({
       query
     });
   }
-  
+
   return {
     count: itemCount,
     query
@@ -209,33 +209,33 @@ export async function liveSearch({
 async function searchChipDip(query, diagnostics, processItem) {
   try {
     diagnostics.addEvent('chipdip', `Searching ChipDip for "${query}"`);
-    
+
     // Формируем URL для поиска
     const url = `https://www.chipdip.ru/search?searchtext=${encodeURIComponent(query)}`;
-    
+
     // Получаем HTML
     const startTime = Date.now();
     const result = await fetchHTML(url);
     const fetchTime = Date.now() - startTime;
-    
+
     // Добавляем информацию о провайдере в диагностику
     diagnostics.addProvider('chipdip', url, true, fetchTime, result.key);
-    
+
     // Парсим результаты
     const html = result.html || '';
     const results = parseChipDipSearch(html, 'https://www.chipdip.ru');
-    
+
     // Добавляем событие в диагностику
     diagnostics.addEvent('chipdip', `Found ${results.length} items on ChipDip`);
-    
+
     // Обрабатываем каждый результат
     for (const result of results) {
       // Добавляем источник
       result.source = 'chipdip';
-      
+
       // Обрабатываем элемент
       const shouldContinue = processItem(result);
-      
+
       // Если достигли лимита, прекращаем обработку
       if (!shouldContinue) {
         break;
@@ -257,30 +257,30 @@ async function searchChipDip(query, diagnostics, processItem) {
 async function searchPromelec(query, diagnostics, processItem) {
   try {
     diagnostics.addEvent('promelec', `Searching Promelec for "${query}"`);
-    
+
     // Формируем URL для поиска
     const url = `https://www.promelec.ru/search/?text=${encodeURIComponent(query)}`;
-    
+
     // Получаем HTML
     const startTime = Date.now();
     const result = await fetchHTML(url);
     const fetchTime = Date.now() - startTime;
-    
+
     // Добавляем информацию о провайдере в диагностику
     diagnostics.addProvider('promelec', url, true, fetchTime, result.key);
-    
+
     // Парсим результаты
     const html = result.html || '';
     const results = parsePromelecSearch(html, 'https://www.promelec.ru');
-    
+
     // Добавляем событие в диагностику
     diagnostics.addEvent('promelec', `Found ${results.length} items on Promelec`);
-    
+
     // Обрабатываем каждый результат
     for (const result of results) {
       // Обрабатываем элемент
       const shouldContinue = processItem(result);
-      
+
       // Если достигли лимита, прекращаем обработку
       if (!shouldContinue) {
         break;

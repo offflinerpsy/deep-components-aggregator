@@ -1,161 +1,125 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="utf-8">
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DeepAgg — Живой поиск</title>
+  <title>DeepAgg - Живой поиск компонентов</title>
   <link rel="stylesheet" href="/css/light.css">
-  <style>
-    /* Дополнительные стили для живого поиска */
-    .search-status {
-      margin: 10px 0;
-      padding: 8px 12px;
-      background: #f0f7ff;
-      border-radius: 6px;
-      font-size: 14px;
-    }
-    
-    .search-status.error {
-      background: #fff0f0;
-      color: #d32f2f;
-    }
-    
-    .results-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 16px;
-    }
-    
-    .results-title {
-      font-size: 18px;
-      font-weight: 600;
-    }
-    
-    .results-count {
-      font-size: 16px;
-      color: var(--light-text);
-    }
-    
-    .live-indicator {
-      display: inline-block;
-      width: 8px;
-      height: 8px;
-      background: #4caf50;
-      border-radius: 50%;
-      margin-right: 6px;
-      animation: pulse 1.5s infinite;
-    }
-    
-    @keyframes pulse {
-      0% { opacity: 1; }
-      50% { opacity: 0.4; }
-      100% { opacity: 1; }
-    }
-    
-    .sources {
-      display: flex;
-      gap: 8px;
-      margin-bottom: 16px;
-    }
-    
-    .source-badge {
-      padding: 4px 10px;
-      background: #f1f5ff;
-      border-radius: 16px;
-      font-size: 14px;
-    }
-    
-    .source-badge.chipdip {
-      background: #e3f2fd;
-      color: #1565c0;
-    }
-    
-    .source-badge.promelec {
-      background: #e8f5e9;
-      color: #2e7d32;
-    }
-  </style>
 </head>
 <body>
   <header class="sticky-header">
     <div class="container">
       <div class="search-bar">
-        <input id="search-input" type="search" placeholder="Живой поиск по MPN, производителю или названию..." autofocus>
+        <input id="search-input" type="search" placeholder="Введите MPN, название или производителя..." autofocus>
         <button id="search-button">Поиск</button>
       </div>
     </div>
   </header>
 
   <main class="container">
-    <div class="search-status" id="search-status">
-      Введите поисковый запрос
-    </div>
-    
-    <div class="sources">
-      <div class="source-badge chipdip">ChipDip</div>
-      <div class="source-badge promelec">Promelec</div>
-    </div>
-    
-    <div class="results-header">
-      <div class="results-title">
-        <span class="live-indicator"></span>
-        Результаты в реальном времени
-      </div>
-      <div class="results-count">
-        Найдено: <span id="results-count">0</span>
-      </div>
+    <div id="status" class="status-bar">
+      Введите поисковый запрос для начала поиска
     </div>
 
-    <table class="results-table">
-      <thead>
-        <tr>
-          <th>Фото</th>
-          <th>MPN / Название</th>
-          <th>Производитель</th>
-          <th>Описание</th>
-          <th>Наличие</th>
-          <th>Регионы</th>
-          <th>Цена</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody id="results-body">
-        <!-- Результаты будут добавлены через JavaScript -->
-      </tbody>
-    </table>
-    
-    <div id="pagination" class="pagination">
-      <!-- Пагинация будет добавлена через JavaScript -->
-    </div>
-    
-    <div id="no-results" class="no-results hidden">
-      <p>По вашему запросу ничего не найдено.</p>
-      <p>Попробуйте изменить запрос или проверить правильность написания.</p>
-    </div>
-    
-    <div id="loading" class="loading hidden">
-      <div class="spinner"></div>
-      <p>Загрузка результатов...</p>
+    <div id="results" class="results">
+      <div class="results-header">
+        <h2>Результаты поиска <span id="results-count">0</span></h2>
+      </div>
+
+      <table class="results-table">
+        <thead>
+          <tr>
+            <th>Фото</th>
+            <th>MPN / Название</th>
+            <th>Производитель</th>
+            <th>Описание</th>
+            <th>Корпус</th>
+            <th>Упаковка</th>
+            <th>Регионы</th>
+            <th>Наличие</th>
+            <th>Цена (₽)</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Результаты будут добавлены через JavaScript -->
+        </tbody>
+      </table>
+
+      <div id="loading" class="loading hidden">
+        <div class="spinner"></div>
+        <p>Поиск компонентов...</p>
+      </div>
+
+      <div id="no-results" class="no-results hidden">
+        <p>По вашему запросу ничего не найдено.</p>
+        <p>Попробуйте изменить запрос или проверить правильность написания.</p>
+      </div>
     </div>
   </main>
 
-  <!-- Модальное окно с карточкой товара -->
+  <!-- Модальное окно для карточки товара -->
   <div id="product-modal" class="modal hidden">
     <div class="modal-content">
       <div class="modal-header">
         <h2>Информация о товаре</h2>
-        <button id="modal-close" class="close-btn">&times;</button>
+        <button class="close-btn">&times;</button>
       </div>
-      
       <div class="modal-body">
         <div id="modal-content">
-          <!-- Содержимое модального окна будет добавлено через JavaScript -->
+          <!-- Содержимое будет добавлено через JavaScript -->
         </div>
       </div>
     </div>
   </div>
 
-  <script src="/js/live-results.js"></script>
+  <script type="module">
+    import { liveSearch } from '/js/app.js';
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const searchInput = document.getElementById('search-input');
+      const searchButton = document.getElementById('search-button');
+
+      // Получаем параметры из URL
+      const urlParams = new URLSearchParams(window.location.search);
+      const query = urlParams.get('q');
+
+      // Если есть запрос в URL, выполняем поиск
+      if (query) {
+        searchInput.value = query;
+        liveSearch(query);
+      }
+
+      // Обработчик нажатия на кнопку поиска
+      searchButton.addEventListener('click', () => {
+        const query = searchInput.value.trim();
+        if (query) {
+          // Обновляем URL
+          const url = new URL(window.location);
+          url.searchParams.set('q', query);
+          window.history.pushState({}, '', url);
+
+          // Запускаем поиск
+          liveSearch(query);
+        }
+      });
+
+      // Обработчик нажатия Enter в поле поиска
+      searchInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          const query = searchInput.value.trim();
+          if (query) {
+            // Обновляем URL
+            const url = new URL(window.location);
+            url.searchParams.set('q', query);
+            window.history.pushState({}, '', url);
+
+            // Запускаем поиск
+            liveSearch(query);
+          }
+        }
+      });
+    });
+  </script>
 </body>
 </html>

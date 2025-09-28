@@ -1,101 +1,238 @@
-const $ = sel => document.querySelector(sel);
-const tbody = $('#results tbody');
-const pager = $('#pager');
-let lastItems = [];
-let page = 1; const pageSize = 20;
-$('#go').onclick = run; $('#q').addEventListener('keydown', e=>{ if(e.key==='Enter') run(); });
-$('#sort').onchange = render; $('#filterRegion').oninput = render;
+const state = { items: [], es: null };
 
-async function run(){
-  tbody.innerHTML = '<tr><td colspan="7">Ищем…</td></tr>';
-  const q = $('#q').value.trim();
-  const r = await fetch(`/api/search?q=${encodeURIComponent(q)}`).then(r=>r.json());
-  lastItems = r.items||[];
-  page = 1;
-  render();
+export function liveSearch(q){
+  if (state.es) { try{ state.es.close(); }catch{} }
+  state.items = [];
+  renderTable([]);
+  const es = new EventSource(`/api/live/search?q=${encodeURIComponent(q)}`);
+  state.es = es;
+
+  es.addEventListener('start', e => {
+    document.getElementById('loading').classList.remove('hidden');
+    document.getElementById('no-results').classList.add('hidden');
+  });
+  
+  es.addEventListener('item', e => {
+    const msg = JSON.parse(e.data);
+    if (msg?.item) {
+      state.items.push(msg.item);
+      renderTable(state.items);
+    }
+  });
+  
+  es.addEventListener('done', e => {
+    es.close();
+    document.getElementById('loading').classList.add('hidden');
+    
+    // Если пусто — показать подсказку/«ничего не найдено»
+    if (state.items.length === 0) {
+      document.getElementById('no-results').classList.remove('hidden');
+      
+      // Попробовать fallback к обычному поиску
+      fetch(`/api/search?q=${encodeURIComponent(q)}`)
+        .then(r => r.json())
+        .then(data => {
+          if (data.items && data.items.length > 0) {
+            state.items = data.items;
+            renderTable(state.items);
+            document.getElementById('no-results').classList.add('hidden');
+          }
+        })
+        .catch(err => console.error('Fallback search error:', err));
+    }
+  });
 }
 
-function applySort(items){
-  const s = $('#sort').value;
-  if (s === 'price') return [...items].sort((a,b)=> (a.price_rub||1e15)-(b.price_rub||1e15));
-  if (s === 'price_desc') return [...items].sort((a,b)=> (b.price_rub||-1)-(a.price_rub||-1));
-  if (s === 'brand') return [...items].sort((a,b)=> (a.brand||'').localeCompare(b.brand||''));
-  return items;
-}
-
-function applyFilter(items){
-  const fr = $('#filterRegion').value.trim().toLowerCase();
-  if (!fr) return items;
-  return items.filter(it=> (it.regions||[]).some(r=> (r||'').toLowerCase().includes(fr)));
-}
-
-function render(){
-  let items = applyFilter(lastItems);
-  items = applySort(items);
-  const total = items.length;
-  const pages = Math.max(1, Math.ceil(total / pageSize));
-  if (page > pages) page = pages;
-  const start = (page-1)*pageSize;
-  const view = items.slice(start, start+pageSize);
-
-  if (!view.length) { tbody.innerHTML = '<tr><td colspan="7">Ничего не найдено</td></tr>'; pager.innerHTML=''; return; }
-  tbody.innerHTML = view.map(it=>`
+function renderTable(items) {
+  const tbody = document.querySelector('#results tbody');
+  if (!tbody) return;
+  
+  // Очищаем таблицу, если нет элементов
+  if (!items.length) {
+    tbody.innerHTML = '';
+    return;
+  }
+  
+  // Обновляем счетчик
+  const counter = document.getElementById('results-count');
+  if (counter) counter.textContent = items.length;
+  
+  // Обновляем таблицу
+  tbody.innerHTML = items.map(item => `
     <tr>
-      <td><img class="thumb" src="${it.image||''}" alt=""></td>
-      <td>${it.mpn}</td>
-      <td>${it.brand||''}</td>
-      <td>${it.desc||''}</td>
-      <td>${(it.regions||[]).slice(0,4).map(r=>`<span class="badge">${r}</span>`).join('')}</td>
-      <td>${it.price_rub? Math.round(it.price_rub).toLocaleString('ru-RU'): '—'}</td>
-      <td><button data-mpn="${it.mpn}" class="buy">Купить</button></td>
+      <td><img class="thumb" src="${item.image_url || ''}" alt=""></td>
+      <td>
+        <div class="mpn">${item.mpn || ''}</div>
+        <div class="title">${item.title || ''}</div>
+      </td>
+      <td>${item.brand || ''}</td>
+      <td>${item.description || ''}</td>
+      <td>${item.package || ''}</td>
+      <td>${item.packaging || ''}</td>
+      <td>${(item.regions || []).map(r => `<span class="badge">${r}</span>`).join('')}</td>
+      <td>${item.stock_total || item.total_stock || 'По запросу'}</td>
+      <td>${item.price_min_rub || item.min_price_rub ? `${Math.round(item.price_min_rub || item.min_price_rub).toLocaleString('ru-RU')} ₽` : 'По запросу'}</td>
+      <td><button class="btn-open" data-id="${item.id || ''}" data-mpn="${item.mpn || ''}">Открыть</button></td>
     </tr>
   `).join('');
-  tbody.querySelectorAll('button.buy').forEach(b=>b.onclick=openModal);
-
-  // pager
-  pager.innerHTML = '';
-  const mkBtn = (t, p)=>{ const a=document.createElement('button'); a.textContent=t; a.onclick=()=>{ page=p; render(); }; return a; };
-  if (page>1) pager.appendChild(mkBtn('⟨', page-1));
-  pager.appendChild(document.createTextNode(`Стр. ${page}/${pages}`));
-  if (page<pages) pager.appendChild(mkBtn('⟩', page+1));
+  
+  // Добавляем обработчики для кнопок
+  document.querySelectorAll('.btn-open').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const id = btn.dataset.id;
+      const mpn = btn.dataset.mpn;
+      const item = state.items.find(i => (i.id == id) || (i.mpn === mpn));
+      if (item) {
+        openProductModal(item);
+      }
+    });
+  });
 }
 
-async function openModal(e){
-  const mpn = e.currentTarget.dataset.mpn;
-  showModal(`<div class="loader">Загружаем ${mpn}…</div>`);
-  const r = await fetch(`/api/product?mpn=${encodeURIComponent(mpn)}`);
-  if (!r.ok) return showModal(`<div class="loader">Карточка не найдена</div>`);
-  const p = await r.json();
-  showModal(`
-    <div class="card">
-      <div class="imgbox"><img src="${p.image||''}" alt=""></div>
-      <div class="specs">
-        <h2>${p.mpn} <small style="color:#6b7280">${p.brand||''}</small></h2>
-        <p>${p.desc_short||''}</p>
-        <h3>Характеристики</h3>
-        <table>${Object.entries(p.specs||{}).slice(0,12).map(([k,v])=>`<tr><td>${k}</td><td>${v}</td></tr>`).join('')}</table>
-        <h3 style="margin-top:12px;">Документы</h3>
-        <ul>${(p.docs||[]).map(d=>`<li><a href="${d.url}" target="_blank" rel="noreferrer">${d.title||'PDF'}</a></li>`).join('')||'<li>—</li>'}</ul>
+function openProductModal(item) {
+  const modal = document.getElementById('product-modal');
+  const content = document.getElementById('modal-content');
+  
+  if (!modal || !content) return;
+  
+  // Формируем HTML для модального окна
+  let html = `
+    <div class="product-card">
+      <div class="product-gallery">
+        <img src="${item.image_url || ''}" alt="${item.title || item.mpn || ''}">
       </div>
-      <div class="buy">
-        <div style="font-size:28px; font-weight:700; margin-bottom:12px;">
-          ${p.price_min_rub? Math.round(p.price_min_rub).toLocaleString('ru-RU') + ' ₽' : 'Цена по запросу'}
+      <div class="product-info">
+        <h2>${item.title || ''}</h2>
+        <p><strong>MPN:</strong> ${item.mpn || ''}</p>
+        <p><strong>Производитель:</strong> ${item.brand || ''}</p>
+        <p>${item.description || ''}</p>
+        
+        <div class="product-specs">
+          <h3>Технические характеристики</h3>
+          <table>
+  `;
+  
+  // Добавляем технические характеристики
+  if (item.specs) {
+    for (const [key, value] of Object.entries(item.specs)) {
+      html += `<tr><td>${key}</td><td>${value}</td></tr>`;
+    }
+  } else {
+    html += `<tr><td colspan="2">Нет данных</td></tr>`;
+  }
+  
+  html += `
+          </table>
         </div>
-        <label>Количество</label>
-        <input id="qty" type="number" min="1" value="1" style="width:100%;padding:8px;margin:6px 0 12px 0;border:1px solid #e5e7eb;border-radius:8px;">
-        <button id="order">Оформить заказ</button>
+        
+        <div class="product-docs">
+          <h3>Документация</h3>
+  `;
+  
+  // Добавляем документацию
+  if (item.datasheet_urls && item.datasheet_urls.length > 0) {
+    html += '<ul>';
+    for (const url of item.datasheet_urls) {
+      html += `<li><a href="${url}" target="_blank">PDF</a></li>`;
+    }
+    html += '</ul>';
+  } else {
+    html += '<p>Документация не найдена</p>';
+  }
+  
+  html += `
+        </div>
+      </div>
+      
+      <div class="product-order">
+        <div class="price-box">
+          <h3>Цена</h3>
+          <p class="price">${item.price_min_rub || item.min_price_rub ? `${Math.round(item.price_min_rub || item.min_price_rub).toLocaleString('ru-RU')} ₽` : 'По запросу'}</p>
+        </div>
+        
+        <div class="stock-box">
+          <h3>Наличие</h3>
+          <p>${item.stock_total || item.total_stock || 'По запросу'}</p>
+          <p>${(item.regions || []).join(', ') || 'Регион не указан'}</p>
+        </div>
+        
+        <div class="order-form">
+          <h3>Заказать</h3>
+          <div class="form-group">
+            <label for="quantity">Количество</label>
+            <input type="number" id="quantity" min="1" value="1">
+          </div>
+          
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" placeholder="example@mail.ru">
+          </div>
+          
+          <button id="order-btn" class="order-btn" data-mpn="${item.mpn || ''}">Оформить заказ</button>
+        </div>
       </div>
     </div>
-  `);
-  $('#order').onclick = async ()=>{
-    const qty = Number($('#qty').value||1);
-    const email = prompt('E-mail для связи');
-    if (!email) return;
-    const r = await fetch('/api/order',{ method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ mpn, qty, email })}).then(r=>r.json());
-    alert(r.ok? 'Заявка принята' : 'Ошибка');
-    hideModal();
-  };
+  `;
+  
+  // Устанавливаем содержимое модального окна
+  content.innerHTML = html;
+  
+  // Показываем модальное окно
+  modal.classList.remove('hidden');
+  
+  // Добавляем обработчик для кнопки заказа
+  const orderBtn = document.getElementById('order-btn');
+  if (orderBtn) {
+    orderBtn.addEventListener('click', () => {
+      const mpn = orderBtn.dataset.mpn;
+      const quantity = document.getElementById('quantity')?.value || 1;
+      const email = document.getElementById('email')?.value || '';
+      
+      if (!email) {
+        alert('Пожалуйста, укажите email');
+        return;
+      }
+      
+      // Отправляем заказ
+      fetch('/api/order', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          mpn,
+          qty: quantity,
+          email
+        })
+      })
+      .then(r => r.json())
+      .then(data => {
+        if (data.ok) {
+          alert('Заказ успешно отправлен!');
+          modal.classList.add('hidden');
+        } else {
+          alert('Ошибка при отправке заказа');
+        }
+      })
+      .catch(err => {
+        console.error('Order error:', err);
+        alert('Ошибка при отправке заказа');
+      });
+    });
+  }
+  
+  // Добавляем обработчик для закрытия модального окна
+  const closeBtn = modal.querySelector('.close-btn');
+  if (closeBtn) {
+    closeBtn.addEventListener('click', () => {
+      modal.classList.add('hidden');
+    });
+  }
+  
+  // Закрытие при клике вне модального окна
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) {
+      modal.classList.add('hidden');
+    }
+  });
 }
-
-function showModal(html){ const m = $('#modal'); $('#modal-content').innerHTML = html; m.classList.remove('hidden'); $('#modal-close').onclick=hideModal; }
-function hideModal(){ $('#modal').classList.add('hidden'); }

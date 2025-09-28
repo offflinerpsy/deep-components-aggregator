@@ -1,0 +1,11 @@
+QUERY: LM317
+START_TIME: 2025-09-28T18:33:13.689Z
+TOTAL_TIME: 1024ms
+
+=== EVENTS ===
+[1ms] [start] Starting live search for "LM317"
+[1ms] [test] Using test data for "LM317"
+[509ms] [item] Found item 1: LM317T
+[1024ms] [item] Found item 2: LM317-SMD
+
+=== PROVIDERS ===

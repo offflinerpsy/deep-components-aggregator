@@ -1,24 +1,24 @@
 {
-  "name": "deep-agg-alpha",
-  "version": "0.0.1",
-  "type": "module",
-  "description": "Deep Components Aggregator",
+  "name": "deep-components-aggregator",
+  "version": "1.0.0",
+  "description": "Агрегатор электронных компонентов с SSE и живым поиском",
   "main": "server.js",
+  "type": "module",
   "scripts": {
     "start": "node server.js",
-    "dev": "node --watch server.js",
-    "rates:refresh": "node ./scripts/refresh-rates.mjs",
-    "data:ingest:chipdip": "node ./scripts/ingest-chipdip.mjs",
-    "data:index:build": "node ./scripts/build-index.mjs",
-    "smoke": "node ./scripts/smoke.mjs",
-    "smoke:prod": "node ./scripts/smoke.mjs --host=http://89.104.69.77"
+    "migrate": "node scripts/migrate-sqlite.mjs",
+    "smoke": "node scripts/smoke.mjs",
+    "deploy": "bash prod-deploy.sh",
+    "deploy:win": "deploy-one-shot.bat"
   },
   "dependencies": {
-    "@orama/orama": "^1.2.11",
+    "@orama/orama": "^2.0.0",
+    "better-sqlite3": "^9.0.0",
     "cheerio": "^1.0.0-rc.12",
     "express": "^4.18.2",
     "fast-xml-parser": "^4.3.2",
     "nanoid": "^5.0.3",
-    "undici": "^5.26.3"
+    "p-limit": "^5.0.0",
+    "undici": "^6.0.0"
   }
 }

@@ -12,17 +12,17 @@ function hashName(u){ return crypto.createHash('sha1').update(u).digest('hex'); 
  */
 export function parsePromelecProduct(html, url) {
   const $ = cheerio.load(html);
-  
+
   // Извлекаем название товара
   const title = $('h1').first().text().trim();
-  
+
   // Извлекаем MPN (артикул)
   let mpn = '';
   const mpnEl = $('.article, .product-article, [itemprop="mpn"]');
   if (mpnEl.length) {
     mpn = mpnEl.text().trim().replace(/^Арт\.?\s*:?\s*/i, '');
   }
-  
+
   // Если MPN не найден, используем часть URL
   if (!mpn) {
     const urlParts = url.split('/');
@@ -31,14 +31,14 @@ export function parsePromelecProduct(html, url) {
       mpn = lastPart;
     }
   }
-  
+
   // Извлекаем производителя
   let brand = '';
   const brandEl = $('.manufacturer, .brand, [itemprop="brand"]');
   if (brandEl.length) {
     brand = brandEl.text().trim();
   }
-  
+
   // Извлекаем изображение
   let image = null;
   const ogImage = $('meta[property="og:image"]').attr('content');
@@ -48,7 +48,7 @@ export function parsePromelecProduct(html, url) {
   } else if (mainImage) {
     image = new URL(mainImage, url).toString();
   }
-  
+
   // Собираем все изображения
   const images = [];
   $('.product-image img, .gallery img').each((_, el) => {
@@ -58,14 +58,14 @@ export function parsePromelecProduct(html, url) {
       images.push(imgUrl);
     }
   });
-  
+
   // Извлекаем краткое описание
   let shortDesc = '';
   const descEl = $('.product-description, [itemprop="description"]');
   if (descEl.length) {
     shortDesc = descEl.text().trim();
   }
-  
+
   // Извлекаем технические характеристики
   const specs = {};
   $('.specifications table tr, .characteristics table tr').each((_, row) => {
@@ -78,11 +78,11 @@ export function parsePromelecProduct(html, url) {
       }
     }
   });
-  
+
   // Извлекаем информацию о корпусе
   let pkg = '';
   let pkgType = '';
-  
+
   // Ищем информацию о корпусе в технических характеристиках
   for (const key in specs) {
     const lowerKey = key.toLowerCase();
@@ -91,7 +91,7 @@ export function parsePromelecProduct(html, url) {
       break;
     }
   }
-  
+
   // Если не нашли в характеристиках, ищем в заголовке
   if (!pkg && title) {
     const pkgMatch = title.match(/\[(.*?)\]/);
@@ -99,7 +99,7 @@ export function parsePromelecProduct(html, url) {
       pkg = pkgMatch[1].trim();
     }
   }
-  
+
   // Определяем тип корпуса на основе его названия
   if (pkg) {
     if (/^(SO|SOIC|SOP|SSOP|TSSOP|MSOP|QFP|LQFP|TQFP|QFN|DFN|BGA|CSP)/i.test(pkg)) {
@@ -108,36 +108,36 @@ export function parsePromelecProduct(html, url) {
       pkgType = 'THT';
     }
   }
-  
+
   // Извлекаем цены и наличие
   const offers = [];
   let stockTotal = 0;
-  
+
   $('.price-block, .product-price-block').each((_, block) => {
     const priceEl = $(block).find('.price');
     const priceText = priceEl.text().trim();
     const priceMatch = priceText.match(/[\d\s.,]+\s*(?:р|₽|руб)/i);
-    
+
     let price = 0;
     let currency = 'RUB';
-    
+
     if (priceMatch) {
       price = parseFloat(priceMatch[0].replace(/[^\d.,]/g, '').replace(',', '.'));
     }
-    
+
     const stockEl = $(block).find('.stock, .availability');
     const stockText = stockEl.text().trim();
     const stockMatch = stockText.match(/(\d+)\s*(?:шт|pcs)/i);
-    
+
     let stock = null;
     if (stockMatch) {
       stock = parseInt(stockMatch[1], 10);
       stockTotal += stock;
     }
-    
+
     const regionEl = $(block).find('.region, .warehouse');
     const region = regionEl.text().trim() || 'Москва';
-    
+
     if (price > 0) {
       offers.push({
         region,
@@ -148,16 +148,16 @@ export function parsePromelecProduct(html, url) {
       });
     }
   });
-  
+
   // Извлекаем PDF документы
   const docs = [];
   $('a[href$=".pdf"]').each((_, a) => {
     const href = $(a).attr('href');
     if (!href) return;
-    
+
     const abs = new URL(href, url).toString();
     const h = hashName(abs);
-    
+
     docs.push({
       title: $(a).text().trim() || 'PDF',
       url: `/files/pdf/${h}.pdf`,
@@ -165,7 +165,7 @@ export function parsePromelecProduct(html, url) {
       _hash: h
     });
   });
-  
+
   // Формируем каноническое представление
   const canon = normCanon({
     url,
@@ -184,6 +184,6 @@ export function parsePromelecProduct(html, url) {
     pkg_type: pkgType,
     source: 'promelec'
   });
-  
+
   return canon;
 }

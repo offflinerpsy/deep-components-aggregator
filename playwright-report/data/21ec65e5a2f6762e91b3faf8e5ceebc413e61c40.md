@@ -1,0 +1,63 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e1]:
+  - banner [ref=e2]:
+    - generic [ref=e4]:
+      - searchbox "Живой поиск по MPN, производителю или названию..." [active] [ref=e5]: LM317
+      - button "Поиск" [ref=e6] [cursor=pointer]
+  - main [ref=e7]:
+    - generic [ref=e8]: "Поиск завершен. Найдено элементов: 2"
+    - generic [ref=e9]:
+      - generic [ref=e10]: ChipDip
+      - generic [ref=e11]: Promelec
+    - generic [ref=e12]:
+      - generic [ref=e13]: Результаты в реальном времени
+      - generic [ref=e15]:
+        - text: "Найдено:"
+        - generic [ref=e16]: "2"
+    - table [ref=e17]:
+      - rowgroup [ref=e18]:
+        - row "Фото MPN / Название Производитель Описание Наличие Регионы Цена" [ref=e19]:
+          - cell "Фото" [ref=e20]
+          - cell "MPN / Название" [ref=e21]
+          - cell "Производитель" [ref=e22]
+          - cell "Описание" [ref=e23]
+          - cell "Наличие" [ref=e24]
+          - cell "Регионы" [ref=e25]
+          - cell "Цена" [ref=e26]
+          - cell [ref=e27]
+      - rowgroup [ref=e28]:
+        - row "Стабилизатор напряжения, 1.2-37В, 1.5А [TO-220] LM317T Стабилизатор напряжения, 1.2-37В, 1.5А [TO-220] Texas Instruments Регулируемый линейный стабилизатор положительного напряжения 120 Москва Санкт-Петербург 50 ₽ Открыть" [ref=e29]:
+          - cell "Стабилизатор напряжения, 1.2-37В, 1.5А [TO-220]" [ref=e30]:
+            - img "Стабилизатор напряжения, 1.2-37В, 1.5А [TO-220]" [ref=e31]
+          - cell "LM317T Стабилизатор напряжения, 1.2-37В, 1.5А [TO-220]" [ref=e32]:
+            - generic [ref=e33]: LM317T
+            - generic [ref=e34]: Стабилизатор напряжения, 1.2-37В, 1.5А [TO-220]
+          - cell "Texas Instruments" [ref=e35]
+          - cell "Регулируемый линейный стабилизатор положительного напряжения" [ref=e36]
+          - cell "120" [ref=e37]
+          - cell "Москва Санкт-Петербург" [ref=e38]:
+            - generic [ref=e39]: Москва
+            - generic [ref=e40]: Санкт-Петербург
+          - cell "50 ₽" [ref=e41]
+          - cell "Открыть" [ref=e42]:
+            - button "Открыть" [ref=e43] [cursor=pointer]
+        - row "Стабилизатор напряжения LM317 (SMD) LM317-SMD Стабилизатор напряжения LM317 (SMD) ST Microelectronics Регулируемый линейный стабилизатор положительного напряжения в SMD корпусе 85 Москва 45 ₽ Открыть" [ref=e44]:
+          - cell "Стабилизатор напряжения LM317 (SMD)" [ref=e45]:
+            - img "Стабилизатор напряжения LM317 (SMD)" [ref=e46]
+          - cell "LM317-SMD Стабилизатор напряжения LM317 (SMD)" [ref=e47]:
+            - generic [ref=e48]: LM317-SMD
+            - generic [ref=e49]: Стабилизатор напряжения LM317 (SMD)
+          - cell "ST Microelectronics" [ref=e50]
+          - cell "Регулируемый линейный стабилизатор положительного напряжения в SMD корпусе" [ref=e51]
+          - cell "85" [ref=e52]
+          - cell "Москва" [ref=e53]:
+            - generic [ref=e54]: Москва
+          - cell "45 ₽" [ref=e55]
+          - cell "Открыть" [ref=e56]:
+            - button "Открыть" [ref=e57] [cursor=pointer]
+  - generic [ref=e60]:
+    - heading "Информация о товаре" [level=2] [ref=e61]
+    - button "×" [ref=e62] [cursor=pointer]
+```

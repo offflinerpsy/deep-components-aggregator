@@ -9,42 +9,42 @@ import * as cheerio from 'cheerio';
 export function parsePromelecSearch(html, baseUrl = 'https://www.promelec.ru') {
   const $ = cheerio.load(html);
   const results = [];
-  
+
   // Находим все блоки с товарами
   $('.product-item, .product-card, .catalog-item').each((_, element) => {
     try {
       const el = $(element);
-      
+
       // Извлекаем ссылку на товар
       const linkEl = el.find('a.product-name, a.name, a.title').first();
       const relativeUrl = linkEl.attr('href');
       if (!relativeUrl) return;
-      
+
       const url = new URL(relativeUrl, baseUrl).toString();
-      
+
       // Извлекаем название товара
       const title = linkEl.text().trim();
-      
+
       // Извлекаем изображение
       const imgEl = el.find('img').first();
       const imgSrc = imgEl.attr('src') || imgEl.attr('data-src');
       const image = imgSrc ? new URL(imgSrc, baseUrl).toString() : null;
-      
+
       // Извлекаем описание
       const descEl = el.find('.description, .product-description');
       const description = descEl.text().trim();
-      
+
       // Извлекаем цену
       const priceEl = el.find('.price, .product-price');
       let price = null;
       let currency = 'RUB';
-      
+
       const priceText = priceEl.text().trim();
       const priceMatch = priceText.match(/[\d\s.,]+\s*(?:р|₽|руб)/i);
       if (priceMatch) {
         price = parseFloat(priceMatch[0].replace(/[^\d.,]/g, '').replace(',', '.'));
       }
-      
+
       // Извлекаем наличие
       const stockEl = el.find('.stock, .availability');
       let stock = null;
@@ -53,15 +53,15 @@ export function parsePromelecSearch(html, baseUrl = 'https://www.promelec.ru') {
       if (stockMatch) {
         stock = parseInt(stockMatch[1], 10);
       }
-      
+
       // Извлекаем производителя
       const brandEl = el.find('.brand, .manufacturer');
       const brand = brandEl.text().trim();
-      
+
       // Извлекаем MPN (артикул)
       const mpnEl = el.find('.mpn, .article, .code');
       let mpn = mpnEl.text().trim().replace(/^Арт\.?\s*:?\s*/i, '');
-      
+
       // Если MPN не найден, пытаемся извлечь из URL
       if (!mpn) {
         const urlParts = url.split('/');
@@ -70,7 +70,7 @@ export function parsePromelecSearch(html, baseUrl = 'https://www.promelec.ru') {
           mpn = lastPart;
         }
       }
-      
+
       // Добавляем результат, если есть хотя бы URL и название
       if (url && (title || mpn)) {
         results.push({
@@ -90,6 +90,6 @@ export function parsePromelecSearch(html, baseUrl = 'https://www.promelec.ru') {
       console.error('Error parsing product item:', error);
     }
   });
-  
+
   return results;
 }

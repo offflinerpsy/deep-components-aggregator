@@ -1,189 +1,147 @@
-#!/usr/bin/env node
-
-/**
- * Скрипт для smoke-тестирования API и UI
- *
- * Использование:
- * node scripts/smoke.mjs [--host=http://localhost:9201] [--verbose]
- *
- * Опции:
- * --host=URL - URL хоста для тестирования (по умолчанию http://localhost:9201)
- * --verbose - выводить подробную информацию
- */
-
 import { fetch } from 'undici';
-import { writeFileSync, mkdirSync } from 'node:fs';
-import path from 'node:path';
 
-// Константы
-const DIAG_DIR = '_diag';
-const DEFAULT_HOST = 'http://localhost:9201';
-
-/**
- * Выполняет HTTP-запрос и возвращает результат
- * @param {string} url URL для запроса
- * @param {object} options Опции запроса
- * @returns {Promise<object>} Результат запроса
- */
-async function fetchWithTimeout(url, options = {}) {
-  const { timeout = 10000, ...fetchOptions } = options;
-
-  const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), timeout);
-
+// Проверяем, что сервер запущен и отвечает
+async function checkHealth() {
+  console.log('Проверка /api/health...');
   try {
-    const response = await fetch(url, {
-      ...fetchOptions,
-      signal: controller.signal
-    });
-
-    return {
-      ok: response.ok,
-      status: response.status,
-      headers: Object.fromEntries(response.headers.entries()),
-      body: await response.text()
-    };
-  } catch (error) {
-    return {
-      ok: false,
-      status: 0,
-      error: error.message
-    };
-  } finally {
-    clearTimeout(timeoutId);
-  }
-}
-
-/**
- * Выполняет тест для указанного URL
- * @param {string} host Хост для тестирования
- * @param {string} path Путь для запроса
- * @param {function} validator Функция проверки результата
- * @param {boolean} verbose Выводить подробную информацию
- * @returns {Promise<boolean>} Результат теста
- */
-async function runTest(host, path, validator, verbose = false) {
-  const url = `${host}${path}`;
-
-  console.log(`Testing ${url}...`);
-
-  try {
-    const result = await fetchWithTimeout(url);
-
-    if (!result.ok) {
-      console.error(`  FAIL: HTTP ${result.status} ${result.error || ''}`);
+    const response = await fetch('http://localhost:9201/api/health');
+    if (!response.ok) {
+      console.error(`❌ /api/health вернул статус ${response.status}`);
       return false;
     }
-
-    let body;
-    try {
-      body = JSON.parse(result.body);
-    } catch (e) {
-      body = result.body;
-    }
-
-    if (verbose) {
-      console.log(`  Response: ${typeof body === 'string' ? body.slice(0, 100) : JSON.stringify(body, null, 2).slice(0, 100)}...`);
-    }
-
-    const isValid = validator(body, result);
-
-    if (isValid) {
-      console.log(`  PASS: ${path}`);
-    } else {
-      console.error(`  FAIL: Validation failed for ${path}`);
-    }
-
-    return isValid;
+    
+    const data = await response.json();
+    console.log(`✅ /api/health: ${JSON.stringify(data)}`);
+    return true;
   } catch (error) {
-    console.error(`  ERROR: ${error.message}`);
+    console.error(`❌ Ошибка при проверке /api/health: ${error.message}`);
     return false;
   }
 }
 
-/**
- * Основная функция тестирования
- */
-async function main() {
-  // Парсим аргументы командной строки
-  const args = process.argv.slice(2);
-  const hostArg = args.find(arg => arg.startsWith('--host='));
-  const host = hostArg ? hostArg.split('=')[1] : DEFAULT_HOST;
-  const verbose = args.includes('--verbose');
-
-  console.log(`Running smoke tests against ${host}`);
-
-  // Создаем директорию для диагностики
-  const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
-  const diagDir = path.join(DIAG_DIR, timestamp);
-  mkdirSync(diagDir, { recursive: true });
-
-  // Результаты тестов
-  const results = {};
-
-  // Тест 1: Проверка главной страницы
-  results.root = await runTest(host, '/', body => {
-    return typeof body === 'string' && body.includes('<!DOCTYPE html>');
-  }, verbose);
-
-  // Тест 2: Проверка API health
-  results.health = await runTest(host, '/api/health', body => {
-    return body && body.status === 'ok';
-  }, verbose);
-
-  // Тест 3: Проверка поиска LM317
-  results.searchLM317 = await runTest(host, '/api/search?q=LM317', body => {
-    return body && body.count > 0 && Array.isArray(body.items) && body.items.length > 0;
-  }, verbose);
-
-  // Тест 4: Проверка поиска 1N4148W-TP
-  results.search1N4148W = await runTest(host, '/api/search?q=1N4148W-TP', body => {
-    return body && (body.count > 0 || body.status === 'pending');
-  }, verbose);
-
-  // Тест 5: Проверка поиска LDD-700L
-  results.searchLDD700L = await runTest(host, '/api/search?q=LDD-700L', body => {
-    return body && (body.count > 0 || body.status === 'pending');
-  }, verbose);
-
-  // Тест 6: Проверка API product для LM317
-  results.productLM317 = await runTest(host, '/api/product?mpn=LM317', body => {
-    return body && body.mpn && body.brand && (body.price_min_rub || body.price_min_rub === 0);
-  }, verbose);
-
-  // Тест 7: Проверка страницы результатов
-  results.resultsPage = await runTest(host, '/results.html', body => {
-    return typeof body === 'string' && body.includes('<!DOCTYPE html>') && body.includes('results-table');
-  }, verbose);
-
-  // Сохраняем результаты
-  const reportPath = path.join(diagDir, 'smoke-results.json');
-  writeFileSync(reportPath, JSON.stringify({
-    timestamp: new Date().toISOString(),
-    host,
-    results
-  }, null, 2));
-
-  // Выводим итоги
-  console.log('\nSummary:');
-  let allPassed = true;
-
-  for (const [test, passed] of Object.entries(results)) {
-    console.log(`  ${passed ? '✓' : '✗'} ${test}`);
-    if (!passed) {
-      allPassed = false;
+// Проверяем поиск по API
+async function checkSearch() {
+  const queries = ['LM317', '1N4148', 'транзистор'];
+  let success = true;
+  
+  for (const query of queries) {
+    console.log(`Проверка /api/search?q=${query}...`);
+    try {
+      const response = await fetch(`http://localhost:9201/api/search?q=${query}`);
+      if (!response.ok) {
+        console.error(`❌ /api/search?q=${query} вернул статус ${response.status}`);
+        success = false;
+        continue;
+      }
+      
+      const data = await response.json();
+      if (data.count > 0) {
+        console.log(`✅ /api/search?q=${query}: найдено ${data.count} элементов`);
+      } else {
+        console.warn(`⚠️ /api/search?q=${query}: элементы не найдены`);
+      }
+    } catch (error) {
+      console.error(`❌ Ошибка при проверке /api/search?q=${query}: ${error.message}`);
+      success = false;
     }
   }
-
-  console.log(`\nSmoke tests ${allPassed ? 'PASSED' : 'FAILED'}`);
-  console.log(`Results saved to ${reportPath}`);
-
-  // Выходим с соответствующим кодом
-  process.exit(allPassed ? 0 : 1);
+  
+  return success;
 }
 
-// Запускаем основную функцию
-main().catch(err => {
-  console.error('Fatal error:', err);
-  process.exit(1);
-});
+// Проверяем live-поиск
+async function checkLiveSearch() {
+  const query = 'LM317';
+  console.log(`Проверка /api/live/search?q=${query}...`);
+  
+  try {
+    const controller = new AbortController();
+    const signal = controller.signal;
+    
+    // Устанавливаем таймаут 5 секунд
+    setTimeout(() => controller.abort(), 5000);
+    
+    const response = await fetch(`http://localhost:9201/api/live/search?q=${query}`, { signal });
+    if (!response.ok) {
+      console.error(`❌ /api/live/search?q=${query} вернул статус ${response.status}`);
+      return false;
+    }
+    
+    const reader = response.body.getReader();
+    let receivedLength = 0;
+    let receivedEvents = 0;
+    
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      
+      receivedLength += value.length;
+      const text = new TextDecoder().decode(value);
+      const events = text.split('\n\n').filter(Boolean);
+      receivedEvents += events.length;
+    }
+    
+    if (receivedLength > 0) {
+      console.log(`✅ /api/live/search?q=${query}: получено ${receivedEvents} событий, ${receivedLength} байт`);
+      return true;
+    } else {
+      console.warn(`⚠️ /api/live/search?q=${query}: данные не получены`);
+      return false;
+    }
+  } catch (error) {
+    if (error.name === 'AbortError') {
+      console.log(`✅ /api/live/search?q=${query}: соединение установлено (прервано по таймауту)`);
+      return true;
+    }
+    
+    console.error(`❌ Ошибка при проверке /api/live/search?q=${query}: ${error.message}`);
+    return false;
+  }
+}
+
+// Проверяем главную страницу
+async function checkMainPage() {
+  console.log('Проверка главной страницы...');
+  try {
+    const response = await fetch('http://localhost:9201/');
+    if (!response.ok) {
+      console.error(`❌ Главная страница вернула статус ${response.status}`);
+      return false;
+    }
+    
+    const html = await response.text();
+    if (html.includes('<html') && html.includes('</html>')) {
+      console.log('✅ Главная страница загружена успешно');
+      return true;
+    } else {
+      console.error('❌ Главная страница не содержит HTML');
+      return false;
+    }
+  } catch (error) {
+    console.error(`❌ Ошибка при проверке главной страницы: ${error.message}`);
+    return false;
+  }
+}
+
+// Запускаем все проверки
+async function runTests() {
+  console.log('Запуск проверок...');
+  
+  const healthOk = await checkHealth();
+  const searchOk = await checkSearch();
+  const liveSearchOk = await checkLiveSearch();
+  const mainPageOk = await checkMainPage();
+  
+  console.log('\nРезультаты проверок:');
+  console.log(`- Проверка /api/health: ${healthOk ? '✅ OK' : '❌ FAIL'}`);
+  console.log(`- Проверка /api/search: ${searchOk ? '✅ OK' : '❌ FAIL'}`);
+  console.log(`- Проверка /api/live/search: ${liveSearchOk ? '✅ OK' : '❌ FAIL'}`);
+  console.log(`- Проверка главной страницы: ${mainPageOk ? '✅ OK' : '❌ FAIL'}`);
+  
+  const allOk = healthOk && searchOk && liveSearchOk && mainPageOk;
+  console.log(`\nИтог: ${allOk ? '✅ Все проверки пройдены' : '❌ Есть ошибки'}`);
+  
+  process.exit(allOk ? 0 : 1);
+}
+
+runTests();

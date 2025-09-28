@@ -1,190 +1,228 @@
 import { fetch } from 'undici';
 import { XMLParser } from 'fast-xml-parser';
-import { writeFileSync, readFileSync, existsSync } from 'node:fs';
+import fs from 'node:fs';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-/**
- * Путь к файлу с кешированными курсами валют
- */
-const RATES_PATH = 'data/rates.json';
+// Получаем путь к директории модуля
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const rootDir = path.resolve(__dirname, '../..');
 
-/**
- * URL для получения курсов валют от ЦБ РФ
- */
+// Путь к файлу с курсами валют
+const RATES_FILE = path.join(rootDir, 'data/rates.json');
+
+// URL для получения курсов валют
 const CBR_URL = 'https://www.cbr.ru/scripts/XML_daily.asp';
 
-/**
- * Запасной URL для получения курсов валют
- */
-const FALLBACK_URL = 'https://www.cbr-xml-daily.ru/daily_json.js';
+// Резервный URL для получения курсов валют
+const BACKUP_URL = 'https://www.cbr-xml-daily.ru/daily_json.js';
 
 /**
- * Время жизни кеша курсов валют (12 часов)
- */
-const CACHE_TTL = 12 * 60 * 60 * 1000;
-
-/**
- * Обновляет курсы валют из ЦБ РФ
+ * Загружает курсы валют от ЦБ РФ
  * @returns {Promise<object>} Объект с курсами валют
  */
-export async function refreshRates() {
+export async function fetchRates() {
   try {
-    // Пробуем получить курсы от ЦБ РФ
-    const response = await fetch(CBR_URL);
+    // Пытаемся загрузить курсы с основного URL
+    const response = await fetch(CBR_URL, {
+      headers: {
+        'Accept': 'application/xml',
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+      },
+      timeout: 10000
+    });
+
     if (!response.ok) {
-      throw new Error(`CBR API error: ${response.status}`);
+      throw new Error(`Ошибка загрузки курсов валют: ${response.status}`);
     }
 
     const xml = await response.text();
     const parser = new XMLParser({ ignoreAttributes: false });
     const data = parser.parse(xml);
 
-    // Преобразуем данные в удобный формат
-    const rates = { RUB: 1 };
+    if (!data.ValCurs || !data.ValCurs.Valute) {
+      throw new Error('Неверный формат данных от ЦБ РФ');
+    }
 
-    if (data.ValCurs && data.ValCurs.Valute) {
-      const valutes = Array.isArray(data.ValCurs.Valute) ? data.ValCurs.Valute : [data.ValCurs.Valute];
+    const rates = {
+      RUB: 1,
+      timestamp: Date.now(),
+      source: 'cbr'
+    };
 
-      for (const valute of valutes) {
-        const code = valute.CharCode;
-        const nominal = parseFloat(valute.Nominal.replace(',', '.'));
-        const value = parseFloat(valute.Value.replace(',', '.'));
+    // Обрабатываем данные о курсах валют
+    const valutes = Array.isArray(data.ValCurs.Valute) ? data.ValCurs.Valute : [data.ValCurs.Valute];
+    for (const valute of valutes) {
+      const code = valute.CharCode;
+      const nominal = Number(valute.Nominal);
+      const value = Number(String(valute.Value).replace(',', '.'));
+
+      if (code && nominal && value) {
+        rates[code] = value / nominal;
+      }
+    }
+
+    return rates;
+  } catch (error) {
+    console.warn(`Ошибка при загрузке курсов с CBR: ${error.message}`);
+
+    try {
+      // Пытаемся загрузить курсы с резервного URL
+      const response = await fetch(BACKUP_URL, {
+        headers: {
+          'Accept': 'application/json',
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+        },
+        timeout: 10000
+      });
+
+      if (!response.ok) {
+        throw new Error(`Ошибка загрузки курсов валют: ${response.status}`);
+      }
+
+      const data = await response.json();
+
+      if (!data.Valute) {
+        throw new Error('Неверный формат данных от резервного источника');
+      }
+
+      const rates = {
+        RUB: 1,
+        timestamp: Date.now(),
+        source: 'cbr-xml-daily'
+      };
+
+      // Обрабатываем данные о курсах валют
+      for (const [code, valute] of Object.entries(data.Valute)) {
+        const value = Number(valute.Value);
+        const nominal = Number(valute.Nominal);
 
         if (code && nominal && value) {
           rates[code] = value / nominal;
         }
       }
-    }
 
-    // Сохраняем курсы в кеш
-    const ratesWithMeta = {
-      ts: Date.now(),
-      source: 'cbr',
-      ...rates
-    };
-
-    // Создаем директорию, если она не существует
-    const dir = path.dirname(RATES_PATH);
-    if (!existsSync(dir)) {
-      const { mkdirSync } = await import('node:fs');
-      mkdirSync(dir, { recursive: true });
-    }
-
-    writeFileSync(RATES_PATH, JSON.stringify(ratesWithMeta, null, 2));
-    return rates;
-  } catch (error) {
-    console.error(`Error fetching rates from CBR: ${error.message}`);
-
-    try {
-      // Пробуем получить курсы из запасного источника
-      console.log('Trying fallback source...');
-      const response = await fetch(FALLBACK_URL);
-      if (!response.ok) {
-        throw new Error(`Fallback API error: ${response.status}`);
-      }
-
-      const data = await response.json();
-
-      // Преобразуем данные в удобный формат
-      const rates = { RUB: 1 };
-
-      if (data.Valute) {
-        for (const [code, info] of Object.entries(data.Valute)) {
-          if (info.Value && info.Nominal) {
-            rates[code] = info.Value / info.Nominal;
-          }
-        }
-      }
-
-      // Сохраняем курсы в кеш
-      const ratesWithMeta = {
-        ts: Date.now(),
-        source: 'cbr-xml-daily',
-        ...rates
-      };
-
-      // Создаем директорию, если она не существует
-      const dir = path.dirname(RATES_PATH);
-      if (!existsSync(dir)) {
-        const { mkdirSync } = await import('node:fs');
-        mkdirSync(dir, { recursive: true });
-      }
-
-      writeFileSync(RATES_PATH, JSON.stringify(ratesWithMeta, null, 2));
       return rates;
-    } catch (fallbackError) {
-      console.error(`Error fetching rates from fallback: ${fallbackError.message}`);
+    } catch (backupError) {
+      console.error(`Ошибка при загрузке курсов с резервного источника: ${backupError.message}`);
 
-      // Если есть кешированные курсы, используем их
-      if (existsSync(RATES_PATH)) {
-        console.log('Using cached rates');
-        return getRates();
-      }
-
-      // Если нет кешированных курсов, возвращаем только рубль
-      return { RUB: 1 };
+      // Если не удалось загрузить курсы, возвращаем базовые значения
+      return {
+        RUB: 1,
+        USD: 80,
+        EUR: 90,
+        timestamp: Date.now(),
+        source: 'fallback'
+      };
     }
   }
 }
 
 /**
- * Получает курсы валют из кеша или обновляет их, если кеш устарел
- * @returns {object} Объект с курсами валют
+ * Обновляет файл с курсами валют
+ * @returns {Promise<object>} Объект с курсами валют
  */
-export function getRates() {
+export async function refreshRates() {
+  const rates = await fetchRates();
+
   try {
-    // Проверяем наличие кеша
-    if (!existsSync(RATES_PATH)) {
-      return { RUB: 1 };
+    // Создаем директорию, если она не существует
+    const dir = path.dirname(RATES_FILE);
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true });
     }
 
-    // Читаем кеш
-    const data = JSON.parse(readFileSync(RATES_PATH, 'utf8'));
+    // Сохраняем курсы валют в файл
+    fs.writeFileSync(RATES_FILE, JSON.stringify(rates, null, 2));
 
-    // Проверяем актуальность кеша
-    if (data.ts && Date.now() - data.ts < CACHE_TTL) {
-      // Удаляем метаданные
-      const { ts, source, ...rates } = data;
-      return rates;
-    }
-
-    // Если кеш устарел, возвращаем его, но запускаем обновление в фоне
-    const { ts, source, ...rates } = data;
-    refreshRates().catch(console.error);
     return rates;
   } catch (error) {
-    console.error(`Error reading rates cache: ${error.message}`);
-    return { RUB: 1 };
+    console.error(`Ошибка при сохранении курсов валют: ${error.message}`);
+    return rates;
   }
+}
+
+/**
+ * Загружает курсы валют из файла
+ * @returns {object} Объект с курсами валют
+ */
+export function loadRates() {
+  try {
+    if (!fs.existsSync(RATES_FILE)) {
+      return {
+        RUB: 1,
+        timestamp: 0,
+        source: 'none'
+      };
+    }
+
+    const content = fs.readFileSync(RATES_FILE, 'utf8');
+    return JSON.parse(content);
+  } catch (error) {
+    console.error(`Ошибка при загрузке курсов валют: ${error.message}`);
+    return {
+      RUB: 1,
+      timestamp: 0,
+      source: 'error'
+    };
+  }
+}
+
+/**
+ * Проверяет актуальность курсов валют
+ * @param {object} rates Объект с курсами валют
+ * @param {number} maxAge Максимальный возраст курсов в миллисекундах
+ * @returns {boolean} true, если курсы актуальны
+ */
+export function areRatesValid(rates, maxAge = 12 * 60 * 60 * 1000) {
+  if (!rates || !rates.timestamp) {
+    return false;
+  }
+
+  const now = Date.now();
+  return now - rates.timestamp < maxAge;
+}
+
+/**
+ * Получает курсы валют, при необходимости обновляя их
+ * @param {boolean} forceRefresh Принудительно обновить курсы
+ * @returns {Promise<object>} Объект с курсами валют
+ */
+export async function getRates(forceRefresh = false) {
+  const rates = loadRates();
+
+  // Если курсы устарели или принудительное обновление
+  if (forceRefresh || !areRatesValid(rates)) {
+    return await refreshRates();
+  }
+
+  return rates;
 }
 
 /**
  * Конвертирует сумму в рубли
  * @param {object} options Параметры конвертации
- * @param {number} options.amount Сумма
+ * @param {number} options.amount Сумма для конвертации
  * @param {string} options.currency Валюта
  * @returns {number|null} Сумма в рублях или null в случае ошибки
  */
-export function toRUB({ amount, currency }) {
-  if (!amount || !currency) {
+export async function toRub({ amount, currency }) {
+  if (typeof amount !== 'number' || !amount) {
     return null;
   }
 
-  // Если валюта уже рубли, возвращаем сумму
-  if (currency.toUpperCase() === 'RUB') {
+  // Если валюта не указана или это уже рубли, возвращаем исходную сумму
+  if (!currency || currency.toUpperCase() === 'RUB') {
     return amount;
   }
 
-  // Получаем курсы валют
-  const rates = getRates();
-
-  // Получаем курс для указанной валюты
+  const rates = await getRates();
   const rate = rates[currency.toUpperCase()];
+
   if (!rate) {
-    console.warn(`Unknown currency: ${currency}`);
+    console.warn(`Не найден курс для валюты ${currency}`);
     return null;
   }
 
-  // Конвертируем сумму
   return amount * rate;
 }

@@ -9,7 +9,7 @@ async function checkHealth() {
       console.error(`❌ /api/health вернул статус ${response.status}`);
       return false;
     }
-    
+
     const data = await response.json();
     console.log(`✅ /api/health: ${JSON.stringify(data)}`);
     return true;
@@ -23,7 +23,7 @@ async function checkHealth() {
 async function checkSearch() {
   const queries = ['LM317', '1N4148', 'транзистор'];
   let success = true;
-  
+
   for (const query of queries) {
     console.log(`Проверка /api/search?q=${query}...`);
     try {
@@ -33,7 +33,7 @@ async function checkSearch() {
         success = false;
         continue;
       }
-      
+
       const data = await response.json();
       if (data.count > 0) {
         console.log(`✅ /api/search?q=${query}: найдено ${data.count} элементов`);
@@ -45,7 +45,7 @@ async function checkSearch() {
       success = false;
     }
   }
-  
+
   return success;
 }
 
@@ -53,34 +53,34 @@ async function checkSearch() {
 async function checkLiveSearch() {
   const query = 'LM317';
   console.log(`Проверка /api/live/search?q=${query}...`);
-  
+
   try {
     const controller = new AbortController();
     const signal = controller.signal;
-    
+
     // Устанавливаем таймаут 5 секунд
     setTimeout(() => controller.abort(), 5000);
-    
+
     const response = await fetch(`http://localhost:9201/api/live/search?q=${query}`, { signal });
     if (!response.ok) {
       console.error(`❌ /api/live/search?q=${query} вернул статус ${response.status}`);
       return false;
     }
-    
+
     const reader = response.body.getReader();
     let receivedLength = 0;
     let receivedEvents = 0;
-    
+
     while (true) {
       const { done, value } = await reader.read();
       if (done) break;
-      
+
       receivedLength += value.length;
       const text = new TextDecoder().decode(value);
       const events = text.split('\n\n').filter(Boolean);
       receivedEvents += events.length;
     }
-    
+
     if (receivedLength > 0) {
       console.log(`✅ /api/live/search?q=${query}: получено ${receivedEvents} событий, ${receivedLength} байт`);
       return true;
@@ -93,7 +93,7 @@ async function checkLiveSearch() {
       console.log(`✅ /api/live/search?q=${query}: соединение установлено (прервано по таймауту)`);
       return true;
     }
-    
+
     console.error(`❌ Ошибка при проверке /api/live/search?q=${query}: ${error.message}`);
     return false;
   }
@@ -108,7 +108,7 @@ async function checkMainPage() {
       console.error(`❌ Главная страница вернула статус ${response.status}`);
       return false;
     }
-    
+
     const html = await response.text();
     if (html.includes('<html') && html.includes('</html>')) {
       console.log('✅ Главная страница загружена успешно');
@@ -126,21 +126,21 @@ async function checkMainPage() {
 // Запускаем все проверки
 async function runTests() {
   console.log('Запуск проверок...');
-  
+
   const healthOk = await checkHealth();
   const searchOk = await checkSearch();
   const liveSearchOk = await checkLiveSearch();
   const mainPageOk = await checkMainPage();
-  
+
   console.log('\nРезультаты проверок:');
   console.log(`- Проверка /api/health: ${healthOk ? '✅ OK' : '❌ FAIL'}`);
   console.log(`- Проверка /api/search: ${searchOk ? '✅ OK' : '❌ FAIL'}`);
   console.log(`- Проверка /api/live/search: ${liveSearchOk ? '✅ OK' : '❌ FAIL'}`);
   console.log(`- Проверка главной страницы: ${mainPageOk ? '✅ OK' : '❌ FAIL'}`);
-  
+
   const allOk = healthOk && searchOk && liveSearchOk && mainPageOk;
   console.log(`\nИтог: ${allOk ? '✅ Все проверки пройдены' : '❌ Есть ошибки'}`);
-  
+
   process.exit(allOk ? 0 : 1);
 }
 

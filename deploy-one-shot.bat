@@ -1,79 +1,61 @@
 @echo off
-setlocal
+SETLOCAL
 
-rem Переменные
-set SERVER=89.104.69.77
-set USER=root
-set PASSWORD=DCIIcWfISxT3R4hT
-set REMOTE_DIR=/opt/deep-agg
+REM Configuration
+SET HOST=89.104.69.77
+SET USER=root
+SET PASSWORD=DCIIcWfISxT3R4hT
+SET LOCAL_REPO_PATH=%CD%
+SET REMOTE_REPO_PATH=/opt/deep-agg
+SET SECRETS_DIR=secrets\apis
+SET REMOTE_SECRETS_DIR=%REMOTE_REPO_PATH%/secrets/apis
 
-echo Начинаем деплой на %SERVER%...
+REM --- Step 1: Copy secrets to the server ---
+echo Copying secrets to %USER%@%HOST%:%REMOTE_SECRETS_DIR%...
+plink -ssh %USER%@%HOST% -pw %PASSWORD% "mkdir -p %REMOTE_SECRETS_DIR%"
+IF %ERRORLEVEL% NEQ 0 (
+    echo ERROR: Failed to create remote secrets directory.
+    GOTO :EOF
+)
 
-rem Создаем архив проекта
-echo Создаем архив проекта...
-tar --exclude=node_modules --exclude=.git --exclude=data/cache -czf deploy.tgz .
+pscp -pw %PASSWORD% "%LOCAL_REPO_PATH%\%SECRETS_DIR%\*" %USER%@%HOST%:%REMOTE_SECRETS_DIR%/
+IF %ERRORLEVEL% NEQ 0 (
+    echo ERROR: Failed to copy secrets.
+    GOTO :EOF
+)
+echo Secrets copied successfully.
 
-rem Копируем архив на сервер
-echo Копируем архив на сервер...
-plink -batch -pw %PASSWORD% %USER%@%SERVER% "mkdir -p %REMOTE_DIR%"
-pscp -batch -pw %PASSWORD% deploy.tgz %USER%@%SERVER%:%REMOTE_DIR%/
+REM --- Step 2: Copy Nginx configuration to the server ---
+echo Copying Nginx configuration to %USER%@%HOST%...
+pscp -pw %PASSWORD% "%LOCAL_REPO_PATH%\nginx-deep-agg-live.conf" %USER%@%HOST%:/etc/nginx/conf.d/
+IF %ERRORLEVEL% NEQ 0 (
+    echo ERROR: Failed to copy Nginx configuration.
+    GOTO :EOF
+)
+echo Nginx configuration copied successfully.
 
-rem Разархивируем на сервере
-echo Разархивируем на сервере...
-plink -batch -pw %PASSWORD% %USER%@%SERVER% "cd %REMOTE_DIR% && tar -xzf deploy.tgz"
+REM --- Step 3: Execute deployment script on the server ---
+echo Executing deployment script on %USER%@%HOST%...
+plink -ssh %USER%@%HOST% -pw %PASSWORD% "bash -lc '
+  set -e
+  cd %REMOTE_REPO_PATH%
+  git fetch --all
+  git reset --hard origin/main
+  npm ci
+  npm run rates:refresh
+  npm run data:index:build || true
+  systemctl restart deep-aggregator
+  systemctl reload nginx
+  sleep 2
+  curl -fsS http://127.0.0.1:9201/api/health
+  curl -fsS \"http://127.0.0.1:9201/api/search?q=LM317\" | head -c 400
+  curl -fsSI \"http://127.0.0.1:9201/api/live/search?q=LM317\" | egrep -i \"text/event-stream|X-Accel-Buffering\"
+'"
+IF %ERRORLEVEL% NEQ 0 (
+    echo ERROR: Deployment script failed on remote server.
+    GOTO :EOF
+)
+echo Deployment script executed successfully.
 
-rem Устанавливаем зависимости
-echo Устанавливаем зависимости...
-plink -batch -pw %PASSWORD% %USER%@%SERVER% "cd %REMOTE_DIR% && npm ci"
-
-rem Создаем необходимые директории
-echo Создаем необходимые директории...
-plink -batch -pw %PASSWORD% %USER%@%SERVER% "mkdir -p %REMOTE_DIR%/data/db %REMOTE_DIR%/data/cache/html %REMOTE_DIR%/data/files/pdf %REMOTE_DIR%/data/state"
-
-rem Выполняем миграцию SQLite
-echo Выполняем миграцию SQLite...
-plink -batch -pw %PASSWORD% %USER%@%SERVER% "cd %REMOTE_DIR% && node scripts/migrate-sqlite.mjs"
-
-rem Копируем конфигурацию Nginx
-echo Копируем конфигурацию Nginx...
-pscp -batch -pw %PASSWORD% nginx-deep-agg-live.conf %USER%@%SERVER%:/etc/nginx/sites-available/deep-agg.conf
-plink -batch -pw %PASSWORD% %USER%@%SERVER% "ln -sf /etc/nginx/sites-available/deep-agg.conf /etc/nginx/sites-enabled/deep-agg.conf"
-
-rem Перезапускаем Nginx
-echo Перезапускаем Nginx...
-plink -batch -pw %PASSWORD% %USER%@%SERVER% "nginx -t && systemctl reload nginx"
-
-rem Создаем systemd сервис
-echo Создаем systemd сервис...
-echo [Unit] > deep-aggregator.service
-echo Description=Deep Components Aggregator >> deep-aggregator.service
-echo After=network.target >> deep-aggregator.service
-echo. >> deep-aggregator.service
-echo [Service] >> deep-aggregator.service
-echo Type=simple >> deep-aggregator.service
-echo User=root >> deep-aggregator.service
-echo WorkingDirectory=%REMOTE_DIR% >> deep-aggregator.service
-echo ExecStart=/usr/bin/node server.js >> deep-aggregator.service
-echo Restart=on-failure >> deep-aggregator.service
-echo Environment=NODE_ENV=production >> deep-aggregator.service
-echo. >> deep-aggregator.service
-echo [Install] >> deep-aggregator.service
-echo WantedBy=multi-user.target >> deep-aggregator.service
-
-pscp -batch -pw %PASSWORD% deep-aggregator.service %USER%@%SERVER%:/etc/systemd/system/
-
-rem Перезапускаем сервис
-echo Перезапускаем сервис...
-plink -batch -pw %PASSWORD% %USER%@%SERVER% "systemctl daemon-reload && systemctl restart deep-aggregator && systemctl enable deep-aggregator"
-
-rem Проверяем статус
-echo Проверяем статус сервиса...
-plink -batch -pw %PASSWORD% %USER%@%SERVER% "systemctl status deep-aggregator --no-pager"
-
-rem Проверяем доступность API
-echo Проверяем доступность API...
-timeout /t 5 /nobreak > nul
-plink -batch -pw %PASSWORD% %USER%@%SERVER% "curl -s http://localhost:9201/api/health"
-
-echo Деплой завершен успешно!
-endlocal
+echo ALL DONE.
+ENDLOCAL

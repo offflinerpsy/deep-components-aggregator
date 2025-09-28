@@ -1,24 +1,35 @@
 {
   "name": "deep-components-aggregator",
   "version": "1.0.0",
-  "description": "Агрегатор электронных компонентов с SSE и живым поиском",
+  "description": "Агрегатор электронных компонентов с живым поиском",
   "main": "server.js",
   "type": "module",
   "scripts": {
     "start": "node server.js",
     "migrate": "node scripts/migrate-sqlite.mjs",
+    "rates:refresh": "node scripts/refresh-rates.mjs",
+    "data:ingest:chipdip": "node scripts/ingest-chipdip-urls.mjs",
+    "data:index:build": "node scripts/build-index.mjs",
     "smoke": "node scripts/smoke.mjs",
+    "test:e2e": "playwright test",
+    "diag:live": "node scripts/diag-live.mjs",
     "deploy": "bash prod-deploy.sh",
     "deploy:win": "deploy-one-shot.bat"
   },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
   "dependencies": {
-    "@orama/orama": "^2.0.0",
-    "better-sqlite3": "^9.0.0",
-    "cheerio": "^1.0.0-rc.12",
-    "express": "^4.18.2",
-    "fast-xml-parser": "^4.3.2",
-    "nanoid": "^5.0.3",
-    "p-limit": "^5.0.0",
-    "undici": "^6.0.0"
+    "@orama/orama": "^1.2.0",
+    "better-sqlite3": "^8.5.0",
+    "cheerio": "^1.1.2",
+    "express": "^4.21.2",
+    "fast-xml-parser": "^4.5.3",
+    "nanoid": "^4.0.2",
+    "p-limit": "^4.0.0",
+    "undici": "^5.22.1"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.35.1"
   }
 }

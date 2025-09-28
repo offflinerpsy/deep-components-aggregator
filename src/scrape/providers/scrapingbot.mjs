@@ -1,13 +1,79 @@
-import {fetch} from 'undici';
-import {pick} from './rotator.mjs';
+import { fetch } from 'undici';
 
+/**
+ * Выполняет запрос через Scraping-Bot
+ * @param {string} url URL для скрапинга
+ * @param {object} options Дополнительные опции
+ * @param {number} options.timeoutMs Таймаут запроса в миллисекундах
+ * @param {object} options.params Дополнительные параметры для Scraping-Bot
+ * @returns {Promise<object>} Результат запроса
+ */
 export const get = async (url) => {
-  const key = pick('scrapingbot'); if (!key) return {status:'no-key'};
-  const u = new URL('https://api.scraping-bot.io/scrape');
-  u.searchParams.set('token', key);
-  u.searchParams.set('url', url);
-  const r = await fetch(u);
-  if (!r.ok) return {status:'bad', code:r.status};
-  const html = await r.text();
-  return {status:'ok', html, provider:'scrapingbot'};
+  return await fetchHtml(url);
 };
+
+export async function fetchHtml(url, { timeoutMs = 12000, params = {} } = {}) {
+  const key = process.env.SCRAPINGBOT_KEY;
+
+  // Создаем URL для запроса
+  const apiUrl = new URL('https://api.scraping-bot.io/scrape');
+  apiUrl.searchParams.set('token', key);
+  apiUrl.searchParams.set('url', url);
+
+  // Добавляем дополнительные параметры
+  for (const [key, value] of Object.entries(params)) {
+    apiUrl.searchParams.set(key, value);
+  }
+
+  // Создаем контроллер для таймаута
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
+
+  try {
+    const response = await fetch(apiUrl.toString(), {
+      signal: controller.signal,
+      headers: {
+        'Accept': 'text/html,application/xhtml+xml',
+        'Accept-Language': 'ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7'
+      }
+    });
+
+    if (!response.ok) {
+      return {
+        ok: false,
+        status: response.status,
+        provider: 'scrapingbot',
+        usedKey: key?.slice(0, 8) + '...'
+      };
+    }
+
+    const html = await response.text();
+
+    return {
+      ok: true,
+      status: response.status,
+      html,
+      provider: 'scrapingbot',
+      usedKey: key?.slice(0, 8) + '...'
+    };
+  } catch (error) {
+    if (error.name === 'AbortError') {
+      return {
+        ok: false,
+        status: 'timeout',
+        provider: 'scrapingbot',
+        usedKey: key?.slice(0, 8) + '...'
+      };
+    }
+
+    return {
+      ok: false,
+      status: 'error',
+      error: error.message,
+      provider: 'scrapingbot',
+      usedKey: key?.slice(0, 8) + '...'
+    };
+  } finally {
+    clearTimeout(timeoutId);
+  }
+}

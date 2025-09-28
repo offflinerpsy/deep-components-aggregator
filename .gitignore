@@ -1,55 +1,34 @@
-# Dependencies
+# Зависимости
 node_modules/
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
+package-lock.json
 
-# Environment variables
-.env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
-
-# Logs
-logs
-*.log
-
-# Runtime data
-pids
-*.pid
-*.seed
-*.pid.lock
-
-# Coverage directory used by tools like istanbul
-coverage/
-
-# OS generated files
-.DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
-Thumbs.db
-
-# IDE files
-.vscode/
-.idea/
-*.swp
-*.swo
-*~
-
-# Test results
-# test-results/  # Temporarily allow for audit
-# playwright-report/  # Temporarily allow for audit
-coverage/
-
-# Temporary files
-*.tmp
-*.temp
-
+# Секреты
 secrets/
+.env
+*.pem
+*.key
+
+# Данные
 data/cache/
 data/state/
 data/rates.json
+data/db/products/
+data/_diag/
+logs/
+
+# Отчеты и артефакты
+test-results/
+playwright-report/
+screenshots/
+*.tgz
+
+# IDE
+.vscode/
+.idea/
+*.iml
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db

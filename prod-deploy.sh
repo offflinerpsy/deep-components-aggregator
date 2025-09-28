@@ -1,89 +1,47 @@
 #!/bin/bash
-set -e
+set -e # Exit immediately if a command exits with a non-zero status
 
-# Переменные
-SERVER="89.104.69.77"
-USER="root"
-PASSWORD="DCIIcWfISxT3R4hT"
-REMOTE_DIR="/opt/deep-agg"
+echo "Starting deployment to production server..."
 
-# Функция для выполнения команд на удаленном сервере
-remote_exec() {
-  sshpass -p "$PASSWORD" ssh -o StrictHostKeyChecking=no "$USER@$SERVER" "$1"
-}
+# Ensure we are in the correct directory
+cd /opt/deep-agg
 
-# Функция для копирования файлов на удаленный сервер
-remote_copy() {
-  sshpass -p "$PASSWORD" scp -o StrictHostKeyChecking=no -r "$1" "$USER@$SERVER:$2"
-}
+echo "Fetching latest code from git..."
+git fetch --all
+git reset --hard origin/main
 
-echo "Начинаем деплой на $SERVER..."
+echo "Installing/updating npm dependencies..."
+npm ci
 
-# Создаем архив проекта
-echo "Создаем архив проекта..."
-tar --exclude="node_modules" --exclude=".git" --exclude="data/cache" -czf deploy.tgz .
+echo "Refreshing currency rates..."
+npm run rates:refresh
 
-# Копируем архив на сервер
-echo "Копируем архив на сервер..."
-remote_copy "deploy.tgz" "$REMOTE_DIR/"
+echo "Building search index..."
+npm run data:index:build || true # Allow index build to fail if no products yet
 
-# Разархивируем на сервере
-echo "Разархивируем на сервере..."
-remote_exec "cd $REMOTE_DIR && tar -xzf deploy.tgz"
+echo "Restarting deep-aggregator service..."
+systemctl restart deep-aggregator
 
-# Устанавливаем зависимости
-echo "Устанавливаем зависимости..."
-remote_exec "cd $REMOTE_DIR && npm ci"
+echo "Waiting for service to start (2 seconds)..."
+sleep 2
 
-# Создаем необходимые директории
-echo "Создаем необходимые директории..."
-remote_exec "mkdir -p $REMOTE_DIR/data/db $REMOTE_DIR/data/cache/html $REMOTE_DIR/data/files/pdf $REMOTE_DIR/data/state"
+echo "Running post-deployment health checks..."
+curl -fsS http://127.0.0.1:9201/api/health || { echo "Health check failed!"; exit 1; }
+echo "Internal API health check passed."
 
-# Выполняем миграцию SQLite
-echo "Выполняем миграцию SQLite..."
-remote_exec "cd $REMOTE_DIR && node scripts/migrate-sqlite.mjs"
+curl -fsS "http://127.0.0.1:9201/api/search?q=LM317" | head -c 400 || { echo "Search API check failed!"; exit 1; }
+echo "Internal Search API check passed."
 
-# Копируем конфигурацию Nginx
-echo "Копируем конфигурацию Nginx..."
-remote_copy "nginx-deep-agg-live.conf" "/etc/nginx/sites-available/deep-agg.conf"
-remote_exec "ln -sf /etc/nginx/sites-available/deep-agg.conf /etc/nginx/sites-enabled/deep-agg.conf"
+curl -fsSI "http://127.0.0.1:9201/api/live/search?q=LM317" | egrep -i "text/event-stream|X-Accel-Buffering" || { echo "Live Search API check failed!"; exit 1; }
+echo "Internal Live Search API check passed."
 
-# Перезапускаем Nginx
-echo "Перезапускаем Nginx..."
-remote_exec "nginx -t && systemctl reload nginx"
+echo "Checking Nginx configuration..."
+if [ -f "/etc/nginx/conf.d/deep-agg-live.conf" ]; then
+  echo "Nginx configuration already exists."
+else
+  echo "Creating Nginx configuration..."
+  cp nginx-deep-agg-live.conf /etc/nginx/conf.d/deep-agg-live.conf
+  systemctl reload nginx
+fi
 
-# Создаем systemd сервис
-echo "Создаем systemd сервис..."
-cat > deep-aggregator.service << EOF
-[Unit]
-Description=Deep Components Aggregator
-After=network.target
-
-[Service]
-Type=simple
-User=root
-WorkingDirectory=$REMOTE_DIR
-ExecStart=/usr/bin/node server.js
-Restart=on-failure
-Environment=NODE_ENV=production
-
-[Install]
-WantedBy=multi-user.target
-EOF
-
-remote_copy "deep-aggregator.service" "/etc/systemd/system/"
-
-# Перезапускаем сервис
-echo "Перезапускаем сервис..."
-remote_exec "systemctl daemon-reload && systemctl restart deep-aggregator && systemctl enable deep-aggregator"
-
-# Проверяем статус
-echo "Проверяем статус сервиса..."
-remote_exec "systemctl status deep-aggregator --no-pager"
-
-# Проверяем доступность API
-echo "Проверяем доступность API..."
-sleep 5
-remote_exec "curl -s http://localhost:9201/api/health"
-
-echo "Деплой завершен успешно!"
+echo "Deployment successful!"

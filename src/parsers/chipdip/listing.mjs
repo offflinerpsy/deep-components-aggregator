@@ -1,7 +1,7 @@
-import * as cheerio from 'cheerio';
+import { load } from 'cheerio';
 
 export const extractProductLinks = (html) => {
-  const $ = cheerio.load(html);
+  const $ = load(html);
   const arr = [];
   $('a[href*="/product/"], a[href*="/product0/"]').each((_,a)=>{
     const href = $(a).attr('href')||'';

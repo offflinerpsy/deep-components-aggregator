@@ -1,140 +1,97 @@
-import { readFileSync, readdirSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
-import { getHtmlCached } from '../src/scrape/cache.mjs';
-import { parseChipDipProduct } from '../src/parsers/chipdip/product.mjs';
-import { getRates } from '../src/currency/cbr.mjs';
-import { fetch } from 'undici';
-import * as cheerio from 'cheerio';
+import fs from 'node:fs';
+import path from 'node:path';
+import { fetchHtmlCached } from '../src/scrape/cache.mjs';
+import { toCanon } from '../src/parsers/chipdip/product.mjs';
+import { saveProduct } from '../src/core/store.mjs';
+import pLimit from 'p-limit';
 
-const OUT = 'data/db/products';
-mkdirSync(OUT, { recursive: true });
-mkdirSync('data/files/pdf', { recursive: true });
-
-// Парсим аргументы командной строки
-const args = process.argv.slice(2);
-let query = '';
-let limit = 0;
-for (let i = 0; i < args.length; i++) {
-  if (args[i] === '--query' && i + 1 < args.length) {
-    query = args[i + 1];
-    i++;
-  } else if (args[i] === '--limit' && i + 1 < args.length) {
-    limit = parseInt(args[i + 1], 10) || 0;
-    i++;
-  }
+const urlsFile = process.argv[2];
+if (!urlsFile) {
+  console.error('Использование: node scripts/ingest-chipdip-urls.mjs <путь_к_файлу_с_урлами>');
+  process.exit(1);
 }
 
-async function savePdf(srcUrl, hash){
-  const dest = `data/files/pdf/${hash}.pdf`;
-  if (existsSync(dest)) return dest;
+const limit = parseInt(process.argv[3], 10) || Infinity;
+
+if (!fs.existsSync(urlsFile)) {
+  console.error(`Файл ${urlsFile} не существует`);
+  process.exit(1);
+}
+
+const urls = fs.readFileSync(urlsFile, 'utf8')
+  .split('\n')
+  .map(line => line.trim())
+  .filter(line => line && line.includes('chipdip.ru/product'))
+  .slice(0, limit);
+
+if (urls.length === 0) {
+  console.error('Нет URL-ов для обработки');
+  process.exit(1);
+}
+
+console.log(`Найдено ${urls.length} URL-ов для обработки`);
+
+const concurrencyLimit = pLimit(4); // Ограничение параллельных запросов
+const results = { ok: 0, fail: 0, skipped: 0, cacheHits: 0 };
+const reportFile = path.resolve('data/state/ingest-report.json');
+
+async function ingestUrl(url) {
   try {
-    const r = await fetch(srcUrl);
-    if (!r.ok) return null;
-    const ab = await r.arrayBuffer();
-    writeFileSync(dest, Buffer.from(ab));
-    return dest;
-  } catch (e) {
-    console.error('Failed to download PDF:', e.message);
-    return null;
-  }
-}
-
-function* linesFromDir(dir){
-  for (const f of readdirSync(dir)) {
-    if (!f.endsWith('.txt')) continue;
-    const body = readFileSync(`${dir}/${f}`, 'utf8');
-    for (const line of body.split(/\r?\n/)) {
-      const u = line.trim();
-      if (u) yield u;
+    const { ok, html, fromCache, provider, status } = await fetchHtmlCached(url);
+    
+    if (!ok) {
+      console.error(`Ошибка при получении ${url}: ${status}`);
+      results.fail++;
+      return false;
     }
+    
+    if (fromCache) {
+      results.cacheHits++;
+    }
+    
+    const canon = toCanon(html, url);
+    if (!canon.mpn) {
+      console.warn(`Не удалось извлечь MPN из ${url}`);
+      results.fail++;
+      return false;
+    }
+    
+    saveProduct(canon);
+    results.ok++;
+    return true;
+  } catch (error) {
+    console.error(`Ошибка при обработке ${url}: ${error.message}`);
+    results.fail++;
+    return false;
   }
 }
 
 async function main() {
-  let totals=0, ok=0, fail=0, cached=0, cacheBytes=0;
-  const seen = new Set();
-  const rates = getRates();
-
-  // Определяем источник URL
-  let urls = [];
-  if (query) {
-    // Если есть запрос, ищем по нему на ChipDip (можно расширить на другие источники)
-    const searchUrl = `https://www.chipdip.ru/search?searchtext=${encodeURIComponent(query)}`;
-    try {
-      console.log(`Searching for "${query}" at ${searchUrl}`);
-      const r = await getHtmlCached(searchUrl, { ttl: 24*3600*1000 });
-      if (r.fromCache) cached++;
-      cacheBytes += r.size||0;
-
-      // Извлекаем URL продуктов из страницы поиска
-      const $ = cheerio.load(r);
-      $('.product-item').each((_, el) => {
-        const href = $(el).find('a.link').attr('href');
-        if (href && href.startsWith('/product')) {
-          urls.push(`https://www.chipdip.ru${href}`);
-        }
-      });
-      console.log(`Found ${urls.length} product URLs for query "${query}"`);
-    } catch(e) {
-      console.error('Search error:', e.message);
-    }
-
-    // Ограничиваем количество URL для обработки
-    if (limit > 0 && urls.length > limit) {
-      urls = urls.slice(0, limit);
-    }
-  } else {
-    // Иначе берем URL из файлов
-    urls = Array.from(linesFromDir('loads/urls'));
-    if (limit > 0) {
-      urls = urls.slice(0, limit);
-    }
-  }
-
-  for (const url of urls) {
-    totals++;
-    try {
-      const r = await getHtmlCached(url, { ttl: 30*24*3600*1000 });
-      if (r.fromCache) cached++;
-      cacheBytes += r.size||0;
-      const canon = parseChipDipProduct(r, url);
-      // Скачивание PDF и переписывание ссылок
-      if (Array.isArray(canon.docs)) {
-        for (const d of canon.docs) {
-          if (d._src && d._hash) {
-            const saved = await savePdf(d._src, d._hash);
-            if (saved) d.url = `/files/pdf/${d._hash}.pdf`;
-            delete d._src; delete d._hash;
-          }
-        }
-      }
-      // Конвертация валют (если попадутся офферы не RUB)
-      if (Array.isArray(canon.offers)) {
-        for (const ofr of canon.offers) {
-          if (ofr.currency && ofr.currency !== 'RUB') {
-            const rate = rates[ofr.currency.toUpperCase()];
-            if (rate) {
-              ofr.price_rub = Math.round(ofr.price * rate);
-            }
-          }
-        }
-      }
-
-      if (!canon.mpn) throw new Error('no mpn');
-      if (!seen.has(canon.mpn)) {
-        writeFileSync(`${OUT}/${canon.mpn}.json`, JSON.stringify(canon, null, 2));
-        seen.add(canon.mpn);
-      }
-      ok++;
-    } catch(e){
-      console.error('ERR', url, e.message);
-      fail++;
-    }
-  }
-
-  const report = { ts: Date.now(), query, totals, ok, fail, cached, cacheBytes };
-  mkdirSync('data/state', { recursive: true });
-  writeFileSync('data/state/ingest-report.json', JSON.stringify(report, null, 2));
-  console.log(JSON.stringify(report, null, 2));
+  console.log('Начало обработки URL-ов...');
+  
+  const promises = urls.map(url => 
+    concurrencyLimit(() => ingestUrl(url))
+  );
+  
+  await Promise.all(promises);
+  
+  results.total = urls.length;
+  results.timestamp = new Date().toISOString();
+  
+  fs.mkdirSync(path.dirname(reportFile), { recursive: true });
+  fs.writeFileSync(reportFile, JSON.stringify(results, null, 2));
+  
+  console.log(`
+Обработка завершена:
+- Всего URL-ов: ${results.total}
+- Успешно: ${results.ok}
+- Ошибок: ${results.fail}
+- Пропущено: ${results.skipped}
+- Из кэша: ${results.cacheHits}
+  `);
 }
 
-main().catch(console.error);
+main().catch(error => {
+  console.error(`Необработанная ошибка: ${error.message}`);
+  process.exit(1);
+});

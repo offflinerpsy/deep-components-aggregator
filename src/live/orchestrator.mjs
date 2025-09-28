@@ -4,7 +4,7 @@ import {get as bot} from '../scrape/providers/scrapingbot.mjs';
 import {extractProductLinks} from '../parsers/chipdip/listing.mjs';
 import {toCanon} from '../parsers/chipdip/product.mjs';
 import {insertProduct, upsertOffer} from '../db/sqlite.mjs';
-import pLimit from 'p-limit';
+import pLimit from '../core/p-limit-mock.mjs';
 import {fetch} from 'undici';
 
 const lim = pLimit(4); // общая конкуренция (берём мягко)

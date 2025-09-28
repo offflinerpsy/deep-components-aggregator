@@ -538,7 +538,7 @@ function openProductModal(item) {
   const content = document.getElementById('modal-content');
   if (content) {
     content.innerHTML = html;
-    
+
     // Добавляем обработчик для кнопки заказа
     const orderButton = document.getElementById('modal-order-btn');
     if (orderButton) {

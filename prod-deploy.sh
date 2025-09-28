@@ -67,15 +67,20 @@ https://www.chipdip.ru/product/1n4148
 https://www.chipdip.ru/product/ne555p
 https://www.chipdip.ru/product0/8003348587
 https://www.chipdip.ru/product/ldb-500l
+https://www.chipdip.ru/product/1n4148w-tp
+https://www.chipdip.ru/product/ldd-700l
+https://www.chipdip.ru/product/ad637arz
+https://www.chipdip.ru/product/lm358n
+https://www.chipdip.ru/product/lm7805
 EOF
 
 # Создаем необходимые директории
 mkdir -p data/cache/html data/db/products data/idx data/state data/files/pdf
 
 # Запускаем скрипты сборки данных
-node scripts/refresh-rates.mjs
-node scripts/ingest-chipdip-urls.mjs --limit 200
-node scripts/build-index.mjs
+npm run rates:refresh
+npm run data:ingest:chipdip -- --limit 200
+npm run data:index:build
 log_diag "Data build complete."
 
 log_diag "=== [6/9] Ensure systemd unit..."
@@ -99,7 +104,7 @@ systemctl enable ${SERVICE}
 systemctl start ${SERVICE}
 log_diag "Service started."
 
-log_diag "=== [7/9] Nginx config :80 -> :9201..."
+log_diag "=== [7/9] Nginx config :80→:9201..."
 cat >/etc/nginx/sites-available/deep-agg.conf <<NGINX
 server {
     listen 80 default_server;

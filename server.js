@@ -2,6 +2,7 @@ import express from 'express';
 import apiRouter from './src/api/http.mjs';
 
 const app = express();
+app.use('/files', express.static('data/files'));
 app.use(express.static('public'));
 app.use('/api', apiRouter);
 

@@ -75,13 +75,13 @@ export async function product(url, browser) {
 
   const item = canonItem({
     mpn, brand, title, url,
-    offers: price ? [{ 
-      dealer: "elitan", 
-      url, 
-      price, 
-      currency, 
-      availability, 
-      region: "RU" 
+    offers: price ? [{
+      dealer: "elitan",
+      url,
+      price,
+      currency,
+      availability,
+      region: "RU"
     }] : []
   });
 

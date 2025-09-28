@@ -56,7 +56,7 @@ export async function search(q) {
             }]
         });
     });
-    
+
     return { ok: true, items };
 }
 

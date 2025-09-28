@@ -9,17 +9,17 @@ const CORPUS_PATH = path.join(__dirname, "..", "data", "corpus.json");
 
 async function main() {
     console.log("🚀 Building corpus from raw promelec data...");
-    
+
     const allItems = [];
     const files = await fs.readdir(RAW_DATA_DIR);
 
     for (const file of files) {
         if (!file.endsWith('.json')) continue;
-        
+
         console.log(`   - Processing ${file}...`);
         const content = await fs.readFile(path.join(RAW_DATA_DIR, file), 'utf-8');
         const data = JSON.parse(content);
-        
+
         if (!data.result || !data.result.products) {
             console.warn(`     ⚠️ Invalid structure in ${file}`);
             continue;
@@ -39,10 +39,10 @@ async function main() {
                 region: "RU"
             }]
         }));
-        
+
         allItems.push(...items);
     }
-    
+
     // Simple deduplication
     const uniqueItems = Array.from(new Map(allItems.map(item => [item.mpn, item])).values());
 
@@ -51,4 +51,3 @@ async function main() {
 }
 
 main().catch(console.error);
-

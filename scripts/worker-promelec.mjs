@@ -21,9 +21,9 @@ async function main() {
 
   for (const [index, mpn] of MPN_LIST.entries()) {
     console.log(`[${index + 1}/${MPN_LIST.length}] Fetching data for ${mpn}...`);
-    
+
     const result = await promelec.search(mpn);
-    
+
     if (result.ok && result.items.length > 0) {
       const filePath = path.join(DATA_DIR, `${mpn.replace(/\\W/g, '_')}.json`);
       await fs.writeFile(filePath, JSON.stringify(result.items, null, 2));
@@ -31,7 +31,7 @@ async function main() {
     } else {
       console.warn(`   ⚠️ No items found or error for ${mpn}. Reason: ${result.reason || 'No items'}`);
     }
-    
+
     await delay(DELAY_MS);
   }
 
@@ -39,4 +39,3 @@ async function main() {
 }
 
 main().catch(console.error);
-

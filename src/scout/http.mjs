@@ -58,7 +58,7 @@ export async function fetchHtml(url) {
   }
 
   html = iconv.decode(buffer, encoding);
-  
+
   // Anti-bot detection
   if (html.includes('check_human') || html.includes('ddg-blocked')) {
       return { ok: false, status: 403, reason: 'DDoS protection detected (check_human, ddg-blocked)', html };

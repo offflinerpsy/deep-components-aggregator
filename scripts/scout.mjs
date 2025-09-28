@@ -8,7 +8,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const SRC_DIR = path.join(__dirname, "..", "src", "scout");
 
 const TEST_QUERIES = [
-  "LM317", "1N4148", "2N7002", "BC547", "IRLZ44N", 
+  "LM317", "1N4148", "2N7002", "BC547", "IRLZ44N",
   "ATmega328P", "TL431", "L7805", "NE555", "AMS1117"
 ];
 
@@ -48,14 +48,14 @@ async function main() {
 
   await fs.mkdir(rawDir, { recursive: true });
   await fs.mkdir(jsonDir, { recursive: true });
-  
+
   // If a link path is provided (e.g., --out=_scout/last), create/update it
   if (linkPath) {
     const resolvedLinkPath = path.resolve(linkPath);
     await fs.mkdir(path.dirname(resolvedLinkPath), { recursive: true });
     // More robust cleanup for Windows symlinks/junctions
     await fs.rm(resolvedLinkPath, { recursive: true, force: true }).catch(() => {});
-    
+
     try {
       await fs.symlink(outDir, resolvedLinkPath, 'dir');
       console.log(`   - Symlink created at: ${resolvedLinkPath}`);
@@ -70,7 +70,7 @@ async function main() {
 
   for (const candidate of candidates) {
     console.log(`\n🔎 Processing candidate: ${candidate.name}`);
-    
+
     // --- Playwright setup for JS-required sites ---
     if (candidate.js) {
       if (!browser) {
@@ -79,7 +79,7 @@ async function main() {
         browser = await chromium.launch({ headless: true, proxy });
       }
     }
-    
+
     const providerPath = path.join(SRC_DIR, "providers", `${candidate.name}.mjs`);
     const provider = await import(pathToFileURL(providerPath));
     const candidateRawDir = path.join(rawDir, candidate.name);
@@ -97,7 +97,7 @@ async function main() {
     for (const q of queries) {
       await delay(randomDelay());
       console.log(`   - Searching for "${q}"...`);
-      
+
       const searchRes = await provider.search(q, candidate.js ? browser : null);
       const searchHtmlPath = path.join(candidateRawDir, `search_${q.replace(/[\\/]/g, '_')}.html`);
       await fs.writeFile(searchHtmlPath, searchRes.html || "");
@@ -107,12 +107,12 @@ async function main() {
         if(searchRes.raw?.status === 403) results.blocked = true;
         continue;
       }
-      
+
       let finalItems = [];
       // Aggregator path
       if (candidate.type === 'aggregator') {
         finalItems = searchRes.items;
-      } 
+      }
       // Shop/Distributor path
       else {
         for (const [i, productUrl] of searchRes.items.entries()) {
@@ -138,7 +138,7 @@ async function main() {
         if(item.pdfs.length > 0) results.totalPdfs += item.pdfs.length;
         if(item.offers.some(o => o.price > 0)) results.fieldStats.price++;
       });
-      
+
       const jsonPath = path.join(jsonDir, `${candidate.name}_${q.replace(/[\\/]/g, '_')}.json`);
       await fs.writeFile(jsonPath, JSON.stringify(finalItems, null, 2));
     }
@@ -167,11 +167,11 @@ async function generateReport(outDir, reportData, totalQueries) {
         const successRate = `${Math.round((data.successfulQueries / totalQueries) * 100)}%`;
         md += `| **${data.name}** | ${data.blocked ? 'BLOCKED' : 'OK'} | ${successRate} | ${data.totalItems} | ${data.totalPdfs} | ${data.fieldStats.mpn}/${data.totalItems} | ${data.fieldStats.brand}/${data.totalItems} | ${data.fieldStats.title}/${data.totalItems} | ${data.fieldStats.price}/${data.totalItems} |\n`;
     }
-    
+
     md += `\n## Summary\n`;
     const bestForItems = reportData.reduce((prev, curr) => (prev.totalItems > curr.totalItems) ? prev : curr);
     const bestForSuccess = reportData.reduce((prev, curr) => (prev.successfulQueries > curr.successfulQueries) ? prev : curr);
-    
+
     md += `- **Best overall success rate:** ${bestForSuccess.name} (${Math.round((bestForSuccess.successfulQueries / totalQueries) * 100)}%)\n`;
     md += `- **Most items found:** ${bestForItems.name} (${bestForItems.totalItems} items)\n`;
 

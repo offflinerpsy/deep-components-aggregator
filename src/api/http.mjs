@@ -1,35 +1,62 @@
 import express from 'express';
 import { loadAllProducts } from '../core/store.mjs';
 import { buildIndex, searchIndex } from '../core/search.mjs';
-import { readFileSync, existsSync } from 'node:fs';
+import { readFileSync, existsSync, readdirSync, mkdirSync, writeFileSync } from 'node:fs';
+import path from 'node:path';
 
 const router = express.Router();
 
 // bootstrap index в памяти процесса
 let idxReady = false;
+let lastIndexCount = 0;
 async function ensureIndex(){
   if (idxReady) return;
   const items = loadAllProducts();
+  lastIndexCount = items.length;
   await buildIndex(items);
   idxReady = true;
 }
 
+function countCacheEntries() {
+  const root = 'data/cache/html';
+  let count = 0;
+  if (!existsSync(root)) return 0;
+  const level1 = readdirSync(root, { withFileTypes: true }).filter(d=>d.isDirectory());
+  for (const d1 of level1) {
+    const p1 = path.join(root, d1.name);
+    const level2 = readdirSync(p1, { withFileTypes: true }).filter(d=>d.isDirectory());
+    for (const d2 of level2) {
+      const p2 = path.join(p1, d2.name);
+      const files = readdirSync(p2).filter(f=>f.endsWith('.html'));
+      count += files.length;
+    }
+  }
+  return count;
+}
+
 // health
 router.get('/health', (req, res) => {
-  res.status(200).json({ status: 'ok', uptime: process.uptime(), ts: Date.now() });
+  const counters = { indexCount: lastIndexCount, cacheEntries: countCacheEntries() };
+  res.status(200).json({ status: 'ok', uptime: process.uptime(), ts: Date.now(), counters });
 });
 
 // /api/search?q=...
 router.get('/search', async (req, res) => {
   const q = String(req.query.q||'').trim();
-  if (!q) { res.json({ count: 0, items: [] }); return; }
+  if (!q) { res.status(400).json({ error: 'Q_REQUIRED' }); return; }
   await ensureIndex();
   const r = await searchIndex(q, { limit: 50 });
   const items = r.hits.map(h=>h.document).map(d=>({
     mpn: d.mpn, brand: d.brand, title: d.title, desc: d.desc,
     regions: d.regions, price_rub: Number.isFinite(d.price)? d.price : null, image: d.image
   }));
-  res.json({ count: items.length, items });
+  if (items.length === 0) {
+    const ts = new Date().toISOString().replace(/[:.]/g,'-');
+    const dir = path.join('_diag', ts);
+    mkdirSync(dir, { recursive: true });
+    writeFileSync(path.join(dir, 'trace.txt'), `q=${q}\nphase=search\nresult=empty\n`);
+  }
+  res.json({ status: items.length? 'ok':'pending', count: items.length, items });
 });
 
 // /api/product?mpn=...
@@ -73,10 +100,10 @@ router.post('/order', (req,res)=>{
   const { mpn, qty, fio, email, messenger } = req.body||{};
   if (!mpn || !qty || !email) { res.status(400).json({ error: 'BAD_FORM' }); return; }
   const id = Date.now().toString(36);
-  const path = `data/orders/${id}.json`;
+  const pathFs = `data/orders/${id}.json`;
   import('node:fs').then(fs=>{
     fs.mkdirSync('data/orders', { recursive: true });
-    fs.writeFileSync(path, JSON.stringify({ id, ts: Date.now(), mpn, qty, fio, email, messenger }, null, 2));
+    fs.writeFileSync(pathFs, JSON.stringify({ id, ts: Date.now(), mpn, qty, fio, email, messenger }, null, 2));
     res.json({ ok: true, id });
   });
 });

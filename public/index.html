@@ -2,40 +2,42 @@
 <html lang="ru">
 <head>
   <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>DeepAgg — поиск компонентов</title>
-  <link rel="stylesheet" href="/css/home.css"/>
+  <title>DeepAgg — поиск</title>
+  <link rel="stylesheet" href="/css/light.css"/>
 </head>
 <body>
-<header class="wrap">
-  <h1>Поиск электронных компонентов</h1>
-  <form id="searchForm" class="searchbar" action="/ui/search.html" method="get">
-    <input id="q" name="q" type="text" placeholder="Введите номер детали, например LM317, 1N4148…">
-    <button type="submit">Поиск</button>
-  </form>
-</header>
+  <header class="container">
+    <input id="q" placeholder="Искать MPN (например, 1N4148, LM317T) или по слову (транзистор)"/>
+    <button id="go">Поиск</button>
+  </header>
 
-<main class="wrap">
-  <section>
-    <h2>Что сейчас ищут</h2>
-    <ul id="trending" class="tiles"></ul>
-  </section>
+  <main class="container">
+    <table class="grid" id="results">
+      <thead>
+        <tr>
+          <th>Фото</th>
+          <th>Part Number</th>
+          <th>Manufacturer</th>
+          <th>Description</th>
+          <th>Stock/Regions</th>
+          <th>Цена (₽)</th>
+          <th>Действие</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </main>
 
-  <section>
-    <h2>Популярные компоненты</h2>
-    <ul id="popular" class="tiles tiles--grid"></ul>
-  </section>
-</main>
+  <!-- Модальное окно карточки -->
+  <div id="modal" class="modal hidden">
+    <div class="modal-body">
+      <button id="modal-close">×</button>
+      <div id="modal-content">
+        <div class="loader">Загружаем карточку…</div>
+      </div>
+    </div>
+  </div>
 
-<footer class="wrap footer">
-  <nav>
-    <a href="/legal/privacy.html">Политика конфиденциальности</a>
-    <span>·</span>
-    <a href="/legal/terms.html">Пользовательское соглашение</a>
-  </nav>
-  <small>© <span id="y"></span> DeepAgg</small>
-</footer>
-
-<script type="module" src="/js/home.js"></script>
+  <script src="/js/app.js"></script>
 </body>
 </html>

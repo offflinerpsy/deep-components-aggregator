@@ -1,0 +1,59 @@
+{
+  "mpn": "1N4148, Диод импульсный 100В 0.15А [DO-35.] (= КД522А)",
+  "brand": "",
+  "title": "1N4148, Диод импульсный 100В 0.15А [DO-35.] (= КД522А)",
+  "sku": "1n4148",
+  "url": "https://www.chipdip.ru/product/1n4148",
+  "image": "https://static.chipdip.ru/images/layout/logo.svg",
+  "desc_short": "(function(n,t){typeof module!=\"undefined\"&&module.exports?module.exports=t():typeof define==\"function\"&&define.amd?define(t):this[n]=t()})(\"$script\",function(){function o(n,t){for(var i=0,r=n.length;i<r;++i)if(!t(n[i]))return p;return 1}function s(n,t){o(n,function(n){return t(n),1})}function n(e,h,c){function b(n){return n.call?n():r[n]}function a(){if(!--k){r[l]=1;w&&w();for(var n in t)o(n.split(\"|\"),b)&&!s(t[n],b)&&(t[n]=[])}}e=e[i]?e:[e];var p=h&&h.call,w=p?h:c,l=p?e.join(\"\"):h,k=e.length;return setTimeout(function(){s(e,function n(t,i){if(t===null)return a();if(i||/^https?:\\/\\//.test(t)||!f||(t=t.indexOf(\".js\")===-1?f+t+\".js\":f+t),u[t])return l&&(v[l]=1),u[t]==2?a():setTimeout(function(){n(t,!0)},0);u[t]=1;l&&(v[l]=1);y(t,a)})},0),n}function y(n,t){var i=h.createElement(\"script\"),r;i.onload=i.onerror=i[a]=function(){i[l]&&!/^c|loade/.test(i[l])||r||(i.onload=i[a]=null,r=1,u[n]=2,t())};i.async=1;i.src=e?n+(n.indexOf(\"?\")===-1?\"?\":\"&\")+e:n;c.insertBefore(i,c.lastChild)}var h=document,c=h.getElementsByTagName(\"head\")[0],p=!1,i=\"push\",l=\"readyState\",a=\"onreadystatechange\",r={},v={},t={},u={},f,e;return n.get=y,n.order=function(t,i,r){(function u(f){f=t.shift();t.length?n(f,u):n(f,i,r)})()},n.path=function(n){f=n},n.urlArgs=function(n){e=n},n.ready=function(u,f,e){u=u[i]?u:[u];var h=[];return!s(u,function(n){r[n]||h[i](n)})&&o(u,function(n){return r[n]})?f():!function(n){t[n]=t[n]||[];t[n][i](f);e&&e(h)}(u.join(\"|\")),n},n.done=function(t){n([null],t)},n});",
+  "regions": [],
+  "offers": [],
+  "docs": [
+    {
+      "url": "https://static.chipdip.ru/lib/335/DOC004335414.pdf",
+      "kind": "pdf"
+    },
+    {
+      "url": "https://static.chipdip.ru/lib/335/DOC004335414.pdf",
+      "kind": "pdf"
+    },
+    {
+      "url": "https://static.chipdip.ru/lib/363/DOC043363113.pdf",
+      "kind": "pdf"
+    },
+    {
+      "url": "https://static.chipdip.ru/lib/524/DOC059524603.pdf",
+      "kind": "pdf"
+    },
+    {
+      "url": "https://static.chipdip.ru/lib2/a/324/DOC064324823.pdf",
+      "kind": "pdf"
+    },
+    {
+      "url": "https://static.chipdip.ru/lib/180/DOC057180123.pdf",
+      "kind": "pdf"
+    },
+    {
+      "url": "https://static.chipdip.ru/lib/116/DOC032116444.pdf",
+      "kind": "pdf"
+    },
+    {
+      "url": "https://static.chipdip.ru/lib/116/DOC032116512.pdf",
+      "kind": "pdf"
+    },
+    {
+      "url": "https://static.chipdip.ru/lib/007/DOC003007981.pdf",
+      "kind": "pdf"
+    },
+    {
+      "url": "https://static.chipdip.ru/lib/057/DOC000057299.pdf",
+      "kind": "pdf"
+    },
+    {
+      "url": "https://static.chipdip.ru/lib/251/DOC000251032.pdf",
+      "kind": "pdf"
+    }
+  ],
+  "source": "chipdip",
+  "price_min_rub": null
+}

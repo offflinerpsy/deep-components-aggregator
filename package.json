@@ -17,20 +17,28 @@
     "generate:memory": "node scripts/generate-project-memory.mjs",
     "generate:artifacts": "bash scripts/generate-artifacts.sh",
     "deploy:prod": "git push prod main && sleep 2 && git fetch prod diag/latest:diag/latest && git push origin diag/latest",
-    "data:build": "node ./scripts/build-corpus.mjs || node -e \"process.exit(0)\""
+    "data:ingest:chipdip": "node ./scripts/ingest-chipdip-urls.mjs",
+    "data:index:build": "node ./scripts/build-index.mjs",
+    "rates:refresh": "node ./scripts/refresh-rates.mjs",
+    "smoke": "node ./scripts/smoke.mjs",
+    "data:build": "node scripts/build-corpus-from-raw.mjs",
+    "scout": "node scripts/scout.mjs --out=_scout/last",
+    "worker:promelec": "node scripts/worker-promelec.mjs",
+    "data:refresh": "npm run worker:promelec && npm run data:build"
   },
   "dependencies": {
-    "@orama/orama": "^3.0.0",
+    "undici": "^6.19.8",
+    "cheerio": "^1.0.0",
+    "@orama/orama": "^1.2.6",
+    "fast-xml-parser": "^4.3.6",
+    "nanoid": "^5.0.7",
     "@playwright/test": "^1.46.1",
     "ajv": "^8.17.1",
     "ajv-formats": "3.0.1",
-    "cheerio": "^1.0.0-rc.12",
     "express": "^4.19.2",
-    "fast-xml-parser": "^4.3.2",
     "iconv-lite": "^0.7.0",
     "node-fetch": "^3.3.2",
-    "playwright": "1.55.1",
-    "undici": "^7.16.0"
+    "playwright": "^1.55.1"
   },
   "devDependencies": {
     "jest": "^30.1.3"

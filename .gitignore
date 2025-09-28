@@ -48,3 +48,8 @@ coverage/
 # Temporary files
 *.tmp
 *.temp
+
+secrets/
+data/cache/
+data/state/
+data/rates.json

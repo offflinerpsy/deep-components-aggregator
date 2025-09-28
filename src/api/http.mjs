@@ -3,8 +3,11 @@ import { loadAllProducts } from '../core/store.mjs';
 import { buildIndex, searchIndex } from '../core/search.mjs';
 import { readFileSync, existsSync, readdirSync, mkdirSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
+import { nanoid } from 'nanoid';
+import { spawn } from 'node:child_process';
 
 const router = express.Router();
+const pendingTasks = new Map(); // taskId -> {status, q, ts, ...}
 
 // bootstrap index в памяти процесса
 let idxReady = false;
@@ -36,7 +39,7 @@ function countCacheEntries() {
 
 // health
 router.get('/health', (req, res) => {
-  const counters = { indexCount: lastIndexCount, cacheEntries: countCacheEntries() };
+  const counters = { indexCount: lastIndexCount, cacheEntries: countCacheEntries(), pendingTasks: pendingTasks.size };
   res.status(200).json({ status: 'ok', uptime: process.uptime(), ts: Date.now(), counters });
 });
 
@@ -50,13 +53,41 @@ router.get('/search', async (req, res) => {
     mpn: d.mpn, brand: d.brand, title: d.title, desc: d.desc,
     regions: d.regions, price_rub: Number.isFinite(d.price)? d.price : null, image: d.image
   }));
+  
   if (items.length === 0) {
+    // Создаем фоновую задачу инжеста для поиска по этому запросу
+    const taskId = nanoid(8);
+    const task = { id: taskId, q, ts: Date.now(), status: 'pending' };
+    pendingTasks.set(taskId, task);
+    
     const ts = new Date().toISOString().replace(/[:.]/g,'-');
     const dir = path.join('_diag', ts);
     mkdirSync(dir, { recursive: true });
-    writeFileSync(path.join(dir, 'trace.txt'), `q=${q}\nphase=search\nresult=empty\n`);
+    writeFileSync(path.join(dir, 'trace.txt'), `q=${q}\nphase=search\nresult=empty\ntaskId=${taskId}\n`);
+    
+    // Запускаем фоновую задачу инжеста
+    const worker = spawn('node', ['scripts/ingest-chipdip-urls.mjs', '--query', q, '--limit', '5'], {
+      detached: true,
+      stdio: 'ignore'
+    });
+    worker.unref();
+    
+    res.json({ status: 'pending', count: 0, items: [], taskId });
+    return;
   }
-  res.json({ status: items.length? 'ok':'pending', count: items.length, items });
+  
+  res.json({ status: 'ok', count: items.length, items });
+});
+
+// /api/task/:id - проверка статуса задачи
+router.get('/task/:id', (req, res) => {
+  const id = req.params.id;
+  const task = pendingTasks.get(id);
+  if (!task) {
+    res.status(404).json({ error: 'TASK_NOT_FOUND' });
+    return;
+  }
+  res.json(task);
 });
 
 // /api/product?mpn=...

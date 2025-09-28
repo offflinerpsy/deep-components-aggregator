@@ -1,9 +1,22 @@
-import { readFileSync, readdirSync, writeFileSync, mkdirSync, existsSync, statSync } from 'node:fs';
+import { readFileSync, readdirSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
 import { getHtmlCached } from '../src/scrape/cache.mjs';
 import { parseChipDipProduct } from '../src/parsers/chipdip/product.mjs';
+import { getRates } from '../src/currency/cbr.mjs';
+import { fetch } from 'undici';
 
 const OUT = 'data/db/products';
 mkdirSync(OUT, { recursive: true });
+mkdirSync('data/files/pdf', { recursive: true });
+
+async function savePdf(srcUrl, hash){
+  const dest = `data/files/pdf/${hash}.pdf`;
+  if (existsSync(dest)) return dest;
+  const r = await fetch(srcUrl);
+  if (!r.ok) return null;
+  const ab = await r.arrayBuffer();
+  writeFileSync(dest, Buffer.from(ab));
+  return dest;
+}
 
 function* linesFromDir(dir){
   for (const f of readdirSync(dir)) {
@@ -18,6 +31,8 @@ function* linesFromDir(dir){
 
 let totals=0, ok=0, fail=0, cached=0, cacheBytes=0;
 const seen = new Set();
+const rates = getRates();
+
 for (const url of linesFromDir('loads/urls')) {
   totals++;
   try {
@@ -25,6 +40,28 @@ for (const url of linesFromDir('loads/urls')) {
     if (r.fromCache) cached++;
     cacheBytes += r.size||0;
     const canon = parseChipDipProduct(r.html, url);
+    // Скачивание PDF и переписывание ссылок
+    if (Array.isArray(canon.docs)) {
+      for (const d of canon.docs) {
+        if (d._src && d._hash) {
+          const saved = await savePdf(d._src, d._hash);
+          if (saved) d.url = `/files/pdf/${d._hash}.pdf`;
+          delete d._src; delete d._hash;
+        }
+      }
+    }
+    // Конвертация валют (если попадутся офферы не RUB)
+    if (Array.isArray(canon.offers)) {
+      for (const ofr of canon.offers) {
+        if (ofr.currency && ofr.currency !== 'RUB') {
+          const rate = rates[ofr.currency.toUpperCase()];
+          if (rate) {
+            ofr.price_rub = Math.round(ofr.price * rate);
+          }
+        }
+      }
+    }
+
     if (!canon.mpn) throw new Error('no mpn');
     if (!seen.has(canon.mpn)) {
       writeFileSync(`${OUT}/${canon.mpn}.json`, JSON.stringify(canon, null, 2));

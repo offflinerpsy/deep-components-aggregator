@@ -6,10 +6,13 @@ export function normCanon(o){
     sku: o.sku || '',
     url: o.url || '',
     image: o.image || null,
+    images: o.images || [],
     desc_short: o.desc_short || '',
     regions: Array.from(new Set((o.offers||[]).map(x=>x.region))).filter(Boolean),
     offers: o.offers || [],
     docs: o.docs || [],
+    specs: o.specs || {},
+    stock_total: typeof o.stock_total === 'number' ? o.stock_total : null,
     source: o.source || '',
     price_min_rub: computeMinRub(o.offers||[])
   };

@@ -12,6 +12,15 @@
   </header>
 
   <main class="container">
+    <div class="controls" style="display:flex;gap:8px;align-items:center;margin:8px 0;">
+      <select id="sort">
+        <option value="relevance">Сортировка: релевантность</option>
+        <option value="price">Цена ↑</option>
+        <option value="price_desc">Цена ↓</option>
+        <option value="brand">Производитель A→Z</option>
+      </select>
+      <input id="filterRegion" placeholder="Фильтр по региону" style="flex:0 0 220px;"/>
+    </div>
     <table class="grid" id="results">
       <thead>
         <tr>
@@ -26,9 +35,9 @@
       </thead>
       <tbody></tbody>
     </table>
+    <div id="pager" style="display:flex;gap:8px;justify-content:flex-end;margin-top:8px;"></div>
   </main>
 
-  <!-- Модальное окно карточки -->
   <div id="modal" class="modal hidden">
     <div class="modal-body">
       <button id="modal-close">×</button>

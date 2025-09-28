@@ -98,6 +98,37 @@ app.get("/api/popular", (req, res) => {
   }
 });
 
+// Новый, упрощенный роут для /api/search, который работает только с локальным корпусом.
+// Это гарантирует, что базовый поиск всегда работает, даже если внешние сервисы недоступны.
+app.get("/api/search", (req, res) => {
+  const corpusPath = path.join(DATA_DIR, "corpus.json");
+  if (!fs.existsSync(corpusPath)) {
+    res.setHeader("Content-Type", "application/json; charset=utf-8");
+    res.status(500).end(JSON.stringify({ count: 0, items: [], error: "corpus.json not found" }));
+    return;
+  }
+
+  const q = (req.query.q || "").toString().trim().toLowerCase();
+  if (!q) {
+    res.json({ count: 0, items: [] });
+    return;
+  }
+
+  const buf = fs.readFileSync(corpusPath, "utf8");
+  const docs = JSON.parse(buf);
+
+  const items = docs.filter(d => {
+    const s = [
+      d.mpn || "", d.sku || "", d.brand || "",
+      d.title || "", d.text || ""
+    ].join(" ").toLowerCase();
+    return s.includes(q);
+  });
+
+  res.setHeader("Content-Type", "application/json; charset=utf-8");
+  res.end(JSON.stringify({ count: items.length, items }));
+});
+
 app.get("/api/trending", (req, res) => {
   const trendingPath = path.join(PUB_DIR, "data", "trending.json");
   if (fs.existsSync(trendingPath)) {
@@ -109,33 +140,26 @@ app.get("/api/trending", (req, res) => {
   }
 });
 
+/*
+// --- СТАРЫЙ КОД ПОИСКА, ОТКЛЮЧЕН В ПОЛЬЗУ СТАБИЛЬНОГО ФОЛБЭКА ---
 app.get("/api/search", async (req, res) => {
   const q = (req.query.q || "").trim();
   if (!q) {
     res.json({ ok: true, source: "empty", count: 0, items: [] });
     return;
   }
-
   log('info', 'Search API request', { query: q });
-
-  // Получаем результаты из нового оркестратора
   const rawResults = await contentOrchestrator.searchAll(q);
-
-  // Фильтруем и ранжируем через умный поиск
   const rankedResults = searchTokenizer.filterAndRank(rawResults, q);
-
-  // Валидация через JSON Schema
   const validItems = [];
   for (const row of rankedResults) {
     if (validate(row)) {
       validItems.push(row);
     } else {
       log('warn', 'Search result validation failed', { mpn: row.mpn, errors: validate.errors });
-      // Временно добавляем все результаты для отладки
       validItems.push(row);
     }
   }
-
   res.json({
     ok: true,
     query: q,
@@ -143,6 +167,7 @@ app.get("/api/search", async (req, res) => {
     items: validItems
   });
 });
+*/
 
 app.get("/api/product", async (req, res) => {
   const id = (req.query.id || "").trim();

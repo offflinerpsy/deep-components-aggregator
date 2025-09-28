@@ -72,6 +72,9 @@ jobs:
     - name: Install dependencies
       run: npm ci
 
+    - name: Build data corpus
+      run: npm run data:build
+
     - name: Install Playwright browsers
       run: npx playwright install --with-deps ${{ matrix.browser }}
 

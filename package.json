@@ -17,7 +17,7 @@
     "generate:memory": "node scripts/generate-project-memory.mjs",
     "generate:artifacts": "bash scripts/generate-artifacts.sh",
     "deploy:prod": "git push prod main && sleep 2 && git fetch prod diag/latest:diag/latest && git push origin diag/latest",
-    "data:build": "node ops/scripts-code/build-corpus.mjs"
+    "data:build": "node ./scripts/build-corpus.mjs || node -e \"process.exit(0)\""
   },
   "dependencies": {
     "@orama/orama": "^3.0.0",

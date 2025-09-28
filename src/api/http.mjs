@@ -53,29 +53,29 @@ router.get('/search', async (req, res) => {
     mpn: d.mpn, brand: d.brand, title: d.title, desc: d.desc,
     regions: d.regions, price_rub: Number.isFinite(d.price)? d.price : null, image: d.image
   }));
-  
+
   if (items.length === 0) {
     // Создаем фоновую задачу инжеста для поиска по этому запросу
     const taskId = nanoid(8);
     const task = { id: taskId, q, ts: Date.now(), status: 'pending' };
     pendingTasks.set(taskId, task);
-    
+
     const ts = new Date().toISOString().replace(/[:.]/g,'-');
     const dir = path.join('_diag', ts);
     mkdirSync(dir, { recursive: true });
     writeFileSync(path.join(dir, 'trace.txt'), `q=${q}\nphase=search\nresult=empty\ntaskId=${taskId}\n`);
-    
+
     // Запускаем фоновую задачу инжеста
     const worker = spawn('node', ['scripts/ingest-chipdip-urls.mjs', '--query', q, '--limit', '5'], {
       detached: true,
       stdio: 'ignore'
     });
     worker.unref();
-    
+
     res.json({ status: 'pending', count: 0, items: [], taskId });
     return;
   }
-  
+
   res.json({ status: 'ok', count: items.length, items });
 });
 

@@ -1,21 +1,509 @@
-body { font-family: system-ui,-apple-system,Segoe UI,Roboto,Ubuntu; background:#f7f7f9; margin:0; }
-.container { max-width:1200px; margin:16px auto; padding:0 12px; }
-header { display:flex; gap:8px; }
-header input { flex:1; padding:10px 12px; border:1px solid #dcdde2; border-radius:8px; }
-header button { padding:10px 16px; border:0; background:#0d6efd; color:white; border-radius:8px; cursor:pointer; }
-table.grid { width:100%; border-collapse:collapse; background:white; border-radius:10px; overflow:hidden; }
-thead th { background:#eef1f7; text-align:left; padding:10px; font-weight:600; font-size:14px; }
-tbody td { padding:10px; border-top:1px solid #eff1f5; vertical-align:top; }
-.thumb { width:48px; height:48px; object-fit:contain; background:#fafbff; border:1px solid #eef1f7; border-radius:8px; }
-.badge { display:inline-block; padding:2px 8px; background:#f1f5ff; color:#283b6f; border-radius:999px; font-size:12px; margin:2px 4px 0 0; }
-.modal { position:fixed; inset:0; background:rgba(0,0,0,.35); display:flex; align-items:center; justify-content:center; }
-.hidden { display:none; }
-.modal-body { width:920px; max-width:95vw; background:white; border-radius:12px; padding:20px; position:relative; }
-#modal-close { position:absolute; top:8px; right:8px; border:0; background:#eee; border-radius:8px; padding:4px 8px; cursor:pointer; }
-.loader { padding:40px; text-align:center; color:#6b7280; }
-.card { display:grid; grid-template-columns: 280px 1fr 280px; gap:16px; }
-.card .imgbox img { width:100%; background:#fafafa; border:1px solid #eee; border-radius:10px; }
-.card .specs table { width:100%; border-collapse:collapse; font-size:14px; }
-.card .specs td { padding:6px 4px; border-top:1px solid #f0f0f2; }
-.card .buy { border:1px solid #f0f0f2; border-radius:10px; padding:12px; }
-.card .buy button { width:100%; background:#0d6efd; color:white; border:0; border-radius:8px; padding:10px; cursor:pointer; }
+/* Основные стили */
+:root {
+  --primary-color: #0d6efd;
+  --primary-hover: #0b5ed7;
+  --secondary-color: #6c757d;
+  --light-bg: #f7f7f9;
+  --border-color: #dcdde2;
+  --text-color: #212529;
+  --light-text: #6b7280;
+  --success-color: #198754;
+  --danger-color: #dc3545;
+  --warning-color: #ffc107;
+  --info-color: #0dcaf0;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Ubuntu, sans-serif;
+  background: var(--light-bg);
+  color: var(--text-color);
+  margin: 0;
+  padding: 0;
+  line-height: 1.5;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+/* Заголовок */
+header {
+  background: white;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.sticky-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.search-bar {
+  display: flex;
+  gap: 8px;
+  width: 100%;
+}
+
+.search-bar input {
+  flex: 1;
+  padding: 10px 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  font-size: 16px;
+}
+
+.search-bar button {
+  padding: 10px 16px;
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.search-bar button:hover {
+  background: var(--primary-hover);
+}
+
+/* Основной контент */
+main {
+  padding: 24px 0;
+}
+
+/* Элементы управления */
+.controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.filters {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.filters select,
+.filters input {
+  padding: 8px 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  background: white;
+  font-size: 14px;
+}
+
+#results-count {
+  font-size: 14px;
+  color: var(--light-text);
+}
+
+/* Таблица результатов */
+.results-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.results-table th {
+  background: #eef1f7;
+  text-align: left;
+  padding: 12px 10px;
+  font-weight: 600;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.results-table td {
+  padding: 12px 10px;
+  border-top: 1px solid #eff1f5;
+  vertical-align: top;
+  font-size: 14px;
+}
+
+.results-table tr:hover {
+  background-color: #f8f9fa;
+}
+
+/* Изображения и значки */
+.thumb {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  background: #fafbff;
+  border: 1px solid #eef1f7;
+  border-radius: 8px;
+}
+
+.badge {
+  display: inline-block;
+  padding: 2px 8px;
+  background: #f1f5ff;
+  color: #283b6f;
+  border-radius: 999px;
+  font-size: 12px;
+  margin: 2px 4px 0 0;
+}
+
+/* Кнопки */
+.btn {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.btn-primary {
+  background: var(--primary-color);
+  color: white;
+}
+
+.btn-primary:hover {
+  background: var(--primary-hover);
+}
+
+.btn-outline {
+  background: transparent;
+  border: 1px solid var(--primary-color);
+  color: var(--primary-color);
+}
+
+.btn-outline:hover {
+  background: #f0f7ff;
+}
+
+/* Пагинация */
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 24px;
+}
+
+.pagination button {
+  padding: 8px 12px;
+  border: 1px solid var(--border-color);
+  background: white;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.pagination button.active {
+  background: var(--primary-color);
+  color: white;
+  border-color: var(--primary-color);
+}
+
+/* Состояния загрузки и отсутствия результатов */
+.loading, .no-results {
+  text-align: center;
+  padding: 40px 0;
+}
+
+.spinner {
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  border-radius: 50%;
+  border-top-color: var(--primary-color);
+  animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.hidden {
+  display: none;
+}
+
+/* Модальное окно */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: white;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 1000px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.modal-header {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-header h2 {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: var(--secondary-color);
+}
+
+.modal-body {
+  padding: 20px;
+}
+
+/* Карточка товара */
+.product-card {
+  display: grid;
+  grid-template-columns: 280px 1fr 280px;
+  gap: 24px;
+}
+
+@media (max-width: 992px) {
+  .product-card {
+    grid-template-columns: 1fr;
+  }
+}
+
+.product-gallery {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.main-image {
+  width: 100%;
+  height: 280px;
+  background: #fafafa;
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.main-image img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.thumbnails {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.thumbnail {
+  width: 60px;
+  height: 60px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  cursor: pointer;
+  padding: 2px;
+}
+
+.thumbnail img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.thumbnail.active {
+  border-color: var(--primary-color);
+}
+
+.product-info {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.product-meta p {
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+.product-description h3,
+.product-specs h3,
+.product-docs h3 {
+  font-size: 16px;
+  margin-bottom: 12px;
+}
+
+.product-specs table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.product-specs td {
+  padding: 6px 0;
+  border-top: 1px solid #f0f0f2;
+  font-size: 14px;
+}
+
+.product-specs td:first-child {
+  width: 40%;
+  color: var(--light-text);
+}
+
+.product-docs ul {
+  list-style: none;
+}
+
+.product-docs li {
+  margin-bottom: 8px;
+}
+
+.product-docs a {
+  color: var(--primary-color);
+  text-decoration: none;
+}
+
+.product-docs a:hover {
+  text-decoration: underline;
+}
+
+.product-order {
+  border: 1px solid #f0f0f2;
+  border-radius: 10px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  position: sticky;
+  top: 90px;
+}
+
+.price-box h3,
+.stock-box h3,
+.order-form h3 {
+  font-size: 16px;
+  margin-bottom: 12px;
+}
+
+.price {
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.stock-box table {
+  width: 100%;
+  font-size: 14px;
+}
+
+.stock-box td {
+  padding: 4px 0;
+}
+
+.form-group {
+  margin-bottom: 12px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 14px;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+}
+
+.order-btn {
+  width: 100%;
+  padding: 10px;
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.order-btn:hover {
+  background: var(--primary-hover);
+}
+
+.form-actions {
+  margin-top: 20px;
+  text-align: right;
+}
+
+.submit-btn {
+  padding: 10px 20px;
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.submit-btn:hover {
+  background: var(--primary-hover);
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+  .controls {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  
+  .filters {
+    width: 100%;
+  }
+  
+  .results-table {
+    display: block;
+    overflow-x: auto;
+  }
+  
+  .product-card {
+    grid-template-columns: 1fr;
+  }
+  
+  .product-order {
+    position: static;
+  }
+}

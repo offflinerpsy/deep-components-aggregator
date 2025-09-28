@@ -1,52 +1,168 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="utf-8"/>
-  <title>DeepAgg — поиск</title>
-  <link rel="stylesheet" href="/css/light.css"/>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DeepAgg — Поиск электронных компонентов</title>
+  <link rel="stylesheet" href="/css/light.css">
+  <style>
+    .hero {
+      padding: 80px 0;
+      text-align: center;
+      background: linear-gradient(to bottom, #f8f9fa, #e9ecef);
+    }
+    
+    .hero h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+    
+    .hero p {
+      font-size: 1.2rem;
+      color: #6c757d;
+      margin-bottom: 2rem;
+    }
+    
+    .search-container {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    
+    .features {
+      padding: 60px 0;
+    }
+    
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+    }
+    
+    .feature-card {
+      background: white;
+      border-radius: 10px;
+      padding: 24px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+    
+    .feature-card h3 {
+      margin-bottom: 12px;
+    }
+    
+    .examples {
+      padding: 40px 0;
+      background: #f8f9fa;
+    }
+    
+    .example-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 20px;
+    }
+    
+    .example-link {
+      background: white;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      padding: 8px 12px;
+      text-decoration: none;
+      color: var(--primary-color);
+    }
+    
+    .example-link:hover {
+      background: #f0f7ff;
+    }
+    
+    footer {
+      padding: 40px 0;
+      background: #212529;
+      color: white;
+      text-align: center;
+    }
+  </style>
 </head>
 <body>
-  <header class="container">
-    <input id="q" placeholder="Искать MPN (например, 1N4148, LM317T) или по слову (транзистор)"/>
-    <button id="go">Поиск</button>
-  </header>
-
-  <main class="container">
-    <div class="controls" style="display:flex;gap:8px;align-items:center;margin:8px 0;">
-      <select id="sort">
-        <option value="relevance">Сортировка: релевантность</option>
-        <option value="price">Цена ↑</option>
-        <option value="price_desc">Цена ↓</option>
-        <option value="brand">Производитель A→Z</option>
-      </select>
-      <input id="filterRegion" placeholder="Фильтр по региону" style="flex:0 0 220px;"/>
-    </div>
-    <table class="grid" id="results">
-      <thead>
-        <tr>
-          <th>Фото</th>
-          <th>Part Number</th>
-          <th>Manufacturer</th>
-          <th>Description</th>
-          <th>Stock/Regions</th>
-          <th>Цена (₽)</th>
-          <th>Действие</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
-    <div id="pager" style="display:flex;gap:8px;justify-content:flex-end;margin-top:8px;"></div>
-  </main>
-
-  <div id="modal" class="modal hidden">
-    <div class="modal-body">
-      <button id="modal-close">×</button>
-      <div id="modal-content">
-        <div class="loader">Загружаем карточку…</div>
+  <section class="hero">
+    <div class="container">
+      <h1>Поиск электронных компонентов</h1>
+      <p>Быстрый поиск по каталогам российских поставщиков</p>
+      
+      <div class="search-container">
+        <div class="search-bar">
+          <input id="search-input" type="search" placeholder="Введите MPN, название или производителя..." autofocus>
+          <button id="search-button">Поиск</button>
+        </div>
       </div>
     </div>
-  </div>
-
-  <script src="/js/app.js"></script>
+  </section>
+  
+  <section class="examples">
+    <div class="container">
+      <h2>Примеры поиска</h2>
+      <p>Попробуйте поиск по этим популярным компонентам:</p>
+      
+      <div class="example-links">
+        <a href="/results.html?q=LM317" class="example-link">LM317</a>
+        <a href="/results.html?q=1N4148W-TP" class="example-link">1N4148W-TP</a>
+        <a href="/results.html?q=LDD-700L" class="example-link">LDD-700L</a>
+        <a href="/results.html?q=AD637ARZ" class="example-link">AD637ARZ</a>
+        <a href="/results.html?q=транзистор" class="example-link">Транзистор</a>
+        <a href="/results.html?q=микроконтроллер" class="example-link">Микроконтроллер</a>
+      </div>
+    </div>
+  </section>
+  
+  <section class="features">
+    <div class="container">
+      <h2>Возможности платформы</h2>
+      
+      <div class="features-grid">
+        <div class="feature-card">
+          <h3>Единый поиск</h3>
+          <p>Ищите компоненты по всем основным российским поставщикам в одном месте</p>
+        </div>
+        
+        <div class="feature-card">
+          <h3>Актуальные цены</h3>
+          <p>Получайте информацию о ценах и наличии компонентов в реальном времени</p>
+        </div>
+        
+        <div class="feature-card">
+          <h3>Технические данные</h3>
+          <p>Просматривайте технические характеристики и документацию по компонентам</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <footer>
+    <div class="container">
+      <p>© 2025 DeepAgg — Агрегатор электронных компонентов</p>
+    </div>
+  </footer>
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const searchInput = document.getElementById('search-input');
+      const searchButton = document.getElementById('search-button');
+      
+      searchButton.addEventListener('click', () => {
+        const query = searchInput.value.trim();
+        if (query) {
+          window.location.href = `/results.html?q=${encodeURIComponent(query)}`;
+        }
+      });
+      
+      searchInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          const query = searchInput.value.trim();
+          if (query) {
+            window.location.href = `/results.html?q=${encodeURIComponent(query)}`;
+          }
+        }
+      });
+    });
+  </script>
 </body>
 </html>

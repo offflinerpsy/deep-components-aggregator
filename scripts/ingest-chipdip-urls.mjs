@@ -53,7 +53,7 @@ async function main() {
   let totals=0, ok=0, fail=0, cached=0, cacheBytes=0;
   const seen = new Set();
   const rates = getRates();
-  
+
   // Определяем источник URL
   let urls = [];
   if (query) {
@@ -64,7 +64,7 @@ async function main() {
       const r = await getHtmlCached(searchUrl, { ttl: 24*3600*1000 });
       if (r.fromCache) cached++;
       cacheBytes += r.size||0;
-      
+
       // Извлекаем URL продуктов из страницы поиска
       const $ = cheerio.load(r);
       $('.product-item').each((_, el) => {
@@ -77,7 +77,7 @@ async function main() {
     } catch(e) {
       console.error('Search error:', e.message);
     }
-    
+
     // Ограничиваем количество URL для обработки
     if (limit > 0 && urls.length > limit) {
       urls = urls.slice(0, limit);
@@ -130,7 +130,7 @@ async function main() {
       fail++;
     }
   }
-  
+
   const report = { ts: Date.now(), query, totals, ok, fail, cached, cacheBytes };
   mkdirSync('data/state', { recursive: true });
   writeFileSync('data/state/ingest-report.json', JSON.stringify(report, null, 2));

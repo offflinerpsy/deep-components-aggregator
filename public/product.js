@@ -8,6 +8,20 @@ fetch(url).then(r=>r.json()).then(j=>{
   document.getElementById('meta').textContent = p.description || '';
   document.getElementById('buy').textContent = (typeof p.minRub==='number') ? `от ${p.minRub.toFixed(2)} ₽` : 'цена по запросу';
   const a = document.getElementById('vendor'); a.href = p.vendorUrl || '#';
+  
+  // Галерея изображений
+  const imgs = Array.isArray(p.images) ? p.images : (p.photo ? [p.photo] : []);
+  if(imgs.length > 1) {
+    const bar = document.createElement('div');
+    bar.style.display='flex'; bar.style.gap='8px'; bar.style.marginTop='8px';
+    imgs.forEach(u=>{
+      const t=document.createElement('img'); t.src=u; t.style.width='56px'; t.style.height='56px'; t.style.objectFit='contain';
+      t.style.border='1px solid #eef2f7'; t.style.borderRadius='8px'; t.addEventListener('click',()=>{ document.getElementById('img').src=u; });
+      bar.appendChild(t);
+    });
+    document.querySelector('.wrap .grid > div').appendChild(bar);
+  }
+  
   const docs = p.datasheets || [];
   document.getElementById('docs').innerHTML = docs.map(d=>`<li><a href="${d}" target="_blank" rel="noopener">${d.split('/').pop()}</a></li>`).join('') || '<li>—</li>';
   const specs = p.specs || {};

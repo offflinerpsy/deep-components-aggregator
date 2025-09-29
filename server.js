@@ -7,7 +7,7 @@ import express from 'express';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import apiRouter from './src/api/http.mjs';
-import { liveSearchHandler } from './src/live/http.mjs';
+import liveRouter from './src/live/http.mjs';
 import { buildIndex, loadIndex } from './src/core/search.mjs';
 import { loadAllProducts } from './src/core/store.mjs';
 import { refreshRates } from './src/currency/cbr.mjs';
@@ -44,7 +44,7 @@ app.use('/pdfs', express.static(path.resolve(__dirname, 'data/files/pdf'))); // 
 app.use('/api', apiRouter);
 
 // Live search route
-app.get('/api/live/search', liveSearchHandler);
+app.use('/api/live', liveRouter);
 
 // Redirect root to search UI
 app.get('/', (req, res) => {
@@ -66,16 +66,16 @@ app.use((err, req, res, next) => {
 async function ensureIndex() {
   try {
     console.log('[SERVER] Loading search index...');
-    
+
     // Пытаемся загрузить индекс из файла
     const loaded = await loadIndex();
-    
+
     // Если не удалось загрузить, строим новый
     if (!loaded) {
       console.log('[SERVER] Building search index from products...');
       const products = loadAllProducts();
       console.log(`[SERVER] Found ${products.length} products for indexing`);
-      
+
       if (products.length > 0) {
         await buildIndex(products);
         console.log('[SERVER] Search index built successfully');
@@ -101,10 +101,10 @@ async function ensureRates() {
 // Запускаем сервер
 app.listen(PORT, async () => {
   console.log(`[SERVER] HTTP server running on port ${PORT}`);
-  
+
   // Инициализируем индекс поиска
   await ensureIndex();
-  
+
   // Обновляем курсы валют
   await ensureRates();
 });

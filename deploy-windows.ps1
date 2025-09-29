@@ -86,3 +86,4 @@ Write-Host "Деплой завершен!"
 Write-Host "Для проверки: http://$SERVER/"
 Write-Host "API здоровья: http://$SERVER/api/health"
 Write-Host "Поиск: http://$SERVER/ui/search.html?q=LM317"
+

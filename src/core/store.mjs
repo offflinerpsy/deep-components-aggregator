@@ -1,5 +1,6 @@
-import { readFileSync, readdirSync, existsSync } from 'node:fs';
+import { readFileSync, readdirSync, existsSync, mkdirSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
+import { normalize } from './canon.mjs';
 
 /**
  * Путь к директории с данными о продуктах
@@ -104,6 +105,42 @@ export function loadProduct(mpn) {
     return null;
   } catch (error) {
     console.error(`Error loading product ${mpn}: ${error.message}`);
+    return null;
+  }
+}
+
+/**
+ * Сохраняет продукт в файл
+ * @param {object} product Продукт для сохранения
+ * @returns {object|null} Сохраненный продукт или null в случае ошибки
+ */
+export async function saveProduct(product) {
+  if (!product || (!product.mpn && !product.chipdip_id)) {
+    console.error('[STORE ERROR] Attempted to save product without MPN or ChipDip ID.');
+    return null;
+  }
+
+  try {
+    // Нормализуем продукт
+    const normalizedProduct = normalize(product);
+
+    // Создаем директорию, если она не существует
+    if (!existsSync(PRODUCTS_DIR)) {
+      mkdirSync(PRODUCTS_DIR, { recursive: true });
+    }
+
+    // Формируем имя файла на основе MPN или ChipDip ID
+    const filename = normalizedProduct.mpn
+      ? `${normalizedProduct.mpn.replace(/[\/\\?%*:|"<>]/g, '_')}.json`
+      : `chipdip-${normalizedProduct.chipdip_id}.json`;
+
+    // Сохраняем продукт в файл
+    const filePath = path.join(PRODUCTS_DIR, filename);
+    writeFileSync(filePath, JSON.stringify(normalizedProduct, null, 2), 'utf8');
+
+    return normalizedProduct;
+  } catch (error) {
+    console.error(`[STORE ERROR] Failed to save product: ${error.message}`);
     return null;
   }
 }

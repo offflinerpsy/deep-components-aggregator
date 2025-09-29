@@ -157,7 +157,7 @@ async function runSSETest(path, validator, name) {
       try {
         const data = JSON.parse(event.data);
         const validationResult = validator(data, 'item');
-        
+
         if (validationResult === true) {
           success = true;
           log(`  PASS: Found valid item in SSE stream`);
@@ -176,11 +176,11 @@ async function runSSETest(path, validator, name) {
 
     eventSource.addEventListener('done', (event) => {
       log(`Received done event: ${event.data}`, true);
-      
+
       try {
         const data = JSON.parse(event.data);
         log(`  INFO: SSE stream completed with ${data.count} items`);
-        
+
         if (success || itemCount > 0) {
           log(`  PASS: ${name} (${Date.now() - startTime}ms)`);
           resolve(true);

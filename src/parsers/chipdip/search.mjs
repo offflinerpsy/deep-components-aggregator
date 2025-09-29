@@ -7,88 +7,100 @@ import * as cheerio from 'cheerio';
  * @returns {Array<Object>} Массив найденных товаров
  */
 export function parseChipDipSearch(html, baseUrl = 'https://www.chipdip.ru') {
+  if (!html || html.trim() === '') {
+    console.error('Empty HTML passed to parseChipDipSearch');
+    return [];
+  }
+
   const $ = cheerio.load(html);
   const results = [];
 
-  // Находим все блоки с товарами
-  $('.product-item, .item').each((_, element) => {
+  console.log(`[CHIPDIP PARSER] Parsing search results. HTML length: ${html.length}`);
+
+  // Находим все ссылки, которые могут вести на страницы товаров
+  $('a[href*="/product/"]').each((_, element) => {
     try {
       const el = $(element);
+      const relativeUrl = el.attr('href');
+      if (!relativeUrl || !relativeUrl.includes('/product/')) return;
 
-      // Извлекаем ссылку на товар
-      const linkEl = el.find('a.link, a.item-link, a.product-item-link').first();
-      const relativeUrl = linkEl.attr('href');
-      if (!relativeUrl) return;
+      // Проверяем, что это не ссылка из меню или навигации
+      const parentClasses = el.parent().attr('class') || '';
+      if (parentClasses.includes('menu') || parentClasses.includes('nav')) return;
 
       const url = new URL(relativeUrl, baseUrl).toString();
 
-      // Извлекаем название товара
-      const title = linkEl.text().trim();
+      // Проверяем, что это не дубликат
+      if (results.some(item => item.url === url)) return;
 
-      // Извлекаем изображение
-      const imgEl = el.find('img').first();
-      const imgSrc = imgEl.attr('src') || imgEl.attr('data-src');
-      const image = imgSrc ? new URL(imgSrc, baseUrl).toString() : null;
+      // Извлекаем название из текста ссылки
+      const title = el.text().trim();
+      if (!title) return;
 
-      // Извлекаем описание
-      const descEl = el.find('.product-micro-description, .item-description, .description');
-      const description = descEl.text().trim();
+      // Извлекаем MPN из URL
+      const urlParts = url.split('/');
+      const lastPart = urlParts[urlParts.length - 1];
+      const mpn = lastPart || '';
 
-      // Извлекаем цену
-      const priceEl = el.find('.price, .product-price');
-      let price = null;
-      let currency = 'RUB';
-
-      const priceText = priceEl.text().trim();
-      const priceMatch = priceText.match(/[\d\s.,]+\s*(?:р|₽|руб)/i);
-      if (priceMatch) {
-        price = parseFloat(priceMatch[0].replace(/[^\d.,]/g, '').replace(',', '.'));
-      }
-
-      // Извлекаем наличие
-      const stockEl = el.find('.stock, .product-stock');
-      let stock = null;
-      const stockText = stockEl.text().trim();
-      const stockMatch = stockText.match(/(\d+)\s*(?:шт|pcs)/i);
-      if (stockMatch) {
-        stock = parseInt(stockMatch[1], 10);
-      }
-
-      // Извлекаем производителя
-      const brandEl = el.find('.brand, .manufacturer');
-      const brand = brandEl.text().trim();
-
-      // Извлекаем MPN (артикул)
-      const mpnEl = el.find('.mpn, .article');
-      let mpn = mpnEl.text().trim().replace(/^Арт\.?\s*:?\s*/i, '');
-
-      // Если MPN не найден, пытаемся извлечь из URL
-      if (!mpn) {
-        const urlParts = url.split('/');
-        const lastPart = urlParts[urlParts.length - 1];
-        if (lastPart && lastPart !== '') {
-          mpn = lastPart;
+      // Извлекаем изображение, если есть
+      let image = null;
+      const imgEl = el.closest('div').find('img').first();
+      if (imgEl.length) {
+        const imgSrc = imgEl.attr('src') || imgEl.attr('data-src');
+        if (imgSrc) {
+          image = new URL(imgSrc, baseUrl).toString();
         }
       }
 
-      // Добавляем результат, если есть хотя бы URL и название
-      if (url && (title || mpn)) {
-        results.push({
-          url,
-          title,
-          mpn,
-          brand,
-          description,
-          image,
-          price,
-          currency,
-          stock
-        });
+      // Извлекаем описание, если есть
+      let description = '';
+      const descEl = el.closest('div').find('.product-micro-description, .item-description, .description');
+      if (descEl.length) {
+        description = descEl.text().trim();
       }
+
+      // Добавляем результат
+      results.push({
+        url,
+        title,
+        mpn,
+        image,
+        description,
+        source: 'chipdip'
+      });
     } catch (error) {
-      console.error('Error parsing product item:', error);
+      console.error('Error parsing product link:', error);
     }
   });
 
+  // Если не нашли ни одного товара, пробуем найти категории
+  if (results.length === 0) {
+    console.log('[CHIPDIP PARSER] No products found, looking for categories');
+
+    $('.category-item, .catalog-category').each((_, element) => {
+      try {
+        const el = $(element);
+        const linkEl = el.find('a').first();
+        const relativeUrl = linkEl.attr('href');
+        if (!relativeUrl) return;
+
+        const url = new URL(relativeUrl, baseUrl).toString();
+        const title = linkEl.text().trim();
+
+        if (url && title) {
+          results.push({
+            url,
+            title: `Категория: ${title}`,
+            is_category: true,
+            source: 'chipdip'
+          });
+        }
+      } catch (error) {
+        console.error('Error parsing category item:', error);
+      }
+    });
+  }
+
+  console.log(`[CHIPDIP PARSER] Found ${results.length} items (${results.filter(r => !r.is_category).length} products, ${results.filter(r => r.is_category).length} categories)`);
   return results;
 }

@@ -20,13 +20,13 @@ let db = null;
  */
 export function normalizeText(text) {
   if (!text) return '';
-  
+
   // Приводим к нижнему регистру и нормализуем Юникод (NFKC)
   const normalized = text.toLowerCase().normalize('NFKC');
-  
+
   // Заменяем дефисы и подчеркивания на пробелы
   const withSpaces = normalized.replace(/[-_]/g, ' ');
-  
+
   // Удаляем лишние пробелы
   return withSpaces.replace(/\s+/g, ' ').trim();
 }
@@ -38,9 +38,9 @@ export function normalizeText(text) {
  */
 export function tokenizeText(text) {
   if (!text) return [];
-  
+
   const normalized = normalizeText(text);
-  
+
   // Разбиваем на токены по пробелам
   return normalized.split(/\s+/).filter(Boolean);
 }
@@ -96,16 +96,16 @@ export function prepareDocument(product) {
     ru_description: '',
     ru_text: ''
   };
-  
+
   // Добавляем русские поля, если они содержат кириллицу
   if (hasCyrillic(product.title)) {
     doc.ru_title = product.title;
   }
-  
+
   if (hasCyrillic(product.description)) {
     doc.ru_description = product.description;
   }
-  
+
   // Собираем все текстовые поля для полнотекстового поиска
   const textParts = [
     product.mpn,
@@ -116,13 +116,13 @@ export function prepareDocument(product) {
     product.package,
     product.packaging
   ].filter(Boolean);
-  
+
   // Добавляем технические характеристики
   if (product.technical_specs && typeof product.technical_specs === 'object') {
     for (const [key, value] of Object.entries(product.technical_specs)) {
       if (key && value) {
         textParts.push(`${key}: ${value}`);
-        
+
         // Если ключ или значение содержит кириллицу, добавляем в русский текст
         if (hasCyrillic(key) || hasCyrillic(value)) {
           doc.ru_text += ` ${key}: ${value}`;
@@ -130,10 +130,10 @@ export function prepareDocument(product) {
       }
     }
   }
-  
+
   // Объединяем все текстовые части
   doc.text = textParts.join(' ');
-  
+
   return doc;
 }
 
@@ -145,27 +145,27 @@ export function prepareDocument(product) {
 export async function buildIndex(products) {
   try {
     console.log(`[SEARCH] Building index from ${products.length} products...`);
-    
+
     // Создаем новый индекс
     db = await create({
       schema: createIndexSchema()
     });
-    
+
     // Добавляем продукты в индекс
     for (const product of products) {
       const doc = prepareDocument(product);
       await insert(db, doc);
     }
-    
+
     // Сохраняем индекс в файл
     const indexDir = path.dirname(indexPath);
     if (!fs.existsSync(indexDir)) {
       fs.mkdirSync(indexDir, { recursive: true });
     }
-    
+
     // Сохраняем индекс в файл (если будет поддержка сериализации в Orama)
     // fs.writeFileSync(indexPath, JSON.stringify(db), 'utf8');
-    
+
     console.log(`[SEARCH] Index built successfully with ${products.length} products`);
     return true;
   } catch (error) {
@@ -184,11 +184,11 @@ export async function loadIndex() {
       console.warn(`[SEARCH] Index file not found: ${indexPath}`);
       return false;
     }
-    
+
     // Загружаем индекс из файла (если будет поддержка десериализации в Orama)
     // const indexData = fs.readFileSync(indexPath, 'utf8');
     // db = JSON.parse(indexData);
-    
+
     console.log(`[SEARCH] Index loaded successfully`);
     return true;
   } catch (error) {
@@ -208,19 +208,19 @@ export async function updateIndex(product) {
       console.warn(`[SEARCH] Index not initialized`);
       return false;
     }
-    
+
     const doc = prepareDocument(product);
-    
+
     // Удаляем документ, если он уже существует
     try {
       await remove(db, doc.id);
     } catch (error) {
       // Игнорируем ошибку, если документ не существует
     }
-    
+
     // Добавляем новый документ
     await insert(db, doc);
-    
+
     return true;
   } catch (error) {
     console.error(`[SEARCH] Error updating index:`, error);
@@ -243,13 +243,13 @@ export async function searchIndex(query, { limit = 50 } = {}) {
         schema: createIndexSchema()
       });
     }
-    
+
     // Нормализуем запрос
     const normalizedQuery = normalizeText(query);
-    
+
     // Определяем, содержит ли запрос кириллицу
     const hasCyrillicQuery = hasCyrillic(normalizedQuery);
-    
+
     // Настраиваем поля для поиска с бустами
     const properties = [
       { name: 'mpn', boost: 6 },
@@ -259,7 +259,7 @@ export async function searchIndex(query, { limit = 50 } = {}) {
       { name: 'description', boost: 1.5 },
       { name: 'text', boost: 1 }
     ];
-    
+
     // Если запрос содержит кириллицу, добавляем русские поля с высоким бустом
     if (hasCyrillicQuery) {
       properties.push(
@@ -268,14 +268,14 @@ export async function searchIndex(query, { limit = 50 } = {}) {
         { name: 'ru_text', boost: 2 }
       );
     }
-    
+
     // Выполняем поиск
     const results = await search(db, {
       term: normalizedQuery,
       properties,
       limit
     });
-    
+
     return {
       hits: results.hits.map(hit => ({
         ...hit.document,

@@ -2,10 +2,10 @@
 
 /**
  * Скрипт для построения поискового индекса
- * 
+ *
  * Использование:
  * node scripts/build-index.mjs [--source=data/db/products]
- * 
+ *
  * Опции:
  * --source - директория с продуктами для индексации (по умолчанию data/db/products)
  */
@@ -31,18 +31,18 @@ function loadProducts(dir) {
     console.error(`Directory ${dir} does not exist`);
     return [];
   }
-  
+
   const files = fs.readdirSync(dir).filter(f => f.endsWith('.json'));
   console.log(`Found ${files.length} product files in ${dir}`);
-  
+
   const products = [];
-  
+
   for (const file of files) {
     try {
       const filePath = path.join(dir, file);
       const content = fs.readFileSync(filePath, 'utf8');
       const product = JSON.parse(content);
-      
+
       if (product && (product.mpn || product.title)) {
         products.push(product);
       } else {
@@ -52,7 +52,7 @@ function loadProducts(dir) {
       console.error(`Error loading product from ${file}: ${error.message}`);
     }
   }
-  
+
   return products;
 }
 
@@ -68,7 +68,7 @@ function analyzeProducts(products) {
     withCyrillicDescription: 0,
     withTechnicalSpecs: 0
   };
-  
+
   for (const product of products) {
     if (product.mpn) stats.withMpn++;
     if (product.brand) stats.withBrand++;
@@ -78,22 +78,22 @@ function analyzeProducts(products) {
     if (product.description && hasCyrillic(product.description)) stats.withCyrillicDescription++;
     if (product.technical_specs && Object.keys(product.technical_specs).length > 0) stats.withTechnicalSpecs++;
   }
-  
+
   return stats;
 }
 
 // Основная функция
 async function main() {
   console.log(`Building search index from ${sourceDir}...`);
-  
+
   // Загружаем продукты
   const products = loadProducts(sourceDir);
-  
+
   if (products.length === 0) {
     console.error(`No products found in ${sourceDir}`);
     process.exit(1);
   }
-  
+
   // Анализируем продукты
   const stats = analyzeProducts(products);
   console.log('Product statistics:');
@@ -105,10 +105,10 @@ async function main() {
   console.log(`- With Cyrillic title: ${stats.withCyrillicTitle} (${(stats.withCyrillicTitle / stats.total * 100).toFixed(1)}%)`);
   console.log(`- With Cyrillic description: ${stats.withCyrillicDescription} (${(stats.withCyrillicDescription / stats.total * 100).toFixed(1)}%)`);
   console.log(`- With technical specs: ${stats.withTechnicalSpecs} (${(stats.withTechnicalSpecs / stats.total * 100).toFixed(1)}%)`);
-  
+
   // Строим индекс
   const success = await buildIndex(products);
-  
+
   if (success) {
     console.log(`Search index built successfully with ${products.length} products`);
     process.exit(0);

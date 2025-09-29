@@ -28,12 +28,12 @@ export async function fetchHtml(url, { timeoutMs = 12000, key, params = {} } = {
   const apiUrl = new URL('http://api.scraperapi.com');
   apiUrl.searchParams.set('api_key', key);
   apiUrl.searchParams.set('url', url);
-  
+
   // Добавляем параметры по умолчанию
   apiUrl.searchParams.set('render', 'false'); // Без JS-рендеринга для экономии кредитов
   apiUrl.searchParams.set('keep_headers', 'true'); // Сохраняем заголовки для аутентичности
   apiUrl.searchParams.set('country_code', 'ru'); // Используем российские прокси
-  
+
   // Параметры для обработки ошибок
   apiUrl.searchParams.set('retry_404', 'false'); // Не повторять запрос при 404
   apiUrl.searchParams.set('retry_num', '1'); // Одна повторная попытка при ошибке
@@ -67,12 +67,12 @@ export async function fetchHtml(url, { timeoutMs = 12000, key, params = {} } = {
     }
 
     const html = await response.text();
-    
+
     // Проверка на наличие признаков блокировки или капчи
     if (
-      html.includes('captcha') || 
-      html.includes('CAPTCHA') || 
-      html.includes('blocked') || 
+      html.includes('captcha') ||
+      html.includes('CAPTCHA') ||
+      html.includes('blocked') ||
       html.includes('Доступ ограничен')
     ) {
       return {

@@ -77,7 +77,7 @@ for (const providerName in providers) {
   if (!state[providerName]) {
     state[providerName] = {};
   }
-  
+
   for (const key of providers[providerName]) {
     if (!state[providerName][key]) {
       state[providerName][key] = {
@@ -108,7 +108,7 @@ for (const providerName in providers) {
           errors: 0
         };
       }
-      
+
       if (!state[providerName][key].dailyQuota) {
         state[providerName][key].dailyQuota = {
           limit: getProviderDailyLimit(providerName),
@@ -149,7 +149,7 @@ function getNextResetTime() {
 // Обновление часовой статистики
 function updateHourlyStats(keyState, isError) {
   const now = Date.now();
-  
+
   // Если прошел час, сбрасываем статистику
   if (now - keyState.hourlyStats.startTime > 60 * 60 * 1000) {
     keyState.hourlyStats = {
@@ -159,7 +159,7 @@ function updateHourlyStats(keyState, isError) {
     };
     return;
   }
-  
+
   // Иначе обновляем счетчики
   keyState.hourlyStats.requests++;
   if (isError) {
@@ -170,7 +170,7 @@ function updateHourlyStats(keyState, isError) {
 // Обновление дневной квоты
 function updateDailyQuota(keyState) {
   const now = Date.now();
-  
+
   // Если наступило время сброса, обнуляем использованную квоту
   if (now > keyState.dailyQuota.resetTime) {
     keyState.dailyQuota.used = 1;
@@ -184,43 +184,43 @@ function updateDailyQuota(keyState) {
 function calculateKeyPriority(providerName, key) {
   const keyState = state[providerName][key];
   const now = Date.now();
-  
+
   // Если ключ отключен, он имеет низкий приоритет
   if (keyState.disabled && now < keyState.disabledUntil) {
     return Infinity;
   }
-  
+
   // Если ключ был отключен, но время истекло - сбрасываем флаг
   if (keyState.disabled && now >= keyState.disabledUntil) {
     keyState.disabled = false;
     keyState.errors = 0; // Сбрасываем счетчик ошибок
   }
-  
+
   // Если много последовательных ошибок, понижаем приоритет
   if (keyState.errors >= ERROR_THRESHOLDS.CONSECUTIVE_ERRORS) {
     return 1000 + keyState.errors;
   }
-  
+
   // Расчет часового уровня ошибок
-  const hourlyErrorRate = keyState.hourlyStats.requests > 0 
-    ? keyState.hourlyStats.errors / keyState.hourlyStats.requests 
+  const hourlyErrorRate = keyState.hourlyStats.requests > 0
+    ? keyState.hourlyStats.errors / keyState.hourlyStats.requests
     : 0;
-  
+
   // Если высокий уровень ошибок, понижаем приоритет
   if (hourlyErrorRate > ERROR_THRESHOLDS.HOURLY_ERROR_RATE) {
     return 500 + hourlyErrorRate * 100;
   }
-  
+
   // Проверка использования дневной квоты
-  const quotaUsedPercent = keyState.dailyQuota.limit > 0 
-    ? keyState.dailyQuota.used / keyState.dailyQuota.limit 
+  const quotaUsedPercent = keyState.dailyQuota.limit > 0
+    ? keyState.dailyQuota.used / keyState.dailyQuota.limit
     : 0;
-  
+
   // Если квота почти исчерпана, понижаем приоритет
   if (quotaUsedPercent > ERROR_THRESHOLDS.DAILY_QUOTA_PERCENT) {
     return 200 + quotaUsedPercent * 100;
   }
-  
+
   // Базовый приоритет - время последнего использования
   // Чем дольше ключ не использовался, тем выше приоритет (меньше значение)
   return (now - keyState.lastUsed) * -1;
@@ -234,23 +234,23 @@ export const pick = (providerName) => {
   }
 
   const now = Date.now();
-  
+
   // Сортируем ключи по приоритету (меньше = лучше)
   const sortedKeys = [...keys].sort((a, b) => {
     return calculateKeyPriority(providerName, a) - calculateKeyPriority(providerName, b);
   });
-  
+
   // Берем ключ с наивысшим приоритетом
   const bestKey = sortedKeys[0];
-  
+
   // Если даже лучший ключ имеет бесконечный приоритет, значит все ключи отключены
   if (calculateKeyPriority(providerName, bestKey) === Infinity) {
     console.warn(`[ROTATOR] All keys for ${providerName} are disabled`);
-    
+
     // В крайнем случае, берем ключ с наименьшим временем до включения
     let minDisabledUntil = Infinity;
     let fallbackKey = null;
-    
+
     for (const key of keys) {
       const keyState = state[providerName][key];
       if (keyState.disabledUntil < minDisabledUntil) {
@@ -258,16 +258,16 @@ export const pick = (providerName) => {
         fallbackKey = key;
       }
     }
-    
+
     if (fallbackKey) {
       console.warn(`[ROTATOR] Using disabled key for ${providerName} as fallback`);
       updateKeyUsage(providerName, fallbackKey);
       return fallbackKey;
     }
-    
+
     return null;
   }
-  
+
   // Обновляем статистику использования для выбранного ключа
   updateKeyUsage(providerName, bestKey);
   return bestKey;
@@ -278,17 +278,17 @@ function updateKeyUsage(providerName, key) {
   if (!state[providerName] || !state[providerName][key]) {
     return;
   }
-  
+
   const keyState = state[providerName][key];
   keyState.lastUsed = Date.now();
   keyState.totalUses++;
-  
+
   // Обновляем часовую статистику
   updateHourlyStats(keyState, false);
-  
+
   // Обновляем дневную квоту
   updateDailyQuota(keyState);
-  
+
   saveState();
 }
 
@@ -306,13 +306,13 @@ export const recordError = (providerName, key, errorCode = 'unknown') => {
     keyState.errorCodes[errorCode] = 0;
   }
   keyState.errorCodes[errorCode]++;
-  
+
   // Обновляем часовую статистику
   updateHourlyStats(keyState, true);
 
   // Определяем время cooldown в зависимости от типа ошибки
   let cooldownTime = COOLDOWN_TIMES.DEFAULT;
-  
+
   if (errorCode === '429' || errorCode === 'rate_limit') {
     cooldownTime = COOLDOWN_TIMES.RATE_LIMIT;
   } else if (errorCode === '402' || errorCode === 'payment' || errorCode === 'usage-limit') {
@@ -378,7 +378,7 @@ export const getUsageStats = () => {
         stats[providerName].errorRates[errorCode] += keyState.errorCodes[errorCode];
         stats[providerName].totalErrors += keyState.errorCodes[errorCode];
       }
-      
+
       // Добавляем информацию о квоте
       if (keyState.dailyQuota) {
         const keyId = key.slice(0, 8) + '...';
@@ -407,28 +407,28 @@ export const pickBestProvider = () => {
   // Оцениваем провайдеров по нескольким критериям
   const providerScores = providerNames.map(name => {
     const providerStats = stats[name];
-    
+
     // Если нет доступных ключей, даем низкий балл
     if (providerStats.availableKeys === 0) {
       return { name, score: -100 };
     }
-    
+
     // Базовый балл - количество доступных ключей
     let score = providerStats.availableKeys * 10;
-    
+
     // Штраф за высокий процент ошибок
-    const errorRate = providerStats.totalUses > 0 
-      ? providerStats.totalErrors / providerStats.totalUses 
+    const errorRate = providerStats.totalUses > 0
+      ? providerStats.totalErrors / providerStats.totalUses
       : 0;
-    
+
     score -= errorRate * 50;
-    
+
     return { name, score };
   });
-  
+
   // Сортируем провайдеров по баллам (выше = лучше)
   providerScores.sort((a, b) => b.score - a.score);
-  
+
   // Возвращаем имя лучшего провайдера
   return providerScores[0].name;
 };
@@ -438,25 +438,25 @@ export const shouldThrottleQuery = (query, ttl = 60000) => {
   if (!state.queryCache) {
     state.queryCache = {};
   }
-  
+
   const now = Date.now();
   const cacheKey = query.toLowerCase().trim();
-  
+
   // Если запрос уже был недавно, возвращаем true (нужно ограничить)
   if (state.queryCache[cacheKey] && now - state.queryCache[cacheKey] < ttl) {
     return true;
   }
-  
+
   // Иначе обновляем время последнего запроса и разрешаем выполнение
   state.queryCache[cacheKey] = now;
-  
+
   // Очищаем старые записи в кэше
   for (const key in state.queryCache) {
     if (now - state.queryCache[key] > ttl * 2) {
       delete state.queryCache[key];
     }
   }
-  
+
   saveState();
   return false;
 };

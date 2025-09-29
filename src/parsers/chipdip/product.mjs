@@ -5,7 +5,7 @@
 
 import { load } from 'cheerio';
 import { nanoid } from 'nanoid';
-import { convertToRub } from '../../currency/cbr.mjs';
+import { toRub } from '../../currency/cbr.mjs';
 
 /**
  * Преобразует страницу продукта ChipDip в канонический формат
@@ -16,7 +16,7 @@ import { convertToRub } from '../../currency/cbr.mjs';
  */
 export const toCanon = async ({ url, html }) => {
   const $ = load(html);
-  
+
   // Создаем базовый объект продукта
   const product = {
     id: nanoid(),
@@ -31,14 +31,14 @@ export const toCanon = async ({ url, html }) => {
 
   // Извлекаем MPN
   product.mpn = $('[itemprop="mpn"]').text().trim() || $('[data-chd-product-attr="part_number"]').text().trim();
-  
+
   // Если MPN не найден, пытаемся извлечь ID ChipDip из URL
   if (!product.mpn) {
     const urlMatch = url.match(/\/product0?\/(\d+)/);
     if (urlMatch) {
       product.chipdip_id = urlMatch[1];
       product.mpn_guess = true;
-      
+
       // Пытаемся использовать заголовок или артикул как MPN
       const title = $('h1[itemprop="name"]').text().trim();
       const articleMatch = title.match(/\b([A-Z0-9]+-[A-Z0-9]+)\b/);
@@ -56,7 +56,7 @@ export const toCanon = async ({ url, html }) => {
 
   // Извлекаем описание
   product.description = $('div[itemprop="description"]').text().trim();
-  
+
   // Если описание пустое, пытаемся найти его в других местах
   if (!product.description) {
     // Проверяем блок с описанием товара
@@ -64,7 +64,7 @@ export const toCanon = async ({ url, html }) => {
     if (descBlock.length > 0) {
       product.description = descBlock.text().trim();
     }
-    
+
     // Проверяем блок с особенностями товара
     if (!product.description) {
       const featuresBlock = $('.product-card-features');
@@ -79,7 +79,7 @@ export const toCanon = async ({ url, html }) => {
   if (product.image_url && !product.image_url.startsWith('http')) {
     product.image_url = new URL(product.image_url, 'https://www.chipdip.ru').toString();
   }
-  
+
   // Собираем все изображения в галерею
   product.gallery = [];
   $('.product-photo-container img').each((_, el) => {
@@ -103,7 +103,7 @@ export const toCanon = async ({ url, html }) => {
   });
 
   // Извлекаем предложения
-  $('.item-table__row').each(async (_, row) => {
+  $('.item-table__row').each((_, row) => {
     const stockText = $(row).find('.item-table__cell_count .count').text().trim();
     const stock = parseInt(stockText.replace(/\D/g, '')) || 0;
 
@@ -112,8 +112,8 @@ export const toCanon = async ({ url, html }) => {
     const currency = $(row).find('.price__currency').text().trim() === '₽' ? 'RUB' : 'USD';
 
     if (stock > 0 && price_native > 0) {
-      const price_min_rub = await convertToRub(price_native, currency);
-      
+      const price_min_rub = currency === 'RUB' ? price_native : toRub(price_native, currency);
+
       product.offers.push({
         region: 'RU',
         stock,
@@ -131,10 +131,10 @@ export const toCanon = async ({ url, html }) => {
   $('.product-params__table-row').each((_, row) => {
     const paramName = $(row).find('.product-params__table-name').text().trim();
     const paramValue = $(row).find('.product-params__table-value').text().trim();
-    
+
     if (paramName && paramValue) {
       product.technical_specs[paramName] = paramValue;
-      
+
       // Определяем корпус и упаковку
       if (paramName.includes('Корпус')) {
         product.package = paramValue;
@@ -143,21 +143,21 @@ export const toCanon = async ({ url, html }) => {
       }
     }
   });
-  
+
   // Извлекаем регионы
   product.regions = Array.from(new Set(product.offers.map(o => o.region).filter(Boolean)));
-  
+
   // Вычисляем минимальную цену в рублях
   if (product.offers.length > 0) {
     const rubPrices = product.offers
       .map(o => o.price_min_rub)
       .filter(p => p !== null && p !== undefined && !isNaN(p));
-    
+
     if (rubPrices.length > 0) {
       product.price_min_rub = Math.min(...rubPrices);
     }
   }
-  
+
   // Вычисляем общий сток
   product.total_stock = product.offers.reduce((sum, o) => sum + (o.stock || 0), 0);
 

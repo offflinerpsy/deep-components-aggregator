@@ -28,7 +28,7 @@ export async function fetchHtml(url, { timeoutMs = 12000, key, params = {} } = {
   const apiUrl = new URL('https://app.scrapingbee.com/api/v1/');
   apiUrl.searchParams.set('api_key', key);
   apiUrl.searchParams.set('url', url);
-  
+
   // Параметры по умолчанию для экономии кредитов и надежности
   apiUrl.searchParams.set('render_js', 'false'); // Без JS-рендеринга
   apiUrl.searchParams.set('premium_proxy', 'true'); // Используем премиум прокси
@@ -36,7 +36,7 @@ export async function fetchHtml(url, { timeoutMs = 12000, key, params = {} } = {
   apiUrl.searchParams.set('block_ads', 'true'); // Блокируем рекламу для ускорения
   apiUrl.searchParams.set('block_resources', 'true'); // Блокируем лишние ресурсы
   apiUrl.searchParams.set('stealth_proxy', 'true'); // Скрытый режим прокси
-  
+
   // Добавляем дополнительные параметры
   for (const [paramKey, paramValue] of Object.entries(params)) {
     apiUrl.searchParams.set(paramKey, paramValue);
@@ -65,12 +65,12 @@ export async function fetchHtml(url, { timeoutMs = 12000, key, params = {} } = {
     }
 
     const html = await response.text();
-    
+
     // Проверка на наличие признаков блокировки или капчи
     if (
-      html.includes('captcha') || 
-      html.includes('CAPTCHA') || 
-      html.includes('blocked') || 
+      html.includes('captcha') ||
+      html.includes('CAPTCHA') ||
+      html.includes('blocked') ||
       html.includes('Доступ ограничен')
     ) {
       return {

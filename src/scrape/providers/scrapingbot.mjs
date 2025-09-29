@@ -26,7 +26,7 @@ export async function fetchHtml(url, { timeoutMs = 12000, key, params = {} } = {
 
   // Формируем URL для запроса
   const apiUrl = new URL('https://api.scraping-bot.io/scrape/raw-html');
-  
+
   // Создаем параметры запроса
   const requestOptions = {
     method: 'POST',
@@ -64,12 +64,12 @@ export async function fetchHtml(url, { timeoutMs = 12000, key, params = {} } = {
 
     const data = await response.json();
     const html = data.body || '';
-    
+
     // Проверка на наличие признаков блокировки или капчи
     if (
-      html.includes('captcha') || 
-      html.includes('CAPTCHA') || 
-      html.includes('blocked') || 
+      html.includes('captcha') ||
+      html.includes('CAPTCHA') ||
+      html.includes('blocked') ||
       html.includes('Доступ ограничен')
     ) {
       return {

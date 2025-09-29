@@ -28,11 +28,11 @@ export class DiagnosticsCollector {
     this.phaseTimes = {};
     this.errors = [];
     this.itemsEmitted = 0;
-    
+
     // Создаем директорию для диагностики
     this.sessionDir = this._createSessionDir();
   }
-  
+
   /**
    * Создает директорию для диагностики
    * @private
@@ -41,16 +41,16 @@ export class DiagnosticsCollector {
   _createSessionDir() {
     const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
     const sessionDir = path.join(this.baseDir, timestamp, this.id);
-    
+
     try {
       fs.mkdirSync(sessionDir, { recursive: true });
     } catch (error) {
       console.error(`[DIAG] Error creating session directory: ${error.message}`);
     }
-    
+
     return sessionDir;
   }
-  
+
   /**
    * Добавляет событие в диагностику
    * @param {string} type - Тип события
@@ -65,18 +65,18 @@ export class DiagnosticsCollector {
       elapsed: Date.now() - this.startTime,
       ...data
     };
-    
+
     this.events.push(event);
-    
+
     // Записываем событие в трейс-файл
     this._appendToTrace(`[${new Date(event.timestamp).toISOString()}] [${type}] ${message}`);
-    
+
     // Если это ошибка, добавляем в список ошибок
     if (data.error || type.includes('error') || type.includes('exception')) {
       this.errors.push(event);
     }
   }
-  
+
   /**
    * Добавляет информацию о провайдере в диагностику
    * @param {string} name - Имя провайдера
@@ -96,16 +96,16 @@ export class DiagnosticsCollector {
       attempt,
       timestamp: Date.now()
     };
-    
+
     this.providers.push(provider);
-    
+
     // Записываем информацию о провайдере в трейс-файл
     this._appendToTrace(
       `[${new Date().toISOString()}] [PROVIDER] ${name} ${success ? 'SUCCESS' : 'FAILED'} ` +
       `for ${url} in ${duration}ms (key: ${key}, attempt: ${attempt + 1})`
     );
   }
-  
+
   /**
    * Отмечает начало фазы
    * @param {string} phase - Название фазы
@@ -114,11 +114,11 @@ export class DiagnosticsCollector {
     if (!this.phaseTimes[phase]) {
       this.phaseTimes[phase] = {};
     }
-    
+
     this.phaseTimes[phase].start = Date.now();
     this._appendToTrace(`[${new Date().toISOString()}] [PHASE_START] ${phase}`);
   }
-  
+
   /**
    * Отмечает окончание фазы
    * @param {string} phase - Название фазы
@@ -128,33 +128,33 @@ export class DiagnosticsCollector {
       const start = this.phaseTimes[phase].start;
       const end = Date.now();
       const duration = end - start;
-      
+
       this.phaseTimes[phase].end = end;
       this.phaseTimes[phase].duration = duration;
-      
+
       this._appendToTrace(`[${new Date().toISOString()}] [PHASE_END] ${phase} (${duration}ms)`);
     }
   }
-  
+
   /**
    * Отмечает эмиссию элемента
    * @param {Object} item - Элемент
    */
   itemEmitted(item) {
     this.itemsEmitted++;
-    
+
     const itemInfo = {
       mpn: item.mpn || 'unknown',
       brand: item.brand || 'unknown',
       title: item.title || 'unknown'
     };
-    
+
     this._appendToTrace(
       `[${new Date().toISOString()}] [ITEM_EMITTED] Item #${this.itemsEmitted}: ` +
       `${itemInfo.mpn} ${itemInfo.brand} ${itemInfo.title}`
     );
   }
-  
+
   /**
    * Добавляет строку в трейс-файл
    * @private
@@ -168,7 +168,7 @@ export class DiagnosticsCollector {
       console.error(`[DIAG] Error appending to trace: ${error.message}`);
     }
   }
-  
+
   /**
    * Сохраняет диагностику в файлы
    * @returns {string} Путь к директории с диагностикой
@@ -188,26 +188,26 @@ export class DiagnosticsCollector {
         itemsEmitted: this.itemsEmitted,
         eventsCount: this.events.length
       };
-      
+
       // Сохраняем итоговую информацию
       const summaryPath = path.join(this.sessionDir, 'summary.json');
       fs.writeFileSync(summaryPath, JSON.stringify(summary, null, 2));
-      
+
       // Сохраняем полную информацию о событиях
       const eventsPath = path.join(this.sessionDir, 'events.json');
       fs.writeFileSync(eventsPath, JSON.stringify(this.events, null, 2));
-      
+
       // Сохраняем полную информацию о провайдерах
       const providersPath = path.join(this.sessionDir, 'providers.json');
       fs.writeFileSync(providersPath, JSON.stringify(this.providers, null, 2));
-      
+
       return this.sessionDir;
     } catch (error) {
       console.error(`[DIAG] Error saving diagnostics: ${error.message}`);
       return null;
     }
   }
-  
+
   /**
    * Получает статистику по провайдерам
    * @private
@@ -215,10 +215,10 @@ export class DiagnosticsCollector {
    */
   _getProviderStats() {
     const stats = {};
-    
+
     for (const provider of this.providers) {
       const { name } = provider;
-      
+
       if (!stats[name]) {
         stats[name] = {
           total: 0,
@@ -228,18 +228,18 @@ export class DiagnosticsCollector {
           totalDuration: 0
         };
       }
-      
+
       stats[name].total++;
       stats[name].totalDuration += provider.duration;
       stats[name].avgDuration = stats[name].totalDuration / stats[name].total;
-      
+
       if (provider.success) {
         stats[name].success++;
       } else {
         stats[name].failed++;
       }
     }
-    
+
     return stats;
   }
 }
@@ -258,3 +258,4 @@ export default {
   DiagnosticsCollector,
   createDiagnostics
 };
+

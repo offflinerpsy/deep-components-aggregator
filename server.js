@@ -7,7 +7,7 @@ import express from 'express';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import apiRouter from './src/api/http.mjs';
-import liveRouter from './src/live/http.mjs';
+import liveSearchRoute from './backend/api/live-search.mjs';
 import { buildIndex, loadIndex } from './src/core/search.mjs';
 import { loadAllProducts } from './src/core/store.mjs';
 import { refreshRates } from './src/currency/cbr.mjs';
@@ -44,7 +44,7 @@ app.use('/pdfs', express.static(path.resolve(__dirname, 'data/files/pdf'))); // 
 app.use('/api', apiRouter);
 
 // Live search route
-app.use('/api/live', liveRouter);
+liveSearchRoute(app);
 
 // Redirect root to search UI
 app.get('/', (req, res) => {

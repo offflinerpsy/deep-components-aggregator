@@ -33,7 +33,7 @@ export function parseChipDipSearchList(html, baseUrl = 'https://www.chipdip.ru',
   const productSelectors = [
     '.product-item',
     '.item',
-    '.catalog-item', 
+    '.catalog-item',
     '.search-result-item',
     '.product-card',
     '.product',
@@ -50,7 +50,7 @@ export function parseChipDipSearchList(html, baseUrl = 'https://www.chipdip.ru',
       try {
         const el = $(element);
         const productData = extractProductData(el, baseUrl);
-        
+
         if (productData && productData.title) {
           results.push({
             ...productData,
@@ -73,7 +73,7 @@ export function parseChipDipSearchList(html, baseUrl = 'https://www.chipdip.ru',
   // Если не нашли товары стандартными селекторами, пробуем поиск по ссылкам
   if (results.length === 0) {
     console.log('[CHIPDIP SEARCH LIST PARSER] No items found with standard selectors, trying link-based search');
-    
+
     $('a[href*="/product"]').each((_, element) => {
       try {
         const el = $(element);
@@ -90,7 +90,7 @@ export function parseChipDipSearchList(html, baseUrl = 'https://www.chipdip.ru',
         if (!title || title.length < 3) return;
 
         const url = new URL(href, baseUrl).toString();
-        
+
         // Извлекаем MPN из URL
         const urlParts = url.split('/');
         const mpn = urlParts[urlParts.length - 1] || '';
@@ -130,13 +130,13 @@ export function parseChipDipSearchList(html, baseUrl = 'https://www.chipdip.ru',
   // Если все еще ничего не нашли, пробуем поиск по таблицам
   if (results.length === 0) {
     console.log('[CHIPDIP SEARCH LIST PARSER] Trying table-based search');
-    
+
     $('table tr').each((_, element) => {
       try {
         const el = $(element);
         const linkEl = el.find('a').first();
         const href = linkEl.attr('href');
-        
+
         if (!href || !href.includes('/product')) return;
 
         const title = linkEl.text().trim();

@@ -9,9 +9,9 @@ import { pick, recordSuccess, recordError, pickBestProvider } from './rotator.mj
 
 // Провайдеры скрапинга
 const providers = {
-  scraperapi: scraperapi.fetchHtml,
-  scrapingbee: scrapingbee.fetchHtml,
-  scrapingbot: scrapingbot.fetchHtml
+  scraperapi: scraperapi.fetchViaScraperAPI,
+  scrapingbee: scrapingbee.fetchViaScrapingBee,
+  scrapingbot: scrapingbot.fetchViaScrapingBot
 };
 
 // Базовые директории для кэша
@@ -164,7 +164,7 @@ export const fetchHtmlCached = async (url, options = {}) => {
 
   // Логируем начало запроса
   if (diagnostics) {
-    diagnostics.addEvent('cache_request_start', `Starting cached fetch for ${url}`, { 
+    diagnostics.addEvent('cache_request_start', `Starting cached fetch for ${url}`, {
       providerHint,
       timeoutMs,
       retries
@@ -177,13 +177,13 @@ export const fetchHtmlCached = async (url, options = {}) => {
   // Если есть свежий кэш, возвращаем его
   if (cacheResult.exists && !cacheResult.stale) {
     console.log(`[CACHE] Cache hit for ${url} (fresh)`);
-    
+
     if (diagnostics) {
-      diagnostics.addEvent('cache_hit', `Returning fresh cache for ${url}`, { 
-        cacheAge: Date.now() - cacheResult.meta.timestamp 
+      diagnostics.addEvent('cache_hit', `Returning fresh cache for ${url}`, {
+        cacheAge: Date.now() - cacheResult.meta.timestamp
       });
     }
-    
+
     return {
       ok: true,
       html: cacheResult.html,
@@ -232,30 +232,30 @@ export const fetchHtmlCached = async (url, options = {}) => {
     // Пробуем несколько раз с экспоненциальным backoff
     for (let attempt = 0; attempt <= retries; attempt++) {
       const attemptStart = Date.now();
-      
+
       if (diagnostics) {
         diagnostics.addEvent('provider_fetch', `Attempt ${attempt + 1} for ${url} using ${providerName} (key: ${key.substring(0, 4)}...)`);
       }
-      
+
       try {
         const providerFn = providers[providerName];
-        const result = await providerFn(url, { key, timeoutMs });
+        const result = await providerFn({ key, url, timeout: timeoutMs });
         const attemptTime = Date.now() - attemptStart;
 
         if (result.ok) {
           console.log(`[CACHE] Success with ${providerName} for ${url}`);
           recordSuccess(providerName, key);
           saveToCache(url, result.html, providerName, result.status);
-          
+
           if (diagnostics) {
-            diagnostics.addEvent('provider_success', `Successfully fetched ${url} with ${providerName}`, { 
-              status: result.status, 
+            diagnostics.addEvent('provider_success', `Successfully fetched ${url} with ${providerName}`, {
+              status: result.status,
               time: attemptTime,
               htmlLength: result.html?.length || 0,
               key: key.substring(0, 4) + '...'
             });
           }
-          
+
           return {
             ...result,
             cached: false,
@@ -269,8 +269,8 @@ export const fetchHtmlCached = async (url, options = {}) => {
           recordError(providerName, key, result.status?.toString() || 'network');
 
           if (diagnostics) {
-            diagnostics.addEvent('provider_fail', `Failed to fetch ${url} with ${providerName}`, { 
-              status: result.status, 
+            diagnostics.addEvent('provider_fail', `Failed to fetch ${url} with ${providerName}`, {
+              status: result.status,
               attempt: attempt + 1,
               key: key.substring(0, 4) + '...',
               time: attemptTime
@@ -285,19 +285,19 @@ export const fetchHtmlCached = async (url, options = {}) => {
           // Экспоненциальный backoff
           const delay = Math.pow(1.5, attempt) * 1000;
           console.log(`[CACHE] Retrying ${providerName} after ${delay}ms (attempt ${attempt + 1}/${retries})`);
-          
+
           if (diagnostics) {
             diagnostics.addEvent('provider_retry_delay', `Waiting ${delay}ms before retry`);
           }
-          
+
           await new Promise(resolve => setTimeout(resolve, delay));
         }
       } catch (error) {
         console.error(`[CACHE] Exception with ${providerName} for ${url}:`, error);
         recordError(providerName, key, 'exception');
-        
+
         if (diagnostics) {
-          diagnostics.addEvent('provider_exception', `Exception fetching ${url} with ${providerName}: ${error.message}`, { 
+          diagnostics.addEvent('provider_exception', `Exception fetching ${url} with ${providerName}: ${error.message}`, {
             error: true,
             key: key.substring(0, 4) + '...',
             time: Date.now() - attemptStart
@@ -310,13 +310,13 @@ export const fetchHtmlCached = async (url, options = {}) => {
   // Если все провайдеры не сработали, но есть устаревший кэш, используем его (stale-if-error)
   if (cacheResult.exists) {
     console.log(`[CACHE] All providers failed, using stale cache for ${url}`);
-    
+
     if (diagnostics) {
       diagnostics.addEvent('cache_stale_if_error', `Returning stale cache for ${url} due to provider errors`, {
         cacheAge: Date.now() - cacheResult.meta.timestamp
       });
     }
-    
+
     return {
       ok: true,
       html: cacheResult.html,
@@ -331,13 +331,13 @@ export const fetchHtmlCached = async (url, options = {}) => {
 
   // Если ничего не сработало, возвращаем ошибку
   console.error(`[CACHE] All providers failed for ${url} and no cache available`);
-  
+
   if (diagnostics) {
     diagnostics.addEvent('all_providers_failed', `All providers failed for ${url}`, {
       providersTried: providerOrder.length
     });
   }
-  
+
   return {
     ok: false,
     status: 'all_providers_failed',

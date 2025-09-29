@@ -3,8 +3,8 @@ import { parseChipDipSearch } from '../parsers/chipdip/search.mjs';
 import { parseChipDipSearchList } from '../parsers/chipdip/search-list.mjs';
 import { parsePromelecSearch } from '../parsers/promelec/search.mjs';
 import { DiagnosticsCollector } from '../core/diagnostics.mjs';
-import { normalize } from '../core/canon.mjs';
-import { toRub } from '../currency/cbr.mjs';
+import { normCanon } from '../core/canon.mjs';
+import { toRUB } from '../currency/cbr.mjs';
 import { directFetch } from './direct-fetch.mjs';
 
 /**
@@ -67,7 +67,7 @@ export async function liveSearch({
 
     // Преобразуем цену в рубли, если нужно
     if (item.price && item.currency && item.currency !== 'RUB') {
-      const rubPrice = toRub(item.price, item.currency);
+      const rubPrice = toRUB(item.price, item.currency);
       if (rubPrice !== null) {
         item.price_rub = Math.round(rubPrice);
       }
@@ -76,16 +76,16 @@ export async function liveSearch({
     }
 
     // Нормализуем продукт
-    const normalizedItem = normalize(item);
+    const normCanondItem = normCanon(item);
 
     // Вызываем обратный вызов
-    onItem && onItem(normalizedItem);
+    onItem && onItem(normCanondItem);
 
     // Увеличиваем счетчик
     itemCount++;
 
     // Добавляем событие в диагностику
-    diagnostics.addEvent('item', `Found item ${itemCount}: ${normalizedItem.mpn || 'unknown'}`);
+    diagnostics.addEvent('item', `Found item ${itemCount}: ${normCanondItem.mpn || 'unknown'}`);
 
     // Возвращаем true, если можно продолжать
     return itemCount < maxItems;
@@ -158,19 +158,19 @@ export async function liveSearch({
  */
 function isMpnLikeQuery(query) {
   const trimmed = query.trim();
-  
+
   // Проверяем на кириллические символы
   if (/[а-яё]/i.test(trimmed)) {
     return false;
   }
-  
+
   // Проверяем на типичные паттерны MPN
   const mpnPatterns = [
     /^[A-Z0-9-]+$/,  // Только буквы, цифры и дефисы
     /^[A-Z]{2,4}[0-9]+/,  // 2-4 буквы + цифры
     /^[A-Z]+[0-9]+[A-Z]*[0-9]*/,  // Буквы + цифры + опциональные буквы/цифры
   ];
-  
+
   return mpnPatterns.some(pattern => pattern.test(trimmed));
 }
 

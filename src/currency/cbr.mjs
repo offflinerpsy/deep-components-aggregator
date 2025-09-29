@@ -179,6 +179,9 @@ export const convert = (amount, fromCurrency, toCurrency) => {
 
   // Конвертируем через рубль
   const amountInRub = amount * rates[fromCurrency];
+  if (toCurrency === 'RUB') {
+    return Math.round(amountInRub);
+  }
   return Math.round(amountInRub / rates[toCurrency]);
 };
 

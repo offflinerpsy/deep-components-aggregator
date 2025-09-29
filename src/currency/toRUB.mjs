@@ -1,6 +1,6 @@
-import { toRUB as cbrToRUB } from './cbr.mjs';
+import { toRub as cbrToRub } from './cbr.mjs';
 
 export const toRUB = (amount, currency) => {
   if (!amount || !currency) return null;
-  return cbrToRUB({ amount, currency });
+  return cbrToRub(amount, currency);
 };

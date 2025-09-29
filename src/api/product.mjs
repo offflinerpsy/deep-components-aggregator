@@ -27,19 +27,19 @@ const parseMouser = (data) => {
   return { photo: img, mpn, manufacturer: mfg, description: desc, minRub, datasheets, specs, vendorUrl: url, source:'mouser' };
 };
 
-const parseFarnell = (resp) => {
-  const prod = (resp?.products || resp?.manufacturerPartNumberSearchReturn?.products || [])[0] || {};
+const parseFarnell = (resp, targetMPN) => {
+  const products = resp?.manufacturerPartNumberSearchReturn?.products || resp?.products || [];
+  const prod = products.find(p => (p.translatedManufacturerPartNumber || p.manufacturerPartNumber || '').toUpperCase() === targetMPN.toUpperCase()) || products[0] || {};
   const mfg = clean(prod.vendorName||prod.brandName||prod.manufacturer);
   const mpn = clean(prod.manufacturerPartNumber || prod.manufacturerPartNo || prod.translatedManufacturerPartNumber);
   const desc = clean(prod.displayName || prod.summaryDescription || prod.longDescription);
-  const img = clean((prod.images&&(prod.images.medium||prod.images.small||prod.image))||'');
-  const url = clean(prod.productUrl || prod.rohsCompliantProductUrl || prod.productDetailUrl || '');
-  const bands = (prod.prices && prod.prices.priceBands) || prod.priceBands || [];
+  const img = clean(prod.image ? `https://uk.farnell.com${prod.image.baseName}` : '');
+  const url = clean(prod.productUrl || `https://uk.farnell.com/${prod.sku}`);
+  const bands = Array.isArray(prod.prices) ? prod.prices : [];
   const minRub = (() => {
-    const vals = bands.map(b => Number(b.breakPrice || b.price || b.unitPrice)).filter(Number.isFinite);
+    const vals = bands.map(b => Number(b.cost || b.breakPrice || b.price || b.unitPrice)).filter(Number.isFinite);
     if(!vals.length) return null;
-    const cur = (bands[0]?.currency || bands[0]?.currencyCode || 'USD').toUpperCase();
-    return toRUB(vals.sort((a,b)=>a-b)[0], cur);
+    return toRUB(vals.sort((a,b)=>a-b)[0], 'GBP');
   })();
   const datasheets = (prod.datasheets||[]).map(d => clean(d.url || d)).filter(Boolean);
   const specs = {};
@@ -64,11 +64,12 @@ export default function mountProduct(app, { keys }){
       return;
     }
     if(src==='farnell' && FK){
-      farnellByMPN({apiKey:FK, region:FR, q:id, limit:1})
-        .then(r=> res.json({ok:true, product: parseFarnell(r?.data)}))
+      farnellByMPN({apiKey:FK, region:FR, q:id, limit:25})
+        .then(r=> res.json({ok:true, product: parseFarnell(r?.data, id)}))
         .catch(()=>res.status(502).json({ok:false,code:'farnell_unreachable'}));
       return;
     }
     res.status(400).json({ok:false,code:'unsupported_source'});
   });
 }
+

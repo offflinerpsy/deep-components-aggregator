@@ -4,7 +4,7 @@ const toInt=v=>{const n=Number(String(v).replace(/[^\d.]/g,'')); return Number.i
 function bestRub(prices){
   const packs=[]; if(Array.isArray(prices)) packs.push(...prices);
   if(prices && Array.isArray(prices.priceBands)) packs.push(...prices.priceBands);
-  const ps=packs.map(p=>{const c=(p.currency||p.currencyCode||'USD').toUpperCase(); const v=Number(p.breakPrice||p.price||p.unitPrice||p.cost||NaN); return Number.isFinite(v)?{v,c}:null;}).filter(Boolean);
+  const ps=packs.map(p=>{const c=(p.currency||p.currencyCode||'GBP').toUpperCase(); const v=Number(p.breakPrice||p.price||p.unitPrice||p.cost||NaN); return Number.isFinite(v)?{v,c}:null;}).filter(Boolean);
   if(!ps.length) return null; const b=ps.sort((a,b)=>a.v-b.v)[0]; return toRUB(b.v,b.c);
 }
 export function normFarnell(prod, region='uk.farnell.com'){
@@ -15,7 +15,7 @@ export function normFarnell(prod, region='uk.farnell.com'){
   const availability=prod.stock && prod.stock.level ? String(prod.stock.level) : (prod.stockLevel||prod.inventory||'');
   const stock=toInt(availability);
   const minRub=bestRub(prod.prices||prod.priceBands||prod.pricing);
-  const image=clean((prod.images&&(prod.images.medium||prod.images.small||prod.image))||'');
+  const image=clean(prod.image ? `https://uk.farnell.com${prod.image.baseName}` : '');
   const url=`/product.html?src=farnell&id=${encodeURIComponent(mpn||'')}`;
   return {
     _src:'farnell',

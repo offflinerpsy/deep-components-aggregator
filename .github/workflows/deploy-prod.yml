@@ -6,7 +6,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: SSH to server and deploy
+      - name: Deploy over SSH
         uses: appleboy/ssh-action@v1.1.0
         with:
           host: 89.104.69.77
@@ -20,5 +20,5 @@ jobs:
             git clean -fd
             npm ci
             systemctl restart deep-agg
-            sleep 1
+            sleep 2
             curl -sS http://127.0.0.1:9201/api/health || (journalctl -u deep-agg -n 50 --no-pager; exit 1)

@@ -66,3 +66,4 @@ export default function mountLive(app, ctx) {
     });
   });
 }
+

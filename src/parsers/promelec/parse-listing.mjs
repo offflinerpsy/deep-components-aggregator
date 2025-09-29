@@ -44,3 +44,4 @@ export function parseListing({ html, sourceUrl }) {
 
   return { ok: true, data: items };
 }
+

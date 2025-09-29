@@ -8,3 +8,4 @@ export function fetchHtmlRotating({ url, timeout = 10000, session = 0, primary =
   const chain = primary === 'scraperapi' ? [a, b] : [b, a];
   return chain[0]().then(res => res && res.ok ? res : chain[1]());
 }
+

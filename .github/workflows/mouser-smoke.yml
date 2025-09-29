@@ -13,3 +13,4 @@ jobs:
         with: { node-version: '20' }
       - run: npm ci
       - run: node scripts/smoke-mouser.mjs 1N4148
+

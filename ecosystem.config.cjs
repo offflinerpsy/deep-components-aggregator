@@ -1,18 +1,13 @@
 module.exports = {
   apps: [{
-    name: 'deep-aggregator',
-    script: '/root/aggregator-v2/server.js',
+    name: 'deep-agg',
+    script: 'server.js',
     instances: 1,
     exec_mode: 'fork',
-    autorestart: true,
-    max_restarts: 10,
-    max_memory_restart: '600M',
-    env: {
-      PORT: '9201',
-      NODE_ENV: 'production',
-      HTTP_PROXY: process.env.HTTP_PROXY || '',
-      HTTPS_PROXY: process.env.HTTPS_PROXY || ''
-    },
-    watch: false
+    env: { MOUSER_API_KEY: process.env.MOUSER_API_KEY || '' },
+    out_file: './logs/out.log',
+    error_file: './logs/err.log',
+    merge_logs: true,
+    time: true
   }]
 };

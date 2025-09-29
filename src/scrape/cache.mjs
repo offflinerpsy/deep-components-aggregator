@@ -4,7 +4,7 @@ import crypto from 'node:crypto';
 import { get as scraperapi } from './providers/scraperapi.mjs';
 import { get as scrapingbee } from './providers/scrapingbee.mjs';
 import { get as scrapingbot } from './providers/scrapingbot.mjs';
-import { pick, recordError, recordSuccess, pickBestProvider } from './rotator.mjs';
+import { pick, recordError, recordSuccess, pickBestProvider, shouldThrottleQuery } from './rotator.mjs';
 
 // Директории для кэша
 const cacheDir = path.resolve('data/cache');
@@ -16,10 +16,10 @@ try {
   fs.mkdirSync(htmlCacheDir, { recursive: true });
   fs.mkdirSync(metaCacheDir, { recursive: true });
 } catch (error) {
-  console.error(`Error creating cache directories: ${error.message}`);
+  console.error(`[CACHE] Error creating cache directories: ${error.message}`);
 }
 
-// Генерация ключа кэша на основе URL и провайдера
+// Генерация ключа кэша на основе URL
 const getCacheKey = (url) => {
   return crypto.createHash('sha1').update(url).digest('hex');
 };
@@ -33,7 +33,7 @@ const getCachePath = (key) => {
   try {
     fs.mkdirSync(dir, { recursive: true });
   } catch (error) {
-    console.error(`Error creating cache subdirectory: ${error.message}`);
+    console.error(`[CACHE] Error creating cache subdirectory: ${error.message}`);
   }
 
   return {
@@ -46,19 +46,27 @@ const getCachePath = (key) => {
 const getTTL = (url) => {
   try {
     const hostname = new URL(url).hostname.toLowerCase();
+    const isProductPage = url.includes('/product') || url.includes('/product0');
 
-    // Специальные TTL для разных доменов
+    // Специальные TTL для разных доменов и типов страниц
     if (hostname.includes('chipdip.ru')) {
-      if (url.includes('/product') || url.includes('/product0')) {
-        return 3 * 60 * 60 * 1000; // 3 часа для страниц продуктов ChipDip
+      if (isProductPage) {
+        return 24 * 60 * 60 * 1000; // 24 часа для страниц продуктов ChipDip
       }
-      return 1 * 60 * 60 * 1000; // 1 час для других страниц ChipDip
+      return 3 * 60 * 60 * 1000; // 3 часа для других страниц ChipDip
+    } else if (hostname.includes('promelec.ru')) {
+      if (isProductPage) {
+        return 24 * 60 * 60 * 1000; // 24 часа для страниц продуктов Promelec
+      }
+      return 6 * 60 * 60 * 1000; // 6 часов для других страниц Promelec
+    } else if (hostname.includes('electronshik.ru') || hostname.includes('platan.ru')) {
+      return 12 * 60 * 60 * 1000; // 12 часов для других российских поставщиков
     }
 
     // Для других доменов
-    return 12 * 60 * 60 * 1000; // 12 часов по умолчанию
+    return 24 * 60 * 60 * 1000; // 24 часа по умолчанию
   } catch (error) {
-    console.error(`Error determining TTL for URL ${url}: ${error.message}`);
+    console.error(`[CACHE] Error determining TTL for URL ${url}: ${error.message}`);
     return 6 * 60 * 60 * 1000; // 6 часов в случае ошибки
   }
 };
@@ -79,13 +87,14 @@ const saveToCache = (url, html, provider, status) => {
       provider,
       status,
       size: html.length,
-      ttl: getTTL(url)
+      ttl: getTTL(url),
+      hash: crypto.createHash('md5').update(html).digest('hex').substring(0, 8)
     };
 
     fs.writeFileSync(metaPath, JSON.stringify(meta, null, 2), 'utf8');
     return true;
   } catch (error) {
-    console.error(`Error saving to cache for ${url}: ${error.message}`);
+    console.error(`[CACHE] Error saving to cache for ${url}: ${error.message}`);
     return false;
   }
 };
@@ -123,20 +132,51 @@ const getFromCache = (url) => {
       meta
     };
   } catch (error) {
-    console.error(`Error reading from cache for ${url}: ${error.message}`);
+    console.error(`[CACHE] Error reading from cache for ${url}: ${error.message}`);
     return { exists: false, error: error.message };
   }
 };
 
-// Получение HTML с использованием кэша и провайдеров
+/**
+ * Получение HTML с использованием кэша и провайдеров
+ * @param {string} url - URL страницы для получения
+ * @param {Object} options - Опции запроса
+ * @param {string} [options.providerHint] - Предпочтительный провайдер
+ * @param {number} [options.timeoutMs=10000] - Таймаут запроса в миллисекундах
+ * @param {number} [options.retries=2] - Количество повторных попыток при ошибке
+ * @param {number} [options.ttl] - TTL кэша в миллисекундах (переопределяет автоматический)
+ * @param {boolean} [options.forceRefresh=false] - Принудительное обновление кэша
+ * @param {boolean} [options.throttleCheck=true] - Проверка на ограничение запросов
+ * @param {Object} [options.diagnostics] - Объект для сбора диагностики
+ * @returns {Promise<Object>} Результат запроса
+ */
 export const fetchHtmlCached = async (url, options = {}) => {
-  const { providerHint = null, timeoutMs = 10000, retries = 2 } = options;
+  const {
+    providerHint = null,
+    timeoutMs = 10000,
+    retries = 2,
+    ttl = null,
+    forceRefresh = false,
+    throttleCheck = true,
+    diagnostics = null
+  } = options;
+
+  // Если включена проверка на ограничение и запрос недавно выполнялся, используем кэш
+  if (throttleCheck && shouldThrottleQuery(url)) {
+    if (diagnostics) {
+      diagnostics.addEvent('throttle', `Request throttled for URL: ${url}`);
+    }
+    console.log(`[CACHE] Request throttled for URL: ${url}`);
+  }
 
   // Проверяем кэш
   const cacheResult = getFromCache(url);
 
-  // Если есть свежий кэш, возвращаем его
-  if (cacheResult.exists && !cacheResult.stale) {
+  // Если есть свежий кэш и не требуется принудительное обновление, возвращаем его
+  if (cacheResult.exists && !cacheResult.stale && !forceRefresh) {
+    if (diagnostics) {
+      diagnostics.addEvent('cache_hit', `Fresh cache hit for ${url}`);
+    }
     console.log(`[CACHE HIT] Fresh cache for ${url}`);
     return {
       ok: true,
@@ -169,10 +209,17 @@ export const fetchHtmlCached = async (url, options = {}) => {
       : Object.keys(providers);
   }
 
+  if (diagnostics) {
+    diagnostics.addEvent('provider_order', `Provider order: ${providerOrder.join(', ')}`);
+  }
+
   // Пробуем получить HTML через провайдеров
   for (const providerName of providerOrder) {
     const key = pick(providerName);
     if (!key) {
+      if (diagnostics) {
+        diagnostics.addEvent('no_key', `No available key for provider: ${providerName}`);
+      }
       console.warn(`[CACHE] No available key for provider: ${providerName}`);
       continue;
     }
@@ -182,29 +229,42 @@ export const fetchHtmlCached = async (url, options = {}) => {
     // Пробуем несколько раз с экспоненциальной задержкой
     for (let attempt = 0; attempt <= retries; attempt++) {
       try {
+        const startTime = Date.now();
         const providerFn = providers[providerName];
         const result = await providerFn(url, { key, timeoutMs });
+        const fetchTime = Date.now() - startTime;
+
+        if (diagnostics) {
+          diagnostics.addProvider(providerName, url, result.ok, fetchTime, key.slice(0, 8) + '...', attempt);
+        }
 
         if (result.ok) {
           // Успешный запрос
-          console.log(`[SCRAPE SUCCESS] ${providerName} for ${url}`);
+          console.log(`[SCRAPE SUCCESS] ${providerName} for ${url} in ${fetchTime}ms`);
           recordSuccess(providerName, key);
 
-          // Сохраняем в кэш
-          saveToCache(url, result.html, providerName, result.status);
+          // Сохраняем в кэш с указанным TTL или автоматическим
+          const customTtl = ttl ? { ttl } : {};
+          saveToCache(url, result.html, providerName, result.status, customTtl);
 
           return {
             ...result,
             cached: false,
-            fresh: true
+            fresh: true,
+            fetchTime
           };
         } else {
           // Ошибка запроса
           console.error(`[SCRAPE ERROR] ${providerName} failed for ${url}: ${result.status || result.error}`);
           recordError(providerName, key, result.status?.toString() || 'network');
 
+          if (diagnostics) {
+            diagnostics.addEvent('provider_error', 
+              `Provider ${providerName} error: ${result.status || result.error} (attempt ${attempt + 1}/${retries + 1})`);
+          }
+
           // Если это последняя попытка или критическая ошибка (402, 429) - переходим к следующему провайдеру
-          if (attempt === retries || ['402', '429'].includes(result.status?.toString())) {
+          if (attempt === retries || ['402', '429', 'captcha_detected'].includes(result.status?.toString())) {
             break;
           }
 
@@ -216,12 +276,20 @@ export const fetchHtmlCached = async (url, options = {}) => {
       } catch (error) {
         console.error(`[SCRAPE EXCEPTION] ${providerName} for ${url}: ${error.message}`);
         recordError(providerName, key, 'exception');
+        
+        if (diagnostics) {
+          diagnostics.addEvent('provider_exception', 
+            `Provider ${providerName} exception: ${error.message} (attempt ${attempt + 1}/${retries + 1})`);
+        }
       }
     }
   }
 
   // Если все провайдеры не смогли получить HTML, но есть устаревший кэш, используем его (stale-if-error)
   if (cacheResult.exists) {
+    if (diagnostics) {
+      diagnostics.addEvent('stale_cache', `Using stale cache for ${url} (stale-if-error)`);
+    }
     console.log(`[CACHE HIT] Using stale cache for ${url} (stale-if-error)`);
     return {
       ok: true,
@@ -236,6 +304,10 @@ export const fetchHtmlCached = async (url, options = {}) => {
   }
 
   // Если ничего не помогло, возвращаем ошибку
+  if (diagnostics) {
+    diagnostics.addEvent('all_failed', `All scraping providers failed for ${url}`);
+  }
+  
   return {
     ok: false,
     status: 'all_providers_failed',
@@ -246,10 +318,21 @@ export const fetchHtmlCached = async (url, options = {}) => {
   };
 };
 
+/**
+ * Получение HTML страницы
+ * @param {string} url - URL страницы для получения
+ * @param {Object} options - Опции запроса
+ * @returns {Promise<Object>} Результат запроса
+ */
+export const getHTML = async (url, options = {}) => {
+  return await fetchHtmlCached(url, options);
+};
+
 // Экспортируем основную функцию как get для совместимости
 export const get = fetchHtmlCached;
 
 export default {
   fetchHtmlCached,
+  getHTML,
   get
 };

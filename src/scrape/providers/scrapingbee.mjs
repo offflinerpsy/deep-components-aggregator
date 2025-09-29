@@ -4,42 +4,22 @@
  */
 
 import { fetch } from 'undici';
-import fs from 'node:fs';
-import path from 'node:path';
 
 /**
  * Получить HTML страницы через ScrapingBee
  * @param {string} url - URL страницы для скрапинга
  * @param {Object} [options] - Опции запроса
  * @param {number} [options.timeoutMs=12000] - Таймаут запроса в миллисекундах
+ * @param {string} [options.key] - API ключ для ScrapingBee
  * @param {Object} [options.params={}] - Дополнительные параметры для ScrapingBee
  * @returns {Promise<Object>} Результат запроса
  */
-export async function fetchHtml(url, { timeoutMs = 12000, params = {} } = {}) {
-  // Получаем ключ API из файла или переменной окружения
-  let key;
-  try {
-    const keysPath = path.resolve('secrets/apis/scrapingbee.txt');
-    if (fs.existsSync(keysPath)) {
-      const keys = fs.readFileSync(keysPath, 'utf8').split(/\r?\n/).filter(Boolean);
-      key = keys[0]; // Используем первый ключ из файла
-    } else {
-      key = process.env.SCRAPINGBEE_KEY;
-    }
-  } catch (error) {
-    return {
-      ok: false,
-      status: 'config_error',
-      error: 'Не удалось получить API ключ ScrapingBee',
-      provider: 'scrapingbee'
-    };
-  }
-
+export async function fetchHtml(url, { timeoutMs = 12000, key, params = {} } = {}) {
   if (!key) {
     return {
       ok: false,
       status: 'config_error',
-      error: 'API ключ ScrapingBee не найден',
+      error: 'API ключ ScrapingBee не указан',
       provider: 'scrapingbee'
     };
   }
@@ -48,10 +28,15 @@ export async function fetchHtml(url, { timeoutMs = 12000, params = {} } = {}) {
   const apiUrl = new URL('https://app.scrapingbee.com/api/v1/');
   apiUrl.searchParams.set('api_key', key);
   apiUrl.searchParams.set('url', url);
-  apiUrl.searchParams.set('render_js', 'false');
-  apiUrl.searchParams.set('premium_proxy', 'true');
-  apiUrl.searchParams.set('country_code', 'ru');
-
+  
+  // Параметры по умолчанию для экономии кредитов и надежности
+  apiUrl.searchParams.set('render_js', 'false'); // Без JS-рендеринга
+  apiUrl.searchParams.set('premium_proxy', 'true'); // Используем премиум прокси
+  apiUrl.searchParams.set('country_code', 'ru'); // Российские прокси
+  apiUrl.searchParams.set('block_ads', 'true'); // Блокируем рекламу для ускорения
+  apiUrl.searchParams.set('block_resources', 'true'); // Блокируем лишние ресурсы
+  apiUrl.searchParams.set('stealth_proxy', 'true'); // Скрытый режим прокси
+  
   // Добавляем дополнительные параметры
   for (const [paramKey, paramValue] of Object.entries(params)) {
     apiUrl.searchParams.set(paramKey, paramValue);
@@ -80,6 +65,21 @@ export async function fetchHtml(url, { timeoutMs = 12000, params = {} } = {}) {
     }
 
     const html = await response.text();
+    
+    // Проверка на наличие признаков блокировки или капчи
+    if (
+      html.includes('captcha') || 
+      html.includes('CAPTCHA') || 
+      html.includes('blocked') || 
+      html.includes('Доступ ограничен')
+    ) {
+      return {
+        ok: false,
+        status: 'captcha_detected',
+        provider: 'scrapingbee',
+        usedKey: key?.slice(0, 8) + '...'
+      };
+    }
 
     return {
       ok: true,

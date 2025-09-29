@@ -1,372 +1,169 @@
 /**
- * Парсер страницы товара ChipDip
+ * Парсер продуктов ChipDip
  * @module src/parsers/chipdip/product
  */
 
 import { load } from 'cheerio';
-import path from 'node:path';
-import fs from 'node:fs';
-import { toRub } from '../../currency/cbr.mjs';
+import { nanoid } from 'nanoid';
+import { convertToRub } from '../../currency/cbr.mjs';
 
 /**
- * Извлечь MPN (артикул) товара
- * @param {Object} $ - Cheerio объект
- * @returns {string|null} MPN товара или null
+ * Преобразует страницу продукта ChipDip в канонический формат
+ * @param {Object} options - Опции парсинга
+ * @param {string} options.url - URL страницы продукта
+ * @param {string} options.html - HTML страницы продукта
+ * @returns {Promise<Object>} Продукт в каноническом формате
  */
-const extractMpn = ($) => {
-  // Пытаемся найти MPN в разных местах страницы
+export const toCanon = async ({ url, html }) => {
+  const $ = load(html);
+  
+  // Создаем базовый объект продукта
+  const product = {
+    id: nanoid(),
+    url: url,
+    source: 'chipdip',
+    datasheet_urls: [],
+    technical_specs: {},
+    offers: [],
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+  };
 
-  // Вариант 1: В заголовке страницы (часто формат "MPN - Название")
-  const title = $('title').text().trim();
-  const titleMatch = title.match(/^([A-Za-z0-9-]+)/);
-
-  if (titleMatch && titleMatch[1]) {
-    return titleMatch[1].trim();
-  }
-
-  // Вариант 2: В метатегах
-  const metaMpn = $('meta[itemprop="mpn"]').attr('content');
-  if (metaMpn) {
-    return metaMpn.trim();
-  }
-
-  // Вариант 3: В блоке с артикулом
-  const mpnText = $('.item-heading .item-code').text().trim();
-  const mpnMatch = mpnText.match(/Артикул:\s*([A-Za-z0-9-]+)/);
-
-  if (mpnMatch && mpnMatch[1]) {
-    return mpnMatch[1].trim();
-  }
-
-  // Вариант 4: В URL
-  const canonicalUrl = $('link[rel="canonical"]').attr('href');
-  if (canonicalUrl) {
-    const urlMatch = canonicalUrl.match(/\/product0?\/([A-Za-z0-9-]+)/);
-    if (urlMatch && urlMatch[1]) {
-      return urlMatch[1].trim();
-    }
-  }
-
-  return null;
-};
-
-/**
- * Извлечь ID товара из URL
- * @param {string} url - URL страницы товара
- * @returns {string|null} ID товара или null
- */
-const extractChipDipId = (url) => {
-  if (!url) return null;
-
-  const match = url.match(/\/product0?\/([A-Za-z0-9-]+)/);
-  return match ? match[1] : null;
-};
-
-/**
- * Извлечь производителя товара
- * @param {Object} $ - Cheerio объект
- * @returns {string|null} Производитель товара или null
- */
-const extractBrand = ($) => {
-  // Вариант 1: В метатегах
-  const metaBrand = $('meta[itemprop="brand"]').attr('content');
-  if (metaBrand) {
-    return metaBrand.trim();
-  }
-
-  // Вариант 2: В блоке с информацией о товаре
-  let brand = null;
-
-  $('.item-params tr').each((_, row) => {
-    const label = $(row).find('th').text().trim().toLowerCase();
-    if (label.includes('производитель') || label.includes('бренд')) {
-      brand = $(row).find('td').text().trim();
-    }
-  });
-
-  return brand;
-};
-
-/**
- * Извлечь заголовок товара
- * @param {Object} $ - Cheerio объект
- * @returns {string|null} Заголовок товара или null
- */
-const extractTitle = ($) => {
-  // Вариант 1: В метатегах
-  const metaTitle = $('meta[itemprop="name"]').attr('content');
-  if (metaTitle) {
-    return metaTitle.trim();
-  }
-
-  // Вариант 2: В заголовке страницы
-  const pageTitle = $('h1.item-title').text().trim();
-  if (pageTitle) {
-    return pageTitle;
-  }
-
-  // Вариант 3: В title страницы (без MPN)
-  const title = $('title').text().trim();
-  const titleMatch = title.match(/^[A-Za-z0-9-]+ - (.+)/);
-
-  if (titleMatch && titleMatch[1]) {
-    return titleMatch[1].trim();
-  }
-
-  return title || null;
-};
-
-/**
- * Извлечь краткое описание товара
- * @param {Object} $ - Cheerio объект
- * @returns {string|null} Краткое описание товара или null
- */
-const extractDescription = ($) => {
-  // Вариант 1: В метатегах
-  const metaDesc = $('meta[name="description"]').attr('content');
-  if (metaDesc) {
-    return metaDesc.trim();
-  }
-
-  // Вариант 2: В блоке с описанием
-  const description = $('.item-description').text().trim();
-  if (description) {
-    return description;
-  }
-
-  return null;
-};
-
-/**
- * Извлечь URL изображения товара
- * @param {Object} $ - Cheerio объект
- * @returns {string|null} URL изображения товара или null
- */
-const extractImage = ($) => {
-  // Вариант 1: В метатегах
-  const metaImage = $('meta[itemprop="image"]').attr('content');
-  if (metaImage) {
-    return new URL(metaImage, 'https://www.chipdip.ru').toString();
-  }
-
-  // Вариант 2: В блоке с изображением
-  const image = $('.item-image img').attr('src');
-  if (image) {
-    return new URL(image, 'https://www.chipdip.ru').toString();
-  }
-
-  return null;
-};
-
-/**
- * Извлечь URL датафайлов (PDF)
- * @param {Object} $ - Cheerio объект
- * @returns {string[]} Массив URL датафайлов
- */
-const extractDatasheets = ($) => {
-  const datasheets = [];
-
-  // Ищем ссылки на датафайлы
-  $('.item-docs a[href*=".pdf"]').each((_, element) => {
-    const href = $(element).attr('href');
-    if (href) {
-      datasheets.push(new URL(href, 'https://www.chipdip.ru').toString());
-    }
-  });
-
-  return datasheets;
-};
-
-/**
- * Извлечь технические характеристики товара
- * @param {Object} $ - Cheerio объект
- * @returns {Object} Технические характеристики товара
- */
-const extractTechSpecs = ($) => {
-  const specs = {};
-
-  // Ищем технические характеристики в таблице
-  $('.item-params tr').each((_, row) => {
-    const label = $(row).find('th').text().trim();
-    const value = $(row).find('td').text().trim();
-
-    if (label && value) {
-      specs[label] = value;
-    }
-  });
-
-  return specs;
-};
-
-/**
- * Извлечь информацию о корпусе товара
- * @param {Object} $ - Cheerio объект
- * @returns {string|null} Информация о корпусе товара или null
- */
-const extractPackage = ($) => {
-  let packageInfo = null;
-
-  // Ищем информацию о корпусе в технических характеристиках
-  $('.item-params tr').each((_, row) => {
-    const label = $(row).find('th').text().trim().toLowerCase();
-    if (label.includes('корпус') || label.includes('package')) {
-      packageInfo = $(row).find('td').text().trim();
-    }
-  });
-
-  return packageInfo;
-};
-
-/**
- * Извлечь информацию о упаковке товара
- * @param {Object} $ - Cheerio объект
- * @returns {string|null} Информация о упаковке товара или null
- */
-const extractPackaging = ($) => {
-  let packaging = null;
-
-  // Ищем информацию о упаковке в технических характеристиках
-  $('.item-params tr').each((_, row) => {
-    const label = $(row).find('th').text().trim().toLowerCase();
-    if (label.includes('упаковка') || label.includes('поставка')) {
-      packaging = $(row).find('td').text().trim();
-    }
-  });
-
-  return packaging;
-};
-
-/**
- * Извлечь информацию о цене и наличии товара
- * @param {Object} $ - Cheerio объект
- * @returns {Object[]} Массив предложений
- */
-const extractOffers = ($) => {
-  const offers = [];
-
-  // Ищем информацию о цене и наличии
-  const price = $('.item-price .price').text().trim().replace(/[^\d.,]/g, '').replace(',', '.');
-  const priceValue = parseFloat(price);
-
-  if (!isNaN(priceValue)) {
-    // Определяем валюту
-    const priceText = $('.item-price .price').text().trim();
-    let currency = 'RUB';
-
-    if (priceText.includes('$')) {
-      currency = 'USD';
-    } else if (priceText.includes('€')) {
-      currency = 'EUR';
-    }
-
-    // Определяем наличие
-    let stock = 0;
-    const stockText = $('.item-avail').text().trim().toLowerCase();
-
-    if (stockText.includes('в наличии')) {
-      // Пытаемся извлечь количество
-      const stockMatch = stockText.match(/(\d+)/);
-      stock = stockMatch ? parseInt(stockMatch[1], 10) : 10;
-    } else if (stockText.includes('есть')) {
-      stock = 5;
-    }
-
-    // Конвертируем цену в рубли
-    const priceRub = toRub(priceValue, currency);
-
-    offers.push({
-      region: 'RU',
-      stock,
-      price_native: priceValue,
-      currency,
-      price_min_rub: priceRub,
-      source: 'chipdip',
-      provider: 'chipdip'
-    });
-  }
-
-  return offers;
-};
-
-/**
- * Преобразовать HTML страницы товара в канонический формат
- * @param {Object} data - Данные для преобразования
- * @param {string} data.url - URL страницы товара
- * @param {string} data.html - HTML страницы товара
- * @returns {Object} Товар в каноническом формате
- */
-export const toCanon = ({ url, html }) => {
-  if (!html) {
-    return {
-      ok: false,
-      reason: 'Пустой HTML'
-    };
-  }
-
-  try {
-    const $ = load(html);
-
-    // Извлекаем данные товара
-    const mpn = extractMpn($);
-    const chipDipId = extractChipDipId(url);
-    const brand = extractBrand($);
-    const title = extractTitle($);
-    const description = extractDescription($);
-    const image = extractImage($);
-    const datasheets = extractDatasheets($);
-    const techSpecs = extractTechSpecs($);
-    const packageInfo = extractPackage($);
-    const packaging = extractPackaging($);
-    const offers = extractOffers($);
-
-    // Формируем канонический объект товара
-    const product = {
-      mpn,
-      mpn_guess: !mpn,
-      chipdip_id: chipDipId,
-      brand,
-      title,
-      description,
-      image_url: image,
-      datasheet_urls: datasheets,
-      technical_specs: techSpecs,
-      package: packageInfo,
-      packaging,
-      offers,
-      source_url: url,
-      source: 'chipdip'
-    };
-
-    // Сохраняем нормализованную карточку
-    if (mpn) {
-      try {
-        const dir = path.resolve('data/db/products');
-        if (!fs.existsSync(dir)) {
-          fs.mkdirSync(dir, { recursive: true });
-        }
-
-        fs.writeFileSync(
-          path.join(dir, `${mpn}.json`),
-          JSON.stringify(product, null, 2),
-          'utf8'
-        );
-      } catch (error) {
-        console.error(`Ошибка при сохранении карточки товара ${mpn}:`, error.message);
+  // Извлекаем MPN
+  product.mpn = $('[itemprop="mpn"]').text().trim() || $('[data-chd-product-attr="part_number"]').text().trim();
+  
+  // Если MPN не найден, пытаемся извлечь ID ChipDip из URL
+  if (!product.mpn) {
+    const urlMatch = url.match(/\/product0?\/(\d+)/);
+    if (urlMatch) {
+      product.chipdip_id = urlMatch[1];
+      product.mpn_guess = true;
+      
+      // Пытаемся использовать заголовок или артикул как MPN
+      const title = $('h1[itemprop="name"]').text().trim();
+      const articleMatch = title.match(/\b([A-Z0-9]+-[A-Z0-9]+)\b/);
+      if (articleMatch) {
+        product.mpn = articleMatch[1];
       }
     }
-
-    return {
-      ok: true,
-      data: product
-    };
-  } catch (error) {
-    console.error('Ошибка при преобразовании HTML в канонический формат:', error.message);
-
-    return {
-      ok: false,
-      reason: error.message
-    };
   }
+
+  // Извлекаем бренд
+  product.brand = $('[itemprop="brand"]').find('[itemprop="name"]').text().trim();
+
+  // Извлекаем заголовок
+  product.title = $('h1[itemprop="name"]').text().trim();
+
+  // Извлекаем описание
+  product.description = $('div[itemprop="description"]').text().trim();
+  
+  // Если описание пустое, пытаемся найти его в других местах
+  if (!product.description) {
+    // Проверяем блок с описанием товара
+    const descBlock = $('.product-card-description');
+    if (descBlock.length > 0) {
+      product.description = descBlock.text().trim();
+    }
+    
+    // Проверяем блок с особенностями товара
+    if (!product.description) {
+      const featuresBlock = $('.product-card-features');
+      if (featuresBlock.length > 0) {
+        product.description = featuresBlock.text().trim();
+      }
+    }
+  }
+
+  // Извлекаем URL изображения
+  product.image_url = $('[itemprop="image"]').attr('src');
+  if (product.image_url && !product.image_url.startsWith('http')) {
+    product.image_url = new URL(product.image_url, 'https://www.chipdip.ru').toString();
+  }
+  
+  // Собираем все изображения в галерею
+  product.gallery = [];
+  $('.product-photo-container img').each((_, el) => {
+    const src = $(el).attr('src');
+    if (src) {
+      const imgUrl = src.startsWith('http') ? src : new URL(src, 'https://www.chipdip.ru').toString();
+      product.gallery.push(imgUrl);
+    }
+  });
+
+  // Извлекаем URL даташитов
+  $('a[href*=".pdf"]').each((_, el) => {
+    const href = $(el).attr('href');
+    if (href) {
+      const pdfUrl = href.startsWith('http') ? href : new URL(href, 'https://www.chipdip.ru').toString();
+      // Добавляем только уникальные URL
+      if (!product.datasheet_urls.includes(pdfUrl)) {
+        product.datasheet_urls.push(pdfUrl);
+      }
+    }
+  });
+
+  // Извлекаем предложения
+  $('.item-table__row').each(async (_, row) => {
+    const stockText = $(row).find('.item-table__cell_count .count').text().trim();
+    const stock = parseInt(stockText.replace(/\D/g, '')) || 0;
+
+    const priceText = $(row).find('.price__value').text().trim();
+    const price_native = parseFloat(priceText.replace(/[^\d,.]/g, '').replace(',', '.')) || 0;
+    const currency = $(row).find('.price__currency').text().trim() === '₽' ? 'RUB' : 'USD';
+
+    if (stock > 0 && price_native > 0) {
+      const price_min_rub = await convertToRub(price_native, currency);
+      
+      product.offers.push({
+        region: 'RU',
+        stock,
+        price_native,
+        currency,
+        price_min_rub,
+        source: 'chipdip',
+        url: url,
+        provider: 'chipdip-parser',
+      });
+    }
+  });
+
+  // Извлекаем технические характеристики
+  $('.product-params__table-row').each((_, row) => {
+    const paramName = $(row).find('.product-params__table-name').text().trim();
+    const paramValue = $(row).find('.product-params__table-value').text().trim();
+    
+    if (paramName && paramValue) {
+      product.technical_specs[paramName] = paramValue;
+      
+      // Определяем корпус и упаковку
+      if (paramName.includes('Корпус')) {
+        product.package = paramValue;
+      } else if (paramName.includes('Упаковка')) {
+        product.packaging = paramValue;
+      }
+    }
+  });
+  
+  // Извлекаем регионы
+  product.regions = Array.from(new Set(product.offers.map(o => o.region).filter(Boolean)));
+  
+  // Вычисляем минимальную цену в рублях
+  if (product.offers.length > 0) {
+    const rubPrices = product.offers
+      .map(o => o.price_min_rub)
+      .filter(p => p !== null && p !== undefined && !isNaN(p));
+    
+    if (rubPrices.length > 0) {
+      product.price_min_rub = Math.min(...rubPrices);
+    }
+  }
+  
+  // Вычисляем общий сток
+  product.total_stock = product.offers.reduce((sum, o) => sum + (o.stock || 0), 0);
+
+  return product;
 };
 
-export default { toCanon };
+export default {
+  toCanon
+};

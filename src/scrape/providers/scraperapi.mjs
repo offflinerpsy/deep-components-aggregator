@@ -4,42 +4,22 @@
  */
 
 import { fetch } from 'undici';
-import fs from 'node:fs';
-import path from 'node:path';
 
 /**
  * Получить HTML страницы через ScraperAPI
  * @param {string} url - URL страницы для скрапинга
  * @param {Object} [options] - Опции запроса
  * @param {number} [options.timeoutMs=12000] - Таймаут запроса в миллисекундах
+ * @param {string} [options.key] - API ключ для ScraperAPI
  * @param {Object} [options.params={}] - Дополнительные параметры для ScraperAPI
  * @returns {Promise<Object>} Результат запроса
  */
-export async function fetchHtml(url, { timeoutMs = 12000, params = {} } = {}) {
-  // Получаем ключ API из файла или переменной окружения
-  let key;
-  try {
-    const keysPath = path.resolve('secrets/apis/scraperapi.txt');
-    if (fs.existsSync(keysPath)) {
-      const keys = fs.readFileSync(keysPath, 'utf8').split(/\r?\n/).filter(Boolean);
-      key = keys[0]; // Используем первый ключ из файла
-    } else {
-      key = process.env.SCRAPERAPI_KEY;
-    }
-  } catch (error) {
-    return {
-      ok: false,
-      status: 'config_error',
-      error: 'Не удалось получить API ключ ScraperAPI',
-      provider: 'scraperapi'
-    };
-  }
-
+export async function fetchHtml(url, { timeoutMs = 12000, key, params = {} } = {}) {
   if (!key) {
     return {
       ok: false,
       status: 'config_error',
-      error: 'API ключ ScraperAPI не найден',
+      error: 'API ключ ScraperAPI не указан',
       provider: 'scraperapi'
     };
   }
@@ -48,8 +28,15 @@ export async function fetchHtml(url, { timeoutMs = 12000, params = {} } = {}) {
   const apiUrl = new URL('http://api.scraperapi.com');
   apiUrl.searchParams.set('api_key', key);
   apiUrl.searchParams.set('url', url);
-  apiUrl.searchParams.set('render', 'false');
-  apiUrl.searchParams.set('keep_headers', 'true');
+  
+  // Добавляем параметры по умолчанию
+  apiUrl.searchParams.set('render', 'false'); // Без JS-рендеринга для экономии кредитов
+  apiUrl.searchParams.set('keep_headers', 'true'); // Сохраняем заголовки для аутентичности
+  apiUrl.searchParams.set('country_code', 'ru'); // Используем российские прокси
+  
+  // Параметры для обработки ошибок
+  apiUrl.searchParams.set('retry_404', 'false'); // Не повторять запрос при 404
+  apiUrl.searchParams.set('retry_num', '1'); // Одна повторная попытка при ошибке
 
   // Добавляем дополнительные параметры
   for (const [paramKey, paramValue] of Object.entries(params)) {
@@ -65,7 +52,8 @@ export async function fetchHtml(url, { timeoutMs = 12000, params = {} } = {}) {
       signal: controller.signal,
       headers: {
         'Accept': 'text/html,application/xhtml+xml',
-        'Accept-Language': 'ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7'
+        'Accept-Language': 'ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7',
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
       }
     });
 
@@ -79,6 +67,21 @@ export async function fetchHtml(url, { timeoutMs = 12000, params = {} } = {}) {
     }
 
     const html = await response.text();
+    
+    // Проверка на наличие признаков блокировки или капчи
+    if (
+      html.includes('captcha') || 
+      html.includes('CAPTCHA') || 
+      html.includes('blocked') || 
+      html.includes('Доступ ограничен')
+    ) {
+      return {
+        ok: false,
+        status: 'captcha_detected',
+        provider: 'scraperapi',
+        usedKey: key?.slice(0, 8) + '...'
+      };
+    }
 
     return {
       ok: true,

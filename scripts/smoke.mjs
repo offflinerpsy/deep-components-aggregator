@@ -1,188 +1,281 @@
+#!/usr/bin/env node
+
 /**
- * Скрипт для быстрой проверки работоспособности API
+ * Скрипт для smoke-тестирования API и UI
  *
  * Использование:
- * node scripts/smoke.mjs [--host=http://localhost:9201]
+ * node scripts/smoke.mjs [--host=http://localhost:9201] [--verbose] [--timeout=10000]
  *
- * Пример:
- * node scripts/smoke.mjs --host=http://89.104.69.77
+ * Опции:
+ * --host=URL - URL хоста для тестирования (по умолчанию http://localhost:9201)
+ * --verbose - выводить подробную информацию
+ * --timeout - таймаут для запросов в миллисекундах (по умолчанию 10000)
  */
 
 import { fetch } from 'undici';
+import { writeFileSync, mkdirSync } from 'node:fs';
+import path from 'node:path';
 
-// Получаем аргументы командной строки
+// Парсинг аргументов командной строки
 const args = process.argv.slice(2);
-let host = 'http://localhost:9201';
+const getArg = (name, defaultValue) => {
+  const arg = args.find(a => a.startsWith(`--${name}=`));
+  if (!arg) return defaultValue;
+  return arg.split('=')[1];
+};
 
-// Парсим аргументы
-for (const arg of args) {
-  if (arg.startsWith('--host=')) {
-    host = arg.split('=')[1];
+const hasFlag = (name) => args.includes(`--${name}`);
+
+// Константы
+const DIAG_DIR = '_diag';
+const DEFAULT_HOST = 'http://localhost:9201';
+const DEFAULT_TIMEOUT = 10000;
+
+// Опции
+const host = getArg('host', DEFAULT_HOST);
+const verbose = hasFlag('verbose');
+const timeout = parseInt(getArg('timeout', DEFAULT_TIMEOUT), 10);
+
+// Создаем директорию для диагностики
+mkdirSync(DIAG_DIR, { recursive: true });
+
+// Функция для логирования
+const log = (message, isVerbose = false) => {
+  if (!isVerbose || verbose) {
+    console.log(message);
+  }
+};
+
+/**
+ * Выполняет HTTP-запрос и возвращает результат
+ * @param {string} url URL для запроса
+ * @param {object} options Опции запроса
+ * @returns {Promise<object>} Результат запроса
+ */
+async function fetchWithTimeout(url, options = {}) {
+  const { timeout: requestTimeout = timeout, ...fetchOptions } = options;
+
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), requestTimeout);
+
+  try {
+    const response = await fetch(url, {
+      ...fetchOptions,
+      signal: controller.signal
+    });
+
+    return {
+      ok: response.ok,
+      status: response.status,
+      headers: Object.fromEntries(response.headers.entries()),
+      body: await response.text()
+    };
+  } catch (error) {
+    return {
+      ok: false,
+      status: 0,
+      error: error.message
+    };
+  } finally {
+    clearTimeout(timeoutId);
   }
 }
 
-// Форматирование вывода
-const colors = {
-  reset: '\x1b[0m',
-  green: '\x1b[32m',
-  red: '\x1b[31m',
-  yellow: '\x1b[33m',
-  blue: '\x1b[34m',
-  magenta: '\x1b[35m',
-  cyan: '\x1b[36m',
-  gray: '\x1b[90m'
-};
+/**
+ * Выполняет тест для указанного URL
+ * @param {string} path Путь для запроса
+ * @param {function} validator Функция проверки результата
+ * @param {string} name Название теста
+ * @returns {Promise<boolean>} Результат теста
+ */
+async function runTest(path, validator, name) {
+  const url = `${host}${path}`;
+  log(`Testing ${name}: ${url}...`);
 
-// Функция для проверки эндпоинта
-async function checkEndpoint(url, options = {}) {
   try {
-    console.log(`${colors.blue}GET${colors.reset} ${url}`);
-
     const startTime = Date.now();
-    const response = await fetch(url, options);
-    const endTime = Date.now();
+    const result = await fetchWithTimeout(url);
+    const duration = Date.now() - startTime;
 
-    const responseTime = endTime - startTime;
+    log(`Request completed in ${duration}ms`, true);
 
-    if (response.ok) {
-      console.log(`${colors.green}✓ ${response.status} OK${colors.reset} (${responseTime} ms)`);
+    if (!result.ok) {
+      log(`  FAIL: HTTP ${result.status} ${result.error || ''}`);
+      return false;
+    }
 
-      // Получаем тело ответа
-      let body;
-      const contentType = response.headers.get('content-type');
+    let body;
+    try {
+      body = JSON.parse(result.body);
+    } catch (error) {
+      body = result.body;
+    }
 
-      if (contentType && contentType.includes('application/json')) {
-        body = await response.json();
-        console.log(`${colors.gray}${JSON.stringify(body, null, 2).substring(0, 400)}${body && JSON.stringify(body).length > 400 ? '...' : ''}${colors.reset}`);
-      } else if (contentType && contentType.includes('text/event-stream')) {
-        console.log(`${colors.yellow}[SSE Stream]${colors.reset}`);
-
-        // Читаем первые 3 события или до таймаута
-        const reader = response.body.getReader();
-        const decoder = new TextDecoder();
-        let events = 0;
-        let buffer = '';
-
-        const timeout = setTimeout(() => {
-          console.log(`${colors.yellow}[SSE Timeout]${colors.reset}`);
-          reader.cancel();
-        }, 5000);
-
-        try {
-          while (events < 3) {
-            const { done, value } = await reader.read();
-
-            if (done) break;
-
-            buffer += decoder.decode(value, { stream: true });
-
-            // Ищем события в буфере
-            const eventMatches = buffer.match(/event: [^\n]+\ndata: {[^}]+}/g);
-
-            if (eventMatches) {
-              for (const eventMatch of eventMatches) {
-                console.log(`${colors.gray}${eventMatch}${colors.reset}`);
-                events++;
-
-                if (events >= 3) break;
-              }
-
-              // Удаляем обработанные события из буфера
-              buffer = buffer.replace(/event: [^\n]+\ndata: {[^}]+}\n\n/, '');
-            }
-          }
-        } catch (error) {
-          console.error(`${colors.red}Ошибка при чтении SSE:${colors.reset}`, error.message);
-        } finally {
-          clearTimeout(timeout);
-          reader.cancel();
-        }
-      } else {
-        const text = await response.text();
-        console.log(`${colors.gray}${text.substring(0, 200)}${text.length > 200 ? '...' : ''}${colors.reset}`);
-      }
-
+    const validationResult = await validator(body, result);
+    if (validationResult === true) {
+      log(`  PASS: ${name} (${duration}ms)`);
       return true;
     } else {
-      console.log(`${colors.red}✗ ${response.status} ${response.statusText}${colors.reset} (${responseTime} ms)`);
-
-      try {
-        const text = await response.text();
-        console.log(`${colors.gray}${text.substring(0, 200)}${text.length > 200 ? '...' : ''}${colors.reset}`);
-      } catch (error) {
-        console.error(`${colors.red}Ошибка при чтении тела ответа:${colors.reset}`, error.message);
-      }
-
+      log(`  FAIL: ${validationResult}`);
       return false;
     }
   } catch (error) {
-    console.log(`${colors.red}✗ Ошибка:${colors.reset}`, error.message);
+    log(`  ERROR: ${error.message}`);
     return false;
   }
 }
 
-// Основная функция для проверки API
-async function smokeTest() {
-  console.log(`${colors.magenta}=== Smoke Test ====${colors.reset}`);
-  console.log(`${colors.cyan}Хост:${colors.reset} ${host}`);
-  console.log(`${colors.cyan}Время:${colors.reset} ${new Date().toISOString()}`);
-  console.log();
+/**
+ * Выполняет тест для SSE-запроса
+ * @param {string} path Путь для запроса
+ * @param {function} validator Функция проверки события
+ * @param {string} name Название теста
+ * @returns {Promise<boolean>} Результат теста
+ */
+async function runSSETest(path, validator, name) {
+  const url = `${host}${path}`;
+  log(`Testing SSE ${name}: ${url}...`);
 
-  let success = 0;
+  return new Promise((resolve) => {
+    let eventCount = 0;
+    let itemCount = 0;
+    let success = false;
+    let timeoutId;
+
+    const eventSource = new EventSource(url);
+    const startTime = Date.now();
+
+    eventSource.onmessage = (event) => {
+      eventCount++;
+      log(`Received generic message: ${event.data}`, true);
+    };
+
+    eventSource.addEventListener('item', (event) => {
+      itemCount++;
+      log(`Received item event: ${event.data.substring(0, 100)}...`, true);
+
+      try {
+        const data = JSON.parse(event.data);
+        const validationResult = validator(data, 'item');
+        
+        if (validationResult === true) {
+          success = true;
+          log(`  PASS: Found valid item in SSE stream`);
+          clearTimeout(timeoutId);
+          eventSource.close();
+          resolve(true);
+        }
+      } catch (error) {
+        log(`  ERROR parsing item event: ${error.message}`, true);
+      }
+    });
+
+    eventSource.addEventListener('error', (event) => {
+      log(`SSE error: ${JSON.stringify(event)}`, true);
+    });
+
+    eventSource.addEventListener('done', (event) => {
+      log(`Received done event: ${event.data}`, true);
+      
+      try {
+        const data = JSON.parse(event.data);
+        log(`  INFO: SSE stream completed with ${data.count} items`);
+        
+        if (success || itemCount > 0) {
+          log(`  PASS: ${name} (${Date.now() - startTime}ms)`);
+          resolve(true);
+        } else {
+          log(`  FAIL: No valid items found in SSE stream`);
+          resolve(false);
+        }
+      } catch (error) {
+        log(`  ERROR parsing done event: ${error.message}`, true);
+        resolve(false);
+      } finally {
+        eventSource.close();
+        clearTimeout(timeoutId);
+      }
+    });
+
+    // Устанавливаем таймаут для SSE-запроса
+    timeoutId = setTimeout(() => {
+      eventSource.close();
+      if (success) {
+        log(`  PASS: ${name} (timeout reached, but found valid items)`);
+        resolve(true);
+      } else {
+        log(`  FAIL: Timeout reached (${timeout}ms) without finding valid items`);
+        resolve(false);
+      }
+    }, timeout);
+  });
+}
+
+/**
+ * Выполняет все тесты
+ * @returns {Promise<void>}
+ */
+async function runTests() {
+  log(`Running smoke tests against ${host}`);
+  const startTime = Date.now();
+  let passed = 0;
   let failed = 0;
 
-  // Проверка API здоровья
-  console.log(`${colors.yellow}Проверка API здоровья${colors.reset}`);
-  if (await checkEndpoint(`${host}/api/health`)) {
-    success++;
-  } else {
-    failed++;
-  }
-  console.log();
-
-  // Проверка API поиска
-  console.log(`${colors.yellow}Проверка API поиска${colors.reset}`);
-  if (await checkEndpoint(`${host}/api/search?q=LM317`)) {
-    success++;
-  } else {
-    failed++;
-  }
-  console.log();
-
-  // Проверка API живого поиска
-  console.log(`${colors.yellow}Проверка API живого поиска${colors.reset}`);
-  if (await checkEndpoint(`${host}/api/live/search?q=LM317`, {
-    headers: {
-      'Accept': 'text/event-stream'
+  // Тест для /api/health
+  const healthTest = await runTest('/api/health', (body) => {
+    if (body.status !== 'ok') {
+      return `Expected status "ok", got "${body.status}"`;
     }
-  })) {
-    success++;
-  } else {
-    failed++;
-  }
-  console.log();
+    return true;
+  }, 'API Health');
 
-  // Проверка API продукта
-  console.log(`${colors.yellow}Проверка API продукта${colors.reset}`);
-  if (await checkEndpoint(`${host}/api/product?mpn=LM317`)) {
-    success++;
-  } else {
-    failed++;
-  }
-  console.log();
+  if (healthTest) passed++; else failed++;
 
-  // Итоги
-  console.log(`${colors.magenta}=== Итоги ====${colors.reset}`);
-  console.log(`${colors.green}Успешно:${colors.reset} ${success}`);
-  console.log(`${colors.red}С ошибками:${colors.reset} ${failed}`);
-  console.log(`${colors.cyan}Всего:${colors.reset} ${success + failed}`);
+  // Тест для /api/search?q=LM317
+  const searchTest = await runTest('/api/search?q=LM317', (body) => {
+    if (!body.items || !Array.isArray(body.items)) {
+      return `Expected items array, got ${typeof body.items}`;
+    }
+    if (body.items.length === 0) {
+      return `Expected at least one item, got 0`;
+    }
+    return true;
+  }, 'API Search');
+
+  if (searchTest) passed++; else failed++;
+
+  // Тест для /api/live/search?q=LM317
+  const liveSearchTest = await runSSETest('/api/live/search?q=LM317', (item) => {
+    if (!item.mpn && !item.title) {
+      return `Expected item with mpn or title, got neither`;
+    }
+    return true;
+  }, 'API Live Search');
+
+  if (liveSearchTest) passed++; else failed++;
+
+  // Тест для /api/live/search?q=транзистор (кириллица)
+  const cyrillicSearchTest = await runSSETest('/api/live/search?q=транзистор', (item) => {
+    if (!item.mpn && !item.title) {
+      return `Expected item with mpn or title, got neither`;
+    }
+    return true;
+  }, 'API Cyrillic Search');
+
+  if (cyrillicSearchTest) passed++; else failed++;
+
+  // Выводим итоги
+  const duration = Date.now() - startTime;
+  log(`\nTests completed in ${duration}ms`);
+  log(`PASSED: ${passed}`);
+  log(`FAILED: ${failed}`);
 
   // Возвращаем код завершения
   process.exit(failed > 0 ? 1 : 0);
 }
 
-// Запускаем тест
-smokeTest().catch(error => {
-  console.error(`${colors.red}Критическая ошибка:${colors.reset}`, error);
+// Запускаем тесты
+runTests().catch(error => {
+  console.error(`Fatal error: ${error.message}`);
   process.exit(1);
 });

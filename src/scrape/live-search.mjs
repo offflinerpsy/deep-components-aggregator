@@ -1,9 +1,9 @@
-import { fetchHTML } from './rotator.mjs';
+import { fetchHtmlCached } from './cache.mjs';
 import { parseChipDipSearch } from '../parsers/chipdip/search.mjs';
 import { parsePromelecSearch } from '../parsers/promelec/search.mjs';
 import { DiagnosticsCollector } from '../core/diagnostics.mjs';
-import { normCanon } from '../core/canon.mjs';
-import { toRUB } from '../currency/cbr.mjs';
+import { normalize } from '../core/canon.mjs';
+import { toRub } from '../currency/cbr.mjs';
 
 // Тестовые данные для случая, когда реальные запросы не работают
 const TEST_DATA = {
@@ -119,7 +119,7 @@ export async function liveSearch({
 
     // Преобразуем цену в рубли, если нужно
     if (item.price && item.currency && item.currency !== 'RUB') {
-      const rubPrice = toRUB({ amount: item.price, currency: item.currency });
+      const rubPrice = toRub(item.price, item.currency);
       if (rubPrice !== null) {
         item.price_rub = Math.round(rubPrice);
       }
@@ -127,14 +127,17 @@ export async function liveSearch({
       item.price_rub = item.price;
     }
 
+    // Нормализуем продукт
+    const normalizedItem = normalize(item);
+
     // Вызываем обратный вызов
-    onItem && onItem(item);
+    onItem && onItem(normalizedItem);
 
     // Увеличиваем счетчик
     itemCount++;
 
     // Добавляем событие в диагностику
-    diagnostics.addEvent('item', `Found item ${itemCount}: ${item.mpn || 'unknown'}`);
+    diagnostics.addEvent('item', `Found item ${itemCount}: ${normalizedItem.mpn || 'unknown'}`);
 
     // Возвращаем true, если можно продолжать
     return itemCount < maxItems;
@@ -215,11 +218,11 @@ async function searchChipDip(query, diagnostics, processItem) {
 
     // Получаем HTML
     const startTime = Date.now();
-    const result = await fetchHTML(url);
+    const result = await fetchHtmlCached(url);
     const fetchTime = Date.now() - startTime;
 
     // Добавляем информацию о провайдере в диагностику
-    diagnostics.addProvider('chipdip', url, true, fetchTime, result.key);
+    diagnostics.addProvider('chipdip', url, true, fetchTime, result.usedKey);
 
     // Парсим результаты
     const html = result.html || '';
@@ -263,11 +266,11 @@ async function searchPromelec(query, diagnostics, processItem) {
 
     // Получаем HTML
     const startTime = Date.now();
-    const result = await fetchHTML(url);
+    const result = await fetchHtmlCached(url);
     const fetchTime = Date.now() - startTime;
 
     // Добавляем информацию о провайдере в диагностику
-    diagnostics.addProvider('promelec', url, true, fetchTime, result.key);
+    diagnostics.addProvider('promelec', url, true, fetchTime, result.usedKey);
 
     // Парсим результаты
     const html = result.html || '';

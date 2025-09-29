@@ -14,21 +14,23 @@
             --row: #fff;
             --border: #e5e7eb;
             --success: #059669;
+            --warning: #f59e0b;
+            --error: #dc2626;
         }
-
+        
         body {
             margin: 0;
             font: 14px/1.45 system-ui, -apple-system, sans-serif;
             background: #f8fafc;
             color: var(--fg);
         }
-
+        
         .container {
             max-width: 1400px;
             margin: 0 auto;
             padding: 16px;
         }
-
+        
         .search-form {
             background: var(--bg);
             padding: 16px;
@@ -39,7 +41,7 @@
             gap: 8px;
             align-items: center;
         }
-
+        
         .search-input {
             flex: 1;
             padding: 10px 12px;
@@ -47,7 +49,7 @@
             border-radius: 6px;
             font-size: 14px;
         }
-
+        
         .search-button {
             background: var(--primary);
             color: white;
@@ -58,11 +60,11 @@
             font-size: 14px;
             font-weight: 500;
         }
-
+        
         .search-button:hover {
             background: #0284c7;
         }
-
+        
         .loading, .error {
             text-align: center;
             padding: 32px;
@@ -71,13 +73,13 @@
             border-radius: 8px;
             color: var(--muted);
         }
-
+        
         .error {
             background: #fef2f2;
             color: #dc2626;
             border-color: #fecaca;
         }
-
+        
         /* ТАБЛИЦА КАК OEMSTRADE */
         .results-table {
             width: 100%;
@@ -88,7 +90,7 @@
             border-radius: 8px;
             overflow: hidden;
         }
-
+        
         .results-table thead th {
             background: #f9fafb;
             padding: 12px 8px;
@@ -99,48 +101,48 @@
             border-bottom: 1px solid var(--border);
             white-space: nowrap;
         }
-
+        
         .results-table tbody tr {
             border-bottom: 1px solid #f3f4f6;
         }
-
+        
         .results-table tbody tr:hover {
             background: #fafbfc;
         }
-
+        
         .results-table tbody td {
             padding: 10px 8px;
             vertical-align: top;
             font-size: 13px;
         }
-
+        
         /* Колонки */
         .col-image {
             width: 80px;
             text-align: center;
         }
-
+        
         .col-name {
             width: 25%;
             min-width: 200px;
         }
-
+        
         .col-desc {
             width: 30%;
             min-width: 250px;
         }
-
+        
         .col-regions {
             width: 20%;
             min-width: 150px;
         }
-
+        
         .col-price {
             width: 25%;
             min-width: 180px;
             text-align: right;
         }
-
+        
         /* Содержимое ячеек */
         .product-thumb {
             width: 60px;
@@ -150,28 +152,28 @@
             border-radius: 4px;
             background: #f9fafb;
         }
-
+        
         .product-name {
             font-weight: 600;
             color: #111827;
             margin-bottom: 4px;
         }
-
+        
         .product-name a {
             color: inherit;
             text-decoration: none;
         }
-
+        
         .product-name a:hover {
             color: var(--primary);
         }
-
+        
         .product-brand {
             font-size: 12px;
             color: var(--muted);
             font-family: 'SF Mono', Monaco, monospace;
         }
-
+        
         .product-desc {
             color: #4b5563;
             font-size: 12px;
@@ -180,36 +182,36 @@
             overflow: hidden;
             text-overflow: ellipsis;
         }
-
+        
         .regions-list {
             font-size: 11px;
             color: #6b7280;
             line-height: 1.3;
         }
-
+        
         .region-item {
             display: block;
             margin-bottom: 2px;
         }
-
+        
         .region-stock {
             color: var(--success);
             font-weight: 500;
         }
-
+        
         .price-main {
             font-weight: 700;
             font-size: 16px;
             color: #111827;
             margin-bottom: 4px;
         }
-
+        
         .price-orig {
             font-size: 11px;
             color: var(--muted);
             margin-bottom: 8px;
         }
-
+        
         .buy-button {
             background: var(--primary);
             color: white;
@@ -221,166 +223,331 @@
             text-decoration: none;
             display: inline-block;
         }
-
+        
         .buy-button:hover {
             background: #0284c7;
         }
-
+        
         .no-results {
             text-align: center;
             padding: 48px 16px;
             color: var(--muted);
         }
-
-        /* Inline Product Card */
+        
+        /* Сообщения */
+        #messages {
+            margin-bottom: 16px;
+        }
+        
+        .message-box {
+            padding: 12px 16px;
+            margin-bottom: 8px;
+            border-radius: 6px;
+            font-size: 13px;
+            line-height: 1.4;
+        }
+        
+        .message-box.info {
+            background: #f0f9ff;
+            color: #0369a1;
+            border: 1px solid #bae6fd;
+        }
+        
+        .message-box.warning {
+            background: #fffbeb;
+            color: #b45309;
+            border: 1px solid #fcd34d;
+        }
+        
+        .message-box.error {
+            background: #fef2f2;
+            color: #b91c1c;
+            border: 1px solid #fecaca;
+        }
+        
+        /* Скелетон-лоадер */
+        .skeleton-row {
+            height: 80px;
+            background: linear-gradient(90deg, #f9fafb 25%, #f3f4f6 50%, #f9fafb 75%);
+            background-size: 200% 100%;
+            animation: skeleton-loading 1.5s infinite;
+        }
+        
+        @keyframes skeleton-loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+        
+        /* Инлайн-карточка товара */
         .product-card-row {
-            background-color: #f3f9ff;
+            background-color: #f0f9ff;
         }
-
+        
         .product-card-expanded {
+            padding: 16px;
             display: grid;
-            grid-template-columns: 1fr 2fr;
-            gap: 20px;
-            padding: 20px;
-            background-color: #e9f7ef;
-            border-left: 5px solid #28a745;
-            margin-top: 10px;
-            border-radius: 5px;
-            overflow: hidden;
-            transition: all 0.3s ease-out;
+            grid-template-columns: 200px 1fr 300px;
+            grid-template-rows: auto auto auto;
+            grid-template-areas:
+                "gallery meta order"
+                "gallery desc order"
+                "gallery specs order";
+            gap: 16px;
             max-height: 0;
+            overflow: hidden;
             opacity: 0;
-            visibility: hidden;
+            transition: all 0.3s ease-out;
         }
-
+        
         .product-card-expanded.active {
-            max-height: 500px;
+            max-height: 600px;
             opacity: 1;
-            visibility: visible;
         }
-
+        
+        .product-card-gallery {
+            grid-area: gallery;
+        }
+        
         .product-card-image {
             width: 100%;
-            max-width: 200px;
-            height: auto;
+            max-height: 200px;
             object-fit: contain;
-            border-radius: 5px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        .product-card-details h3 {
-            color: #28a745;
-            margin-top: 0;
-            margin-bottom: 10px;
-        }
-
-        .product-card-details p {
-            margin-bottom: 5px;
-            line-height: 1.5;
-        }
-
-        .product-card-details strong {
-            color: #333;
-        }
-
-        .product-card-offers {
-            margin-top: 15px;
-            padding-top: 15px;
-            border-top: 1px dashed #ccc;
-        }
-
-        .product-card-offers .price {
-            font-size: 1.4em;
-            font-weight: bold;
-            color: #dc3545;
-            margin-bottom: 5px;
-        }
-
-        .product-card-offers .stock {
-            font-size: 0.9em;
-            color: #6c757d;
-            margin-bottom: 10px;
-        }
-
-        .product-card-offers .order-button {
-            background-color: #007bff;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            text-decoration: none;
-            display: inline-block;
-            transition: background-color 0.2s ease;
-        }
-
-        .product-card-offers .order-button:hover {
-            background-color: #0056b3;
-        }
-
-        .product-card-datasheets {
-            margin-top: 15px;
-        }
-
-        .product-card-datasheets a {
-            display: inline-block;
-            background-color: #6c757d;
-            color: white;
-            padding: 8px 12px;
             border-radius: 4px;
-            text-decoration: none;
-            margin-right: 10px;
-            margin-bottom: 10px;
-            transition: background-color 0.2s ease;
+            background: white;
+            border: 1px solid #e5e7eb;
         }
-
-        .product-card-datasheets a:hover {
-            background-color: #5a6268;
+        
+        .product-card-meta {
+            grid-area: meta;
         }
-
-        .expand-button {
-            background-color: #28a745;
-            color: white;
-            border: none;
-            padding: 8px 12px;
-            border-radius: 4px;
-            cursor: pointer;
+        
+        .product-card-meta h3 {
+            margin: 0 0 8px 0;
+            font-size: 18px;
+            font-weight: 600;
+            color: #111827;
+        }
+        
+        .product-card-meta p {
+            margin: 0 0 4px 0;
+            font-size: 13px;
+            line-height: 1.4;
+        }
+        
+        .product-card-desc {
+            grid-area: desc;
+        }
+        
+        .product-card-desc h4 {
+            margin: 0 0 8px 0;
             font-size: 14px;
-            transition: background-color 0.2s ease;
+            font-weight: 600;
+            color: #374151;
         }
-
-        .expand-button:hover {
-            background-color: #218838;
+        
+        .product-card-specs {
+            grid-area: specs;
+        }
+        
+        .product-card-specs h4 {
+            margin: 0 0 8px 0;
+            font-size: 14px;
+            font-weight: 600;
+            color: #374151;
+        }
+        
+        .specs-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+        }
+        
+        .specs-table tr:nth-child(odd) {
+            background: rgba(255, 255, 255, 0.5);
+        }
+        
+        .specs-table td {
+            padding: 4px 8px;
+            border: none;
+        }
+        
+        .specs-table td:first-child {
+            font-weight: 500;
+            color: #4b5563;
+            width: 40%;
+        }
+        
+        .product-card-order {
+            grid-area: order;
+            background: white;
+            border-radius: 6px;
+            padding: 16px;
+            border: 1px solid #e5e7eb;
+            position: sticky;
+            top: 16px;
+        }
+        
+        .product-card-price {
+            font-size: 24px;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 8px;
+        }
+        
+        .product-card-stock {
+            font-size: 13px;
+            color: var(--success);
+            margin-bottom: 16px;
+        }
+        
+        .product-card-regions {
+            font-size: 12px;
+            color: #6b7280;
+            margin-bottom: 16px;
+        }
+        
+        .product-card-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .product-card-buttons .buy-button {
+            padding: 10px 16px;
+            font-size: 14px;
+            font-weight: 500;
+            text-align: center;
+        }
+        
+        .product-card-datasheets {
+            margin-top: 16px;
+        }
+        
+        .product-card-datasheets h4 {
+            margin: 0 0 8px 0;
+            font-size: 14px;
+            font-weight: 600;
+            color: #374151;
+        }
+        
+        .datasheet-link {
+            display: block;
+            padding: 8px 12px;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 4px;
+            margin-bottom: 8px;
+            text-decoration: none;
+            color: var(--primary);
+            font-size: 12px;
+        }
+        
+        .datasheet-link:hover {
+            background: #f0f9ff;
+            border-color: var(--primary);
+        }
+        
+        /* Адаптивность */
+        @media (max-width: 1024px) {
+            .product-card-expanded {
+                grid-template-columns: 1fr;
+                grid-template-areas:
+                    "gallery"
+                    "meta"
+                    "desc"
+                    "specs"
+                    "order";
+            }
+            
+            .product-card-order {
+                position: static;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="search-form">
-            <input type="text" class="search-input" id="searchInput" placeholder="Введите MPN или название компонента (например, LM317T, 1N4148)..." value="">
-            <button class="search-button" onclick="performSearch()">Поиск</button>
+            <input type="text" class="search-input" id="searchInput" placeholder="Введите MPN или название компонента (например, LM317T, транзистор)..." value="">
+            <button class="search-button" id="searchButton">Поиск</button>
         </div>
 
+        <div id="messages"></div>
         <div id="results"></div>
     </div>
 
-    <script type="module">
+    <script>
+        // Вспомогательные функции
         const $ = s => document.querySelector(s);
-        const q = new URLSearchParams(location.search).get('q') || '';
+        const $$ = s => document.querySelectorAll(s);
         const enc = encodeURIComponent;
+        
+        // Получаем параметры из URL
+        const q = new URLSearchParams(location.search).get('q') || '';
         $('#searchInput').value = q;
-
-        const out = $('#results');
-
-        function renderResults(list) {
-            if (!Array.isArray(list) || list.length === 0) {
-                out.innerHTML = '<div class="no-results">Ничего не найдено. Попробуйте изменить запрос.</div>';
+        
+        // Элементы DOM
+        const searchInput = $('#searchInput');
+        const searchButton = $('#searchButton');
+        const messagesDiv = $('#messages');
+        const resultsDiv = $('#results');
+        
+        // Множество для отслеживания уникальных MPN
+        const seenMpns = new Set();
+        
+        // Функция для отображения сообщения
+        function showMessage(message, type = 'info') {
+            const messageBox = document.createElement('div');
+            messageBox.className = `message-box ${type}`;
+            messageBox.textContent = message;
+            messagesDiv.appendChild(messageBox);
+        }
+        
+        // Функция для очистки сообщений
+        function clearMessages() {
+            messagesDiv.innerHTML = '';
+        }
+        
+        // Функция для отображения скелетон-лоадера
+        function showSkeletonLoader() {
+            const table = document.createElement('table');
+            table.className = 'results-table';
+            table.innerHTML = `
+                <thead>
+                    <tr>
+                        <th class="col-image">Фото</th>
+                        <th class="col-name">Наименование</th>
+                        <th class="col-desc">Описание</th>
+                        <th class="col-regions">Регионы / Наличие</th>
+                        <th class="col-price">Цена / Купить</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td colspan="5" class="skeleton-row"></td></tr>
+                    <tr><td colspan="5" class="skeleton-row"></td></tr>
+                    <tr><td colspan="5" class="skeleton-row"></td></tr>
+                </tbody>
+            `;
+            resultsDiv.innerHTML = '';
+            resultsDiv.appendChild(table);
+        }
+        
+        // Функция для отображения результатов
+        function renderResults(items) {
+            // Если нет результатов
+            if (!Array.isArray(items) || items.length === 0) {
+                if (!$('.results-table')) {
+                    resultsDiv.innerHTML = '<div class="no-results">Ничего не найдено. Попробуйте изменить запрос.</div>';
+                }
                 return;
             }
-
-            // Создаем таблицу как OEMsTrade
-            const tableHeader = `
-                <table class="results-table">
+            
+            // Создаем таблицу, если её еще нет
+            let tableBody;
+            if (!$('.results-table')) {
+                const table = document.createElement('table');
+                table.className = 'results-table';
+                table.innerHTML = `
                     <thead>
                         <tr>
                             <th class="col-image">Фото</th>
@@ -388,144 +555,197 @@
                             <th class="col-desc">Описание</th>
                             <th class="col-regions">Регионы / Наличие</th>
                             <th class="col-price">Цена / Купить</th>
-                            <th>Действия</th>
                         </tr>
                     </thead>
-                    <tbody id="resultsTableBody">
-            `;
-
-            const tableRows = list.map(item => {
+                    <tbody></tbody>
+                `;
+                resultsDiv.innerHTML = '';
+                resultsDiv.appendChild(table);
+                tableBody = table.querySelector('tbody');
+            } else {
+                tableBody = $('.results-table tbody');
+                
+                // Удаляем скелетон-лоадер, если он есть
+                $$('.skeleton-row').forEach(row => {
+                    const tr = row.closest('tr');
+                    if (tr) tr.remove();
+                });
+            }
+            
+            // Добавляем новые строки
+            for (const item of items) {
+                // Пропускаем дубликаты по MPN
+                if (item.mpn && seenMpns.has(item.mpn)) {
+                    continue;
+                }
+                
+                // Добавляем MPN в множество
+                if (item.mpn) {
+                    seenMpns.add(item.mpn);
+                }
+                
                 // Обработка изображения
-                const imageHtml = item.image || item.thumb || item.gallery?.[0] ?
-                    `<img src="${item.image || item.thumb || item.gallery?.[0]}" alt="Фото" class="product-thumb" onerror="this.style.display='none'">` :
+                const imageHtml = item.image_url || item.image || item.gallery?.[0] ?
+                    `<img src="${item.image_url || item.image || item.gallery?.[0]}" alt="Фото" class="product-thumb" onerror="this.style.display='none'">` :
                     '<div style="width:60px;height:60px;background:#f3f4f6;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:10px;color:#9ca3af;">Нет фото</div>';
-
+                
                 // Название и бренд
                 const nameHtml = `
                     <div class="product-name">
-                        <a href="/ui/product.html?id=${enc(item.id || '')}" target="_blank">
-                            ${item.title || item.mpn || item.sku || 'Без названия'}
-                        </a>
+                        ${item.title || item.mpn || 'Без названия'}
                     </div>
                     <div class="product-brand">
-                        ${[item.brand, item.mpn, item.sku].filter(Boolean).join(' • ')}
+                        ${[item.brand, item.mpn].filter(Boolean).join(' • ')}
                     </div>
                 `;
-
+                
                 // Описание
                 const descHtml = `<div class="product-desc">${item.description || item.desc || '—'}</div>`;
-
+                
                 // Регионы и наличие
-                const regions = item.regions || [];
-                const regionItems = regions.slice(0, 4).map(region => {
-                    const stock = item.total_stock || 0;
+                const regions = item.offers || [];
+                const regionItems = regions.slice(0, 4).map(offer => {
+                    const region = offer.region || 'Регион';
+                    const stock = offer.stock || 0;
                     return `<span class="region-item">${region}: <span class="region-stock">${stock}</span></span>`;
                 });
                 const regionsHtml = regionItems.length > 0 ?
                     `<div class="regions-list">${regionItems.join('')}</div>` :
                     '<div class="regions-list">—</div>';
-
+                
                 // Цена и кнопка покупки
-                const priceRub = item.price_min_rub;
-                const buyUrl = item.url || '#';
-
+                const priceRub = item.price_min_rub || 0;
                 const priceHtml = `
                     <div class="price-main">${priceRub ? formatRub(priceRub) : '—'}</div>
-                    <a href="${buyUrl}" class="buy-button" target="_blank" rel="noopener">Купить</a>
+                    <button class="buy-button" onclick="toggleProductCard(this, ${JSON.stringify(item).replace(/"/g, '&quot;')})">Открыть</button>
                 `;
-
-                // Кнопка "Открыть"
-                const expandButtonHtml = `
-                    <button class="expand-button" data-product-id="${item.id || item.mpn}">Открыть</button>
+                
+                // Создаем строку
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td class="col-image">${imageHtml}</td>
+                    <td class="col-name">${nameHtml}</td>
+                    <td class="col-desc">${descHtml}</td>
+                    <td class="col-regions">${regionsHtml}</td>
+                    <td class="col-price">${priceHtml}</td>
                 `;
-
-                return `
-                    <tr data-mpn="${item.mpn || ''}">
-                        <td class="col-image">${imageHtml}</td>
-                        <td class="col-name">${nameHtml}</td>
-                        <td class="col-desc">${descHtml}</td>
-                        <td class="col-regions">${regionsHtml}</td>
-                        <td class="col-price">${priceHtml}</td>
-                        <td>${expandButtonHtml}</td>
-                    </tr>
-                `;
-            }).join('');
-
-            const tableFooter = `
-                    </tbody>
-                </table>
-            `;
-
-            out.innerHTML = tableHeader + tableRows + tableFooter;
-
-            // Добавляем обработчики для кнопок "Открыть"
-            document.querySelectorAll('.expand-button').forEach(button => {
-                button.addEventListener('click', () => {
-                    const productId = button.getAttribute('data-product-id');
-                    const row = button.closest('tr');
-                    toggleProductCard(list.find(item => (item.id === productId) || (item.mpn === productId)), row);
-                });
-            });
+                tableBody.appendChild(row);
+            }
         }
-
-        function toggleProductCard(product, rowElement) {
-            let expandedCardRow = rowElement.nextElementSibling;
-
-            // Если следующий элемент уже карточка товара, переключаем её
-            if (expandedCardRow && expandedCardRow.classList.contains('product-card-row')) {
-                const card = expandedCardRow.querySelector('.product-card-expanded');
-                card.classList.toggle('active');
-                if (!card.classList.contains('active')) {
-                    expandedCardRow.remove(); // Удаляем при сворачивании
-                }
+        
+        // Функция для отображения/скрытия карточки товара
+        function toggleProductCard(button, item) {
+            // Находим строку таблицы
+            const row = button.closest('tr');
+            
+            // Проверяем, есть ли уже карточка товара
+            let cardRow = row.nextElementSibling;
+            if (cardRow && cardRow.classList.contains('product-card-row')) {
+                // Если карточка уже есть, удаляем её
+                cardRow.remove();
                 return;
             }
-
-            // Сворачиваем любые другие открытые карточки
-            document.querySelectorAll('.product-card-expanded.active').forEach(card => {
-                card.classList.remove('active');
-                card.closest('.product-card-row').remove();
-            });
-
-            // Создаем новую строку с карточкой товара
-            expandedCardRow = document.createElement('tr');
-            expandedCardRow.classList.add('product-card-row');
-            expandedCardRow.innerHTML = `
-                <td colspan="6">
-                    <div class="product-card-expanded">
-                        <div class="product-card-image-container">
-                            <img src="${product.image || 'https://via.placeholder.com/200'}" alt="${product.title}" class="product-card-image">
-                        </div>
-                        <div class="product-card-details">
-                            <h3>${product.title}</h3>
-                            <p><strong>MPN:</strong> ${product.mpn || 'N/A'}</p>
-                            <p><strong>Производитель:</strong> ${product.brand || 'N/A'}</p>
-                            <p><strong>Описание:</strong> ${product.description || product.desc || 'N/A'}</p>
-                            <p><strong>Корпус:</strong> ${product.package || 'N/A'}</p>
-                            <div class="product-card-offers">
-                                <div class="price">${product.price_min_rub ? `от ${product.price_min_rub.toFixed(2)} ₽` : 'Цена не указана'}</div>
-                                <div class="stock">На складе: ${product.total_stock !== undefined ? product.total_stock : 'N/A'}</div>
-                                <a href="${product.url || '#'}" target="_blank" class="order-button">Заказать</a>
-                            </div>
-                            ${product.datasheet_urls && product.datasheet_urls.length > 0 ? `
-                            <div class="product-card-datasheets">
-                                <h4>Документация:</h4>
-                                ${product.datasheet_urls.map(dsUrl => `<a href="${dsUrl}" target="_blank">PDF Datasheet</a>`).join('')}
-                            </div>` : ''}
-                            ${product.regions && product.regions.length > 0 ? `
-                            <p><strong>Регионы:</strong> ${product.regions.join(', ')}</p>` : ''}
-                        </div>
+            
+            // Закрываем все открытые карточки
+            $$('.product-card-row').forEach(r => r.remove());
+            
+            // Создаем строку для карточки товара
+            cardRow = document.createElement('tr');
+            cardRow.className = 'product-card-row';
+            
+            // Создаем карточку товара
+            const card = document.createElement('td');
+            card.colSpan = 5;
+            
+            // Формируем галерею изображений
+            const gallery = item.gallery || [];
+            const mainImage = item.image_url || item.image || gallery[0] || '';
+            
+            // Формируем технические характеристики
+            const specs = item.technical_specs || {};
+            const specsHtml = Object.keys(specs).length > 0 ?
+                `<table class="specs-table">
+                    ${Object.entries(specs).map(([key, value]) => `
+                        <tr>
+                            <td>${key}</td>
+                            <td>${value}</td>
+                        </tr>
+                    `).join('')}
+                </table>` :
+                '<p>Нет технических характеристик</p>';
+            
+            // Формируем даташиты
+            const datasheets = item.datasheet_urls || [];
+            const datasheetsHtml = datasheets.length > 0 ?
+                `<div class="product-card-datasheets">
+                    <h4>Документация</h4>
+                    ${datasheets.map((url, index) => `
+                        <a href="${url}" target="_blank" class="datasheet-link">
+                            Datasheet ${index + 1}
+                        </a>
+                    `).join('')}
+                </div>` :
+                '';
+            
+            // Формируем HTML карточки
+            card.innerHTML = `
+                <div class="product-card-expanded">
+                    <div class="product-card-gallery">
+                        <img src="${mainImage}" alt="${item.title}" class="product-card-image">
                     </div>
-                </td>
+                    
+                    <div class="product-card-meta">
+                        <h3>${item.title || item.mpn || 'Без названия'}</h3>
+                        <p><strong>MPN:</strong> ${item.mpn || 'Не указан'}</p>
+                        <p><strong>Производитель:</strong> ${item.brand || 'Не указан'}</p>
+                        <p><strong>Корпус:</strong> ${item.package || 'Не указан'}</p>
+                    </div>
+                    
+                    <div class="product-card-order">
+                        <div class="product-card-price">
+                            ${item.price_min_rub ? formatRub(item.price_min_rub) : 'Цена по запросу'}
+                        </div>
+                        
+                        <div class="product-card-stock">
+                            В наличии: ${item.total_stock || 0} шт.
+                        </div>
+                        
+                        <div class="product-card-regions">
+                            Регионы: ${item.regions?.join(', ') || 'Не указаны'}
+                        </div>
+                        
+                        <div class="product-card-buttons">
+                            <a href="${item.url || '#'}" target="_blank" class="buy-button">Купить на сайте</a>
+                        </div>
+                        
+                        ${datasheetsHtml}
+                    </div>
+                    
+                    <div class="product-card-desc">
+                        <h4>Описание</h4>
+                        <p>${item.description || item.desc || 'Нет описания'}</p>
+                    </div>
+                    
+                    <div class="product-card-specs">
+                        <h4>Технические характеристики</h4>
+                        ${specsHtml}
+                    </div>
+                </div>
             `;
-            rowElement.after(expandedCardRow);
-
-            // Запускаем анимацию
+            
+            // Добавляем карточку в строку
+            cardRow.appendChild(card);
+            
+            // Добавляем строку после текущей
+            row.parentNode.insertBefore(cardRow, row.nextSibling);
+            
+            // Активируем карточку с небольшой задержкой для анимации
             setTimeout(() => {
-                expandedCardRow.querySelector('.product-card-expanded').classList.add('active');
+                cardRow.querySelector('.product-card-expanded').classList.add('active');
             }, 10);
         }
-
+        
+        // Функция для форматирования цены в рублях
         function formatRub(amount) {
             return new Intl.NumberFormat('ru-RU', {
                 style: 'currency',
@@ -534,83 +754,93 @@
                 maximumFractionDigits: 0
             }).format(amount);
         }
-
+        
+        // Функция для выполнения поиска
         function performSearch() {
-            const query = $('#searchInput').value.trim();
+            const query = searchInput.value.trim();
+            
             if (!query) {
-                out.innerHTML = '<div class="loading">Введите запрос для поиска</div>';
+                showMessage('Введите запрос для поиска', 'warning');
                 return;
             }
-
-            out.innerHTML = '<div class="loading">Поиск... Это может занять несколько секунд.</div>';
-
-            // 1) Сначала запускаем SSE (live search)
-            const src = `/api/live/search?q=${enc(query)}`;
-            const es = new EventSource(src);
-            let got = false;
-            let items = [];
-
-            es.addEventListener("item", ev => {
-                const item = JSON.parse(ev.data);
-                items.push(item);
-                renderResults(items);
+            
+            // Очищаем предыдущие результаты и сообщения
+            clearMessages();
+            resultsDiv.innerHTML = '';
+            seenMpns.clear();
+            
+            // Показываем сообщение о начале поиска
+            showMessage('Ищем в источниках (до 10 сек)...', 'info');
+            
+            // Показываем скелетон-лоадер
+            showSkeletonLoader();
+            
+            // Подключаемся к SSE
+            const eventSource = new EventSource(`/api/live/search?q=${enc(query)}`);
+            
+            // Обработчик для события start
+            eventSource.addEventListener('start', event => {
+                const data = JSON.parse(event.data);
+                console.log('Search started:', data);
             });
-
-            es.addEventListener("results", ev => {
-                got = true;
-                const j = JSON.parse(ev.data);
-                renderResults(j.items || j.hits || []);
-                es.close();
+            
+            // Обработчик для события item
+            eventSource.addEventListener('item', event => {
+                const item = JSON.parse(event.data);
+                console.log('Received item:', item);
+                renderResults([item]);
             });
-
-            es.addEventListener("done", ev => {
-                got = true;
-                es.close();
-                if (items.length === 0) {
-                    fallback();
+            
+            // Обработчик для события note
+            eventSource.addEventListener('note', event => {
+                const data = JSON.parse(event.data);
+                showMessage(data.message, 'info');
+            });
+            
+            // Обработчик для события error
+            eventSource.addEventListener('error', event => {
+                console.error('SSE error:', event);
+                showMessage('Ошибка при получении данных. Попробуйте еще раз.', 'error');
+                eventSource.close();
+            });
+            
+            // Обработчик для события done
+            eventSource.addEventListener('done', event => {
+                const data = JSON.parse(event.data);
+                console.log('Search done:', data);
+                
+                if (data.count === 0) {
+                    showMessage('Ничего не найдено. Попробуйте изменить запрос или повторить позже.', 'warning');
+                    resultsDiv.innerHTML = '<div class="no-results">Ничего не найдено. Попробуйте изменить запрос.</div>';
+                } else {
+                    showMessage(`Поиск завершен. Найдено товаров: ${data.count}`, 'info');
                 }
+                
+                eventSource.close();
             });
-
-            es.addEventListener("error", () => {
-                es.close();
-                if (!got) fallback();
-            });
-
-            // 2) Через 5 секунд — фолбэк на синхронный поиск
+            
+            // Устанавливаем таймаут на 10 секунд
             setTimeout(() => {
-                if (!got && items.length === 0) {
-                    es.close();
-                    fallback();
+                if (eventSource.readyState !== 2) { // 2 = CLOSED
+                    eventSource.close();
+                    showMessage('Превышено время ожидания. Показаны найденные результаты.', 'warning');
                 }
-            }, 5000);
-
-            function fallback() {
-                console.log('🔄 Fallback to regular search API');
-                fetch(`/api/search?q=${enc(query)}`)
-                    .then(r => r.json())
-                    .then(j => {
-                        renderResults(j.items || j.hits || []);
-                    })
-                    .catch(() => {
-                        out.innerHTML = '<div class="error">Поиск временно недоступен. Попробуйте обновить страницу.</div>';
-                    });
-            }
+            }, 10000);
         }
-
-        // Автопоиск при Enter
-        $('#searchInput').addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
+        
+        // Обработчики событий
+        searchButton.addEventListener('click', performSearch);
+        
+        searchInput.addEventListener('keypress', event => {
+            if (event.key === 'Enter') {
                 performSearch();
             }
         });
-
-        // Автопоиск при загрузке страницы с параметром q
+        
+        // Автоматический поиск при загрузке страницы, если есть параметр q
         if (q) {
             performSearch();
         }
-
-        // Глобальная функция для кнопки
-        window.performSearch = performSearch;
     </script>
 </body>
 </html>

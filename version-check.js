@@ -39,12 +39,12 @@ for (const [name, version] of Object.entries(dependencies)) {
     if (fs.existsSync(packagePath)) {
       const installedPackage = JSON.parse(fs.readFileSync(packagePath, 'utf8'));
       console.log(`✅ ${name}: ${installedPackage.version} (требуется: ${version})`);
-      
+
       // Проверка совместимости с текущей версией Node.js
       if (installedPackage.engines && installedPackage.engines.node) {
         const requiredNodeVersion = installedPackage.engines.node;
         console.log(`   - Требуемая версия Node.js: ${requiredNodeVersion}`);
-        
+
         // Проверка на совместимость (упрощенная)
         if (requiredNodeVersion.startsWith('>=')) {
           const minVersion = requiredNodeVersion.substring(2);
@@ -53,19 +53,19 @@ for (const [name, version] of Object.entries(dependencies)) {
           }
         }
       }
-      
+
       // Проверка типа модуля (ESM/CommonJS)
       if (installedPackage.type === 'module') {
         console.log(`   - Тип модуля: ESM`);
       } else {
         console.log(`   - Тип модуля: CommonJS`);
       }
-      
+
       // Проверка специфичных зависимостей
       if (name === 'cheerio') {
         console.log(`   - Правильный импорт: import { load } from 'cheerio';`);
       }
-      
+
     } else {
       console.warn(`⚠️ ${name}: не установлен (требуется: ${version})`);
     }
@@ -103,14 +103,14 @@ console.log('\nПроверка завершена!');
 function compareVersions(v1, v2) {
   const v1Parts = v1.replace('v', '').split('.').map(Number);
   const v2Parts = v2.replace('v', '').split('.').map(Number);
-  
+
   for (let i = 0; i < Math.max(v1Parts.length, v2Parts.length); i++) {
     const v1Part = v1Parts[i] || 0;
     const v2Part = v2Parts[i] || 0;
-    
+
     if (v1Part > v2Part) return 1;
     if (v1Part < v2Part) return -1;
   }
-  
+
   return 0;
 }

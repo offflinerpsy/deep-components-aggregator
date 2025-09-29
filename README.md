@@ -1,138 +1,118 @@
-# DeepAgg - Агрегатор электронных компонентов
+# Deep Aggregator v2 (L03)
 
-Проект для агрегации данных об электронных компонентах из различных источников с живым поиском.
+Агрегатор электронных компонентов с живым поиском, ротацией API-ключей и чанковым импортом данных.
 
-## Особенности
+## Основные возможности
 
-- Быстрый поиск по локальному индексу
-- Живой поиск с использованием SSE (Server-Sent Events)
-- Поддержка нескольких провайдеров скрапинга с ротацией ключей
-- Кэширование HTML с TTL
-- Конвертация валют через ЦБ РФ
-- Интерфейс в стиле OEMs с раскладной карточкой товара
+- **Живой поиск (SSE)** - поиск компонентов в реальном времени с использованием Server-Sent Events
+- **Ротация API-ключей** - автоматическая ротация ключей API для скрапинга с обработкой ошибок и таймаутов
+- **HTML-кэш** - кэширование HTML-страниц с различными TTL для разных доменов и поддержкой stale-if-error
+- **Чанковый импорт** - потоковая обработка больших файлов с URL'ами (до 1 GB) без загрузки в память
+- **Очереди задач** - управление параллельностью и скоростью выполнения задач с p-queue
+- **Диагностика** - подробное логирование и генерация отчетов для анализа работы системы
+- **E2E тесты** - автоматизированное тестирование с использованием Playwright
+
+## Установка и запуск
+
+### Требования
+
+- Node.js 18+
+- npm 9+
+- Nginx (для продакшена)
+
+### Локальная разработка
+
+```bash
+# Клонирование репозитория
+git clone https://github.com/your-username/deep-aggregator-v2.git
+cd deep-aggregator-v2
+
+# Установка зависимостей
+npm install
+
+# Создание необходимых директорий
+mkdir -p secrets/apis data/cache/html data/cache/meta data/db/products data/idx data/state logs/_diag loads/urls
+
+# Добавление API-ключей
+echo "your-scraperapi-key" > secrets/apis/scraperapi.txt
+echo "your-scrapingbee-key" > secrets/apis/scrapingbee.txt
+echo "your-scrapingbot-key" > secrets/apis/scrapingbot.txt
+
+# Обновление курсов валют
+npm run rates:refresh
+
+# Запуск сервера разработки
+npm run dev
+```
+
+### Импорт данных и построение индекса
+
+```bash
+# Импорт URL'ов ChipDip
+npm run data:ingest:chipdip
+
+# Построение поискового индекса
+npm run data:index:build
+```
+
+### Тестирование
+
+```bash
+# Smoke-тесты
+npm run smoke
+
+# E2E тесты
+npm run test:e2e
+
+# Диагностика живого поиска
+npm run diag:live "LM317"
+
+# Генерация отчета по диагностике
+npm run diag:report --dir _diag/2025-09-29T00-00-00-000Z
+```
+
+### Деплой на сервер
+
+```bash
+# Деплой на удаленный сервер
+npm run deploy
+```
 
 ## Структура проекта
 
-```
-├── data/                      # Данные
-│   ├── cache/                 # Кэш HTML
-│   ├── db/                    # База данных
-│   ├── idx/                   # Поисковый индекс
-│   ├── state/                 # Состояние приложения
-│   └── rates.json             # Курсы валют
-├── loads/                     # Загрузки
-│   └── urls/                  # URL-ы для загрузки
-├── public/                    # Статические файлы
-│   ├── css/                   # Стили
-│   ├── js/                    # JavaScript
-│   └── ui/                    # UI компоненты
-├── scripts/                   # Скрипты
-├── secrets/                   # Секреты (не в git)
-│   └── apis/                  # API ключи
-├── src/                       # Исходный код
-│   ├── api/                   # API
-│   ├── core/                  # Ядро
-│   ├── currency/              # Валюты
-│   ├── db/                    # База данных
-│   ├── files/                 # Файлы
-│   ├── live/                  # Живой поиск
-│   ├── parsers/               # Парсеры
-│   └── scrape/                # Скрапинг
-└── tests/                     # Тесты
-    └── e2e/                   # E2E тесты
-```
+- `src/` - исходный код
+  - `api/` - API-эндпоинты
+  - `core/` - ядро системы (поиск, хранение, канонизация)
+  - `currency/` - работа с валютами
+  - `db/` - работа с базой данных
+  - `live/` - живой поиск
+  - `parsers/` - парсеры для различных источников
+  - `scrape/` - скрапинг и кэширование
+- `scripts/` - скрипты для различных задач
+- `tests/` - тесты
+- `public/` - статические файлы
+- `data/` - данные (кэш, индексы, продукты)
+- `secrets/` - секретные данные (API-ключи)
+- `logs/` - логи
+- `_diag/` - диагностические данные
+- `_reports/` - отчеты
 
-## Установка
+## API
 
-### Зависимости
+### Поиск
 
-```bash
-npm install express undici cheerio fast-xml-parser nanoid
-```
+- `GET /api/search?q=<query>` - синхронный поиск
+- `GET /api/live/search?q=<query>` - живой поиск с SSE
 
-На Windows может потребоваться установка дополнительных инструментов для native-модулей:
-- Visual Studio Build Tools с "Desktop development with C++" workload
-- Python 3.x
+### Продукты
 
-### Настройка
+- `GET /api/product?mpn=<mpn>` - получение информации о продукте по MPN
+- `GET /api/product?url=<url>` - получение информации о продукте по URL
 
-1. Создайте необходимые директории:
-```bash
-mkdir -p secrets/apis data/cache/html data/cache/meta data/db/products data/idx data/state loads/urls
-```
+### Системные
 
-2. Добавьте API ключи в соответствующие файлы:
-```bash
-echo "YOUR_API_KEY" > secrets/apis/scraperapi.txt
-echo "YOUR_API_KEY" > secrets/apis/scrapingbee.txt
-echo "YOUR_API_KEY" > secrets/apis/scrapingbot.txt
-```
+- `GET /api/health` - проверка состояния системы
 
-## Запуск
+## Лицензия
 
-1. Обновите курсы валют:
-```bash
-npm run rates:refresh
-```
-
-2. Запустите сервер:
-```bash
-npm start
-```
-
-3. Откройте браузер по адресу http://localhost:9201/
-
-## Скрипты
-
-- `npm start` - Запуск сервера
-- `npm run migrate` - Миграция SQLite
-- `npm run rates:refresh` - Обновление курсов валют
-- `npm run data:ingest:chipdip` - Загрузка данных с ChipDip
-- `npm run data:index:build` - Построение поискового индекса
-- `npm run smoke` - Запуск smoke-тестов
-- `npm run test:e2e` - Запуск E2E тестов
-- `npm run diag:live` - Запуск диагностики живого поиска
-- `npm run deploy` - Деплой на продакшн (Linux)
-- `npm run deploy:win` - Деплой на продакшн (Windows)
-
-## Деплой
-
-### Linux
-
-```bash
-bash prod-deploy.sh
-```
-
-### Windows
-
-```batch
-deploy-one-shot.bat
-```
-
-## Диагностика
-
-Для диагностики живого поиска:
-
-```bash
-npm run diag:live "LM317"
-```
-
-Результаты будут сохранены в `data/_diag/<timestamp>/trace.txt`.
-
-## Nginx конфигурация
-
-Для корректной работы SSE необходимо настроить Nginx:
-
-```nginx
-location /api/ {
-  proxy_pass http://127.0.0.1:9201;
-  proxy_http_version 1.1;
-  proxy_set_header Connection "";
-  proxy_set_header Host $host;
-  proxy_read_timeout 1h;
-
-  # SSE: отключить буферизацию (иначе события «липнут»)
-  proxy_buffering off;
-  add_header X-Accel-Buffering no;
-}
-```
+MIT

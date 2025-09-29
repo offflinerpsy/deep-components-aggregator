@@ -1,41 +1,73 @@
+/**
+ * Scraping-Bot провайдер для скрапинга
+ * @module src/scrape/providers/scrapingbot
+ */
+
 import { fetch } from 'undici';
+import fs from 'node:fs';
+import path from 'node:path';
 
 /**
- * Выполняет запрос через Scraping-Bot
- * @param {string} url URL для скрапинга
- * @param {object} options Дополнительные опции
- * @param {number} options.timeoutMs Таймаут запроса в миллисекундах
- * @param {object} options.params Дополнительные параметры для Scraping-Bot
- * @returns {Promise<object>} Результат запроса
+ * Получить HTML страницы через Scraping-Bot
+ * @param {string} url - URL страницы для скрапинга
+ * @param {Object} [options] - Опции запроса
+ * @param {number} [options.timeoutMs=12000] - Таймаут запроса в миллисекундах
+ * @param {Object} [options.params={}] - Дополнительные параметры для Scraping-Bot
+ * @returns {Promise<Object>} Результат запроса
  */
-export const get = async (url) => {
-  return await fetchHtml(url);
-};
-
 export async function fetchHtml(url, { timeoutMs = 12000, params = {} } = {}) {
-  const key = process.env.SCRAPINGBOT_KEY;
-
-  // Создаем URL для запроса
-  const apiUrl = new URL('https://api.scraping-bot.io/scrape');
-  apiUrl.searchParams.set('token', key);
-  apiUrl.searchParams.set('url', url);
-
-  // Добавляем дополнительные параметры
-  for (const [key, value] of Object.entries(params)) {
-    apiUrl.searchParams.set(key, value);
+  // Получаем ключ API из файла или переменной окружения
+  let key;
+  try {
+    const keysPath = path.resolve('secrets/apis/scrapingbot.txt');
+    if (fs.existsSync(keysPath)) {
+      const keys = fs.readFileSync(keysPath, 'utf8').split(/\r?\n/).filter(Boolean);
+      key = keys[0]; // Используем первый ключ из файла
+    } else {
+      key = process.env.SCRAPINGBOT_KEY;
+    }
+  } catch (error) {
+    return {
+      ok: false,
+      status: 'config_error',
+      error: 'Не удалось получить API ключ Scraping-Bot',
+      provider: 'scrapingbot'
+    };
   }
+
+  if (!key) {
+    return {
+      ok: false,
+      status: 'config_error',
+      error: 'API ключ Scraping-Bot не найден',
+      provider: 'scrapingbot'
+    };
+  }
+
+  // Формируем запрос для Scraping-Bot
+  const apiUrl = 'https://api.scraping-bot.io/scrape/raw-html';
 
   // Создаем контроллер для таймаута
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
 
+  // Базовая авторизация для Scraping-Bot (API ключ как пароль)
+  const auth = Buffer.from(`scraping-bot:${key}`).toString('base64');
+
   try {
-    const response = await fetch(apiUrl.toString(), {
+    const response = await fetch(apiUrl, {
+      method: 'POST',
       signal: controller.signal,
       headers: {
-        'Accept': 'text/html,application/xhtml+xml',
-        'Accept-Language': 'ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7'
-      }
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': `Basic ${auth}`
+      },
+      body: JSON.stringify({
+        url: url,
+        useChrome: false,
+        ...params
+      })
     });
 
     if (!response.ok) {
@@ -47,12 +79,22 @@ export async function fetchHtml(url, { timeoutMs = 12000, params = {} } = {}) {
       };
     }
 
-    const html = await response.text();
+    const data = await response.json();
+
+    if (!data.success) {
+      return {
+        ok: false,
+        status: 'api_error',
+        error: data.error || 'Неизвестная ошибка API',
+        provider: 'scrapingbot',
+        usedKey: key?.slice(0, 8) + '...'
+      };
+    }
 
     return {
       ok: true,
       status: response.status,
-      html,
+      html: data.body,
       provider: 'scrapingbot',
       usedKey: key?.slice(0, 8) + '...'
     };
@@ -77,3 +119,15 @@ export async function fetchHtml(url, { timeoutMs = 12000, params = {} } = {}) {
     clearTimeout(timeoutId);
   }
 }
+
+/**
+ * Получить HTML страницы (алиас для fetchHtml)
+ * @param {string} url - URL страницы для скрапинга
+ * @param {Object} [options] - Опции запроса
+ * @returns {Promise<Object>} Результат запроса
+ */
+export const get = async (url, options) => {
+  return await fetchHtml(url, options);
+};
+
+export default { fetchHtml, get };

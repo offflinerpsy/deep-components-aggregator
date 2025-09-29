@@ -1,134 +1,204 @@
-import crypto from 'node:crypto';
+/**
+ * Определение канонического формата продукта
+ * @module src/core/canon
+ */
 
 /**
- * Генерирует уникальный идентификатор для элемента
- * @returns {string} Уникальный идентификатор
+ * Валидировать канонический объект продукта
+ * @param {Object} product - Продукт для валидации
+ * @returns {boolean} Результат валидации
  */
-export function generateId() {
-  return crypto.randomBytes(8).toString('hex');
-}
+export const validate = (product) => {
+  if (!product) return false;
+
+  // Проверяем наличие обязательных полей
+  const requiredFields = ['mpn', 'title'];
+  for (const field of requiredFields) {
+    if (!product[field]) {
+      return false;
+    }
+  }
+
+  return true;
+};
 
 /**
- * Нормализует MPN (Model Part Number)
- * @param {string} mpn Исходный MPN
- * @returns {string} Нормализованный MPN
+ * Нормализовать канонический объект продукта
+ * @param {Object} product - Продукт для нормализации
+ * @returns {Object} Нормализованный продукт
  */
-export function normalizeMpn(mpn) {
-  if (!mpn) return '';
+export const normalize = (product) => {
+  if (!product) return null;
 
-  // Удаляем невидимые символы и нормализуем пробелы
-  return mpn
-    .normalize('NFKC')
-    .replace(/[\u200B-\u200D\uFEFF]/g, '') // Невидимые символы
-    .replace(/\u00A0/g, ' ')              // Non-breaking space
-    .replace(/\s+/g, ' ')                 // Множественные пробелы
-    .trim();
-}
+  // Копируем объект, чтобы не изменять оригинал
+  const normalized = { ...product };
+
+  // Нормализуем MPN
+  if (normalized.mpn) {
+    normalized.mpn = normalized.mpn.trim().toUpperCase();
+  }
+
+  // Нормализуем бренд
+  if (normalized.brand) {
+    normalized.brand = normalized.brand.trim();
+  }
+
+  // Нормализуем заголовок
+  if (normalized.title) {
+    normalized.title = normalized.title.trim();
+  }
+
+  // Нормализуем описание
+  if (normalized.description) {
+    normalized.description = normalized.description.trim();
+  }
+
+  // Нормализуем массивы
+  if (Array.isArray(normalized.datasheet_urls)) {
+    normalized.datasheet_urls = normalized.datasheet_urls.filter(Boolean);
+  } else {
+    normalized.datasheet_urls = [];
+  }
+
+  if (Array.isArray(normalized.offers)) {
+    normalized.offers = normalized.offers.filter(Boolean);
+  } else {
+    normalized.offers = [];
+  }
+
+  // Нормализуем технические характеристики
+  if (normalized.technical_specs && typeof normalized.technical_specs === 'object') {
+    const specs = {};
+
+    for (const [key, value] of Object.entries(normalized.technical_specs)) {
+      if (key && value) {
+        specs[key.trim()] = value.toString().trim();
+      }
+    }
+
+    normalized.technical_specs = specs;
+  } else {
+    normalized.technical_specs = {};
+  }
+
+  return normalized;
+};
 
 /**
- * Проверяет, является ли строка валидным MPN
- * @param {string} mpn Строка для проверки
- * @returns {boolean} true, если строка является валидным MPN
+ * Создать пустой канонический объект продукта
+ * @returns {Object} Пустой продукт
  */
-export function isValidMpn(mpn) {
-  if (!mpn || typeof mpn !== 'string') return false;
-
-  // MPN обычно содержит буквы, цифры, дефисы и точки
-  // и имеет длину от 3 до 30 символов
-  return /^[A-Za-z0-9\-\.]{3,30}$/.test(mpn);
-}
-
-/**
- * Преобразует данные в каноническое представление
- * @param {object} data Исходные данные
- * @returns {object} Каноническое представление
- */
-export function toCanon(data) {
-  const mpn = normalizeMpn(data.mpn);
-
+export const createEmpty = () => {
   return {
-    id: data.id || generateId(),
-    mpn,
-    mpn_guess: data.mpn_guess || false,
-    brand: (data.brand || '').trim(),
-    title: (data.title || '').trim(),
-    description: (data.desc_short || data.description || '').trim(),
-    image_url: data.image_url || data.image || null,
-    images: Array.isArray(data.images) ? data.images.filter(Boolean) : [],
-    datasheets: Array.isArray(data.datasheets) ? data.datasheets.filter(Boolean) : [],
-    package: (data.package || '').trim(),
-    packaging: (data.packaging || '').trim(),
-    offers: Array.isArray(data.offers) ? data.offers.map(normalizeOffer) : [],
-    specs: data.specs || {},
-    source: data.source || '',
-    source_url: data.source_url || data.url || '',
-    price_min_rub: calculateMinPrice(data.offers),
-    regions: extractRegions(data.offers),
-    stock_total: calculateTotalStock(data.offers),
-    updated_at: new Date().toISOString()
+    mpn: null,
+    brand: null,
+    title: null,
+    description: null,
+    image_url: null,
+    datasheet_urls: [],
+    technical_specs: {},
+    package: null,
+    packaging: null,
+    offers: [],
+    source: null,
+    source_url: null
   };
-}
+};
 
 /**
- * Нормализует предложение (оффер)
- * @param {object} offer Исходное предложение
- * @returns {object} Нормализованное предложение
+ * Объединить два канонических объекта продукта
+ * @param {Object} target - Целевой продукт
+ * @param {Object} source - Исходный продукт
+ * @returns {Object} Объединенный продукт
  */
-function normalizeOffer(offer) {
+export const merge = (target, source) => {
+  if (!target) return normalize(source);
+  if (!source) return normalize(target);
+
+  const merged = { ...target };
+
+  // Объединяем простые поля (берем непустые значения из source)
+  const simpleFields = ['mpn', 'brand', 'title', 'description', 'image_url', 'package', 'packaging'];
+
+  for (const field of simpleFields) {
+    if (source[field] && !merged[field]) {
+      merged[field] = source[field];
+    }
+  }
+
+  // Объединяем массивы
+  if (Array.isArray(source.datasheet_urls)) {
+    merged.datasheet_urls = Array.from(new Set([
+      ...(merged.datasheet_urls || []),
+      ...source.datasheet_urls
+    ]));
+  }
+
+  // Объединяем технические характеристики
+  if (source.technical_specs && typeof source.technical_specs === 'object') {
+    merged.technical_specs = {
+      ...(merged.technical_specs || {}),
+      ...source.technical_specs
+    };
+  }
+
+  // Объединяем предложения
+  if (Array.isArray(source.offers)) {
+    merged.offers = [
+      ...(merged.offers || []),
+      ...source.offers
+    ];
+  }
+
+  return normalize(merged);
+};
+
+/**
+ * Преобразовать канонический объект продукта в объект для индексации
+ * @param {Object} product - Продукт для преобразования
+ * @returns {Object} Объект для индексации
+ */
+export const toIndexable = (product) => {
+  if (!product) return null;
+
+  const normalized = normalize(product);
+
+  // Создаем текстовое представление для полнотекстового поиска
+  const textParts = [
+    normalized.mpn,
+    normalized.brand,
+    normalized.title,
+    normalized.description,
+    normalized.package,
+    normalized.packaging
+  ].filter(Boolean);
+
+  // Добавляем технические характеристики в текст
+  if (normalized.technical_specs) {
+    for (const [key, value] of Object.entries(normalized.technical_specs)) {
+      textParts.push(`${key}: ${value}`);
+    }
+  }
+
+  // Формируем объект для индексации
   return {
-    region: (offer.region || '').trim(),
-    stock: typeof offer.stock === 'number' ? offer.stock : null,
-    price_native: typeof offer.price_native === 'number' ? offer.price_native :
-                 (typeof offer.price === 'number' ? offer.price : null),
-    price_rub: typeof offer.price_rub === 'number' ? offer.price_rub : null,
-    currency: (offer.currency || 'RUB').toUpperCase(),
-    source: offer.source || '',
-    url: offer.url || ''
+    id: normalized.mpn,
+    mpn: normalized.mpn,
+    brand: normalized.brand || '',
+    title: normalized.title || '',
+    description: normalized.description || '',
+    package: normalized.package || '',
+    packaging: normalized.packaging || '',
+    image_url: normalized.image_url || '',
+    datasheet_urls: normalized.datasheet_urls || [],
+    technical_specs: normalized.technical_specs || {},
+    text: textParts.join(' '),
+
+    // Агрегированные данные из предложений
+    regions: Array.from(new Set(normalized.offers.map(o => o.region).filter(Boolean))),
+    min_price_rub: Math.min(...normalized.offers.map(o => o.price_min_rub || Infinity).filter(p => p !== Infinity)) || null,
+    total_stock: normalized.offers.reduce((sum, o) => sum + (o.stock || 0), 0)
   };
-}
+};
 
-/**
- * Вычисляет минимальную цену в рублях
- * @param {Array} offers Массив предложений
- * @returns {number|null} Минимальная цена или null
- */
-function calculateMinPrice(offers) {
-  if (!Array.isArray(offers) || offers.length === 0) {
-    return null;
-  }
-
-  const prices = offers
-    .map(o => o.price_rub)
-    .filter(p => typeof p === 'number' && p > 0);
-
-  return prices.length > 0 ? Math.min(...prices) : null;
-}
-
-/**
- * Извлекает уникальные регионы из предложений
- * @param {Array} offers Массив предложений
- * @returns {Array} Массив уникальных регионов
- */
-function extractRegions(offers) {
-  if (!Array.isArray(offers)) {
-    return [];
-  }
-
-  return [...new Set(offers.map(o => o.region).filter(Boolean))];
-}
-
-/**
- * Вычисляет общее количество товара
- * @param {Array} offers Массив предложений
- * @returns {number} Общее количество товара
- */
-function calculateTotalStock(offers) {
-  if (!Array.isArray(offers)) {
-    return 0;
-  }
-
-  return offers
-    .map(o => o.stock)
-    .filter(s => typeof s === 'number')
-    .reduce((sum, stock) => sum + stock, 0);
-}
+export default { validate, normalize, createEmpty, merge, toIndexable };

@@ -1,35 +1,34 @@
 {
-  "name": "deep-components-aggregator",
-  "version": "1.0.0",
-  "description": "Агрегатор электронных компонентов с живым поиском",
-  "main": "server.js",
+  "name": "deep-agg-alpha",
+  "version": "0.1.0",
   "type": "module",
+  "description": "Deep Components Aggregator",
+  "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "migrate": "node scripts/migrate-sqlite.mjs",
-    "rates:refresh": "node scripts/refresh-rates.mjs",
-    "data:ingest:chipdip": "node scripts/ingest-chipdip-urls.mjs",
-    "data:index:build": "node scripts/build-index.mjs",
-    "smoke": "node scripts/smoke.mjs",
+    "dev": "node --watch server.js",
+    "rates:refresh": "node ./scripts/refresh-rates.mjs",
+    "data:ingest:chipdip": "node ./scripts/ingest-chipdip-urls.mjs --glob 'loads/urls/*.txt' --concurrency 4 --batch 100",
+    "data:index:build": "node ./scripts/build-index.mjs",
+    "smoke": "node ./scripts/smoke.mjs",
+    "smoke:prod": "node ./scripts/smoke.mjs --host=http://89.104.69.77",
     "test:e2e": "playwright test",
-    "diag:live": "node scripts/diag-live.mjs",
-    "deploy": "bash prod-deploy.sh",
-    "deploy:win": "deploy-one-shot.bat"
+    "diag:live": "node ./scripts/diag-live.mjs",
+    "diag:report": "node ./scripts/diag-report.mjs",
+    "deploy": "bash ./deploy-to-server.sh"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "dependencies": {
-    "@orama/orama": "^1.2.0",
-    "better-sqlite3": "^8.5.0",
-    "cheerio": "^1.1.2",
-    "express": "^4.21.2",
-    "fast-xml-parser": "^4.5.3",
-    "nanoid": "^4.0.2",
-    "p-limit": "^4.0.0",
-    "undici": "^5.22.1"
+    "@orama/orama": "^1.2.11",
+    "better-sqlite3": "^12.4.1",
+    "cheerio": "^1.0.0-rc.12",
+    "express": "^4.18.2",
+    "fast-xml-parser": "^4.3.2",
+    "glob": "^10.3.10",
+    "nanoid": "^5.0.3",
+    "p-queue": "^7.4.1",
+    "undici": "^5.26.3"
   },
   "devDependencies": {
-    "@playwright/test": "^1.35.1"
+    "@playwright/test": "^1.44.1"
   }
 }

@@ -1,238 +1,377 @@
-const state = { items: [], es: null };
+/**
+ * Клиентский JavaScript для Deep Components Aggregator
+ */
 
-export function liveSearch(q){
-  if (state.es) { try{ state.es.close(); }catch{} }
-  state.items = [];
-  renderTable([]);
-  const es = new EventSource(`/api/live/search?q=${encodeURIComponent(q)}`);
-  state.es = es;
+document.addEventListener('DOMContentLoaded', () => {
+  // Инициализация поиска
+  initSearch();
+});
 
-  es.addEventListener('start', e => {
-    document.getElementById('loading').classList.remove('hidden');
-    document.getElementById('no-results').classList.add('hidden');
+/**
+ * Инициализация формы поиска и обработка URL-параметров
+ */
+function initSearch() {
+  const searchForm = document.getElementById('searchForm');
+  const searchInput = document.getElementById('searchInput');
+
+  if (searchForm && searchInput) {
+    // Получаем параметр q из URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const query = urlParams.get('q');
+
+    // Если есть запрос в URL, выполняем поиск
+    if (query) {
+      searchInput.value = query;
+      performSearch(query);
+    }
+
+    // Обработчик отправки формы
+    searchForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const query = searchInput.value.trim();
+
+      if (query) {
+        // Обновляем URL
+        const newUrl = new URL(window.location);
+        newUrl.searchParams.set('q', query);
+        window.history.pushState({}, '', newUrl);
+
+        // Выполняем поиск
+        performSearch(query);
+      }
+    });
+  }
+}
+
+/**
+ * Выполнение поиска
+ * @param {string} query - Поисковый запрос
+ */
+function performSearch(query) {
+  const searchResults = document.getElementById('searchResults');
+
+  if (!searchResults) return;
+
+  // Показываем сообщение о загрузке
+  searchResults.innerHTML = '<div class="loading-message">Загрузка результатов...</div>';
+
+  // Закрываем карточку товара, если она открыта
+  closeProductCard();
+
+  // Выполняем живой поиск с SSE
+  liveSearch(query);
+}
+
+/**
+ * Выполнение живого поиска с использованием SSE
+ * @param {string} query - Поисковый запрос
+ */
+function liveSearch(query) {
+  const searchResults = document.getElementById('searchResults');
+
+  if (!searchResults) return;
+
+  // Создаем таблицу результатов
+  const tableTemplate = document.getElementById('resultsTableTemplate');
+  searchResults.innerHTML = tableTemplate.innerHTML;
+
+  const tbody = searchResults.querySelector('tbody');
+
+  // Добавляем скелетоны загрузки
+  const skeletonTemplate = document.getElementById('skeletonRowTemplate');
+  for (let i = 0; i < 5; i++) {
+    tbody.innerHTML += skeletonTemplate.innerHTML;
+  }
+
+  // Создаем EventSource для SSE
+  const eventSource = new EventSource(`/api/live/search?q=${encodeURIComponent(query)}`);
+
+  // Массив для хранения результатов
+  const results = [];
+
+  // Обработчик события start
+  eventSource.addEventListener('start', (event) => {
+    const data = JSON.parse(event.data);
+    console.log('Поиск начат:', data);
   });
 
-  es.addEventListener('item', e => {
-    const msg = JSON.parse(e.data);
-    if (msg?.item) {
-      state.items.push(msg.item);
-      renderTable(state.items);
+  // Обработчик события item
+  eventSource.addEventListener('item', (event) => {
+    const data = JSON.parse(event.data);
+
+    if (data.item) {
+      // Добавляем результат в массив
+      results.push(data.item);
+
+      // Обновляем таблицу
+      updateResultsTable(results);
     }
   });
 
-  es.addEventListener('done', e => {
-    es.close();
-    document.getElementById('loading').classList.add('hidden');
+  // Обработчик события note
+  eventSource.addEventListener('note', (event) => {
+    const data = JSON.parse(event.data);
+    console.log('Примечание:', data.message);
+  });
 
-    // Если пусто — показать подсказку/«ничего не найдено»
-    if (state.items.length === 0) {
-      document.getElementById('no-results').classList.remove('hidden');
+  // Обработчик события done
+  eventSource.addEventListener('done', (event) => {
+    const data = JSON.parse(event.data);
+    console.log('Поиск завершен:', data);
 
-      // Попробовать fallback к обычному поиску
-      fetch(`/api/search?q=${encodeURIComponent(q)}`)
-        .then(r => r.json())
-        .then(data => {
-          if (data.items && data.items.length > 0) {
-            state.items = data.items;
-            renderTable(state.items);
-            document.getElementById('no-results').classList.add('hidden');
-          }
-        })
-        .catch(err => console.error('Fallback search error:', err));
+    // Закрываем соединение
+    eventSource.close();
+
+    // Удаляем скелетоны
+    const skeletonRows = tbody.querySelectorAll('.skeleton-row');
+    skeletonRows.forEach(row => row.remove());
+
+    // Если нет результатов, показываем сообщение
+    if (results.length === 0) {
+      const emptyTemplate = document.getElementById('emptyResultsTemplate');
+      searchResults.innerHTML = emptyTemplate.innerHTML;
+    }
+  });
+
+  // Обработчик события error
+  eventSource.addEventListener('error', (event) => {
+    console.error('Ошибка SSE:', event);
+
+    // Закрываем соединение
+    eventSource.close();
+
+    // Если нет результатов, показываем сообщение об ошибке
+    if (results.length === 0) {
+      const errorTemplate = document.getElementById('errorTemplate');
+      searchResults.innerHTML = errorTemplate.innerHTML;
     }
   });
 }
 
-function renderTable(items) {
-  const tbody = document.querySelector('#results tbody');
+/**
+ * Обновление таблицы результатов
+ * @param {Array} results - Массив результатов
+ */
+function updateResultsTable(results) {
+  const searchResults = document.getElementById('searchResults');
+  const tbody = searchResults.querySelector('tbody');
+
   if (!tbody) return;
 
-  // Очищаем таблицу, если нет элементов
-  if (!items.length) {
-    tbody.innerHTML = '';
-    return;
-  }
+  // Удаляем все строки, кроме скелетонов
+  const rows = tbody.querySelectorAll('tr:not(.skeleton-row)');
+  rows.forEach(row => row.remove());
 
-  // Обновляем счетчик
-  const counter = document.getElementById('results-count');
-  if (counter) counter.textContent = items.length;
+  // Добавляем строки для результатов
+  results.forEach((item, index) => {
+    const row = document.createElement('tr');
+    row.setAttribute('data-mpn', item.mpn || '');
+    row.setAttribute('data-index', index);
 
-  // Обновляем таблицу
-  tbody.innerHTML = items.map(item => `
-    <tr>
-      <td><img class="thumb" src="${item.image_url || ''}" alt=""></td>
-      <td>
-        <div class="mpn">${item.mpn || ''}</div>
-        <div class="title">${item.title || ''}</div>
-      </td>
-      <td>${item.brand || ''}</td>
-      <td>${item.description || ''}</td>
-      <td>${item.package || ''}</td>
-      <td>${item.packaging || ''}</td>
-      <td>${(item.regions || []).map(r => `<span class="badge">${r}</span>`).join('')}</td>
-      <td>${item.stock_total || item.total_stock || 'По запросу'}</td>
-      <td>${item.price_min_rub || item.min_price_rub ? `${Math.round(item.price_min_rub || item.min_price_rub).toLocaleString('ru-RU')} ₽` : 'По запросу'}</td>
-      <td><button class="btn-open" data-id="${item.id || ''}" data-mpn="${item.mpn || ''}">Открыть</button></td>
-    </tr>
-  `).join('');
+    // Изображение
+    const imgCell = document.createElement('td');
+    if (item.image_url) {
+      const img = document.createElement('img');
+      img.src = item.image_url;
+      img.alt = item.title || 'Изображение товара';
+      img.style.width = '50px';
+      img.style.height = '50px';
+      img.style.objectFit = 'contain';
+      imgCell.appendChild(img);
+    }
+    row.appendChild(imgCell);
 
-  // Добавляем обработчики для кнопок
-  document.querySelectorAll('.btn-open').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const id = btn.dataset.id;
-      const mpn = btn.dataset.mpn;
-      const item = state.items.find(i => (i.id == id) || (i.mpn === mpn));
-      if (item) {
-        openProductModal(item);
-      }
+    // MPN / Название
+    const titleCell = document.createElement('td');
+    const mpnSpan = document.createElement('div');
+    mpnSpan.textContent = item.mpn || '';
+    mpnSpan.style.fontWeight = 'bold';
+    titleCell.appendChild(mpnSpan);
+
+    const titleSpan = document.createElement('div');
+    titleSpan.textContent = item.title || '';
+    titleCell.appendChild(titleSpan);
+    row.appendChild(titleCell);
+
+    // Производитель
+    const brandCell = document.createElement('td');
+    brandCell.textContent = item.brand || '';
+    row.appendChild(brandCell);
+
+    // Описание
+    const descCell = document.createElement('td');
+    descCell.textContent = item.description ? item.description.substring(0, 100) + (item.description.length > 100 ? '...' : '') : '';
+    row.appendChild(descCell);
+
+    // Корпус
+    const packageCell = document.createElement('td');
+    packageCell.textContent = item.package || '';
+    row.appendChild(packageCell);
+
+    // Упаковка
+    const packagingCell = document.createElement('td');
+    packagingCell.textContent = item.packaging || '';
+    row.appendChild(packagingCell);
+
+    // Регионы
+    const regionsCell = document.createElement('td');
+    if (item.regions && item.regions.length > 0) {
+      regionsCell.textContent = item.regions.join(', ');
+    }
+    row.appendChild(regionsCell);
+
+    // Наличие
+    const stockCell = document.createElement('td');
+    stockCell.textContent = item.total_stock || '0';
+    row.appendChild(stockCell);
+
+    // Цена от
+    const priceCell = document.createElement('td');
+    if (item.min_price_rub) {
+      priceCell.textContent = `${item.min_price_rub} ₽`;
+    }
+    row.appendChild(priceCell);
+
+    // Кнопка "Открыть"
+    const actionCell = document.createElement('td');
+    const openButton = document.createElement('button');
+    openButton.textContent = 'Открыть';
+    openButton.className = 'open-button';
+    openButton.addEventListener('click', () => {
+      openProductCard(item);
     });
+    actionCell.appendChild(openButton);
+    row.appendChild(actionCell);
+
+    // Добавляем строку в таблицу
+    tbody.appendChild(row);
   });
 }
 
-function openProductModal(item) {
-  const modal = document.getElementById('product-modal');
-  const content = document.getElementById('modal-content');
+/**
+ * Открытие карточки товара
+ * @param {Object} product - Данные о товаре
+ */
+function openProductCard(product) {
+  const productCardContainer = document.getElementById('productCardContainer');
+  const productCardTemplate = document.getElementById('productCardTemplate');
 
-  if (!modal || !content) return;
+  if (!productCardContainer || !productCardTemplate) return;
 
-  // Формируем HTML для модального окна
-  let html = `
-    <div class="product-card">
-      <div class="product-gallery">
-        <img src="${item.image_url || ''}" alt="${item.title || item.mpn || ''}">
-      </div>
-      <div class="product-info">
-        <h2>${item.title || ''}</h2>
-        <p><strong>MPN:</strong> ${item.mpn || ''}</p>
-        <p><strong>Производитель:</strong> ${item.brand || ''}</p>
-        <p>${item.description || ''}</p>
+  // Клонируем шаблон
+  const productCard = productCardTemplate.content.cloneNode(true);
 
-        <div class="product-specs">
-          <h3>Технические характеристики</h3>
-          <table>
-  `;
+  // Заполняем данные
+  const productImage = productCard.querySelector('.product-image');
+  if (product.image_url) {
+    productImage.src = product.image_url;
+    productImage.alt = product.title || 'Изображение товара';
+  } else {
+    productImage.src = '/img/no-image.png';
+    productImage.alt = 'Изображение отсутствует';
+  }
 
-  // Добавляем технические характеристики
-  if (item.specs) {
-    for (const [key, value] of Object.entries(item.specs)) {
-      html += `<tr><td>${key}</td><td>${value}</td></tr>`;
+  // Заголовок и метаданные
+  productCard.querySelector('.product-title').textContent = product.title || 'Название отсутствует';
+  productCard.querySelector('.product-manufacturer').textContent = product.brand || 'Производитель не указан';
+  productCard.querySelector('.product-mpn').textContent = `MPN: ${product.mpn || 'Не указан'}`;
+
+  // Описание
+  const descriptionElement = productCard.querySelector('.product-description');
+  if (product.description) {
+    const descTitle = document.createElement('h3');
+    descTitle.textContent = 'Описание';
+    descriptionElement.appendChild(descTitle);
+
+    const descText = document.createElement('p');
+    descText.textContent = product.description;
+    descriptionElement.appendChild(descText);
+  } else {
+    descriptionElement.style.display = 'none';
+  }
+
+  // Технические характеристики
+  const specsTable = productCard.querySelector('.specs-table tbody');
+  if (product.technical_specs && Object.keys(product.technical_specs).length > 0) {
+    for (const [key, value] of Object.entries(product.technical_specs)) {
+      const row = document.createElement('tr');
+
+      const th = document.createElement('th');
+      th.textContent = key;
+      row.appendChild(th);
+
+      const td = document.createElement('td');
+      td.textContent = value;
+      row.appendChild(td);
+
+      specsTable.appendChild(row);
     }
   } else {
-    html += `<tr><td colspan="2">Нет данных</td></tr>`;
+    productCard.querySelector('.product-specs').style.display = 'none';
   }
 
-  html += `
-          </table>
-        </div>
-
-        <div class="product-docs">
-          <h3>Документация</h3>
-  `;
-
-  // Добавляем документацию
-  if (item.datasheet_urls && item.datasheet_urls.length > 0) {
-    html += '<ul>';
-    for (const url of item.datasheet_urls) {
-      html += `<li><a href="${url}" target="_blank">PDF</a></li>`;
-    }
-    html += '</ul>';
+  // Документация
+  const docsLinks = productCard.querySelector('.docs-links');
+  if (product.datasheet_urls && product.datasheet_urls.length > 0) {
+    product.datasheet_urls.forEach((url, index) => {
+      const link = document.createElement('a');
+      link.href = url;
+      link.className = 'doc-link';
+      link.textContent = `Datasheet ${index + 1}`;
+      link.target = '_blank';
+      docsLinks.appendChild(link);
+    });
   } else {
-    html += '<p>Документация не найдена</p>';
+    productCard.querySelector('.product-docs').style.display = 'none';
   }
 
-  html += `
-        </div>
-      </div>
+  // Цена и наличие
+  productCard.querySelector('.price-value').textContent = product.min_price_rub || '0';
+  productCard.querySelector('.stock-value').textContent = product.total_stock || '0';
 
-      <div class="product-order">
-        <div class="price-box">
-          <h3>Цена</h3>
-          <p class="price">${item.price_min_rub || item.min_price_rub ? `${Math.round(item.price_min_rub || item.min_price_rub).toLocaleString('ru-RU')} ₽` : 'По запросу'}</p>
-        </div>
-
-        <div class="stock-box">
-          <h3>Наличие</h3>
-          <p>${item.stock_total || item.total_stock || 'По запросу'}</p>
-          <p>${(item.regions || []).join(', ') || 'Регион не указан'}</p>
-        </div>
-
-        <div class="order-form">
-          <h3>Заказать</h3>
-          <div class="form-group">
-            <label for="quantity">Количество</label>
-            <input type="number" id="quantity" min="1" value="1">
-          </div>
-
-          <div class="form-group">
-            <label for="email">Email</label>
-            <input type="email" id="email" placeholder="example@mail.ru">
-          </div>
-
-          <button id="order-btn" class="order-btn" data-mpn="${item.mpn || ''}">Оформить заказ</button>
-        </div>
-      </div>
-    </div>
-  `;
-
-  // Устанавливаем содержимое модального окна
-  content.innerHTML = html;
-
-  // Показываем модальное окно
-  modal.classList.remove('hidden');
-
-  // Добавляем обработчик для кнопки заказа
-  const orderBtn = document.getElementById('order-btn');
-  if (orderBtn) {
-    orderBtn.addEventListener('click', () => {
-      const mpn = orderBtn.dataset.mpn;
-      const quantity = document.getElementById('quantity')?.value || 1;
-      const email = document.getElementById('email')?.value || '';
-
-      if (!email) {
-        alert('Пожалуйста, укажите email');
-        return;
-      }
-
-      // Отправляем заказ
-      fetch('/api/order', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          mpn,
-          qty: quantity,
-          email
-        })
-      })
-      .then(r => r.json())
-      .then(data => {
-        if (data.ok) {
-          alert('Заказ успешно отправлен!');
-          modal.classList.add('hidden');
-        } else {
-          alert('Ошибка при отправке заказа');
-        }
-      })
-      .catch(err => {
-        console.error('Order error:', err);
-        alert('Ошибка при отправке заказа');
-      });
+  // Регионы
+  const regionsList = productCard.querySelector('.regions-list');
+  if (product.regions && product.regions.length > 0) {
+    product.regions.forEach(region => {
+      const regionTag = document.createElement('span');
+      regionTag.className = 'region-tag';
+      regionTag.textContent = region;
+      regionsList.appendChild(regionTag);
     });
+  } else {
+    productCard.querySelector('.product-regions').style.display = 'none';
   }
 
-  // Добавляем обработчик для закрытия модального окна
-  const closeBtn = modal.querySelector('.close-btn');
-  if (closeBtn) {
-    closeBtn.addEventListener('click', () => {
-      modal.classList.add('hidden');
-    });
-  }
-
-  // Закрытие при клике вне модального окна
-  modal.addEventListener('click', (e) => {
-    if (e.target === modal) {
-      modal.classList.add('hidden');
-    }
+  // Кнопка заказа
+  productCard.querySelector('.order-button').addEventListener('click', () => {
+    alert('Функция заказа в разработке');
   });
+
+  // Очищаем контейнер и добавляем карточку
+  productCardContainer.innerHTML = '';
+  productCardContainer.appendChild(productCard);
+
+  // Разворачиваем карточку
+  setTimeout(() => {
+    productCardContainer.classList.add('expanded');
+  }, 10);
+
+  // Прокручиваем к карточке
+  productCardContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+/**
+ * Закрытие карточки товара
+ */
+function closeProductCard() {
+  const productCardContainer = document.getElementById('productCardContainer');
+
+  if (productCardContainer) {
+    productCardContainer.classList.remove('expanded');
+
+    // Очищаем контейнер после анимации
+    setTimeout(() => {
+      productCardContainer.innerHTML = '';
+    }, 500);
+  }
 }

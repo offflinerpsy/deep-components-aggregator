@@ -1,16 +1,11 @@
-import fs from 'node:fs';
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
-
-// Получаем путь к директории модуля
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const rootDir = path.resolve(__dirname, '../..');
-
-// Путь к файлу с URL-ами ChipDip
-const CHIPDIP_URLS_FILE = path.join(rootDir, 'loads/urls/chipdip-products.txt');
+/**
+ * Модуль для классификации поисковых запросов
+ * @module src/live/query
+ */
 
 /**
- * Типы запросов
+ * Типы поисковых запросов
+ * @enum {string}
  */
 export const QueryType = {
   MPN: 'mpn',
@@ -20,79 +15,81 @@ export const QueryType = {
 };
 
 /**
- * Определяет тип запроса
- * @param {string} query Поисковый запрос
- * @returns {object} Объект с типом запроса и дополнительными данными
+ * Классифицировать поисковый запрос
+ * @param {string} query - Поисковый запрос
+ * @returns {Object} Тип запроса и нормализованный запрос
  */
-export function classifyQuery(query) {
-  if (!query) {
-    return { type: QueryType.UNKNOWN };
+export const classifyQuery = (query) => {
+  if (!query || typeof query !== 'string') {
+    return { type: QueryType.UNKNOWN, normalized: '' };
   }
 
-  // Проверяем, является ли запрос URL-ом
-  if (query.startsWith('http://') || query.startsWith('https://')) {
+  const normalized = query.trim();
+
+  // Проверяем, является ли запрос URL
+  if (normalized.startsWith('http://') || normalized.startsWith('https://')) {
     try {
-      const url = new URL(query);
-
-      // Проверяем, является ли URL-ом ChipDip
-      if (url.hostname === 'www.chipdip.ru' || url.hostname === 'chipdip.ru') {
-        if (url.pathname.includes('/product/') || url.pathname.includes('/product0/')) {
-          return { type: QueryType.URL, url: url.toString(), source: 'chipdip' };
-        }
-      }
-
-      return { type: QueryType.URL, url: url.toString() };
+      const url = new URL(normalized);
+      return { type: QueryType.URL, normalized };
     } catch (error) {
-      // Если не удалось распарсить URL, продолжаем проверку
+      // Не URL, продолжаем проверку
     }
   }
 
   // Проверяем, является ли запрос MPN
-  // MPN обычно содержит буквы, цифры, дефисы и точки
-  if (/^[A-Za-z0-9\-\.]{3,30}$/.test(query)) {
-    return { type: QueryType.MPN, mpn: query };
+  // MPN обычно содержит буквы и цифры, возможно дефисы, без пробелов
+  if (/^[A-Za-z0-9][-A-Za-z0-9]*$/.test(normalized)) {
+    return { type: QueryType.MPN, normalized };
   }
 
-  // Если запрос не является MPN, считаем его словом
-  return { type: QueryType.WORD, word: query };
-}
+  // Проверяем, содержит ли запрос MPN-подобную часть
+  const mpnMatch = normalized.match(/\b([A-Za-z0-9][-A-Za-z0-9]*)\b/);
+  if (mpnMatch && mpnMatch[1] && mpnMatch[1].length >= 3) {
+    return { type: QueryType.MPN, normalized: mpnMatch[1] };
+  }
+
+  // В остальных случаях считаем запрос словесным
+  return { type: QueryType.WORD, normalized };
+};
 
 /**
- * Проверяет, является ли MPN известным ID в ChipDip
- * @param {string} mpn MPN для проверки
- * @returns {string|null} URL продукта или null, если не найден
+ * Найти URL ChipDip в запросе
+ * @param {string} query - Поисковый запрос
+ * @returns {string|null} URL ChipDip или null
  */
-export function findChipDipUrl(mpn) {
-  if (!mpn) {
+export const findChipDipUrl = (query) => {
+  if (!query || typeof query !== 'string') {
     return null;
   }
 
-  try {
-    if (!fs.existsSync(CHIPDIP_URLS_FILE)) {
-      return null;
-    }
+  // Проверяем, является ли запрос URL ChipDip
+  if (query.includes('chipdip.ru')) {
+    try {
+      const url = new URL(query);
 
-    const content = fs.readFileSync(CHIPDIP_URLS_FILE, 'utf8');
-    const urls = content.split('\n').map(line => line.trim()).filter(Boolean);
-
-    // Ищем URL, содержащий MPN
-    for (const url of urls) {
-      try {
-        const urlObj = new URL(url);
-        const pathParts = urlObj.pathname.split('/');
-        const lastPart = pathParts[pathParts.length - 1];
-
-        if (lastPart === mpn) {
-          return url;
+      if (url.hostname.includes('chipdip.ru')) {
+        // Проверяем, является ли URL страницей продукта
+        if (url.pathname.includes('/product/') || url.pathname.includes('/product0/')) {
+          return url.toString();
         }
-      } catch (error) {
-        // Игнорируем ошибки парсинга URL
       }
+    } catch (error) {
+      // Не URL, продолжаем проверку
     }
-
-    return null;
-  } catch (error) {
-    console.error(`Ошибка при поиске URL для ${mpn}: ${error.message}`);
-    return null;
   }
-}
+
+  // Ищем URL ChipDip в тексте запроса
+  const urlMatch = query.match(/(https?:\/\/[^\s]+chipdip\.ru\/product0?\/[^\s]+)/i);
+  if (urlMatch && urlMatch[1]) {
+    try {
+      const url = new URL(urlMatch[1]);
+      return url.toString();
+    } catch (error) {
+      // Не валидный URL
+    }
+  }
+
+  return null;
+};
+
+export default { QueryType, classifyQuery, findChipDipUrl };

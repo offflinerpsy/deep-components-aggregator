@@ -1,367 +1,616 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DeepAgg — Поиск</title>
-  <link rel="stylesheet" href="/css/light.css">
-  <style>
-    /* Sticky header for search */
-    .sticky-header {
-      position: sticky;
-      top: 0;
-      background-color: var(--bg-color);
-      padding: 10px 0;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-      z-index: 1000;
-    }
-    .sticky-header .search-bar {
-      max-width: 800px;
-      margin: 0 auto;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Поиск компонентов — DeepAgg</title>
+    <style>
+        :root {
+            --bg: #fff;
+            --fg: #111;
+            --muted: #6b7280;
+            --primary: #0ea5e9;
+            --card: #fafafa;
+            --row: #fff;
+            --border: #e5e7eb;
+            --success: #059669;
+        }
 
-    /* Results table styling */
-    .results-section {
-      padding: 20px 0;
-    }
-    .results-table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 20px;
-    }
-    .results-table th, .results-table td {
-      border: 1px solid var(--border-color);
-      padding: 8px;
-      text-align: left;
-      vertical-align: top;
-    }
-    .results-table th {
-      background-color: var(--secondary-bg-color);
-    }
-    .results-table img {
-      max-width: 50px;
-      max-height: 50px;
-      display: block;
-      margin: 0 auto;
-    }
-    .loader {
-      border: 4px solid #f3f3f3;
-      border-top: 4px solid var(--primary-color);
-      border-radius: 50%;
-      width: 20px;
-      height: 20px;
-      animation: spin 1s linear infinite;
-      display: inline-block;
-      vertical-align: middle;
-      margin-right: 10px;
-    }
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
+        body {
+            margin: 0;
+            font: 14px/1.45 system-ui, -apple-system, sans-serif;
+            background: #f8fafc;
+            color: var(--fg);
+        }
 
-    /* Inline product pane styling */
-    .product-pane {
-      display: grid;
-      grid-template-columns: 1fr 2fr; /* Gallery on left, details on right */
-      gap: 20px;
-      padding: 20px;
-      background-color: var(--secondary-bg-color);
-      border-top: 1px solid var(--border-color);
-      overflow: hidden; /* For smooth height transition */
-      transition: max-height 0.3s ease-out, opacity 0.3s ease-out;
-      max-height: 0;
-      opacity: 0;
-    }
-    .product-pane.expanded {
-      max-height: 1000px; /* Arbitrary large value for expansion */
-      opacity: 1;
-    }
-    .product-pane-gallery img {
-      max-width: 100%;
-      height: auto;
-      display: block;
-      border: 1px solid var(--border-color);
-      border-radius: 4px;
-    }
-    .product-pane-details h3 {
-      margin-top: 0;
-      font-size: 1.5rem;
-    }
-    .product-pane-details .price {
-      font-size: 1.2rem;
-      font-weight: bold;
-      color: var(--primary-color);
-    }
-    .product-pane-details .regions span {
-      display: inline-block;
-      background-color: var(--bg-color);
-      padding: 2px 6px;
-      border-radius: 3px;
-      margin-right: 5px;
-      margin-bottom: 5px;
-      font-size: 0.75rem;
-    }
-    .product-pane-details .tech-specs table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 10px;
-    }
-    .product-pane-details .tech-specs th, .product-pane-details .tech-specs td {
-      border: 1px solid var(--border-color);
-      padding: 4px;
-      text-align: left;
-      font-size: 0.85rem;
-    }
-    .product-pane-details .pdf-docs a {
-      display: block;
-      margin-bottom: 5px;
-      color: var(--primary-color);
-      text-decoration: none;
-    }
-    .order-form {
-      margin-top: 15px;
-      padding-top: 15px;
-      border-top: 1px solid var(--border-color);
-    }
-    .order-form label {
-      display: block;
-      margin-bottom: 5px;
-      font-weight: bold;
-    }
-    .order-form input[type="text"],
-    .order-form input[type="email"],
-    .order-form input[type="number"] {
-      width: calc(100% - 16px);
-      padding: 6px;
-      margin-bottom: 8px;
-      border: 1px solid var(--border-color);
-      border-radius: 3px;
-    }
-    .order-form button {
-      background-color: var(--primary-color);
-      color: white;
-      padding: 8px 12px;
-      border: none;
-      border-radius: 3px;
-      cursor: pointer;
-      font-size: 0.9rem;
-    }
-    .order-status {
-      margin-top: 10px;
-      padding: 8px;
-      border-radius: 3px;
-      background-color: var(--bg-color);
-      color: var(--text-color);
-    }
-    .hidden {
-      display: none;
-    }
-  </style>
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 16px;
+        }
+
+        .search-form {
+            background: var(--bg);
+            padding: 16px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            margin-bottom: 16px;
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 10px 12px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .search-button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .search-button:hover {
+            background: #0284c7;
+        }
+
+        .loading, .error {
+            text-align: center;
+            padding: 32px;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--muted);
+        }
+
+        .error {
+            background: #fef2f2;
+            color: #dc2626;
+            border-color: #fecaca;
+        }
+
+        /* ТАБЛИЦА КАК OEMSTRADE */
+        .results-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .results-table thead th {
+            background: #f9fafb;
+            padding: 12px 8px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 12px;
+            color: #374151;
+            border-bottom: 1px solid var(--border);
+            white-space: nowrap;
+        }
+
+        .results-table tbody tr {
+            border-bottom: 1px solid #f3f4f6;
+        }
+
+        .results-table tbody tr:hover {
+            background: #fafbfc;
+        }
+
+        .results-table tbody td {
+            padding: 10px 8px;
+            vertical-align: top;
+            font-size: 13px;
+        }
+
+        /* Колонки */
+        .col-image {
+            width: 80px;
+            text-align: center;
+        }
+
+        .col-name {
+            width: 25%;
+            min-width: 200px;
+        }
+
+        .col-desc {
+            width: 30%;
+            min-width: 250px;
+        }
+
+        .col-regions {
+            width: 20%;
+            min-width: 150px;
+        }
+
+        .col-price {
+            width: 25%;
+            min-width: 180px;
+            text-align: right;
+        }
+
+        /* Содержимое ячеек */
+        .product-thumb {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+            border: 1px solid #e5e7eb;
+            border-radius: 4px;
+            background: #f9fafb;
+        }
+
+        .product-name {
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: 4px;
+        }
+
+        .product-name a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .product-name a:hover {
+            color: var(--primary);
+        }
+
+        .product-brand {
+            font-size: 12px;
+            color: var(--muted);
+            font-family: 'SF Mono', Monaco, monospace;
+        }
+
+        .product-desc {
+            color: #4b5563;
+            font-size: 12px;
+            line-height: 1.4;
+            max-height: 60px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .regions-list {
+            font-size: 11px;
+            color: #6b7280;
+            line-height: 1.3;
+        }
+
+        .region-item {
+            display: block;
+            margin-bottom: 2px;
+        }
+
+        .region-stock {
+            color: var(--success);
+            font-weight: 500;
+        }
+
+        .price-main {
+            font-weight: 700;
+            font-size: 16px;
+            color: #111827;
+            margin-bottom: 4px;
+        }
+
+        .price-orig {
+            font-size: 11px;
+            color: var(--muted);
+            margin-bottom: 8px;
+        }
+
+        .buy-button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .buy-button:hover {
+            background: #0284c7;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 48px 16px;
+            color: var(--muted);
+        }
+
+        /* Inline Product Card */
+        .product-card-row {
+            background-color: #f3f9ff;
+        }
+
+        .product-card-expanded {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 20px;
+            padding: 20px;
+            background-color: #e9f7ef;
+            border-left: 5px solid #28a745;
+            margin-top: 10px;
+            border-radius: 5px;
+            overflow: hidden;
+            transition: all 0.3s ease-out;
+            max-height: 0;
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .product-card-expanded.active {
+            max-height: 500px;
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .product-card-image {
+            width: 100%;
+            max-width: 200px;
+            height: auto;
+            object-fit: contain;
+            border-radius: 5px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .product-card-details h3 {
+            color: #28a745;
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+
+        .product-card-details p {
+            margin-bottom: 5px;
+            line-height: 1.5;
+        }
+
+        .product-card-details strong {
+            color: #333;
+        }
+
+        .product-card-offers {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px dashed #ccc;
+        }
+
+        .product-card-offers .price {
+            font-size: 1.4em;
+            font-weight: bold;
+            color: #dc3545;
+            margin-bottom: 5px;
+        }
+
+        .product-card-offers .stock {
+            font-size: 0.9em;
+            color: #6c757d;
+            margin-bottom: 10px;
+        }
+
+        .product-card-offers .order-button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: background-color 0.2s ease;
+        }
+
+        .product-card-offers .order-button:hover {
+            background-color: #0056b3;
+        }
+
+        .product-card-datasheets {
+            margin-top: 15px;
+        }
+
+        .product-card-datasheets a {
+            display: inline-block;
+            background-color: #6c757d;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 4px;
+            text-decoration: none;
+            margin-right: 10px;
+            margin-bottom: 10px;
+            transition: background-color 0.2s ease;
+        }
+
+        .product-card-datasheets a:hover {
+            background-color: #5a6268;
+        }
+
+        .expand-button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.2s ease;
+        }
+
+        .expand-button:hover {
+            background-color: #218838;
+        }
+    </style>
 </head>
 <body>
-  <header class="sticky-header">
     <div class="container">
-      <div class="search-bar">
-        <input id="search-input" type="search" placeholder="Введите MPN, название или производителя..." autofocus>
-        <button id="search-button">Поиск</button>
-      </div>
+        <div class="search-form">
+            <input type="text" class="search-input" id="searchInput" placeholder="Введите MPN или название компонента (например, LM317T, 1N4148)..." value="">
+            <button class="search-button" onclick="performSearch()">Поиск</button>
+        </div>
+
+        <div id="results"></div>
     </div>
-  </header>
 
-  <section class="results-section">
-    <div class="container">
-      <h1>Результаты поиска для "<span id="query-display"></span>"</h1>
-      <p id="status-message"><span class="loader"></span> Идет поиск...</p>
+    <script type="module">
+        const $ = s => document.querySelector(s);
+        const q = new URLSearchParams(location.search).get('q') || '';
+        const enc = encodeURIComponent;
+        $('#searchInput').value = q;
 
-      <table class="results-table">
-        <thead>
-          <tr>
-            <th>Изображение</th>
-            <th>MPN/Название</th>
-            <th>Производитель</th>
-            <th>Описание</th>
-            <th>Корпус</th>
-            <th>Тип корпуса</th>
-            <th>Регионы</th>
-            <th>Наличие</th>
-            <th>Мин. ₽</th>
-            <th>Действия</th>
-          </tr>
-        </thead>
-        <tbody id="results-table-body">
-          <!-- Результаты будут добавлены сюда JS -->
-        </tbody>
-      </table>
-    </div>
-  </section>
+        const out = $('#results');
 
-  <script type="module">
-    import { liveSearch } from '/js/app.js';
-    
-    document.addEventListener('DOMContentLoaded', () => {
-      const searchInput = document.getElementById('search-input');
-      const searchButton = document.getElementById('search-button');
-      const queryDisplay = document.getElementById('query-display');
-      const statusMessage = document.getElementById('status-message');
-      const resultsTableBody = document.getElementById('results-table-body');
+        function renderResults(list) {
+            if (!Array.isArray(list) || list.length === 0) {
+                out.innerHTML = '<div class="no-results">Ничего не найдено. Попробуйте изменить запрос.</div>';
+                return;
+            }
 
-      const urlParams = new URLSearchParams(window.location.search);
-      const query = urlParams.get('q');
+            // Создаем таблицу как OEMsTrade
+            const tableHeader = `
+                <table class="results-table">
+                    <thead>
+                        <tr>
+                            <th class="col-image">Фото</th>
+                            <th class="col-name">Наименование</th>
+                            <th class="col-desc">Описание</th>
+                            <th class="col-regions">Регионы / Наличие</th>
+                            <th class="col-price">Цена / Купить</th>
+                            <th>Действия</th>
+                        </tr>
+                    </thead>
+                    <tbody id="resultsTableBody">
+            `;
 
-      if (query) {
-        searchInput.value = query;
-        queryDisplay.textContent = query;
-        liveSearch(query); // Call liveSearch from app.js
-      } else {
-        statusMessage.textContent = 'Введите запрос для начала поиска.';
-      }
+            const tableRows = list.map(item => {
+                // Обработка изображения
+                const imageHtml = item.image || item.thumb || item.gallery?.[0] ?
+                    `<img src="${item.image || item.thumb || item.gallery?.[0]}" alt="Фото" class="product-thumb" onerror="this.style.display='none'">` :
+                    '<div style="width:60px;height:60px;background:#f3f4f6;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:10px;color:#9ca3af;">Нет фото</div>';
 
-      searchButton.addEventListener('click', () => {
-        const newQuery = searchInput.value.trim();
-        if (newQuery) {
-          window.location.href = `/ui/search.html?q=${encodeURIComponent(newQuery)}`;
-        }
-      });
+                // Название и бренд
+                const nameHtml = `
+                    <div class="product-name">
+                        <a href="/ui/product.html?id=${enc(item.id || '')}" target="_blank">
+                            ${item.title || item.mpn || item.sku || 'Без названия'}
+                        </a>
+                    </div>
+                    <div class="product-brand">
+                        ${[item.brand, item.mpn, item.sku].filter(Boolean).join(' • ')}
+                    </div>
+                `;
 
-      searchInput.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') {
-          searchButton.click();
-        }
-      });
+                // Описание
+                const descHtml = `<div class="product-desc">${item.description || item.desc || '—'}</div>`;
 
-      // Global function to toggle product pane, called from app.js
-      window.toggleProductPane = async (row, item) => {
-        const existingPaneRow = row.nextElementSibling;
-        if (existingPaneRow && existingPaneRow.classList.contains('product-pane-row')) {
-          // If pane is already open, close it
-          const pane = existingPaneRow.querySelector('.product-pane');
-          pane.classList.remove('expanded');
-          setTimeout(() => existingPaneRow.remove(), 300); // Remove after transition
-          return;
-        }
+                // Регионы и наличие
+                const regions = item.regions || [];
+                const regionItems = regions.slice(0, 4).map(region => {
+                    const stock = item.total_stock || 0;
+                    return `<span class="region-item">${region}: <span class="region-stock">${stock}</span></span>`;
+                });
+                const regionsHtml = regionItems.length > 0 ?
+                    `<div class="regions-list">${regionItems.join('')}</div>` :
+                    '<div class="regions-list">—</div>';
 
-        // Close any other open panes
-        document.querySelectorAll('.product-pane-row').forEach(paneRow => {
-          const pane = paneRow.querySelector('.product-pane');
-          pane.classList.remove('expanded');
-          setTimeout(() => paneRow.remove(), 300);
-        });
+                // Цена и кнопка покупки
+                const priceRub = item.price_min_rub;
+                const buyUrl = item.url || '#';
 
-        const newRow = resultsTableBody.insertRow(row.rowIndex + 1);
-        newRow.classList.add('product-pane-row');
-        const cell = newRow.insertCell();
-        cell.colSpan = 10; // Adjust colspan as needed
+                const priceHtml = `
+                    <div class="price-main">${priceRub ? formatRub(priceRub) : '—'}</div>
+                    <a href="${buyUrl}" class="buy-button" target="_blank" rel="noopener">Купить</a>
+                `;
 
-        cell.innerHTML = `
-          <div class="product-pane">
-            <div class="product-pane-gallery">
-              <img src="${item.image || ''}" alt="${item.mpn || item.title}">
-            </div>
-            <div class="product-pane-details">
-              <h3>${item.title || item.mpn}</h3>
-              <p><strong>MPN:</strong> ${item.mpn || 'N/A'}</p>
-              <p><strong>Производитель:</strong> ${item.brand || 'N/A'}</p>
-              <p>${item.description || item.desc_short || 'Нет описания.'}</p>
-              <p class="price">Цена: ${item.price_min_rub !== null ? `${item.price_min_rub} ₽` : 'N/A'}</p>
-              <p class="stock">Наличие: ${item.stock_total !== null ? item.stock_total : 'N/A'}</p>
-              <div class="regions">
-                <strong>Регионы:</strong> ${item.regions && item.regions.length > 0 ? item.regions.map(r => `<span>${r}</span>`).join('') : 'N/A'}
-              </div>
-              <div class="tech-specs">
-                <h3>Технические характеристики</h3>
-                <table id="product-pane-specs-${item.mpn}">
-                  <!-- Specs will be loaded here -->
+                // Кнопка "Открыть"
+                const expandButtonHtml = `
+                    <button class="expand-button" data-product-id="${item.id || item.mpn}">Открыть</button>
+                `;
+
+                return `
+                    <tr data-mpn="${item.mpn || ''}">
+                        <td class="col-image">${imageHtml}</td>
+                        <td class="col-name">${nameHtml}</td>
+                        <td class="col-desc">${descHtml}</td>
+                        <td class="col-regions">${regionsHtml}</td>
+                        <td class="col-price">${priceHtml}</td>
+                        <td>${expandButtonHtml}</td>
+                    </tr>
+                `;
+            }).join('');
+
+            const tableFooter = `
+                    </tbody>
                 </table>
-              </div>
-              <div class="pdf-docs">
-                <h3>Документация</h3>
-                <div id="product-pane-docs-${item.mpn}">
-                  <!-- PDFs will be loaded here -->
-                </div>
-              </div>
-              <div class="order-form">
-                <h3>Оформить заказ</h3>
-                <form id="order-form-${item.mpn}">
-                  <label for="order-mpn-${item.mpn}">MPN:</label>
-                  <input type="text" id="order-mpn-${item.mpn}" name="mpn" value="${item.mpn || ''}" readonly>
+            `;
 
-                  <label for="order-qty-${item.mpn}">Количество:</label>
-                  <input type="number" id="order-qty-${item.mpn}" name="qty" value="1" min="1" required>
+            out.innerHTML = tableHeader + tableRows + tableFooter;
 
-                  <label for="order-fio-${item.mpn}">ФИО:</label>
-                  <input type="text" id="order-fio-${item.mpn}" name="fio" required>
-
-                  <label for="order-email-${item.mpn}">Email:</label>
-                  <input type="email" id="order-email-${item.mpn}" name="email" required>
-
-                  <label for="order-messenger-${item.mpn}">Мессенджер (опционально):</label>
-                  <input type="text" id="order-messenger-${item.mpn}" name="messenger">
-
-                  <button type="submit">Оформить заказ</button>
-                </form>
-                <div id="order-status-${item.mpn}" class="order-status hidden"></div>
-              </div>
-            </div>
-          </div>
-        `;
-
-        // Trigger expansion animation
-        setTimeout(() => {
-          newRow.querySelector('.product-pane').classList.add('expanded');
-        }, 10);
-
-        // Fetch full product details for specs and docs
-        const fullProduct = await fetch(`/api/product?mpn=${encodeURIComponent(item.mpn)}`).then(res => res.json());
-
-        if (fullProduct && fullProduct.specs) {
-          const specsTable = document.getElementById(`product-pane-specs-${item.mpn}`);
-          for (const key in fullProduct.specs) {
-            const tr = specsTable.insertRow();
-            tr.insertCell().textContent = key;
-            tr.insertCell().textContent = fullProduct.specs[key];
-          }
+            // Добавляем обработчики для кнопок "Открыть"
+            document.querySelectorAll('.expand-button').forEach(button => {
+                button.addEventListener('click', () => {
+                    const productId = button.getAttribute('data-product-id');
+                    const row = button.closest('tr');
+                    toggleProductCard(list.find(item => (item.id === productId) || (item.mpn === productId)), row);
+                });
+            });
         }
 
-        if (fullProduct && fullProduct.docs && fullProduct.docs.length > 0) {
-          const docsDiv = document.getElementById(`product-pane-docs-${item.mpn}`);
-          fullProduct.docs.forEach(doc => {
-            const a = document.createElement('a');
-            a.href = doc.url;
-            a.textContent = doc.title;
-            a.target = '_blank';
-            docsDiv.appendChild(a);
-          });
+        function toggleProductCard(product, rowElement) {
+            let expandedCardRow = rowElement.nextElementSibling;
+
+            // Если следующий элемент уже карточка товара, переключаем её
+            if (expandedCardRow && expandedCardRow.classList.contains('product-card-row')) {
+                const card = expandedCardRow.querySelector('.product-card-expanded');
+                card.classList.toggle('active');
+                if (!card.classList.contains('active')) {
+                    expandedCardRow.remove(); // Удаляем при сворачивании
+                }
+                return;
+            }
+
+            // Сворачиваем любые другие открытые карточки
+            document.querySelectorAll('.product-card-expanded.active').forEach(card => {
+                card.classList.remove('active');
+                card.closest('.product-card-row').remove();
+            });
+
+            // Создаем новую строку с карточкой товара
+            expandedCardRow = document.createElement('tr');
+            expandedCardRow.classList.add('product-card-row');
+            expandedCardRow.innerHTML = `
+                <td colspan="6">
+                    <div class="product-card-expanded">
+                        <div class="product-card-image-container">
+                            <img src="${product.image || 'https://via.placeholder.com/200'}" alt="${product.title}" class="product-card-image">
+                        </div>
+                        <div class="product-card-details">
+                            <h3>${product.title}</h3>
+                            <p><strong>MPN:</strong> ${product.mpn || 'N/A'}</p>
+                            <p><strong>Производитель:</strong> ${product.brand || 'N/A'}</p>
+                            <p><strong>Описание:</strong> ${product.description || product.desc || 'N/A'}</p>
+                            <p><strong>Корпус:</strong> ${product.package || 'N/A'}</p>
+                            <div class="product-card-offers">
+                                <div class="price">${product.price_min_rub ? `от ${product.price_min_rub.toFixed(2)} ₽` : 'Цена не указана'}</div>
+                                <div class="stock">На складе: ${product.total_stock !== undefined ? product.total_stock : 'N/A'}</div>
+                                <a href="${product.url || '#'}" target="_blank" class="order-button">Заказать</a>
+                            </div>
+                            ${product.datasheet_urls && product.datasheet_urls.length > 0 ? `
+                            <div class="product-card-datasheets">
+                                <h4>Документация:</h4>
+                                ${product.datasheet_urls.map(dsUrl => `<a href="${dsUrl}" target="_blank">PDF Datasheet</a>`).join('')}
+                            </div>` : ''}
+                            ${product.regions && product.regions.length > 0 ? `
+                            <p><strong>Регионы:</strong> ${product.regions.join(', ')}</p>` : ''}
+                        </div>
+                    </div>
+                </td>
+            `;
+            rowElement.after(expandedCardRow);
+
+            // Запускаем анимацию
+            setTimeout(() => {
+                expandedCardRow.querySelector('.product-card-expanded').classList.add('active');
+            }, 10);
         }
 
-        // Order form submission
-        const currentOrderForm = document.getElementById(`order-form-${item.mpn}`);
-        const currentOrderStatus = document.getElementById(`order-status-${item.mpn}`);
-        currentOrderForm.addEventListener('submit', async (e) => {
-          e.preventDefault();
-          const formData = new FormData(currentOrderForm);
-          const orderData = Object.fromEntries(formData.entries());
+        function formatRub(amount) {
+            return new Intl.NumberFormat('ru-RU', {
+                style: 'currency',
+                currency: 'RUB',
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0
+            }).format(amount);
+        }
 
-          currentOrderStatus.textContent = 'Отправка заказа...';
-          currentOrderStatus.classList.remove('hidden');
+        function performSearch() {
+            const query = $('#searchInput').value.trim();
+            if (!query) {
+                out.innerHTML = '<div class="loading">Введите запрос для поиска</div>';
+                return;
+            }
 
-          const response = await fetch('/api/order', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(orderData)
-          });
+            out.innerHTML = '<div class="loading">Поиск... Это может занять несколько секунд.</div>';
 
-          const result = await response.json();
-          if (result.ok) {
-            currentOrderStatus.textContent = `Заказ #${result.id} успешно оформлен!`;
-            currentOrderStatus.style.color = 'green';
-          } else {
-            currentOrderStatus.textContent = `Ошибка: ${result.error}`;
-            currentOrderStatus.style.color = 'red';
-          }
+            // 1) Сначала запускаем SSE (live search)
+            const src = `/api/live/search?q=${enc(query)}`;
+            const es = new EventSource(src);
+            let got = false;
+            let items = [];
+
+            es.addEventListener("item", ev => {
+                const item = JSON.parse(ev.data);
+                items.push(item);
+                renderResults(items);
+            });
+
+            es.addEventListener("results", ev => {
+                got = true;
+                const j = JSON.parse(ev.data);
+                renderResults(j.items || j.hits || []);
+                es.close();
+            });
+
+            es.addEventListener("done", ev => {
+                got = true;
+                es.close();
+                if (items.length === 0) {
+                    fallback();
+                }
+            });
+
+            es.addEventListener("error", () => {
+                es.close();
+                if (!got) fallback();
+            });
+
+            // 2) Через 5 секунд — фолбэк на синхронный поиск
+            setTimeout(() => {
+                if (!got && items.length === 0) {
+                    es.close();
+                    fallback();
+                }
+            }, 5000);
+
+            function fallback() {
+                console.log('🔄 Fallback to regular search API');
+                fetch(`/api/search?q=${enc(query)}`)
+                    .then(r => r.json())
+                    .then(j => {
+                        renderResults(j.items || j.hits || []);
+                    })
+                    .catch(() => {
+                        out.innerHTML = '<div class="error">Поиск временно недоступен. Попробуйте обновить страницу.</div>';
+                    });
+            }
+        }
+
+        // Автопоиск при Enter
+        $('#searchInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                performSearch();
+            }
         });
-      };
-    });
-  </script>
+
+        // Автопоиск при загрузке страницы с параметром q
+        if (q) {
+            performSearch();
+        }
+
+        // Глобальная функция для кнопки
+        window.performSearch = performSearch;
+    </script>
 </body>
 </html>

@@ -1,29 +1,60 @@
+/**
+ * ScrapingBee провайдер для скрапинга
+ * @module src/scrape/providers/scrapingbee
+ */
+
 import { fetch } from 'undici';
+import fs from 'node:fs';
+import path from 'node:path';
 
 /**
- * Выполняет запрос через ScrapingBee
- * @param {string} url URL для скрапинга
- * @param {object} options Дополнительные опции
- * @param {number} options.timeoutMs Таймаут запроса в миллисекундах
- * @param {object} options.params Дополнительные параметры для ScrapingBee
- * @returns {Promise<object>} Результат запроса
+ * Получить HTML страницы через ScrapingBee
+ * @param {string} url - URL страницы для скрапинга
+ * @param {Object} [options] - Опции запроса
+ * @param {number} [options.timeoutMs=12000] - Таймаут запроса в миллисекундах
+ * @param {Object} [options.params={}] - Дополнительные параметры для ScrapingBee
+ * @returns {Promise<Object>} Результат запроса
  */
-export const get = async (url) => {
-  return await fetchHtml(url);
-};
-
 export async function fetchHtml(url, { timeoutMs = 12000, params = {} } = {}) {
-  const key = process.env.SCRAPINGBEE_KEY;
+  // Получаем ключ API из файла или переменной окружения
+  let key;
+  try {
+    const keysPath = path.resolve('secrets/apis/scrapingbee.txt');
+    if (fs.existsSync(keysPath)) {
+      const keys = fs.readFileSync(keysPath, 'utf8').split(/\r?\n/).filter(Boolean);
+      key = keys[0]; // Используем первый ключ из файла
+    } else {
+      key = process.env.SCRAPINGBEE_KEY;
+    }
+  } catch (error) {
+    return {
+      ok: false,
+      status: 'config_error',
+      error: 'Не удалось получить API ключ ScrapingBee',
+      provider: 'scrapingbee'
+    };
+  }
 
-  // Создаем URL для запроса
+  if (!key) {
+    return {
+      ok: false,
+      status: 'config_error',
+      error: 'API ключ ScrapingBee не найден',
+      provider: 'scrapingbee'
+    };
+  }
+
+  // Формируем URL для запроса
   const apiUrl = new URL('https://app.scrapingbee.com/api/v1/');
   apiUrl.searchParams.set('api_key', key);
   apiUrl.searchParams.set('url', url);
-  apiUrl.searchParams.set('render_js', 'false'); // Дешевле без JS
+  apiUrl.searchParams.set('render_js', 'false');
+  apiUrl.searchParams.set('premium_proxy', 'true');
+  apiUrl.searchParams.set('country_code', 'ru');
 
   // Добавляем дополнительные параметры
-  for (const [key, value] of Object.entries(params)) {
-    apiUrl.searchParams.set(key, value);
+  for (const [paramKey, paramValue] of Object.entries(params)) {
+    apiUrl.searchParams.set(paramKey, paramValue);
   }
 
   // Создаем контроллер для таймаута
@@ -78,3 +109,15 @@ export async function fetchHtml(url, { timeoutMs = 12000, params = {} } = {}) {
     clearTimeout(timeoutId);
   }
 }
+
+/**
+ * Получить HTML страницы (алиас для fetchHtml)
+ * @param {string} url - URL страницы для скрапинга
+ * @param {Object} [options] - Опции запроса
+ * @returns {Promise<Object>} Результат запроса
+ */
+export const get = async (url, options) => {
+  return await fetchHtml(url, options);
+};
+
+export default { fetchHtml, get };

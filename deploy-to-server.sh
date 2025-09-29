@@ -12,7 +12,7 @@ echo "Деплой на удаленный сервер для тестиров�
 
 # 1. Создаем архив текущего состояния проекта
 echo "Создание архива проекта..."
-tar --exclude='node_modules' --exclude='.git' -czf deploy-temp.tar.gz .
+tar --exclude='node_modules' --exclude='.git' --exclude='data/cache' -czf deploy-temp.tar.gz .
 
 # 2. Копируем архив на сервер
 echo "Копирование архива на сервер..."
@@ -24,24 +24,26 @@ sshpass -p "$PASSWORD" ssh $USER@$SERVER "
   mkdir -p $REMOTE_DIR
   tar -xzf /tmp/deploy-temp.tar.gz -C $REMOTE_DIR
   rm /tmp/deploy-temp.tar.gz
-  
+
   # Создаем необходимые директории
   cd $REMOTE_DIR
   mkdir -p secrets/apis data/cache/html data/cache/meta data/db/products data/idx data/state logs/_diag loads/urls
-  
+
   # Устанавливаем зависимости
   cd $REMOTE_DIR
-  npm install express undici cheerio fast-xml-parser nanoid
-  
+  npm install
+
   # Копируем конфигурацию Nginx
   cp $REMOTE_DIR/nginx-deep-agg-live.conf /etc/nginx/conf.d/deep-agg-live.conf
   systemctl reload nginx
-  
+
+  # Останавливаем существующий процесс
+  pkill -f 'node server.js' || true
+
   # Запускаем сервер в фоновом режиме
   cd $REMOTE_DIR
-  pkill -f 'node server.js' || true
   nohup node server.js > logs/server.log 2>&1 &
-  
+
   # Проверяем, что сервер запустился
   sleep 2
   if curl -s http://localhost:9201/api/health > /dev/null; then
@@ -51,6 +53,10 @@ sshpass -p "$PASSWORD" ssh $USER@$SERVER "
     tail -n 20 logs/server.log
     exit 1
   fi
+
+  # Запускаем тесты
+  cd $REMOTE_DIR
+  node scripts/smoke.mjs
 "
 
 # 4. Удаляем временный архив

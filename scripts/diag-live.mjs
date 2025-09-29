@@ -1,204 +1,173 @@
+#!/usr/bin/env node
+
+/**
+ * Скрипт для запуска диагностики живого поиска
+ *
+ * Использование:
+ * node scripts/diag-live.mjs "LM317" --timeout 30000
+ *
+ * Опции:
+ * --timeout - таймаут поиска в миллисекундах (по умолчанию 30000)
+ * --output - директория для сохранения результатов (по умолчанию _diag)
+ */
+
 import fs from 'node:fs';
 import path from 'node:path';
-import crypto from 'node:crypto';
+import { liveSearch } from '../src/live/search.mjs';
+import { getUsageStats } from '../src/scrape/rotator.mjs';
+import { getQueueStats } from '../src/live/queue.mjs';
 
-const query = process.argv[2];
+// Парсинг аргументов командной строки
+const args = process.argv.slice(2);
+const getArg = (name, defaultValue) => {
+  const index = args.indexOf(`--${name}`);
+  if (index === -1) return defaultValue;
+  return args[index + 1] || defaultValue;
+};
+
+// Получаем запрос из первого аргумента
+const query = args[0];
 if (!query) {
-  console.error('Использование: node scripts/diag-live.mjs "ПОИСКОВЫЙ_ЗАПРОС"');
+  console.error('Необходимо указать поисковый запрос в качестве первого аргумента');
+  console.error('Пример: node scripts/diag-live.mjs "LM317"');
   process.exit(1);
 }
 
-const ts = new Date().toISOString().replace(/[:.]/g, '-');
-const diagDir = path.resolve(`data/_diag/${ts}`);
-fs.mkdirSync(diagDir, { recursive: true });
-const traceFile = path.join(diagDir, 'trace.txt');
+// Получаем опции
+const timeout = parseInt(getArg('timeout', '30000'), 10);
+const outputDir = getArg('output', '_diag');
 
-function log(msg) {
+// Создаем директорию для вывода
+try {
+  fs.mkdirSync(outputDir, { recursive: true });
+} catch (error) {
+  console.error(`Ошибка при создании директории ${outputDir}: ${error.message}`);
+}
+
+// Создаем директорию для текущего запуска
+const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+const runDir = path.join(outputDir, timestamp);
+try {
+  fs.mkdirSync(runDir, { recursive: true });
+} catch (error) {
+  console.error(`Ошибка при создании директории ${runDir}: ${error.message}`);
+}
+
+// Создаем файл для логирования
+const logFile = path.join(runDir, 'diag.log');
+const logStream = fs.createWriteStream(logFile, { flags: 'a' });
+
+// Функция для логирования
+const log = (message) => {
   const timestamp = new Date().toISOString();
-  const line = `${timestamp} ${msg}\n`;
-  fs.appendFileSync(traceFile, line);
-  console.log(msg);
-}
+  const logMessage = `${timestamp} ${message}\n`;
 
-async function runDiagnostics() {
-  log(`Запуск диагностики для запроса: "${query}"`);
-  
+  console.log(message);
+  logStream.write(logMessage);
+};
+
+// Функция для сохранения объекта в JSON-файл
+const saveJson = (filename, data) => {
   try {
-    // Проверка наличия секретов
-    const secretsDir = path.resolve('secrets/apis');
-    if (!fs.existsSync(secretsDir)) {
-      log('ОШИБКА: Директория secrets/apis не существует');
-      return;
-    }
-    
-    const providers = ['scraperapi', 'scrapingbee', 'scrapingbot'];
-    const missingProviders = [];
-    
-    for (const provider of providers) {
-      const keyFile = path.join(secretsDir, `${provider}.txt`);
-      if (!fs.existsSync(keyFile) || !fs.readFileSync(keyFile, 'utf8').trim()) {
-        missingProviders.push(provider);
-      }
-    }
-    
-    if (missingProviders.length > 0) {
-      log(`ПРЕДУПРЕЖДЕНИЕ: Отсутствуют ключи для провайдеров: ${missingProviders.join(', ')}`);
-    }
-    
-    // Проверка структуры каталогов
-    const requiredDirs = [
-      'data/cache/html',
-      'data/cache/meta',
-      'data/db/products',
-      'data/idx',
-      'data/state'
-    ];
-    
-    for (const dir of requiredDirs) {
-      if (!fs.existsSync(path.resolve(dir))) {
-        log(`ОШИБКА: Директория ${dir} не существует`);
-        fs.mkdirSync(path.resolve(dir), { recursive: true });
-        log(`Создана директория ${dir}`);
-      }
-    }
-    
-    // Проверка SQLite базы данных
-    const dbPath = path.resolve('data/db/agg.sqlite');
-    if (!fs.existsSync(dbPath)) {
-      log('ПРЕДУПРЕЖДЕНИЕ: База данных SQLite не существует');
-      log('Запуск миграции SQLite...');
-      try {
-        await import('../scripts/migrate-sqlite.mjs');
-        log('Миграция SQLite выполнена успешно');
-      } catch (error) {
-        log(`ОШИБКА при миграции SQLite: ${error.message}`);
-      }
-    }
-    
-    // Проверка курсов валют
-    const ratesPath = path.resolve('data/rates.json');
-    if (!fs.existsSync(ratesPath)) {
-      log('ПРЕДУПРЕЖДЕНИЕ: Файл курсов валют не существует');
-      log('Запуск обновления курсов валют...');
-      try {
-        const { refreshRates } = await import('../src/currency/cbr.mjs');
-        const rates = await refreshRates();
-        if (rates) {
-          log('Курсы валют обновлены успешно');
-        } else {
-          log('ОШИБКА: Не удалось обновить курсы валют');
-        }
-      } catch (error) {
-        log(`ОШИБКА при обновлении курсов валют: ${error.message}`);
-      }
-    } else {
-      try {
-        const ratesData = JSON.parse(fs.readFileSync(ratesPath, 'utf8'));
-        const ratesAge = Date.now() - ratesData.ts;
-        log(`Возраст курсов валют: ${Math.round(ratesAge / 1000 / 60 / 60)} часов`);
-        if (ratesAge > 48 * 60 * 60 * 1000) {
-          log('ПРЕДУПРЕЖДЕНИЕ: Курсы валют устарели (>48 часов)');
-        }
-      } catch (error) {
-        log(`ОШИБКА при чтении курсов валют: ${error.message}`);
-      }
-    }
-    
-    // Проверка индекса поиска
-    const indexPath = path.resolve('data/idx/search-index.json');
-    if (!fs.existsSync(indexPath)) {
-      log('ПРЕДУПРЕЖДЕНИЕ: Индекс поиска не существует');
-    }
-    
-    // Проверка доступности API
-    log('Проверка доступности API...');
-    try {
-      const response = await fetch('http://localhost:9201/api/health');
-      if (response.ok) {
-        const health = await response.json();
-        log(`API доступен: ${JSON.stringify(health)}`);
-      } else {
-        log(`ОШИБКА: API недоступен, статус ${response.status}`);
-      }
-    } catch (error) {
-      log(`ОШИБКА при проверке API: ${error.message}`);
-    }
-    
-    // Проверка SSE
-    log('Проверка SSE API...');
-    try {
-      const controller = new AbortController();
-      const signal = controller.signal;
-      
-      const sseUrl = `http://localhost:9201/api/live/search?q=${encodeURIComponent(query)}`;
-      log(`Запрос к SSE: ${sseUrl}`);
-      
-      const response = await fetch(sseUrl, { signal });
-      const headers = Object.fromEntries(response.headers.entries());
-      log(`SSE заголовки: ${JSON.stringify(headers)}`);
-      
-      if (headers['content-type']?.includes('text/event-stream')) {
-        log('SSE заголовки корректны');
-        
-        // Установка таймаута для SSE
-        setTimeout(() => {
-          controller.abort();
-          log('SSE запрос прерван по таймауту');
-        }, 10000);
-        
-        let eventCount = 0;
-        let itemCount = 0;
-        
-        const reader = response.body.getReader();
-        const decoder = new TextDecoder();
-        
-        while (true) {
-          try {
-            const { value, done } = await reader.read();
-            if (done) break;
-            
-            const chunk = decoder.decode(value, { stream: true });
-            log(`SSE получен чанк: ${chunk.length} байт`);
-            
-            // Подсчет событий
-            const events = chunk.match(/event:/g);
-            if (events) {
-              eventCount += events.length;
-              
-              // Подсчет item событий
-              const items = chunk.match(/event: item/g);
-              if (items) {
-                itemCount += items.length;
-              }
-            }
-          } catch (error) {
-            if (error.name === 'AbortError') {
-              log('SSE запрос прерван');
-            } else {
-              log(`ОШИБКА при чтении SSE: ${error.message}`);
-            }
-            break;
-          }
-        }
-        
-        log(`Всего получено SSE событий: ${eventCount}, из них item: ${itemCount}`);
-      } else {
-        log(`ОШИБКА: SSE неверный Content-Type: ${headers['content-type']}`);
-      }
-    } catch (error) {
-      log(`ОШИБКА при проверке SSE: ${error.message}`);
-    }
-    
-    log('Диагностика завершена');
-    log(`Полный лог сохранен в: ${traceFile}`);
+    const filePath = path.join(runDir, filename);
+    fs.writeFileSync(filePath, JSON.stringify(data, null, 2), 'utf8');
+    log(`Сохранен файл: ${filePath}`);
   } catch (error) {
-    log(`КРИТИЧЕСКАЯ ОШИБКА: ${error.message}`);
-    log(error.stack);
+    log(`Ошибка при сохранении файла ${filename}: ${error.message}`);
   }
-}
+};
 
-runDiagnostics().catch(error => {
-  log(`НЕОБРАБОТАННАЯ ОШИБКА: ${error.message}`);
-  log(error.stack);
+// Запускаем диагностику
+log(`=== Диагностика живого поиска ===`);
+log(`Запрос: "${query}"`);
+log(`Таймаут: ${timeout}ms`);
+log(`Директория вывода: ${runDir}`);
+
+// Сохраняем начальное состояние
+const initialUsageStats = getUsageStats();
+saveJson('initial-usage-stats.json', initialUsageStats);
+
+const initialQueueStats = getQueueStats();
+saveJson('initial-queue-stats.json', initialQueueStats);
+
+// Массив для хранения найденных товаров
+const foundItems = [];
+
+// Запускаем живой поиск
+log(`Запуск живого поиска...`);
+const startTime = Date.now();
+
+liveSearch({
+  query,
+  timeout,
+
+  onItem: (item) => {
+    log(`[ITEM] Найден товар: ${item.mpn || item.title}`);
+    foundItems.push(item);
+
+    // Сохраняем каждый найденный товар отдельно
+    saveJson(`item-${foundItems.length}.json`, item);
+  },
+
+  onNote: (note) => {
+    log(`[NOTE] ${note.message}`);
+  },
+
+  onError: (error) => {
+    log(`[ERROR] ${error.message}`);
+  },
+
+  onEnd: (result) => {
+    const endTime = Date.now();
+    const duration = endTime - startTime;
+
+    log(`=== Поиск завершен ===`);
+    log(`Длительность: ${duration}ms`);
+    log(`Найдено товаров: ${result.count}`);
+    log(`Источник завершения: ${result.source}`);
+
+    if (result.trace) {
+      log(`Файл трассировки: ${result.trace}`);
+    }
+
+    // Сохраняем итоговое состояние
+    const finalUsageStats = getUsageStats();
+    saveJson('final-usage-stats.json', finalUsageStats);
+
+    const finalQueueStats = getQueueStats();
+    saveJson('final-queue-stats.json', finalQueueStats);
+
+    // Сохраняем все найденные товары
+    saveJson('all-items.json', foundItems);
+
+    // Сохраняем итоговый результат
+    saveJson('result.json', {
+      query,
+      timestamp: new Date().toISOString(),
+      duration,
+      itemsCount: foundItems.length,
+      result
+    });
+
+    // Закрываем лог
+    log(`Диагностика завершена. Результаты сохранены в ${runDir}`);
+    logStream.end();
+
+    // Выходим из процесса
+    process.exit(0);
+  }
+}).catch((error) => {
+  log(`[FATAL] ${error.message}`);
+
+  // Сохраняем ошибку
+  saveJson('error.json', {
+    message: error.message,
+    stack: error.stack
+  });
+
+  // Закрываем лог
+  logStream.end();
+
+  // Выходим из процесса с ошибкой
   process.exit(1);
 });

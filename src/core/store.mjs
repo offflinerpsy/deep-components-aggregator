@@ -1,56 +1,48 @@
-import fs from 'node:fs';
+import { readFileSync, readdirSync, existsSync } from 'node:fs';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
-
-// Получаем путь к директории модуля
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const rootDir = path.resolve(__dirname, '../..');
-
-// Путь к директории с продуктами
-const PRODUCTS_DIR = path.join(rootDir, 'data/db/products');
 
 /**
- * Загружает все продукты из директории
+ * Путь к директории с данными о продуктах
+ */
+const PRODUCTS_DIR = 'data/db/products';
+
+/**
+ * Загружает все продукты из директории с данными
  * @returns {Array} Массив продуктов
  */
 export function loadAllProducts() {
   // Проверяем существование директории
-  if (!fs.existsSync(PRODUCTS_DIR)) {
-    console.warn(`Директория ${PRODUCTS_DIR} не существует`);
+  if (!existsSync(PRODUCTS_DIR)) {
+    console.warn(`Directory ${PRODUCTS_DIR} does not exist`);
     return [];
   }
 
-  try {
-    // Получаем список файлов JSON
-    const files = fs.readdirSync(PRODUCTS_DIR).filter(f => f.endsWith('.json'));
-    console.log(`Найдено ${files.length} файлов продуктов`);
+  // Получаем список файлов JSON
+  const files = readdirSync(PRODUCTS_DIR).filter(f => f.endsWith('.json'));
+  console.log(`Found ${files.length} product files`);
 
-    // Загружаем данные из каждого файла
-    const products = [];
+  // Загружаем данные из каждого файла
+  const products = [];
 
-    for (const file of files) {
-      try {
-        const filePath = path.join(PRODUCTS_DIR, file);
-        const content = fs.readFileSync(filePath, 'utf8');
-        const product = JSON.parse(content);
+  for (const file of files) {
+    try {
+      const filePath = path.join(PRODUCTS_DIR, file);
+      const content = readFileSync(filePath, 'utf8');
+      const product = JSON.parse(content);
 
-        // Проверяем наличие обязательных полей
-        if (product && (product.mpn || product.id)) {
-          products.push(product);
-        } else {
-          console.warn(`Пропускаем некорректный продукт в файле ${file}`);
-        }
-      } catch (error) {
-        console.error(`Ошибка загрузки продукта из ${file}: ${error.message}`);
+      // Проверяем наличие обязательных полей
+      if (product && product.mpn) {
+        products.push(product);
+      } else {
+        console.warn(`Skipping invalid product in file ${file}`);
       }
+    } catch (error) {
+      console.error(`Error loading product from ${file}: ${error.message}`);
     }
-
-    console.log(`Загружено ${products.length} валидных продуктов`);
-    return products;
-  } catch (error) {
-    console.error(`Ошибка при загрузке продуктов: ${error.message}`);
-    return [];
   }
+
+  console.log(`Loaded ${products.length} valid products`);
+  return products;
 }
 
 /**
@@ -63,53 +55,55 @@ export function loadProduct(mpn) {
     return null;
   }
 
-  try {
-    // Нормализуем MPN для использования в имени файла
-    const safeMpn = mpn.replace(/[\/\\?%*:|"<>]/g, '_');
-    const filePath = path.join(PRODUCTS_DIR, `${safeMpn}.json`);
-
-    // Проверяем существование файла
-    if (!fs.existsSync(filePath)) {
-      return null;
-    }
-
-    // Загружаем данные из файла
-    const content = fs.readFileSync(filePath, 'utf8');
-    return JSON.parse(content);
-  } catch (error) {
-    console.error(`Ошибка загрузки продукта ${mpn}: ${error.message}`);
-    return null;
-  }
-}
-
-/**
- * Сохраняет продукт в файл
- * @param {object} product Продукт
- * @returns {string|null} Путь к файлу или null в случае ошибки
- */
-export function saveProduct(product) {
-  if (!product || (!product.mpn && !product.id)) {
-    console.error('Невозможно сохранить продукт без MPN или ID');
+  // Проверяем существование директории
+  if (!existsSync(PRODUCTS_DIR)) {
+    console.warn(`Directory ${PRODUCTS_DIR} does not exist`);
     return null;
   }
 
   try {
-    // Создаем директорию, если она не существует
-    if (!fs.existsSync(PRODUCTS_DIR)) {
-      fs.mkdirSync(PRODUCTS_DIR, { recursive: true });
+    // Получаем список всех файлов JSON
+    const files = readdirSync(PRODUCTS_DIR).filter(f => f.endsWith('.json'));
+
+    // Сначала пытаемся найти точное совпадение по имени файла
+    const exactMpnFile = files.find(f => f.startsWith(`${mpn}.json`));
+    if (exactMpnFile) {
+      const filePath = path.join(PRODUCTS_DIR, exactMpnFile);
+      const content = readFileSync(filePath, 'utf8');
+      return JSON.parse(content);
     }
 
-    // Используем MPN или ID для имени файла
-    const key = product.mpn || product.id;
-    const safeName = key.replace(/[\/\\?%*:|"<>]/g, '_');
-    const filePath = path.join(PRODUCTS_DIR, `${safeName}.json`);
+    // Затем ищем файл, который содержит MPN в имени
+    const mpnInNameFile = files.find(f => f.toLowerCase().includes(mpn.toLowerCase()));
+    if (mpnInNameFile) {
+      const filePath = path.join(PRODUCTS_DIR, mpnInNameFile);
+      const content = readFileSync(filePath, 'utf8');
+      return JSON.parse(content);
+    }
 
-    // Сохраняем продукт в файл
-    fs.writeFileSync(filePath, JSON.stringify(product, null, 2));
+    // Наконец, проверяем содержимое файлов
+    for (const file of files) {
+      const filePath = path.join(PRODUCTS_DIR, file);
+      const content = readFileSync(filePath, 'utf8');
+      const product = JSON.parse(content);
 
-    return filePath;
+      // Проверяем совпадение MPN (без учета регистра)
+      if (product && product.mpn) {
+        const productMpn = product.mpn.toLowerCase();
+        const searchMpn = mpn.toLowerCase();
+
+        if (productMpn === searchMpn ||
+            productMpn.startsWith(searchMpn) ||
+            productMpn.includes(searchMpn)) {
+          return product;
+        }
+      }
+    }
+
+    // Продукт не найден
+    return null;
   } catch (error) {
-    console.error(`Ошибка сохранения продукта: ${error.message}`);
+    console.error(`Error loading product ${mpn}: ${error.message}`);
     return null;
   }
 }

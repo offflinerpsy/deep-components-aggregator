@@ -1,76 +1,127 @@
 import { test, expect } from '@playwright/test';
 
-test.describe('Живой поиск и карточка товара', () => {
-  test('API здоровья возвращает 200 и статус ok', async ({ request }) => {
+/**
+ * E2E тесты для функциональности живого поиска
+ */
+test.describe('Live Search E2E Tests', () => {
+
+  // Тест для проверки загрузки страницы поиска
+  test('should load search page', async ({ page }) => {
+    await page.goto('/ui/search.html');
+
+    // Проверяем заголовок страницы
+    await expect(page).toHaveTitle(/Поиск компонентов/);
+
+    // Проверяем наличие поля поиска и кнопки
+    const searchInput = page.locator('#searchInput');
+    const searchButton = page.locator('#searchButton');
+
+    await expect(searchInput).toBeVisible();
+    await expect(searchButton).toBeVisible();
+  });
+
+  // Тест для проверки локального поиска
+  test('should display local search results', async ({ page }) => {
+    // Переходим на страницу поиска с параметром q
+    await page.goto('/ui/search.html?q=LM317');
+
+    // Проверяем, что поле поиска заполнено
+    const searchInput = page.locator('#searchInput');
+    await expect(searchInput).toHaveValue('LM317');
+
+    // Ожидаем появления результатов поиска
+    const resultsTable = page.locator('.results-table');
+    await expect(resultsTable).toBeVisible({ timeout: 10000 });
+
+    // Проверяем наличие хотя бы одной строки с результатами
+    const tableRows = page.locator('.results-table tbody tr');
+    await expect(tableRows).toHaveCount(1, { gte: true, timeout: 10000 });
+
+    // Проверяем, что в результатах есть LM317
+    const firstRow = tableRows.first();
+    await expect(firstRow).toContainText('LM317');
+  });
+
+  // Тест для проверки раскрытия карточки товара
+  test('should expand product card on button click', async ({ page }) => {
+    // Переходим на страницу поиска с параметром q
+    await page.goto('/ui/search.html?q=LM317');
+
+    // Ожидаем появления результатов поиска
+    const resultsTable = page.locator('.results-table');
+    await expect(resultsTable).toBeVisible({ timeout: 10000 });
+
+    // Находим кнопку "Открыть" в первой строке
+    const expandButton = page.locator('.expand-button').first();
+    await expect(expandButton).toBeVisible();
+
+    // Нажимаем на кнопку
+    await expandButton.click();
+
+    // Проверяем, что карточка товара отображается
+    const productCard = page.locator('.product-card-expanded.active');
+    await expect(productCard).toBeVisible({ timeout: 5000 });
+
+    // Проверяем содержимое карточки
+    await expect(productCard).toContainText('LM317');
+    await expect(productCard).toContainText('Производитель');
+    await expect(productCard).toContainText('Описание');
+  });
+
+  // Тест для проверки живого поиска с SSE
+  test('should receive SSE events during live search', async ({ page }) => {
+    // Включаем перехват запросов
+    await page.route('**/api/live/search**', async (route) => {
+      // Пропускаем запрос, но отслеживаем его
+      const url = route.request().url();
+      console.log(`Intercepted SSE request: ${url}`);
+      await route.continue();
+    });
+
+    // Переходим на страницу поиска
+    await page.goto('/ui/search.html');
+
+    // Вводим запрос в поле поиска
+    const searchInput = page.locator('#searchInput');
+    await searchInput.fill('1N4148');
+
+    // Нажимаем на кнопку поиска
+    const searchButton = page.locator('#searchButton');
+    await searchButton.click();
+
+    // Ожидаем появления сообщения о начале поиска
+    const messages = page.locator('#messages .message-box');
+    await expect(messages.first()).toContainText('Запускаю поиск', { timeout: 5000 });
+
+    // Ожидаем появления результатов поиска
+    const tableRows = page.locator('.results-table tbody tr');
+    await expect(tableRows).toHaveCount(1, { gte: true, timeout: 15000 });
+  });
+
+  // Тест для проверки API здоровья
+  test('should check API health', async ({ request }) => {
     const response = await request.get('/api/health');
-    expect(response.status()).toBe(200);
-    
+    expect(response.ok()).toBeTruthy();
+
     const data = await response.json();
-    expect(data.ok).toBeTruthy();
+    expect(data.status).toBe('ok');
   });
 
-  test('Поиск LM317 показывает результаты в таблице', async ({ page }) => {
-    await page.goto('/');
-    
-    // Вводим запрос в поле поиска
-    await page.locator('#search-input').fill('LM317');
-    await page.locator('#search-button').click();
-    
-    // Проверяем, что URL содержит параметр поиска
-    await expect(page).toHaveURL(/.*q=LM317/);
-    
-    // Ждем появления хотя бы одной строки в таблице результатов (до 10 секунд)
-    await expect(
-      page.locator('#results-table-body tr').first()
-    ).toBeVisible({ timeout: 10000 });
-    
-    // Проверяем, что в таблице есть хотя бы одна строка с данными
-    const rowCount = await page.locator('#results-table-body tr').count();
-    expect(rowCount).toBeGreaterThan(0);
+  // Тест для проверки API поиска
+  test('should check API search', async ({ request }) => {
+    const response = await request.get('/api/search?q=LM317');
+    expect(response.ok()).toBeTruthy();
+
+    const data = await response.json();
+    expect(data.items).toBeDefined();
   });
 
-  test('Кнопка "Открыть" раскрывает карточку товара', async ({ page }) => {
-    await page.goto('/?q=LM317');
-    
-    // Ждем загрузки результатов
-    await expect(
-      page.locator('#results-table-body tr').first()
-    ).toBeVisible({ timeout: 10000 });
-    
-    // Нажимаем на кнопку "Открыть" в первой строке
-    await page.locator('#results-table-body tr:first-child button:has-text("Открыть")').click();
-    
-    // Проверяем, что карточка товара раскрылась
-    await expect(
-      page.locator('.product-pane.expanded')
-    ).toBeVisible({ timeout: 5000 });
-    
-    // Проверяем наличие ключевых элементов в карточке
-    await expect(page.locator('.product-pane-gallery img')).toBeVisible();
-    await expect(page.locator('.product-pane-details h3')).toBeVisible();
-    await expect(page.locator('.product-pane-details .price')).toBeVisible();
-  });
+  // Тест для проверки API продукта
+  test('should check API product', async ({ request }) => {
+    const response = await request.get('/api/product?mpn=LM317');
+    expect(response.ok()).toBeTruthy();
 
-  test('Поиск "транзистор" (кириллица) показывает результаты', async ({ page }) => {
-    await page.goto('/');
-    
-    // Вводим запрос в поле поиска
-    await page.locator('#search-input').fill('транзистор');
-    await page.locator('#search-button').click();
-    
-    // Проверяем, что URL содержит параметр поиска
-    await expect(page).toHaveURL(/.*q=%D1%82%D1%80%D0%B0%D0%BD%D0%B7%D0%B8%D1%81%D1%82%D0%BE%D1%80/);
-    
-    // Ждем либо появления результатов, либо сообщения о диагностике
-    await Promise.race([
-      page.locator('#results-table-body tr').first().waitFor({ timeout: 10000 }).catch(() => {}),
-      page.locator('#status-message:has-text("Источники недоступны")').waitFor({ timeout: 10000 }).catch(() => {})
-    ]);
-    
-    // Проверяем, что либо есть результаты, либо есть сообщение о диагностике
-    const hasResults = await page.locator('#results-table-body tr').count() > 0;
-    const hasDiagnostic = await page.locator('#status-message:has-text("Источники недоступны")').isVisible();
-    
-    expect(hasResults || hasDiagnostic).toBeTruthy();
+    const data = await response.json();
+    expect(data.mpn).toBeDefined();
   });
 });

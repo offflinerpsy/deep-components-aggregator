@@ -20,44 +20,44 @@ function pickBeeKey() {
 
 async function testLiveSearch(query) {
   console.log(`\n🔍 Тестирую запрос: "${query}"`);
-  
+
   // 1. Строим цели
   const targets = buildTargets(query);
   console.log('🎯 Цели:', targets);
-  
+
   // 2. Создаем ротатор провайдеров
   const providers = makeRotator([
     { name: "scraperapi", fn: (t) => fetchViaScraperAPI({ key: PROVIDER_CONFIG.SCRAPERAPI_KEY, url: t, timeout: 10000 }) },
     { name: "scrapingbee", fn: (t) => fetchViaScrapingBee({ key: pickBeeKey(), url: t, timeout: 10000 }) },
     { name: "direct", fn: (t) => fetchDirect({ url: t, timeout: 10000 }) },
   ]);
-  
+
   let foundItems = [];
-  
+
   // 3. Обрабатываем каждую цель
   for (const target of targets) {
     console.log(`\n📡 Обрабатываю: ${target}`);
-    
+
     const availableProviders = providers.nextUsable();
     if (availableProviders.length === 0) {
       console.log('❌ Нет доступных провайдеров');
       continue;
     }
-    
+
     // Пробуем провайдеров последовательно
     for (const provider of availableProviders) {
       console.log(`  🔄 Пробую провайдер: ${provider.name}`);
-      
+
       const result = await provider.fn(target);
       if (isOk(result)) {
         console.log(`  ✅ ${provider.name} успешно, байт: ${result.data.bytes}`);
         providers.markOk(provider.name);
-        
+
         // Парсим результат
         const parsed = target.includes("/product/")
           ? parseProduct({ html: result.data.html, sourceUrl: target })
           : parseListing({ html: result.data.html, sourceUrl: target });
-        
+
         if (isOk(parsed)) {
           console.log(`  📊 Парсинг успешен, найдено: ${Array.isArray(parsed.data) ? parsed.data.length : 1} элементов`);
           foundItems.push(...(Array.isArray(parsed.data) ? parsed.data : [parsed.data]));
@@ -71,7 +71,7 @@ async function testLiveSearch(query) {
       }
     }
   }
-  
+
   console.log(`\n📈 Итого найдено: ${foundItems.length} товаров`);
   if (foundItems.length > 0) {
     console.log('🏆 Первый товар:', {
@@ -81,17 +81,17 @@ async function testLiveSearch(query) {
       source: foundItems[0].source
     });
   }
-  
+
   return foundItems;
 }
 
 async function runTests() {
   const queries = ['LM317', '1N4148', 'транзистор'];
-  
+
   for (const query of queries) {
     await testLiveSearch(query);
   }
-  
+
   console.log('\n✅ Все тесты завершены');
 }
 

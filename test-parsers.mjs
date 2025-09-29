@@ -7,22 +7,22 @@ console.log('🧪 Тестирование парсеров...');
 
 async function testListingParser() {
   console.log('\n📋 Тестирую парсер листинга...');
-  
+
   const result = await fetchDirect({
     url: 'https://www.chipdip.ru/search?searchtext=LM317',
     timeout: 10000
   });
-  
+
   if (!result.ok) {
     console.log('❌ Не удалось получить HTML для тестирования');
     return;
   }
-  
+
   const parsed = parseListing({
     html: result.data.html,
     sourceUrl: 'https://www.chipdip.ru/search?searchtext=LM317'
   });
-  
+
   console.log('Parse result:', parsed.ok ? 'SUCCESS' : 'FAILED');
   if (parsed.ok) {
     console.log('Found items:', parsed.data.length);
@@ -41,22 +41,22 @@ async function testListingParser() {
 
 async function testProductParser() {
   console.log('\n🔍 Тестирую парсер карточки...');
-  
+
   const result = await fetchDirect({
     url: 'https://www.chipdip.ru/product/lm317',
     timeout: 10000
   });
-  
+
   if (!result.ok) {
     console.log('❌ Не удалось получить HTML для тестирования');
     return;
   }
-  
+
   const parsed = parseProduct({
     html: result.data.html,
     sourceUrl: 'https://www.chipdip.ru/product/lm317'
   });
-  
+
   console.log('Parse result:', parsed.ok ? 'SUCCESS' : 'FAILED');
   if (parsed.ok) {
     console.log('Product:', {

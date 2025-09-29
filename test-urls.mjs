@@ -9,7 +9,7 @@ async function testUrls() {
     'https://www.chipdip.ru/product/lm317-d2pak-to263-sj',
     'https://www.chipdip.ru/product/lm317-to220',
   ];
-  
+
   for (const url of urls) {
     console.log(`\n📡 Тестирую: ${url}`);
     const result = await fetchDirect({ url, timeout: 10000 });

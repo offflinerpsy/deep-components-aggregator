@@ -13,7 +13,7 @@ async function testScraperAPI() {
     url: 'https://www.chipdip.ru/search?searchtext=LM317',
     timeout: 10000
   });
-  
+
   console.log('ScraperAPI result:', result.ok ? 'SUCCESS' : 'FAILED');
   if (!result.ok) {
     console.log('Error:', result.reason, result.code);
@@ -30,7 +30,7 @@ async function testScrapingBee() {
     url: 'https://www.chipdip.ru/search?searchtext=LM317',
     timeout: 10000
   });
-  
+
   console.log('ScrapingBee result:', result.ok ? 'SUCCESS' : 'FAILED');
   if (!result.ok) {
     console.log('Error:', result.reason, result.code);
@@ -46,7 +46,7 @@ async function testDirect() {
     url: 'https://www.chipdip.ru/search?searchtext=LM317',
     timeout: 10000
   });
-  
+
   console.log('Direct result:', result.ok ? 'SUCCESS' : 'FAILED');
   if (!result.ok) {
     console.log('Error:', result.reason, result.code);

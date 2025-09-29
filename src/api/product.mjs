@@ -1,75 +1,82 @@
 import { mouserSearchByPartNumber } from '../integrations/mouser/client.mjs';
 import { farnellByMPN } from '../integrations/farnell/client.mjs';
 import { toRUB } from '../currency/toRUB.mjs';
+import { readCachedProduct, cacheProduct } from '../db/sql.mjs';
+
+const TTL_PRODUCT_MS = 30*24*60*60*1000;
 
 const clean = s => (s||'').toString().trim();
-const pick = (o,k,d)=> (o && o[k]!=null ? o[k] : d);
 
 const parseMouser = (data) => {
-  const p = (data?.SearchResults?.Parts||[])[0] || {};
-  const mfg = clean(p.Manufacturer || p.ManufacturerName);
-  const mpn = clean(p.ManufacturerPartNumber);
-  const desc = clean(p.Description);
-  const img = clean(p.ImagePath || p.ImageURL || '');
-  const url = clean(p.ProductDetailUrl || p.ProductDetailPageURL || '');
+  const p = (data && data.SearchResults && (data.SearchResults.Parts||[])[0]) || {};
   const priceBreaks = Array.isArray(p.PriceBreaks) ? p.PriceBreaks : [];
   const prices = priceBreaks.map(pb => clean(pb.Price)).filter(Boolean);
   const minRub = (() => {
     const nums = prices.map(x => Number((x.match(/[\d.,]+/)||[''])[0].replace(',', '.'))).filter(Number.isFinite);
     if(!nums.length) return null;
-    return toRUB(nums.sort((a,b)=>a-b)[0], (prices.join('').includes('€')?'EUR':(prices.join('').includes('£')?'GBP':'USD')));
+    const cur = prices.join('').includes('€')?'EUR':(prices.join('').includes('£')?'GBP':'USD');
+    return toRUB(nums.sort((a,b)=>a.v-b.v)[0], cur);
   })();
-  const datasheets = [ clean(p.DataSheetUrl||p.DataSheetURL||'') ].filter(Boolean);
-  // Mouser specs в Search API ограничены: берём «атрибуты», если пришли (иногда бывают)
-  const specs = {};
   const attrs = p.Attributes || p.ProductAttributes || [];
-  for (const a of attrs) { const k = clean(a.Name||a.attributeName); const v = clean(a.Value||a.attributeValue); if(k && v) specs[k]=v; }
-  return { photo: img, mpn, manufacturer: mfg, description: desc, minRub, datasheets, specs, vendorUrl: url, source:'mouser' };
+  const specs = {}; for (const a of attrs){ const k=clean(a.Name||a.attributeName); const v=clean(a.Value||a.attributeValue); if(k && v) specs[k]=v; }
+  return {
+    photo: clean(p.ImagePath||p.ImageURL||''),
+    mpn: clean(p.ManufacturerPartNumber),
+    manufacturer: clean(p.Manufacturer || p.ManufacturerName),
+    description: clean(p.Description),
+    minRub,
+    datasheets: [ clean(p.DataSheetUrl||p.DataSheetURL||'') ].filter(Boolean),
+    specs,
+    vendorUrl: clean(p.ProductDetailUrl || p.ProductDetailPageURL || ''),
+    source:'mouser'
+  };
 };
 
-const parseFarnell = (resp, targetMPN) => {
-  const products = resp?.manufacturerPartNumberSearchReturn?.products || resp?.products || [];
-  const prod = products.find(p => (p.translatedManufacturerPartNumber || p.manufacturerPartNumber || '').toUpperCase() === targetMPN.toUpperCase()) || products[0] || {};
-  const mfg = clean(prod.vendorName||prod.brandName||prod.manufacturer);
-  const mpn = clean(prod.manufacturerPartNumber || prod.manufacturerPartNo || prod.translatedManufacturerPartNumber);
-  const desc = clean(prod.displayName || prod.summaryDescription || prod.longDescription);
-  const img = clean(prod.image ? `https://uk.farnell.com${prod.image.baseName}` : '');
-  const url = clean(prod.productUrl || `https://uk.farnell.com/${prod.sku}`);
-  const bands = Array.isArray(prod.prices) ? prod.prices : [];
-  const minRub = (() => {
-    const vals = bands.map(b => Number(b.cost || b.breakPrice || b.price || b.unitPrice)).filter(Number.isFinite);
-    if(!vals.length) return null;
-    return toRUB(vals.sort((a,b)=>a-b)[0], 'GBP');
-  })();
-  const datasheets = (prod.datasheets||[]).map(d => clean(d.url || d)).filter(Boolean);
-  const specs = {};
-  const attrs = prod.attributes || [];
-  for (const a of attrs) { const k = clean(a.attributeLabel||a.name); const v = clean(a.attributeValue||a.value); if(k && v) specs[k]=v; }
-  return { photo: img, mpn, manufacturer: mfg, description: desc, minRub, datasheets, specs, vendorUrl: url, source:'farnell' };
+const parseFarnell = (resp, targetMPN, region) => {
+  const arr = (resp && (resp.products || (resp.manufacturerPartNumberSearchReturn && resp.manufacturerPartNumberSearchReturn.products) || [])) || [];
+  const prod = arr.find(p => clean(p.manufacturerPartNumber||p.manufacturerPartNo).toUpperCase() === clean(targetMPN).toUpperCase()) || arr[0] || {};
+  const bands = (prod.prices && prod.prices.priceBands) || prod.priceBands || [];
+  const ps = bands.map(b => ({v:Number(b.breakPrice||b.price||b.unitPrice), c:String(b.currency||b.currencyCode||'GBP').toUpperCase()})).filter(x=>Number.isFinite(x.v));
+  const minRub = ps.length ? toRUB(ps.sort((a,b)=>a.v-b.v)[0].v, ps[0].c) : null;
+  const specs = {}; (prod.attributes||[]).forEach(a=>{ const k=clean(a.attributeLabel||a.name); const v=clean(a.attributeValue||a.value); if(k && v) specs[k]=v; });
+  const image = (prod.images && (prod.images.medium||prod.images.small||prod.image)) || '';
+  const url = prod.productUrl || prod.rohsCompliantProductUrl || prod.productDetailUrl || '';
+  return {
+    photo: clean(image),
+    mpn: clean(prod.manufacturerPartNumber||prod.manufacturerPartNo),
+    manufacturer: clean(prod.vendorName||prod.brandName||prod.manufacturer),
+    description: clean(prod.displayName||prod.summaryDescription||prod.longDescription),
+    minRub,
+    datasheets: (prod.datasheets||[]).map(d=>clean(d.url||d)).filter(Boolean),
+    specs,
+    vendorUrl: clean(url),
+    source:'farnell'
+  };
 };
 
-export default function mountProduct(app, { keys }){
+export default function mountProduct(app, { keys, db }){
   app.get('/api/product', (req,res)=>{
     const src = String(req.query.src||'').toLowerCase();
-    const id  = String(req.query.id||'').trim(); // mpn
-    const MK=process.env.MOUSER_API_KEY || keys?.mouser || '';
-    const FK=process.env.FARNELL_API_KEY || keys?.farnell || '';
-    const FR=process.env.FARNELL_REGION   || keys?.farnellRegion || 'uk.farnell.com';
+    const id  = String(req.query.id||'').trim();
     if(!src || !id){ res.status(400).json({ok:false,code:'bad_params'}); return; }
+
+    const cached = readCachedProduct(db, src, id, TTL_PRODUCT_MS);
+    if(cached){ res.json({ok:true, product: cached, meta:{cached:true}}); return; }
+
+    const MK=keys.mouser, FK=keys.farnell, FR=keys.farnellRegion;
 
     if(src==='mouser' && MK){
       mouserSearchByPartNumber({apiKey:MK, mpn:id})
-        .then(r=> res.json({ok:true, product: parseMouser(r?.data)}))
+        .then(r=>{ const p=parseMouser(r&&r.data); cacheProduct(db, 'mouser', id, p); res.json({ok:true,product:p}); })
         .catch(()=>res.status(502).json({ok:false,code:'mouser_unreachable'}));
       return;
     }
     if(src==='farnell' && FK){
-      farnellByMPN({apiKey:FK, region:FR, q:id, limit:25})
-        .then(r=> res.json({ok:true, product: parseFarnell(r?.data, id)}))
+      farnellByMPN({apiKey:FK, region:FR, q:id, limit:1})
+        .then(r=>{ const p=parseFarnell(r&&r.data, id, FR); cacheProduct(db, 'farnell', id, p); res.json({ok:true,product:p}); })
         .catch(()=>res.status(502).json({ok:false,code:'farnell_unreachable'}));
       return;
     }
     res.status(400).json({ok:false,code:'unsupported_source'});
   });
 }
-

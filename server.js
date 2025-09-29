@@ -1,6 +1,7 @@
 import express from 'express';
 import mountSearch from './src/api/search.mjs';
 import mountProduct from './src/api/product.mjs';
+import { openDb } from './src/db/sql.mjs';
 
 const app = express();
 app.use(express.static('public', { extensions:['html'] }));
@@ -11,8 +12,9 @@ const keys = {
   farnell: process.env.FARNELL_API_KEY || '',
   farnellRegion: process.env.FARNELL_REGION || 'uk.farnell.com'
 };
-mountSearch(app, { keys });
-mountProduct(app, { keys });
+const db = openDb();
+mountSearch(app, { keys, db });
+mountProduct(app, { keys, db });
 
 const PORT = Number(process.env.PORT||9201);
 app.listen(PORT, ()=>console.log('API :'+PORT));

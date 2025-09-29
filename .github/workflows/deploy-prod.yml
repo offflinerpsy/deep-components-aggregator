@@ -19,6 +19,7 @@ jobs:
             git reset --hard origin/main
             git clean -fd
             npm ci
+            mkdir -p /opt/deep-agg/var/db
             systemctl restart deep-agg
             sleep 2
             curl -sS http://127.0.0.1:9201/api/health || (journalctl -u deep-agg -n 50 --no-pager; exit 1)

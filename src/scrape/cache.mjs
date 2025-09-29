@@ -158,9 +158,18 @@ function saveToCache(url, html, provider, status) {
  * @returns {Promise<object>} Результат запроса
  */
 export const fetchHtmlCached = async (url, options = {}) => {
-  const { providerHint = null, timeoutMs = 10000, retries = 2 } = options;
+  const { providerHint = null, timeoutMs = 10000, retries = 2, diagnostics } = options;
 
   console.log(`[CACHE] Fetching ${url} with cache`);
+
+  // Логируем начало запроса
+  if (diagnostics) {
+    diagnostics.addEvent('cache_request_start', `Starting cached fetch for ${url}`, { 
+      providerHint,
+      timeoutMs,
+      retries
+    });
+  }
 
   // Проверяем кэш
   const cacheResult = getFromCache(url);
@@ -168,13 +177,21 @@ export const fetchHtmlCached = async (url, options = {}) => {
   // Если есть свежий кэш, возвращаем его
   if (cacheResult.exists && !cacheResult.stale) {
     console.log(`[CACHE] Cache hit for ${url} (fresh)`);
+    
+    if (diagnostics) {
+      diagnostics.addEvent('cache_hit', `Returning fresh cache for ${url}`, { 
+        cacheAge: Date.now() - cacheResult.meta.timestamp 
+      });
+    }
+    
     return {
       ok: true,
       html: cacheResult.html,
       status: cacheResult.meta.status,
       cached: true,
       fresh: true,
-      provider: cacheResult.meta.provider
+      provider: cacheResult.meta.provider,
+      usedKey: 'cache'
     };
   }
 
@@ -191,36 +208,74 @@ export const fetchHtmlCached = async (url, options = {}) => {
 
   console.log(`[CACHE] Provider order: ${providerOrder.join(', ')}`);
 
+  if (diagnostics) {
+    diagnostics.addEvent('provider_order', `Provider order: ${providerOrder.join(', ')}`);
+  }
+
   // Пробуем каждый провайдер по очереди
   for (const providerName of providerOrder) {
     const key = pick(providerName);
     if (!key) {
       console.warn(`[CACHE] No available key for ${providerName}, skipping`);
+      if (diagnostics) {
+        diagnostics.addEvent('provider_skip', `No available key for provider ${providerName}`);
+      }
       continue;
     }
 
     console.log(`[CACHE] Trying ${providerName} for ${url}`);
 
+    if (diagnostics) {
+      diagnostics.addEvent('provider_try', `Trying ${providerName} with key ${key.substring(0, 4)}...`);
+    }
+
     // Пробуем несколько раз с экспоненциальным backoff
     for (let attempt = 0; attempt <= retries; attempt++) {
+      const attemptStart = Date.now();
+      
+      if (diagnostics) {
+        diagnostics.addEvent('provider_fetch', `Attempt ${attempt + 1} for ${url} using ${providerName} (key: ${key.substring(0, 4)}...)`);
+      }
+      
       try {
         const providerFn = providers[providerName];
         const result = await providerFn(url, { key, timeoutMs });
+        const attemptTime = Date.now() - attemptStart;
 
         if (result.ok) {
           console.log(`[CACHE] Success with ${providerName} for ${url}`);
           recordSuccess(providerName, key);
           saveToCache(url, result.html, providerName, result.status);
+          
+          if (diagnostics) {
+            diagnostics.addEvent('provider_success', `Successfully fetched ${url} with ${providerName}`, { 
+              status: result.status, 
+              time: attemptTime,
+              htmlLength: result.html?.length || 0,
+              key: key.substring(0, 4) + '...'
+            });
+          }
+          
           return {
             ...result,
             cached: false,
             fresh: true,
             provider: providerName,
-            usedKey: key
+            usedKey: key,
+            attemptTime
           };
         } else {
           console.error(`[CACHE] Error with ${providerName} for ${url}: ${result.status}`);
           recordError(providerName, key, result.status?.toString() || 'network');
+
+          if (diagnostics) {
+            diagnostics.addEvent('provider_fail', `Failed to fetch ${url} with ${providerName}`, { 
+              status: result.status, 
+              attempt: attempt + 1,
+              key: key.substring(0, 4) + '...',
+              time: attemptTime
+            });
+          }
 
           // Если это последняя попытка или критическая ошибка, прекращаем попытки с этим провайдером
           if (attempt === retries || ['402', '429'].includes(result.status?.toString())) {
@@ -230,11 +285,24 @@ export const fetchHtmlCached = async (url, options = {}) => {
           // Экспоненциальный backoff
           const delay = Math.pow(1.5, attempt) * 1000;
           console.log(`[CACHE] Retrying ${providerName} after ${delay}ms (attempt ${attempt + 1}/${retries})`);
+          
+          if (diagnostics) {
+            diagnostics.addEvent('provider_retry_delay', `Waiting ${delay}ms before retry`);
+          }
+          
           await new Promise(resolve => setTimeout(resolve, delay));
         }
       } catch (error) {
         console.error(`[CACHE] Exception with ${providerName} for ${url}:`, error);
         recordError(providerName, key, 'exception');
+        
+        if (diagnostics) {
+          diagnostics.addEvent('provider_exception', `Exception fetching ${url} with ${providerName}: ${error.message}`, { 
+            error: true,
+            key: key.substring(0, 4) + '...',
+            time: Date.now() - attemptStart
+          });
+        }
       }
     }
   }
@@ -242,6 +310,13 @@ export const fetchHtmlCached = async (url, options = {}) => {
   // Если все провайдеры не сработали, но есть устаревший кэш, используем его (stale-if-error)
   if (cacheResult.exists) {
     console.log(`[CACHE] All providers failed, using stale cache for ${url}`);
+    
+    if (diagnostics) {
+      diagnostics.addEvent('cache_stale_if_error', `Returning stale cache for ${url} due to provider errors`, {
+        cacheAge: Date.now() - cacheResult.meta.timestamp
+      });
+    }
+    
     return {
       ok: true,
       html: cacheResult.html,
@@ -249,16 +324,25 @@ export const fetchHtmlCached = async (url, options = {}) => {
       cached: true,
       fresh: false,
       stale: true,
-      provider: cacheResult.meta.provider
+      provider: cacheResult.meta.provider,
+      usedKey: 'stale_cache'
     };
   }
 
   // Если ничего не сработало, возвращаем ошибку
   console.error(`[CACHE] All providers failed for ${url} and no cache available`);
+  
+  if (diagnostics) {
+    diagnostics.addEvent('all_providers_failed', `All providers failed for ${url}`, {
+      providersTried: providerOrder.length
+    });
+  }
+  
   return {
     ok: false,
     status: 'all_providers_failed',
     error: 'All providers failed and no cache available',
-    cached: false
+    cached: false,
+    usedKey: null
   };
 };

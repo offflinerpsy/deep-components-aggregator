@@ -1,5 +1,6 @@
 import { fetchHtmlCached } from './cache.mjs';
 import { parseChipDipSearch } from '../parsers/chipdip/search.mjs';
+import { parseChipDipSearchList } from '../parsers/chipdip/search-list.mjs';
 import { parsePromelecSearch } from '../parsers/promelec/search.mjs';
 import { DiagnosticsCollector } from '../core/diagnostics.mjs';
 import { normalize } from '../core/canon.mjs';
@@ -30,6 +31,10 @@ export async function liveSearch({
   // Создаем сборщик диагностики
   const diagnostics = new DiagnosticsCollector(query);
   diagnostics.addEvent('start', `Starting live search for "${query}"`);
+
+  // Определяем тип запроса (MPN или текстовый)
+  const isMpnQuery = isMpnLikeQuery(query);
+  diagnostics.addEvent('query_type', `Query type: ${isMpnQuery ? 'MPN' : 'text'}`);
 
   // Создаем таймер для общего таймаута
   const timeoutId = setTimeout(() => {
@@ -87,22 +92,34 @@ export async function liveSearch({
   };
 
   try {
-    // Запускаем параллельный поиск в ChipDip и Promelec
+    // Запускаем поиск в зависимости от типа запроса
     try {
       onNote && onNote({ message: "Выполняем поиск в реальном времени..." });
       diagnostics.addEvent('search_start', `Starting real-time search for "${query}"`);
 
-      const [chipDipResult, promelecResult] = await Promise.allSettled([
-        searchChipDip(query, diagnostics, processItem),
-        searchPromelec(query, diagnostics, processItem)
-      ]);
+      if (isMpnQuery) {
+        // Для MPN запросов используем старый поиск
+        const [chipDipResult, promelecResult] = await Promise.allSettled([
+          searchChipDip(query, diagnostics, processItem),
+          searchPromelec(query, diagnostics, processItem)
+        ]);
 
-      // Если оба поиска завершились с ошибкой, отправляем заметку
-      if (chipDipResult.status === 'rejected' && promelecResult.status === 'rejected') {
-        onNote && onNote({ message: "Не удалось выполнить поиск ни в одном из источников" });
+        if (chipDipResult.status === 'rejected' && promelecResult.status === 'rejected') {
+          onNote && onNote({ message: "Не удалось выполнить поиск ни в одном из источников" });
+        }
+      } else {
+        // Для текстовых запросов используем новый поиск списков
+        const [chipDipResult, promelecResult] = await Promise.allSettled([
+          searchChipDipText(query, diagnostics, processItem),
+          searchPromelec(query, diagnostics, processItem)
+        ]);
+
+        if (chipDipResult.status === 'rejected' && promelecResult.status === 'rejected') {
+          onNote && onNote({ message: "Не удалось выполнить поиск ни в одном из источников" });
+        }
       }
     } catch (error) {
-      // Игнорируем ошибки, так как они уже обрабатываются в searchChipDip и searchPromelec
+      // Игнорируем ошибки, так как они уже обрабатываются в поисковых функциях
     }
 
     // Если не нашли ни одного элемента, отправляем заметку
@@ -135,7 +152,78 @@ export async function liveSearch({
 }
 
 /**
- * Выполняет поиск в ChipDip
+ * Определяет, похож ли запрос на MPN
+ * @param {string} query Поисковый запрос
+ * @returns {boolean} true если запрос похож на MPN
+ */
+function isMpnLikeQuery(query) {
+  const trimmed = query.trim();
+  
+  // Проверяем на кириллические символы
+  if (/[а-яё]/i.test(trimmed)) {
+    return false;
+  }
+  
+  // Проверяем на типичные паттерны MPN
+  const mpnPatterns = [
+    /^[A-Z0-9-]+$/,  // Только буквы, цифры и дефисы
+    /^[A-Z]{2,4}[0-9]+/,  // 2-4 буквы + цифры
+    /^[A-Z]+[0-9]+[A-Z]*[0-9]*/,  // Буквы + цифры + опциональные буквы/цифры
+  ];
+  
+  return mpnPatterns.some(pattern => pattern.test(trimmed));
+}
+
+/**
+ * Выполняет текстовый поиск в ChipDip
+ * @param {string} query Поисковый запрос
+ * @param {DiagnosticsCollector} diagnostics Сборщик диагностики
+ * @param {function} processItem Функция обработки найденного элемента
+ * @returns {Promise<void>}
+ */
+async function searchChipDipText(query, diagnostics, processItem) {
+  try {
+    diagnostics.addEvent('chipdip_text', `Searching ChipDip text results for "${query}"`);
+
+    // Формируем URL для поиска
+    const url = `https://www.chipdip.ru/search?searchtext=${encodeURIComponent(query)}`;
+
+    // Получаем HTML
+    const startTime = Date.now();
+    const result = await fetchHtmlCached(url, { diagnostics });
+    const fetchTime = Date.now() - startTime;
+
+    // Добавляем информацию о провайдере в диагностику
+    diagnostics.addProvider('chipdip_text', url, result.ok, fetchTime, result.usedKey);
+
+    // Парсим результаты
+    const html = result.html || '';
+    const results = parseChipDipSearchList(html, 'https://www.chipdip.ru', query, diagnostics);
+
+    // Добавляем событие в диагностику
+    diagnostics.addEvent('chipdip_text', `Found ${results.length} text items on ChipDip`);
+
+    // Обрабатываем каждый результат
+    for (const result of results) {
+      // Добавляем источник
+      result.source = 'chipdip';
+
+      // Обрабатываем элемент
+      const shouldContinue = processItem(result);
+
+      // Если достигли лимита, прекращаем обработку
+      if (!shouldContinue) {
+        break;
+      }
+    }
+  } catch (error) {
+    diagnostics.addEvent('chipdip_text', `ChipDip text search error: ${error.message}`, { error: true });
+    throw error;
+  }
+}
+
+/**
+ * Выполняет поиск в ChipDip (MPN)
  * @param {string} query Поисковый запрос
  * @param {DiagnosticsCollector} diagnostics Сборщик диагностики
  * @param {function} processItem Функция обработки найденного элемента
@@ -152,7 +240,7 @@ async function searchChipDip(query, diagnostics, processItem) {
     const startTime = Date.now();
     // Используем прямой запрос для отладки
     //const result = await directFetch(url);
-    const result = await fetchHtmlCached(url);
+    const result = await fetchHtmlCached(url, { diagnostics });
     const fetchTime = Date.now() - startTime;
 
     // Добавляем информацию о провайдере в диагностику
@@ -202,7 +290,7 @@ async function searchPromelec(query, diagnostics, processItem) {
     const startTime = Date.now();
     // Используем прямой запрос для отладки
     //const result = await directFetch(url);
-    const result = await fetchHtmlCached(url);
+    const result = await fetchHtmlCached(url, { diagnostics });
     const fetchTime = Date.now() - startTime;
 
     // Добавляем информацию о провайдере в диагностику

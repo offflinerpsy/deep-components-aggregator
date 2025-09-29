@@ -633,6 +633,39 @@
             }
         }
 
+        // Функция для обновления элемента в таблице
+        function updateItemInTable(item) {
+            const tableBody = $('#resultsTable tbody');
+            if (!tableBody) return;
+
+            // Ищем строку с соответствующим MPN
+            const rows = tableBody.querySelectorAll('tr');
+            for (const row of rows) {
+                const mpnCell = row.querySelector('.mpn');
+                if (mpnCell && mpnCell.textContent.trim() === item.mpn) {
+                    // Обновляем цену
+                    const priceCell = row.querySelector('.col-price .price-main');
+                    if (priceCell && item.price_min_rub) {
+                        priceCell.textContent = formatRub(item.price_min_rub);
+                    }
+
+                    // Обновляем регионы
+                    const regionsCell = row.querySelector('.col-regions .regions-list');
+                    if (regionsCell && item.offers) {
+                        const regionItems = item.offers.slice(0, 4).map(offer => {
+                            const region = offer.region || 'Регион';
+                            const stock = offer.stock || 0;
+                            return `<span class="region-item">${region}: <span class="region-stock">${stock}</span></span>`;
+                        });
+                        regionsCell.innerHTML = regionItems.length > 0 ? regionItems.join('') : '—';
+                    }
+
+                    console.log(`Updated item ${item.mpn} in table`);
+                    break;
+                }
+            }
+        }
+
         // Функция для отображения/скрытия карточки товара
         function toggleProductCard(button, item) {
             // Находим строку таблицы
@@ -789,6 +822,13 @@
                 const item = JSON.parse(event.data);
                 console.log('Received item:', item);
                 renderResults([item]);
+            });
+
+            // Обработчик для события enrich (обновление цен и регионов)
+            eventSource.addEventListener('enrich', event => {
+                const item = JSON.parse(event.data);
+                console.log('Received enrich:', item);
+                updateItemInTable(item);
             });
 
             // Обработчик для события note

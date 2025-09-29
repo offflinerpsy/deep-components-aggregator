@@ -2,10 +2,16 @@ import express from 'express';
 import mountSearch from './src/api/search.mjs';
 
 const app = express();
-const keys = { mouser: process.env.MOUSER_API_KEY || '' };
+app.use(express.static('public', {extensions:['html']}));
 
-app.get('/api/health', (_, res) => res.json({ status: 'ok', ts: Date.now() }));
+app.get('/api/health', (_,res)=>res.json({status:'ok',ts:Date.now()}));
+
+const keys = {
+  mouser: process.env.MOUSER_API_KEY || '',
+  farnell: process.env.FARNELL_API_KEY || '',
+  farnellRegion: process.env.FARNELL_REGION || 'uk.farnell.com'
+};
 mountSearch(app, { keys });
 
-const PORT = process.env.PORT ? Number(process.env.PORT) : 9201;
-app.listen(PORT, () => console.log(`API :${PORT}`));
+const PORT = Number(process.env.PORT||9201);
+app.listen(PORT, ()=>console.log('API :'+PORT));

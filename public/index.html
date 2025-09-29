@@ -1,19 +1,30 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Deep Components Aggregator</title>
-  <link rel="stylesheet" href="/css/light.css">
-  <meta http-equiv="refresh" content="0; url=/ui/search.html">
-  <script>
-    window.location.href = "/ui/search.html";
-  </script>
-</head>
-<body>
-  <div class="container">
-    <h1>Перенаправление...</h1>
-    <p>Если вы не были перенаправлены автоматически, <a href="/ui/search.html">нажмите здесь</a>.</p>
-  </div>
-</body>
-</html>
+<!DOCTYPE html><html lang="ru"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>DeepAgg — Поиск электронных компонентов</title>
+<link rel="stylesheet" href="/ui/base.css">
+<style>
+  body{font-family:system-ui,Segoe UI,Roboto,Arial,sans-serif;background:#f7f8fa}
+  .wrap{max-width:1100px;margin:24px auto}
+  .searchbar{display:flex;gap:8px}
+  input[type="text"]{flex:1;padding:10px 12px;border:1px solid #d0d4db;border-radius:8px}
+  button{padding:10px 14px;border:0;background:#0ea5e9;color:#fff;border-radius:8px;cursor:pointer}
+  table{width:100%;border-collapse:collapse;background:#fff}
+  th,td{padding:10px;border-bottom:1px solid #eef1f4;vertical-align:top}
+  th{position:sticky;top:0;background:#f3f5f7;text-align:left}
+  img.thumb{width:40px;height:40px;object-fit:contain}
+  .note{color:#6b7280;font-size:12px}
+</style>
+</head><body><div class="wrap">
+  <form id="form" class="searchbar">
+    <input id="q" type="text" placeholder="Введите MPN или текст (на англ.)" autocomplete="off">
+    <button type="submit">Поиск</button>
+  </form>
+  <div id="meta" class="note"></div>
+  <table id="oems">
+    <thead><tr>
+      <th>Фото</th><th>MPN / Title</th><th>Manufacturer</th><th>Description</th>
+      <th>Package</th><th>Packaging</th><th>Regions</th><th>Stock</th><th>Min ₽</th><th>Open</th>
+    </tr></thead>
+    <tbody></tbody>
+  </table>
+</div><script src="/index.js" type="module"></script></body></html>

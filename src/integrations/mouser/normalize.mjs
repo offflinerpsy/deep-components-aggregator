@@ -4,7 +4,7 @@ const toInt = (s) => { const m=(s||'').replace(/\s/g,'').match(/\d[\d,\.]*/); if
 const parseMoney = (s) => { const str=(s||'').trim(); if(!str) return null; const cur=str.includes('$')?'USD':(str.includes('€')?'EUR':(str.includes('£')?'GBP':'USD')); const m=str.match(/[\d.,]+/); if(!m) return null; const val=Number(m[0].replace(',', '.')); return Number.isFinite(val)?{value:val,currency:cur}:null; };
 const bestPriceRub = (pbs=[]) => { const ps=pbs.map(pb=>parseMoney(pb.Price)).filter(Boolean); if(!ps.length) return null; const best=ps.sort((a,b)=>a.value-b.value)[0]; return toRUB(best.value, best.currency||'USD'); };
 
-export function normalizeMouserPart(p) {
+export function normMouser(p) {
   const mpn = clean(p.ManufacturerPartNumber);
   const manufacturer = clean(p.Manufacturer || p.ManufacturerName);
   const description = clean(p.Description);

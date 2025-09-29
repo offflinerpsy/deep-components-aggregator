@@ -1,7 +1,6 @@
 <!DOCTYPE html><html lang="ru"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>DeepAgg — Поиск электронных компонентов</title>
-<link rel="stylesheet" href="/ui/base.css">
 <style>
   body{font-family:system-ui,Segoe UI,Roboto,Arial,sans-serif;background:#f7f8fa}
   .wrap{max-width:1100px;margin:24px auto}
@@ -16,7 +15,7 @@
 </style>
 </head><body><div class="wrap">
   <form id="form" class="searchbar">
-    <input id="q" type="text" placeholder="Введите MPN или текст (на англ.)" autocomplete="off">
+    <input id="q" type="text" placeholder="Введите MPN или текст (англ.)" autocomplete="off">
     <button type="submit">Поиск</button>
   </form>
   <div id="meta" class="note"></div>
@@ -24,7 +23,6 @@
     <thead><tr>
       <th>Фото</th><th>MPN / Title</th><th>Manufacturer</th><th>Description</th>
       <th>Package</th><th>Packaging</th><th>Regions</th><th>Stock</th><th>Min ₽</th><th>Open</th>
-    </tr></thead>
-    <tbody></tbody>
+    </tr></thead><tbody></tbody>
   </table>
 </div><script src="/index.js" type="module"></script></body></html>

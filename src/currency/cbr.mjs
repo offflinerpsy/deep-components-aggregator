@@ -158,7 +158,7 @@ export const convert = (amount, fromCurrency, toCurrency) => {
   const { rates } = loadRates();
 
   // Проверяем наличие курсов для валют
-  if (!rates[fromCurrency] || !rates[toCurrency]) {
+  if (!rates[fromCurrency] || (toCurrency !== 'RUB' && !rates[toCurrency])) {
     console.warn(`Курс для ${fromCurrency} или ${toCurrency} не найден`);
 
     // Фолбэк на приблизительные курсы

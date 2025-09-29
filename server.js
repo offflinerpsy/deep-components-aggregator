@@ -2,8 +2,7 @@ import express from 'express';
 import mountSearch from './src/api/search.mjs';
 
 const app = express();
-app.use(express.static('public', {extensions:['html']}));
-
+app.use(express.static('public', { extensions: ['html'] }));
 app.get('/api/health', (_,res)=>res.json({status:'ok',ts:Date.now()}));
 
 const keys = {
@@ -13,5 +12,5 @@ const keys = {
 };
 mountSearch(app, { keys });
 
-const PORT = Number(process.env.PORT||9201);
+const PORT = Number(process.env.PORT || 9201);
 app.listen(PORT, ()=>console.log('API :'+PORT));

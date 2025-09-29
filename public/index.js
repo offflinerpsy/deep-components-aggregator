@@ -1,6 +1,6 @@
-const fmtK = n => (n>=1000?((Math.round(n/100)/10).toFixed(1)+'k'): (n??''));
+const fmtK = n => (n>=1000?((Math.round(n/100)/10).toFixed(1)+'k'):(n??''));
 const qs = s => new URLSearchParams(location.search).get(s) || '';
-const cell = v => (v===null||v===undefined||v==='') ? '' : v;
+const cell = v => (v==null || v==='') ? '' : v;
 
 function rowHtml(r){
   return `<tr>
@@ -26,6 +26,7 @@ function search(q){
   fetch(u).then(r => r.json()).then(j => render(j.rows||[], j.meta||{source:'',total:0}));
 }
 document.getElementById('form').addEventListener('submit', e => {
-  e.preventDefault(); const q = document.getElementById('q').value.trim(); if(q){ history.replaceState({},'',`/?q=${encodeURIComponent(q)}`); search(q); }
+  e.preventDefault(); const q = document.getElementById('q').value.trim();
+  if(q){ history.replaceState({},'',`/?q=${encodeURIComponent(q)}`); search(q); }
 });
 const q0 = qs('q'); if(q0){ document.getElementById('q').value = q0; search(q0); }

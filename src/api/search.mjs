@@ -5,14 +5,7 @@ import { normFarnell } from '../integrations/farnell/normalize.mjs';
 import { toCanonRow } from '../core/canon.mjs';
 
 const isMPN = q => { const s=q.trim(); return !!(s && !/\s/.test(s) && /[A-Za-z]/.test(s) && /\d/.test(s) && s.length>=3 && s.length<=40); };
-const uniqBy = (arr, key) => {
-  const seen = new Set(); const out=[];
-  for (const x of arr){
-    const k = key(x);
-    if (!seen.has(k)){ seen.add(k); out.push(x); }
-  }
-  return out;
-};
+const uniqBy = (arr, key) => { const seen = new Set(); const out=[]; for(const x of arr){ const k=key(x); if(!seen.has(k)){ seen.add(k); out.push(x); } } return out; };
 
 export default function mount(app, { keys }){
   app.get('/api/search', (req,res)=>{
@@ -32,17 +25,13 @@ export default function mount(app, { keys }){
     const chainM = isMPN(q) ? [callMPart, callMKey] : [callMKey, callMPart];
     const chainF = isMPN(q) ? [callFPart, callFKey] : [callFKey, callFPart];
 
-    // 1) Mouser сначала
     chainM[0]().then(ma => (Array.isArray(ma)&&ma.length?ma:chainM[1]()))
     .then(mparts => {
       const mRows = (mparts||[]).map(normMouser);
-      // 2) Farnell — как дополнение/подстраховка
       chainF[0]().then(fa => (Array.isArray(fa)&&fa.length?fa:chainF[1]()))
       .then(fparts => {
         const fRows = (fparts||[]).map(p=>normFarnell(p, FR));
-        // 3) Слить, убрать дубли по MPN+manufacturer (регистронезависимо)
         const merged = uniqBy([...mRows, ...fRows], x => (x.mpn||'').toUpperCase()+'|'+(x.manufacturer||'').toUpperCase());
-        // 4) Сортировка: minRub ASC (пустые вниз), затем stock DESC, затем mpn/title
         merged.sort((a,b)=>{
           const A=a.minRub, B=b.minRub;
           if (Number.isFinite(A) && Number.isFinite(B)) return A-B;
@@ -52,7 +41,7 @@ export default function mount(app, { keys }){
           return String(a.mpn||a.title).localeCompare(String(b.mpn||b.title));
         });
         const rows = merged.map(toCanonRow);
-        res.json({ok:true,q,rows,meta:{source:(MK?'mouser':'')+(FK?'+farnell':''), total:rows.length}});
+        res.json({ok:true,q,rows,meta:{source:(MK?'mouser':'')+(FK?'+farnell':''), total: rows.length}});
       });
     }).catch(()=>res.status(502).json({ok:false,code:'providers_unreachable'}));
   });

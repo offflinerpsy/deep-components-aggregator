@@ -4,7 +4,7 @@ const toInt=v=>{const n=Number(String(v).replace(/[^\d.]/g,'')); return Number.i
 function bestRub(prices){
   const packs=[]; if(Array.isArray(prices)) packs.push(...prices);
   if(prices && Array.isArray(prices.priceBands)) packs.push(...prices.priceBands);
-  const ps=packs.map(p=>{const c=(p.currency||p.currencyCode||'USD').toUpperCase(); const v=Number(p.breakPrice||p.price||p.cost||p.unitPrice||NaN); return Number.isFinite(v)?{v,c}:null;}).filter(Boolean);
+  const ps=packs.map(p=>{const c=(p.currency||p.currencyCode||'USD').toUpperCase(); const v=Number(p.breakPrice||p.price||p.unitPrice||p.cost||NaN); return Number.isFinite(v)?{v,c}:null;}).filter(Boolean);
   if(!ps.length) return null; const b=ps.sort((a,b)=>a.v-b.v)[0]; return toRUB(b.v,b.c);
 }
 export function normFarnell(prod, region='uk.farnell.com'){
@@ -16,6 +16,20 @@ export function normFarnell(prod, region='uk.farnell.com'){
   const stock=toInt(availability);
   const minRub=bestRub(prod.prices||prod.priceBands||prod.pricing);
   const image=clean((prod.images&&(prod.images.medium||prod.images.small||prod.image))||'');
-  const url=clean(prod.productUrl||prod.rohsCompliantProductUrl||prod.productDetailUrl||'');
-  return { photo:image, title: mpn||desc, mpn, manufacturer, description:desc, package:pkg, packaging:clean(prod.packaging||''), regions:[ region.includes('newark')?'US':'EU' ], stock, minRub:Number.isFinite(minRub)?minRub:null, openUrl:url, _raw:prod };
+  const url=`/product.html?src=farnell&id=${encodeURIComponent(mpn||'')}`;
+  return {
+    _src:'farnell',
+    _id: mpn,
+    photo:image,
+    title: mpn || desc,
+    mpn, manufacturer,
+    description: desc,
+    package: pkg,
+    packaging: clean(prod.packaging||''),
+    regions: [ region.includes('newark') ? 'US' : 'EU' ],
+    stock,
+    minRub: Number.isFinite(minRub)?minRub:null,
+    openUrl: url,
+    _raw: prod
+  };
 }

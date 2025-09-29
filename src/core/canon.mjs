@@ -1,5 +1,6 @@
 export function toCanonRow(x){
   return {
+    _src: x._src, _id: x._id,
     photo: x.photo||'',
     mpn: x.mpn||'',
     title: x.title||'',

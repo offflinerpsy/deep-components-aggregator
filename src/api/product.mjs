@@ -34,22 +34,27 @@ const parseMouser = (data) => {
 
 const parseFarnell = (resp, targetMPN, region) => {
   const arr = (resp && (resp.products || (resp.manufacturerPartNumberSearchReturn && resp.manufacturerPartNumberSearchReturn.products) || [])) || [];
-  const prod = arr.find(p => clean(p.manufacturerPartNumber||p.manufacturerPartNo).toUpperCase() === clean(targetMPN).toUpperCase()) || arr[0] || {};
-  const bands = (prod.prices && prod.prices.priceBands) || prod.priceBands || [];
-  const ps = bands.map(b => ({v:Number(b.breakPrice||b.price||b.unitPrice), c:String(b.currency||b.currencyCode||'GBP').toUpperCase()})).filter(x=>Number.isFinite(x.v));
-  const minRub = ps.length ? toRUB(ps.sort((a,b)=>a.v-b.v)[0].v, ps[0].c) : null;
+  const prod = arr.find(p => clean(p.translatedManufacturerPartNumber||p.manufacturerPartNumber||p.manufacturerPartNo).toUpperCase() === clean(targetMPN).toUpperCase()) || arr[0] || {};
+  
+  // Цены из Farnell - они в массиве prod.prices с полем cost
+  const prices = Array.isArray(prod.prices) ? prod.prices : [];
+  const minRub = (() => {
+    const vals = prices.map(p => Number(p.cost || p.breakPrice || p.price || p.unitPrice)).filter(Number.isFinite);
+    if(!vals.length) return null;
+    return toRUB(vals.sort((a,b)=>a-b)[0], 'GBP');
+  })();
+  
   const specs = {}; (prod.attributes||[]).forEach(a=>{ const k=clean(a.attributeLabel||a.name); const v=clean(a.attributeValue||a.value); if(k && v) specs[k]=v; });
-  const image = (prod.images && (prod.images.medium||prod.images.small||prod.image)) || '';
-  const url = prod.productUrl || prod.rohsCompliantProductUrl || prod.productDetailUrl || '';
+  
   return {
-    photo: clean(image),
-    mpn: clean(prod.manufacturerPartNumber||prod.manufacturerPartNo),
+    photo: clean(prod.image ? `https://uk.farnell.com${prod.image.baseName}` : ''),
+    mpn: clean(prod.translatedManufacturerPartNumber||prod.manufacturerPartNumber||prod.manufacturerPartNo),
     manufacturer: clean(prod.vendorName||prod.brandName||prod.manufacturer),
     description: clean(prod.displayName||prod.summaryDescription||prod.longDescription),
     minRub,
     datasheets: (prod.datasheets||[]).map(d=>clean(d.url||d)).filter(Boolean),
     specs,
-    vendorUrl: clean(url),
+    vendorUrl: clean(prod.productUrl || `https://uk.farnell.com/${prod.sku}`),
     source:'farnell'
   };
 };

@@ -3,15 +3,11 @@ Description=DeepAgg API
 After=network.target
 
 [Service]
-Type=simple
-User=root
 WorkingDirectory=/opt/deep-agg
-Environment=MOUSER_API_KEY=b1ade04e-2dd0-4bd9-b5b4-e51f252a0687
-Environment=FARNELL_API_KEY=9bbb8z5zuutmrscx72fukhvr
-Environment=FARNELL_REGION=uk.farnell.com
+EnvironmentFile=/etc/deep-agg.env
 ExecStart=/usr/bin/node server.js
 Restart=always
-RestartSec=3
+RestartSec=2
 
 [Install]
 WantedBy=multi-user.target

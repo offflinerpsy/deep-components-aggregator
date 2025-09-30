@@ -14,7 +14,7 @@ const isLikelyMPN = s => /^[A-Za-z0-9][A-Za-z0-9\-\._]{1,}$/i.test(s) && /\d/.te
 const logTrace = (msg) => {
   const ts = Date.now();
   const line = `[${ts}] ${msg}\n`;
-  mkdir('./_diag', { recursive: true }).then(() => 
+  mkdir('./_diag', { recursive: true }).then(() =>
     appendFile(`./_diag/trace-${Math.floor(ts/1000)}.log`, line, 'utf8')
   ).catch(() => {});
 };
@@ -27,10 +27,10 @@ export default function mountSearch(app, { keys, db }){
     const fresh = String(req.query.fresh||'') === '1';
     if(!fresh){
       const cached = readCachedSearch(db, q.toLowerCase(), TTL_SEARCH_MS);
-      if(cached){ 
+      if(cached){
         logTrace(`search q="${q}" source=${cached.meta.source} cached=1 rows=${cached.rows.length}`);
-        res.json({ok:true,q,rows:cached.rows,meta:cached.meta}); 
-        return; 
+        res.json({ok:true,q,rows:cached.rows,meta:cached.meta});
+        return;
       }
     }
 

@@ -10,7 +10,6 @@ const post = (path,{apiKey,body})=>{
 export const mouserSearchByKeyword = ({apiKey,q,records=50,startingRecord=0}) =>
   post('/search/keyword',{apiKey,body:{SearchByKeywordRequest:{keyword:q,records,startingRecord}}});
 export const mouserSearchByPartNumber = ({apiKey,mpn})=>{
-  const v1 = post('/search/partnumber',{apiKey,body:{SearchByPartnumberRequest:{MouserPartNumber:mpn}}});
-  return v1.then(r=>(r&&r.ok&&r.data&&r.data.SearchResults)?r
-    : post('/search/partnumber',{apiKey,body:{SearchByPartRequest:{MouserPartNumber:mpn}}}));
+  // Строго используем канонические имена полей согласно документации API Mouser
+  return post('/search/partnumber',{apiKey,body:{SearchByPartnumberRequest:{MouserPartNumber:mpn}}});
 };

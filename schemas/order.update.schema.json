@@ -1,0 +1,16 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://deep-agg.com/schemas/order.update.json",
+  "title": "Order Update Schema",
+  "description": "JSON Schema for PATCH /api/admin/orders/:id request validation",
+  "type": "object",
+  "required": ["status"],
+  "additionalProperties": false,
+  "properties": {
+    "status": {
+      "type": "string",
+      "enum": ["pending", "processing", "completed", "cancelled"],
+      "description": "Order status (pending → processing → completed/cancelled)"
+    }
+  }
+}

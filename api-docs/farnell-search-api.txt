@@ -1,0 +1,200 @@
+element14, Farnell, Newark API - Product Search API (REST) - Description
+Sign In
+Register
+Product Search API (REST) - Description
+Description
+Request URL
+Query      Parameters
+storeInfo.id       Values
+Calculating       the Contract Pricing Signature
+How to Construct       an Image URL
+Version      Control and Version Info
+Version 1.1
+Version 1.2
+Version 1.3
+Version 1.4
+&nbsp;
+Response      Groups
+Sample      Requests
+API-Specific      Errors
+Result Description
+Description
+The Product Search API (REST)&nbsp;allows your users to search the element14 product catalog by keyword search, element14 part number, and manufacturer part number.
+There are two levels of access for the API:
+generic access: 
+Accessible by including 
+callInfo.apiKey
+ in the call
+contract pricing:
+callInfo.apiKey 
+userInfo.signature
+userInfo.timestamp
+userInfo.customerId
+back to top
+Request URL
+https://api.element14.com/catalog/products
+?callInfo.responseDataFormat=
+{XML|JSON}
+&nbsp;
+&amp;callInfo.omitXmlSchema=
+{...}
+&amp;callInfo.callback=
+{...}
+&amp;term=
+{
+field:term
+}
+&nbsp;
+&amp;storeInfo.id=
+{
+storeInfoId
+|...}
+&amp;callInfo.apiKey=
+{...}
+&amp;userInfo.signature=
+{...}
+&amp;userInfo.timestamp=
+{...}
+&amp;userInfo.billAccNum=
+{...}
+&amp;userInfo.customerId=
+{...}
+&amp;userInfo.contractId=
+{...}
+&amp;resultsSettings.offset=
+{...}
+&amp;resultsSettings.numberOfResults=
+{...}
+&amp;resultsSettings.refinements.filters=
+{rohsCompliant,inStock}
+&amp;resultsSettings.responseGroup=
+{none,small,medium,large, Prices, Inventory
+}
+back to top
+Query Parameters
+Query Parameters
+Parameter
+Description
+Mandatory/Optional
+Sample Value
+callInfo.responseDataFormat
+Determines output format. Can be XML or JSON.
+optional
+&nbsp;JSON
+callInfo.omitXmlSchema
+String. Strip XML Namespace. XML data format only.
+callInfo.callback
+String. JSONP callback wrapper name. Not recommended for use with XML output.
+term
+&nbsp;
+Issued as 
+field:term,
+ for example
+: 
+any:fuse, id:123456, or manuPartNum:678901,
+any
+: use for keyword search
+id
+: use for element14 part number search
+manuPartNum
+: use for manufacturer part number search.
+mandatory
+term=manuPartNum:678901
+term=id%3A1278613 1112555 8477108
+storeInfo.id
+Represents the region of the data store by country. See 
+StoreInfo.id Values
+ for the complete list.
+mandatory
+uk.farnell.com
+callInfo.apiKey
+24 character alphanumeric string assigned to you by the element14 Partner Portal.
+mandatory
+&nbsp;mdp3xre4ucqh8f5aaaa4fz75j3y
+userInfo.signature
+Required when getting contract pricing. See 
+Calculating the Contract Pricing Signature
+.
+optional
+&nbsp;
+userInfo.timestamp
+Required when getting contract pricing
+optional
+&nbsp;
+userInfo.billAccNum
+Not used
+&nbsp;
+userInfo.customerId
+Required when getting contract pricing
+optional
+&nbsp;
+userInfo.contractId
+Not used
+&nbsp;
+resultsSettings.offset
+mandatory for keyword search - Not used for other functions
+resultsSettings.numberOfResults
+mandatory for keyword search - Not used for other functions
+resultsSettings.refinements.filters
+Can be rohsCompliant or inStock.
+optional
+inStock
+resultsSettings.responseGroup
+Can be 
+small
+, 
+medium
+, 
+large
+, 
+prices
+, 
+inventory
+, and 
+none
+. Small is the default if nothing is passed.
+optional
+small
+back to top
+storeInfo.id Values
+Represents the region of the data store by country. Here is the full list:
+bg.farnell.com
+cz.farnell.com
+dk.farnell.com
+at.farnell.com
+ch.farnell.com
+de.farnell.com
+cpc.farnell.com
+cpcireland.farnell.com
+export.farnell.com
+onecall.farnell.com
+ie.farnell.com
+il.farnell.com
+uk.farnell.com
+es.farnell.com
+ee.farnell.com
+fi.farnell.com
+fr.farnell.com
+hu.farnell.com
+it.farnell.com
+lt.farnell.com
+lv.farnell.com
+be.farnell.com
+nl.farnell.com
+no.farnell.com
+pl.farnell.com
+pt.farnell.com
+ro.farnell.com
+ru.farnell.com
+sk.farnell.com
+si.farnell.com
+se.farnell.com
+tr.farnell.com
+canada.newark.com
+mexico.newark.com
+www.newark.com
+cn.element14.com
+au.element14.com
+nz.element14.com
+hk.element14.com
+sg.element14.com

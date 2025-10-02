@@ -1,0 +1,44 @@
+[
+  {
+    "mpn": "LM317T-FAKE",
+    "brand": "Texas Instruments",
+    "title": "Стабилизатор напряжения, 1.2-37В, 1.5А [TO-220]",
+    "description_short": "",
+    "image": "https://static.chipdip.ru/lib/229/DOC000229215.jpg",
+    "pdfs": [],
+    "url": "https://www.promelec.ru/product/12345/",
+    "offers": [
+      {
+        "dealer": "promelec",
+        "url": "https://www.promelec.ru/product/12345/",
+        "price": {
+          "value": 50,
+          "currency": "RUB"
+        },
+        "availability": "100 in stock",
+        "region": "RU"
+      }
+    ]
+  },
+  {
+    "mpn": "NE555P-FAKE",
+    "brand": "STMicroelectronics",
+    "title": "Таймер универсальный, 2-18В [DIP-8]",
+    "description_short": "",
+    "image": "https://static.chipdip.ru/lib/218/DOC000218671.jpg",
+    "pdfs": [],
+    "url": "https://www.promelec.ru/product/67890/",
+    "offers": [
+      {
+        "dealer": "promelec",
+        "url": "https://www.promelec.ru/product/67890/",
+        "price": {
+          "value": 25.5,
+          "currency": "RUB"
+        },
+        "availability": "250 in stock",
+        "region": "RU"
+      }
+    ]
+  }
+]

@@ -1,0 +1,360 @@
+<!DOCTYPE html><!DOCTYPE html><!DOCTYPE html><!DOCTYPE html>
+
+<html lang="ru">
+
+<head><html lang="ru">
+
+  <meta charset="utf-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"><head><html lang="ru"><html lang="ru">
+
+  <title>Deep Aggregator — Результаты поиска</title>
+
+  <style>  <meta charset="utf-8">
+
+    :root{
+
+      --bg:#fafafa;  <meta name="viewport" content="width=device-width, initial-scale=1"><head><head>
+
+      --surface:#ffffff;
+
+      --surface-2:#f5f7fb;  <title>Deep Aggregator — Результаты поиска</title>
+
+      --text:#111827;
+
+      --muted:#6b7280;  <style>  <meta charset="utf-8">  <meta charset="utf-8">
+
+      --stroke:#e5e7eb;
+
+      --primary:#1d4ed8;    :root{
+
+      --primary-weak:#dbeafe;
+
+      --success:#16a34a;      --bg:#fafafa;  <meta name="viewport" content="width=device-width, initial-scale=1">  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+      --radius-sm:8px;
+
+      --radius-md:12px;      --surface:#ffffff;
+
+      --radius-lg:16px;
+
+      --radius-xl:24px;      --surface-2:#f5f7fb;  <title>Deep Aggregator — Результаты поиска</title>  <title>DEEP · Поиск компонентов</title>
+
+      --shadow-1:0 1px 2px rgba(0,0,0,.06),0 1px 1px rgba(0,0,0,.04);
+
+      --shadow-2:0 4px 16px rgba(0,0,0,.08);      --text:#111827;
+
+      --easing-standard:cubic-bezier(.2,0,0,1);
+
+      --easing-emphasis:cubic-bezier(.05,.7,.1,1);      --muted:#6b7280;  <style>  <link rel="stylesheet" href="/ui/search.css">
+
+      --motion-fast:150ms;
+
+      --motion-mid:220ms;      --stroke:#e5e7eb;
+
+      --font:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,"Helvetica Neue",Arial;
+
+    }      --primary:#1d4ed8;    :root{--bg:#fafafa;--surface:#ffffff;--surface-2:#f5f7fb;--text:#111827;--muted:#6b7280;--stroke:#e5e7eb;--primary:#1d4ed8;--primary-weak:#dbeafe;--success:#16a34a;--radius-sm:8px;--radius-md:12px;--radius-lg:16px;--radius-xl:24px;--shadow-1:0 1px 2px rgba(0,0,0,.06),0 1px 1px rgba(0,0,0,.04);--shadow-2:0 4px 16px rgba(0,0,0,.08);--easing-standard:cubic-bezier(.2,0,0,1);--easing-emphasis:cubic-bezier(.05,.7,.1,1);--motion-fast:150ms;--motion-mid:220ms;--font:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,"Helvetica Neue",Arial}</head>
+
+    @media (prefers-reduced-motion:reduce){
+
+      *{animation-duration:1ms!important;animation-iteration-count:1!important;transition-duration:1ms!important}      --primary-weak:#dbeafe;
+
+    }
+
+    html,body{height:100%}      --success:#16a34a;    @media (prefers-reduced-motion:reduce){*{animation-duration:1ms!important;animation-iteration-count:1!important;transition-duration:1ms!important}}<body>
+
+    body{margin:0;background:var(--bg);color:var(--text);font-family:var(--font);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+
+    .container{max-width:1200px;margin-inline:auto;padding:24px}      --radius-sm:8px;
+
+    header{position:sticky;top:0;backdrop-filter:saturate(1.2) blur(6px);background:rgba(250,250,250,.75);border-bottom:1px solid var(--stroke);z-index:10}
+
+    .topbar{display:flex;align-items:center;gap:16px;padding:14px 24px}      --radius-md:12px;    html,body{height:100%}  <div class="container" data-testid="search-container">
+
+    .brand{display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:.2px;text-decoration:none;color:var(--text)}
+
+    .logo{width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,var(--primary),#0ea5e9);box-shadow:var(--shadow-1)}      --radius-lg:16px;
+
+    nav{margin-left:auto;display:flex;align-items:center;gap:12px}
+
+    nav a{color:var(--muted);text-decoration:none;padding:8px 12px;border-radius:999px;transition:color var(--motion-fast) var(--easing-standard),background var(--motion-fast) var(--easing-standard)}      --radius-xl:24px;    body{margin:0;background:var(--bg);color:var(--text);font-family:var(--font);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}    <header class="header">
+
+    nav a:hover{color:var(--text);background:var(--surface-2)}
+
+    .search{display:flex;align-items:center;gap:10px;flex:1;max-width:560px;padding:10px 14px;border:1px solid var(--stroke);background:var(--surface);border-radius:999px;box-shadow:var(--shadow-1);transition:box-shadow var(--motion-mid) var(--easing-standard),border-color var(--motion-fast) var(--easing-standard)}      --shadow-1:0 1px 2px rgba(0,0,0,.06),0 1px 1px rgba(0,0,0,.04);
+
+    .search:focus-within{box-shadow:var(--shadow-2);border-color:#bfdbfe}
+
+    .search input{flex:1;font-size:15px;border:none;outline:none;background:transparent;color:var(--text)}      --shadow-2:0 4px 16px rgba(0,0,0,.08);    .container{max-width:1200px;margin-inline:auto;padding:24px}      <h1><a href="/">DEEP</a></h1>
+
+    .search button{border:none;background:var(--primary);color:white;padding:10px 16px;border-radius:999px;font-weight:600;cursor:pointer;transition:transform var(--motion-fast) var(--easing-emphasis),filter var(--motion-fast) var(--easing-standard)}
+
+    .search button:hover{filter:brightness(.95)}      --easing-standard:cubic-bezier(.2,0,0,1);
+
+    .search button:active{transform:translateY(1px) scale(.99)}
+
+    .search svg{width:18px;height:18px;color:var(--muted)}      --easing-emphasis:cubic-bezier(.05,.7,.1,1);    header{position:sticky;top:0;backdrop-filter:saturate(1.2) blur(6px);background:rgba(250,250,250,.75);border-bottom:1px solid var(--stroke);z-index:10}      <form id="search-form" data-testid="search-form">
+
+    main{padding:24px}
+
+    .summary{color:var(--muted);margin-bottom:16px;font-size:14px}      --motion-fast:150ms;
+
+    .tableWrap{background:var(--surface);border:1px solid var(--stroke);border-radius:var(--radius-lg);overflow:hidden;box-shadow:var(--shadow-2);margin-top:22px}
+
+    table{width:100%;border-collapse:separate;border-spacing:0}      --motion-mid:220ms;    .topbar{display:flex;align-items:center;gap:16px;padding:14px 24px}        <input 
+
+    thead th{font-size:13px;text-align:left;color:var(--muted);background:var(--surface-2);padding:12px 14px;border-bottom:1px solid var(--stroke)}
+
+    tbody td{padding:14px;border-bottom:1px solid var(--stroke);vertical-align:middle}      --font:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,"Helvetica Neue",Arial;
+
+    tbody tr:last-child td{border-bottom:none}
+
+    tbody tr:hover{background:#f9fbff}    }    .brand{display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:.2px;text-decoration:none;color:var(--text)}          id="search-input" 
+
+    .thumb{width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,#e2e8f0,#f8fafc);border:1px solid var(--stroke);object-fit:cover}
+
+    .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;font-size:12.5px;color:#334155}    @media (prefers-reduced-motion:reduce){
+
+    .badge{display:inline-block;background:var(--primary-weak);color:#1e3a8a;padding:4px 8px;border-radius:6px;font-size:11px;font-weight:600;margin:2px}
+
+    .btnLink{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;background:var(--surface-2);border:1px solid var(--stroke);text-decoration:none;color:var(--text);font-weight:600;transition:transform var(--motion-fast) var(--easing-emphasis),background var(--motion-fast) var(--easing-standard)}      *{animation-duration:1ms!important;animation-iteration-count:1!important;transition-duration:1ms!important}    .logo{width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,var(--primary),#0ea5e9);box-shadow:var(--shadow-1)}          data-testid="search-input"
+
+    .btnLink:hover{background:#eef2ff;transform:translateY(-1px)}
+
+    a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid #93c5fd;outline-offset:2px;border-radius:6px}    }
+
+    footer{color:var(--muted);padding:40px 24px;text-align:center;border-top:1px solid var(--stroke);margin-top:60px}
+
+  </style>    html,body{height:100%}    nav{margin-left:auto;display:flex;align-items:center;gap:12px}          type="text" 
+
+</head>
+
+<body>    body{margin:0;background:var(--bg);color:var(--text);font-family:var(--font);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+
+  <header>
+
+    <div class="topbar container">    .container{max-width:1200px;margin-inline:auto;padding:24px}    nav a{color:var(--muted);text-decoration:none;padding:8px 12px;border-radius:999px;transition:color var(--motion-fast) var(--easing-standard),background var(--motion-fast) var(--easing-standard)}          placeholder="Введите MPN (например, LM317T или 1N4148W-TP)" 
+
+      <a href="/" class="brand"><div class="logo" aria-hidden="true"></div> Deep Aggregator</a>
+
+      <form class="search" role="search" aria-label="Поиск компонентов" id="search-form">    header{position:sticky;top:0;backdrop-filter:saturate(1.2) blur(6px);background:rgba(250,250,250,.75);border-bottom:1px solid var(--stroke);z-index:10}
+
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35M17 10a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+
+        <input id="search-input" name="q" placeholder="MPN, например LM317T" autocomplete="off" />    .topbar{display:flex;align-items:center;gap:16px;padding:14px 24px}    nav a:hover{color:var(--text);background:var(--surface-2)}          autocomplete="off"
+
+        <button type="submit">Искать</button>
+
+      </form>    .brand{display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:.2px;text-decoration:none;color:var(--text)}
+
+      <nav>
+
+        <a href="/">Главная</a>    .logo{width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,var(--primary),#0ea5e9);box-shadow:var(--shadow-1)}    .search{display:flex;align-items:center;gap:10px;flex:1;max-width:560px;padding:10px 14px;border:1px solid var(--stroke);background:var(--surface);border-radius:999px;box-shadow:var(--shadow-1);transition:box-shadow var(--motion-mid) var(--easing-standard),border-color var(--motion-fast) var(--easing-standard)}        >
+
+      </nav>
+
+    </div>    nav{margin-left:auto;display:flex;align-items:center;gap:12px}
+
+  </header>
+
+    nav a{color:var(--muted);text-decoration:none;padding:8px 12px;border-radius:999px;transition:color var(--motion-fast) var(--easing-standard),background var(--motion-fast) var(--easing-standard)}    .search:focus-within{box-shadow:var(--shadow-2);border-color:#bfdbfe}        <button type="submit" data-testid="search-button">Поиск</button>
+
+  <main class="container">
+
+    <div id="results-summary" class="summary"></div>    nav a:hover{color:var(--text);background:var(--surface-2)}
+
+
+
+    <section class="tableWrap">    .search{display:flex;align-items:center;gap:10px;flex:1;max-width:560px;padding:10px 14px;border:1px solid var(--stroke);background:var(--surface);border-radius:999px;box-shadow:var(--shadow-1);transition:box-shadow var(--motion-mid) var(--easing-standard),border-color var(--motion-fast) var(--easing-standard)}    .search input{flex:1;font-size:15px;border:none;outline:none;background:transparent;color:var(--text)}      </form>
+
+      <table>
+
+        <thead>    .search:focus-within{box-shadow:var(--shadow-2);border-color:#bfdbfe}
+
+          <tr>
+
+            <th>Image</th>    .search input{flex:1;font-size:15px;border:none;outline:none;background:transparent;color:var(--text)}    .search button{border:none;background:var(--primary);color:white;padding:10px 16px;border-radius:999px;font-weight:600;cursor:pointer;transition:transform var(--motion-fast) var(--easing-emphasis),filter var(--motion-fast) var(--easing-standard)}    </header>
+
+            <th>MPN / Title</th>
+
+            <th>Manufacturer</th>    .search button{border:none;background:var(--primary);color:white;padding:10px 16px;border-radius:999px;font-weight:600;cursor:pointer;transition:transform var(--motion-fast) var(--easing-emphasis),filter var(--motion-fast) var(--easing-standard)}
+
+            <th>Description</th>
+
+            <th>Package</th>    .search button:hover{filter:brightness(.95)}    .search button:hover{filter:brightness(.95)}
+
+            <th>Packaging</th>
+
+            <th>Regions</th>    .search button:active{transform:translateY(1px) scale(.99)}
+
+            <th>Stock</th>
+
+            <th>Min ₽</th>    .search svg{width:18px;height:18px;color:var(--muted)}    .search button:active{transform:translateY(1px) scale(.99)}    <main class="main">
+
+            <th>Open</th>
+
+          </tr>    main{padding:24px}
+
+        </thead>
+
+        <tbody id="results-tbody"></tbody>    .summary{color:var(--muted);margin-bottom:16px;font-size:14px}    .search svg{width:18px;height:18px;color:var(--muted)}      <div id="results-summary" data-testid="results-summary" class="summary"></div>
+
+      </table>
+
+    </section>    .tableWrap{background:var(--surface);border:1px solid var(--stroke);border-radius:var(--radius-lg);overflow:hidden;box-shadow:var(--shadow-2);margin-top:22px}
+
+  </main>
+
+    table{width:100%;border-collapse:separate;border-spacing:0}    main{padding:24px}      
+
+  <footer class="container">© 2025 Deep Components Aggregator</footer>
+
+    thead th{font-size:13px;text-align:left;color:var(--muted);background:var(--surface-2);padding:12px 14px;border-bottom:1px solid var(--stroke)}
+
+  <script src="/search.js"></script>
+
+</body>    tbody td{padding:14px;border-bottom:1px solid var(--stroke);vertical-align:middle}    .summary{color:var(--muted);margin-bottom:16px;font-size:14px}      <div class="table-wrapper" data-testid="table-wrapper">
+
+</html>
+
+    tbody tr:last-child td{border-bottom:none}
+
+    tbody tr:hover{background:#f9fbff}    .tableWrap{background:var(--surface);border:1px solid var(--stroke);border-radius:var(--radius-lg);overflow:hidden;box-shadow:var(--shadow-2);margin-top:22px}        <table data-testid="results-table">
+
+    .titleCell{display:flex;align-items:center;gap:12px}
+
+    .thumb{width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,#e2e8f0,#f8fafc);border:1px solid var(--stroke);object-fit:cover}    table{width:100%;border-collapse:separate;border-spacing:0}          <thead>
+
+    .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;font-size:12.5px;color:#334155}
+
+    .badge{display:inline-block;background:var(--primary-weak);color:#1e3a8a;padding:4px 8px;border-radius:6px;font-size:11px;font-weight:600;margin:2px}    thead th{font-size:13px;text-align:left;color:var(--muted);background:var(--surface-2);padding:12px 14px;border-bottom:1px solid var(--stroke)}            <tr>
+
+    .btnLink{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;background:var(--surface-2);border:1px solid var(--stroke);text-decoration:none;color:var(--text);font-weight:600;transition:transform var(--motion-fast) var(--easing-emphasis),background var(--motion-fast) var(--easing-standard)}
+
+    .btnLink:hover{background:#eef2ff;transform:translateY(-1px)}    tbody td{padding:14px;border-bottom:1px solid var(--stroke);vertical-align:middle}              <th data-testid="col-image">Image</th>
+
+    a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid #93c5fd;outline-offset:2px;border-radius:6px}
+
+    footer{color:var(--muted);padding:40px 24px;text-align:center;border-top:1px solid var(--stroke);margin-top:60px}    tbody tr:last-child td{border-bottom:none}              <th data-testid="col-mpn">MPN/Title</th>
+
+  </style>
+
+</head>    tbody tr:hover{background:#f9fbff}              <th data-testid="col-manufacturer">Manufacturer</th>
+
+<body>
+
+  <header>    .titleCell{display:flex;align-items:center;gap:12px}              <th data-testid="col-description">Description</th>
+
+    <div class="topbar container">
+
+      <a href="/" class="brand"><div class="logo" aria-hidden="true"></div> Deep Aggregator</a>    .thumb{width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,#e2e8f0,#f8fafc);border:1px solid var(--stroke);object-fit:cover}              <th data-testid="col-package">Package</th>
+
+      <form class="search" role="search" aria-label="Поиск компонентов" id="search-form" data-testid="search-form">
+
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35M17 10a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>    .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;font-size:12.5px;color:#334155}              <th data-testid="col-packaging">Packaging</th>
+
+        <input id="search-input" data-testid="search-input" name="q" placeholder="MPN, например LM317T" autocomplete="off" />
+
+        <button type="submit" data-testid="search-button">Искать</button>    .btnLink{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;background:var(--surface-2);border:1px solid var(--stroke);text-decoration:none;color:var(--text);font-weight:600;transition:transform var(--motion-fast) var(--easing-emphasis),background var(--motion-fast) var(--easing-standard)}              <th data-testid="col-regions">Regions</th>
+
+      </form>
+
+      <nav>    .btnLink:hover{background:#eef2ff;transform:translateY(-1px)}              <th data-testid="col-stock">Stock</th>
+
+        <a href="/">Главная</a>
+
+      </nav>    a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid #93c5fd;outline-offset:2px;border-radius:6px}              <th data-testid="col-minrub">MinRUB</th>
+
+    </div>
+
+  </header>    footer{color:var(--muted);padding:40px 24px;text-align:center;border-top:1px solid var(--stroke);margin-top:60px}              <th data-testid="col-open">Open</th>
+
+
+
+  <main class="container">  </style>            </tr>
+
+    <div id="results-summary" data-testid="results-summary" class="summary"></div>
+
+</head>          </thead>
+
+    <section class="tableWrap" aria-label="Результаты поиска" data-testid="table-wrapper">
+
+      <table data-testid="results-table"><body>          <tbody id="results-tbody" data-testid="results-tbody"></tbody>
+
+        <thead>
+
+          <tr>  <header>        </table>
+
+            <th data-testid="col-image">Image</th>
+
+            <th data-testid="col-mpn">MPN / Title</th>    <div class="topbar container">      </div>
+
+            <th data-testid="col-manufacturer">Manufacturer</th>
+
+            <th data-testid="col-description">Description</th>      <a href="/" class="brand"><div class="logo" aria-hidden="true"></div> Deep Aggregator</a>    </main>
+
+            <th data-testid="col-package">Package</th>
+
+            <th data-testid="col-packaging">Packaging</th>      <form class="search" role="search" aria-label="Поиск компонентов" id="search-form" data-testid="search-form">  </div>
+
+            <th data-testid="col-regions">Regions</th>
+
+            <th data-testid="col-stock">Stock</th>        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35M17 10a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+
+            <th data-testid="col-minrub">Min ₽</th>
+
+            <th data-testid="col-open">Open</th>        <input id="search-input" data-testid="search-input" name="q" placeholder="MPN, например LM317T" autocomplete="off" />  <script src="/ui/search.js"></script>
+
+          </tr>
+
+        </thead>        <button type="submit" data-testid="search-button">Искать</button></body>
+
+        <tbody id="results-tbody" data-testid="results-tbody"></tbody>
+
+      </table>      </form></html>
+
+    </section>
+
+  </main>      <nav>
+
+        <a href="/">Главная</a>
+
+  <footer class="container">© 2025 Deep Components Aggregator</footer>      </nav>
+
+    </div>
+
+  <script src="/search.js"></script>  </header>
+
+</body>
+
+</html>  <main class="container">
+
+    <div id="results-summary" data-testid="results-summary" class="summary"></div>
+
+    <section class="tableWrap" aria-label="Результаты поиска" data-testid="table-wrapper">
+      <table data-testid="results-table">
+        <thead>
+          <tr>
+            <th data-testid="col-image">Image</th>
+            <th data-testid="col-mpn">MPN / Title</th>
+            <th data-testid="col-manufacturer">Manufacturer</th>
+            <th data-testid="col-description">Description</th>
+            <th data-testid="col-package">Package</th>
+            <th data-testid="col-packaging">Packaging</th>
+            <th data-testid="col-regions">Regions</th>
+            <th data-testid="col-stock">Stock</th>
+            <th data-testid="col-minrub">Min ₽</th>
+            <th data-testid="col-open">Open</th>
+          </tr>
+        </thead>
+        <tbody id="results-tbody" data-testid="results-tbody"></tbody>
+      </table>
+    </section>
+  </main>
+
+  <footer class="container">© 2025 Deep Components Aggregator</footer>
+
+  <script src="/search.js"></script>
+</body>
+</html>

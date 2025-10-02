@@ -1,0 +1,15 @@
+[
+  { "name": "chipfind", "type": "aggregator", "base": "https://www.chipfind.ru", "search": "/search/?part={q}" },
+  { "name": "efind", "type": "aggregator", "base": "https://efind.ru", "search": "/?search={q}" },
+  { "name": "promelec", "type": "shop", "base": "https://www.promelec.ru", "search": "/search/?q={q}" },
+  { "name": "compel", "type": "dist", "base": "https://www.compel.ru", "search": "/search?q={q}" },
+  { "name": "elitan", "type": "dist", "base": "https://www.elitan.ru", "search": "/search?q={q}", "js": true },
+  { "name": "dip8", "type": "shop", "base": "https://dip8.ru", "search": "/search/?q={q}" },
+  { "name": "radioled", "type": "shop", "base": "https://www.radioled.com", "search": "/search?query={q}" },
+  { "name": "radiosila", "type": "shop", "base": "https://radiosila.su", "search": "/?s={q}" },
+  { "name": "amperkot", "type": "shop", "base": "https://amperkot.ru", "search": "/search/?q={q}" },
+  { "name": "dessy", "type": "shop", "base": "https://www.dessy.ru", "search": "/search/?q={q}" },
+  { "name": "findchips", "type": "aggregator", "base": "https://www.findchips.com", "search": "/search/{q}" },
+  { "name": "trustedparts", "type": "aggregator", "base": "https://www.trustedparts.com", "search": "/en/search?q={q}" }
+]
+

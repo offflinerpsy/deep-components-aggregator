@@ -1,0 +1,54 @@
+# Зависимости
+node_modules/
+package-lock.json
+
+# Секреты
+secrets/
+.env
+*.pem
+*.key
+
+# Данные
+data/cache/
+data/state/
+data/rates.json
+data/db/products/
+data/_diag/
+logs/
+
+# Отчеты и артефакты
+test-results/
+playwright-report/
+screenshots/
+*.tgz
+*.tar
+*.tar.gz
+*.zip
+
+# Build/Deploy archives
+deploy*.tar.gz
+deploy*.tgz
+deploy*.zip
+ui-*.tar.gz
+ops/**/*.zip
+reports/**
+
+# Local DB & logs
+var/db/*.sqlite
+var/db/*.sqlite-*
+logs/**
+*.log
+
+# Raw dumps and scraps
+_scout/**
+
+# IDE
+.vscode/
+.idea/
+*.iml
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db

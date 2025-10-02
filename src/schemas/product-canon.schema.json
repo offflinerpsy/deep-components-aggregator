@@ -1,0 +1,129 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ProductCanon",
+  "type": "object",
+  "required": ["mpn", "title", "manufacturer", "gallery", "meta", "order", "description_html", "docs", "specs", "sources"],
+  "properties": {
+    "mpn": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 64
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "manufacturer": {
+      "type": "string",
+      "maxLength": 128
+    },
+    "gallery": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["image_url"],
+        "properties": {
+          "image_url": {
+            "type": "string"
+          }
+        }
+      },
+      "minItems": 0
+    },
+    "meta": {
+      "type": "object",
+      "required": ["package", "packaging"],
+      "properties": {
+        "package": {
+          "type": "string",
+          "maxLength": 32
+        },
+        "packaging": {
+          "type": "string",
+          "maxLength": 32
+        }
+      }
+    },
+    "order": {
+      "type": "object",
+      "required": ["regions", "stock", "min_price_rub", "min_currency"],
+      "properties": {
+        "regions": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["RU", "EU", "US", "ASIA"]
+          }
+        },
+        "stock": {
+          "type": ["number", "null"],
+          "minimum": 0
+        },
+        "min_price_rub": {
+          "type": ["number", "null"],
+          "minimum": 0
+        },
+        "min_currency": {
+          "type": ["string", "null"],
+          "enum": ["RUB", "USD", "EUR", null]
+        }
+      }
+    },
+    "description_html": {
+      "type": "string"
+    },
+    "docs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["label", "url"],
+        "properties": {
+          "label": {
+            "type": "string",
+            "minLength": 1
+          },
+          "url": {
+            "type": "string",
+            "format": "uri"
+          }
+        }
+      }
+    },
+    "specs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "value"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "value": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["source", "product_url"],
+        "properties": {
+          "source": {
+            "type": "string",
+            "enum": ["chipdip", "promelec", "compel", "electronshik", "elitan", "oemstrade"]
+          },
+          "product_url": {
+            "type": "string"
+          }
+        }
+      },
+      "minItems": 1
+    }
+  },
+  "additionalProperties": false
+}

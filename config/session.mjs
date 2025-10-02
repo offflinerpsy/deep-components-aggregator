@@ -1,0 +1,102 @@
+// config/session.mjs
+// Express session configuration with SQLite store
+
+import session from 'express-session';
+import connectSqlite3 from 'connect-sqlite3';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Create SQLite session store
+const SQLiteStore = connectSqlite3(session);
+
+/**
+ * Session configuration
+ * Cookie settings follow security best practices
+ */
+const SESSION_CONFIG = {
+  // Session store
+  store: new SQLiteStore({
+    db: 'sessions.sqlite',
+    dir: process.env.DATA_DIR || path.join(__dirname, '..', 'var', 'db'),
+    table: 'sessions',
+    // Clean up expired sessions every hour
+    concurrentDB: true
+  }),
+  
+  // Session secret (MUST be set in production via env var)
+  secret: process.env.SESSION_SECRET || 'dev-secret-change-in-production',
+  
+  // Cookie settings
+  cookie: {
+    // HttpOnly - prevents XSS attacks
+    httpOnly: true,
+    
+    // Secure - HTTPS only (enable in production)
+    secure: process.env.NODE_ENV === 'production',
+    
+    // SameSite - CSRF protection
+    sameSite: 'lax',
+    
+    // Max age - 7 days (configurable)
+    maxAge: parseInt(process.env.SESSION_TTL_MS) || 7 * 24 * 60 * 60 * 1000
+  },
+  
+  // Session name (default is 'connect.sid')
+  name: 'deep_agg_sid',
+  
+  // Resave - don't save unchanged sessions
+  resave: false,
+  
+  // SaveUninitialized - don't save empty sessions
+  saveUninitialized: false,
+  
+  // Rolling - refresh cookie on each request
+  rolling: true
+};
+
+/**
+ * Create session middleware
+ * @returns {Function} Express session middleware
+ */
+export function createSessionMiddleware() {
+  // Validate session secret in production
+  if (process.env.NODE_ENV === 'production' && SESSION_CONFIG.secret === 'dev-secret-change-in-production') {
+    throw new Error('SESSION_SECRET environment variable must be set in production');
+  }
+  
+  return session(SESSION_CONFIG);
+}
+
+/**
+ * Session health check
+ * Verifies session store is accessible
+ * 
+ * @returns {Promise<Object>} Session store status
+ */
+export async function checkSessionHealth() {
+  return new Promise((resolve) => {
+    SESSION_CONFIG.store.length((err, length) => {
+      if (err) {
+        resolve({
+          healthy: false,
+          message: `Store error: ${err.message}`
+        });
+      } else {
+        resolve({
+          healthy: true,
+          activeSessions: length,
+          message: 'Session store accessible'
+        });
+      }
+    });
+  });
+}
+
+export default {
+  createSessionMiddleware,
+  checkSessionHealth,
+  SESSION_CONFIG
+};

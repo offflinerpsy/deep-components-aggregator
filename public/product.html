@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Карточка товара — ДИПОНИКА</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles/v0-theme.css?v=1">
+  <link rel="stylesheet" href="/styles/product.css?v=1">
+</head>
+<body>
+  <!-- Global Header -->
+  <header class="header">
+    <div class="container">
+      <div class="header-content">
+        <a href="/" class="logo">
+          <div class="logo-chip"></div>
+          <div class="logo-text">ДИПОНИКА</div>
+        </a>
+
+        <div class="nav-wrapper">
+          <!-- Animated Search Box -->
+          <form class="search-box" id="searchForm">
+            <input type="text" id="searchInput" placeholder=" " autocomplete="off">
+            <button type="reset" id="resetBtn"></button>
+          </form>
+
+          <nav class="main-nav">
+            <button class="nav-link">Источники</button>
+            <button class="nav-link">О нас</button>
+          </nav>
+
+          <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+
+            <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
+            </svg>
+            <svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="main-content product-page">
+    <div class="container">
+      <!-- Breadcrumbs -->
+      <nav class="breadcrumbs fade-in">
+        <a href="/">Главная</a>
+        <span>→</span>
+        <a href="#" id="breadcrumbSearch">Результаты поиска</a>
+        <span>→</span>
+        <span id="breadcrumbMpn">...</span>
+      </nav>
+
+      <!-- Product Info -->
+      <div class="product-header fade-in" style="animation-delay: 0.1s">
+        <h1 class="product-title" id="productTitle">...</h1>
+        <p class="product-subtitle" id="productSubtitle">Загрузка...</p>
+      </div>
+
+      <!-- Product Grid -->
+      <div class="product-grid fade-in" id="productContent" style="animation-delay: 0.2s; display: none;">
+        <!-- Gallery -->
+        <div class="gallery panel">
+          <div class="main-image" id="mainImageContainer">
+            <div class="image-placeholder">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                <circle cx="8.5" cy="8.5" r="1.5"/>
+                <polyline points="21 15 16 10 5 21"/>
+              </svg>
+            </div>
+          </div>
+          <div class="thumbnail-list" id="thumbnailList"></div>
+        </div>
+
+        <!-- Meta Panels -->
+        <div class="meta">
+          <!-- Price & Stock -->
+          <div class="panel price-panel">
+            <div class="price-header">
+              <div>
+                <div class="label">Производитель</div>
+                <div class="manufacturer" id="manufacturer">...</div>
+              </div>
+              <div class="price" id="price">...</div>
+            </div>
+            <div class="stock" id="stock">...</div>
+            <div class="package-info" id="packageInfo"></div>
+          </div>
+
+          <!-- Pricing Table -->
+          <div class="panel" id="pricingPanel" style="display: none;">
+            <div class="panel-title">Цены (объём)</div>
+            <table class="pricing-table" id="pricingTable">
+              <thead>
+                <tr>
+                  <th>Кол-во</th>
+                  <th>Цена</th>
+                  <th>₽ (расчёт)</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+
+          <!-- Datasheets -->
+          <div class="panel" id="datasheetsPanel" style="display: none;">
+            <div class="panel-title">Документация</div>
+            <div class="datasheets-grid" id="datasheetsList"></div>
+          </div>
+
+          <!-- Technical Specs -->
+          <div class="panel" id="specsPanel" style="display: none;">
+            <div class="panel-title">Технические характеристики</div>
+            <div class="specs-grid" id="specsList"></div>
+          </div>
+
+          <!-- Availability -->
+          <div class="panel" id="availabilityPanel" style="display: none;">
+            <div class="panel-title">Доступность</div>
+            <div class="availability-info" id="availabilityInfo"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Loading State -->
+      <div class="loading-state" id="loadingState">
+        <div class="loading-spinner"></div>
+        <p>Загрузка информации о компоненте...</p>
+      </div>
+
+      <!-- Error State -->
+      <div class="error-state" id="errorState" style="display: none;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"/>
+          <line x1="12" y1="8" x2="12" y2="12"/>
+          <line x1="12" y1="16" x2="12.01" y2="16"/>
+        </svg>
+        <h2>Ошибка загрузки</h2>
+        <p>Не удалось получить информацию о компоненте</p>
+        <a href="/" class="back-home">← Вернуться на главную</a>
+      </div>
+    </div>
+  </main>
+
+  <!-- Global Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-left">
+          <p class="copyright">© 2025 Components Aggregator</p>
+          <span class="separator">•</span>
+          <p class="description">Агрегатор поиска электронных компонентов</p>
+        </div>
+
+        <div class="footer-right">
+          <div class="api-status">
+            <svg class="activity-icon online" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+            </svg>
+            <span class="status-text online">API: онлайн</span>
+          </div>
+
+          <button class="policy-link">Политика</button>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/scripts/product-page.js?v=7"></script>
+</body>
+</html>

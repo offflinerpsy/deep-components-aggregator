@@ -1,0 +1,28 @@
+[Unit]
+Description=Deep Components Aggregator
+After=network.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/root/aggregator-v2
+ExecStart=/usr/bin/node server.js
+Restart=always
+RestartSec=10
+Environment=NODE_ENV=production
+Environment=PORT=9201
+Environment=HTTP_PROXY=
+Environment=HTTPS_PROXY=
+
+# Security settings
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ReadWritePaths=/root/aggregator-v2
+
+# Resource limits
+MemoryMax=600M
+CPUQuota=50%
+
+[Install]
+WantedBy=multi-user.target

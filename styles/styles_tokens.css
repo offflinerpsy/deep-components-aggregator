@@ -1,0 +1,41 @@
+
+/* styles/tokens.css — единые токены проекта (НЕ меняем брендовые значения, только централизуем) */
+
+/* Подключается в <head> до остальных стилей проекта */
+:root {
+  /* Пробелы */
+  --space-4: 4px;
+  --space-8: 8px;
+  --space-12: 12px;
+  --space-16: 16px;
+  --space-24: 24px;
+  --space-32: 32px;
+
+  /* Радиусы */
+  --radius-s: 8px;
+  --radius-m: 16px;
+  --radius-l: 20px;
+
+  /* Тени (подставь ваши переменные, если они уже есть) */
+  --shadow-soft: 0 6px 20px rgba(0,0,0,.06);
+  --shadow-hard: 0 10px 30px rgba(0,0,0,.12);
+
+  /* Шрифты */
+  --font-family: system-ui, -apple-system, Segoe UI, Roboto, 'Helvetica Neue', Arial, 'Noto Sans', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+  --font-size-s: 12px;
+  --font-size-m: 13px;
+  --font-size-l: 14px;
+  --font-size-xl: 18px;
+
+  /* Цвета: подставь маппинг на ваши переменные (пример) */
+  --color-text: var(--your-text, #111);
+  --color-muted: var(--your-muted, rgba(0,0,0,.65));
+  --color-bg: var(--your-bg, #fff);
+  --color-card: var(--your-card, #fff);
+  --color-border: var(--your-border, rgba(0,0,0,.08));
+  --color-accent: var(--your-accent, #6c5ce7);
+
+  /* Прочее */
+  --container-max: 1200px;
+  --sticky-top: 88px; /* высота хедера + отступ */
+}

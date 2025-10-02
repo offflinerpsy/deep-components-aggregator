@@ -1,0 +1,53 @@
+{
+  "mpn": "M83513/19-E01NW",
+  "manufacturer": "Amphenol Canada",
+  "title": "D-Sub MIL Spec Connectors 31 PLUG",
+  "description": "D-Sub MIL Spec Connectors 31 PLUG",
+  "photo": "https://www.mouser.com/images/amphenol/images/M83513_16-21_DSL.jpg",
+  "images": [
+    "https://www.mouser.com/images/amphenol/images/M83513_16-21_DSL.jpg"
+  ],
+  "datasheets": [
+    "https://www.mouser.com/datasheet/3/59/1/Micro-D-Catalog.pdf"
+  ],
+  "technical_specs": {
+    "Standard Pack Qty": "5"
+  },
+  "pricing": [
+    {
+      "qty": 5,
+      "price": "$227.60",
+      "currency": "USD",
+      "price_rub": 18861
+    },
+    {
+      "qty": 10,
+      "price": "$198.66",
+      "currency": "USD",
+      "price_rub": 16462
+    },
+    {
+      "qty": 25,
+      "price": "$193.48",
+      "currency": "USD",
+      "price_rub": 16033
+    },
+    {
+      "qty": 50,
+      "price": "$185.80",
+      "currency": "USD",
+      "price_rub": 15397
+    }
+  ],
+  "availability": {
+    "inStock": 0,
+    "leadTime": "84 Days"
+  },
+  "regions": [
+    "US"
+  ],
+  "package": "",
+  "packaging": "",
+  "vendorUrl": "https://www.mouser.com/ProductDetail/Amphenol-Canada/M83513-19-E01NW?qs=CiayqK2gdcK2okFfn9zNng%3D%3D",
+  "source": "mouser"
+}

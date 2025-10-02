@@ -1,0 +1,48 @@
+{
+  "name": "deep-agg-alpha",
+  "version": "3.1.0",
+  "type": "module",
+  "description": "Deep Components Aggregator with Orders Backend",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "rates:refresh": "node ./scripts/refresh-rates.mjs",
+    "data:ingest:chipdip": "node ./scripts/ingest-chipdip-urls.mjs --glob 'loads/urls/*.txt' --concurrency 4 --batch 100",
+    "data:index:build": "node ./scripts/build-index.mjs",
+    "smoke": "node ./scripts/smoke.mjs",
+    "smoke:prod": "node ./scripts/smoke.mjs --host=http://89.104.69.77",
+    "test:e2e": "playwright test",
+    "diag:live": "node ./scripts/diag-live.mjs",
+    "diag:report": "node ./scripts/diag-report.mjs",
+    "deploy": "bash ./deploy-to-server.sh"
+  },
+  "dependencies": {
+    "@orama/orama": "^1.2.11",
+    "ajv": "^8.12.0",
+    "ajv-formats": "^2.1.1",
+    "argon2": "^0.44.0",
+    "better-sqlite3": "^12.4.1",
+    "cheerio": "^1.1.2",
+    "connect-sqlite3": "^0.9.16",
+    "dotenv": "^17.2.3",
+    "express": "^4.18.2",
+    "express-rate-limit": "^7.1.0",
+    "express-session": "^1.18.2",
+    "fast-xml-parser": "^4.3.2",
+    "glob": "^10.3.10",
+    "nanoid": "^5.0.3",
+    "p-queue": "^7.4.1",
+    "passport": "^0.7.0",
+    "passport-google-oidc": "^0.1.0",
+    "passport-local": "^1.0.0",
+    "passport-yandex": "^0.0.5",
+    "pino": "^8.16.0",
+    "prom-client": "^15.0.0",
+    "socks-proxy-agent": "^8.0.5",
+    "undici": "^6.21.3"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.44.1"
+  }
+}

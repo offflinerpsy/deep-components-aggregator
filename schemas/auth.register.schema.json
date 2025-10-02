@@ -1,0 +1,36 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://deep-agg.com/schemas/auth.register.json",
+  "title": "User Registration Schema",
+  "description": "JSON Schema for POST /auth/register request validation",
+  "type": "object",
+  "required": ["email", "password", "confirmPassword"],
+  "additionalProperties": false,
+  "properties": {
+    "email": {
+      "type": "string",
+      "format": "email",
+      "minLength": 5,
+      "maxLength": 128,
+      "description": "User email address (RFC 5322 format)"
+    },
+    "password": {
+      "type": "string",
+      "minLength": 8,
+      "maxLength": 128,
+      "description": "Password (minimum 8 characters)"
+    },
+    "confirmPassword": {
+      "type": "string",
+      "minLength": 8,
+      "maxLength": 128,
+      "description": "Password confirmation (must match password)"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 2,
+      "maxLength": 128,
+      "description": "Optional display name"
+    }
+  }
+}

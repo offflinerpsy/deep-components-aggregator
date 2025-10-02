@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Мои заказы — Deep Aggregator</title>
+  <link rel="stylesheet" href="/ui/auth.css">
+  <style>
+    .orders-page {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+    
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 32px;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    
+    .page-header h1 {
+      font-size: 32px;
+      font-weight: 600;
+    }
+    
+    .header-actions {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+    
+    .user-info {
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+    
+    .btn-logout {
+      padding: 8px 16px;
+      background: var(--bg-input);
+      border: 1px solid var(--border-color);
+      color: var(--text-primary);
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: all 0.2s;
+    }
+    
+    .btn-logout:hover {
+      background: var(--error-red);
+      border-color: var(--error-red);
+      color: white;
+    }
+    
+    /* Filters */
+    .filters {
+      background: var(--bg-lighter);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 24px;
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    
+    .filter-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .filter-group label {
+      font-size: 13px;
+      color: var(--text-secondary);
+      margin: 0;
+    }
+    
+    .filter-group select {
+      padding: 8px 12px;
+      background: var(--bg-input);
+      border: 1px solid var(--border-color);
+      color: var(--text-primary);
+      border-radius: 6px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+    
+    /* Orders Table */
+    .orders-container {
+      background: var(--bg-lighter);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    
+    .orders-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    
+    .orders-table th,
+    .orders-table td {
+      padding: 14px 16px;
+      text-align: left;
+      border-bottom: 1px solid var(--border-color);
+    }
+    
+    .orders-table th {
+      background: var(--bg-dark);
+      font-weight: 600;
+      font-size: 13px;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    
+    .orders-table td {
+      font-size: 14px;
+    }
+    
+    .orders-table tbody tr:hover {
+      background: var(--bg-input);
+    }
+    
+    .orders-table tbody tr:last-child td {
+      border-bottom: none;
+    }
+    
+    .order-id {
+      font-family: 'Courier New', monospace;
+      color: var(--accent-blue);
+      cursor: pointer;
+    }
+    
+    .order-id:hover {
+      text-decoration: underline;
+    }
+    
+    .status-badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+    
+    .status-pending { background: rgba(255, 193, 7, 0.2); color: #ffc107; }
+    .status-processing { background: rgba(33, 150, 243, 0.2); color: #2196f3; }
+    .status-completed { background: rgba(76, 175, 80, 0.2); color: #4caf50; }
+    .status-cancelled { background: rgba(244, 67, 54, 0.2); color: #f44336; }
+    
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--text-secondary);
+    }
+    
+    .empty-state svg {
+      width: 80px;
+      height: 80px;
+      margin-bottom: 16px;
+      opacity: 0.5;
+    }
+    
+    .empty-state h3 {
+      font-size: 18px;
+      margin-bottom: 8px;
+      color: var(--text-primary);
+    }
+    
+    .empty-state p {
+      font-size: 14px;
+    }
+    
+    /* Pagination */
+    .pagination {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      padding: 20px;
+    }
+    
+    .pagination button {
+      padding: 8px 12px;
+      background: var(--bg-input);
+      border: 1px solid var(--border-color);
+      color: var(--text-primary);
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: all 0.2s;
+    }
+    
+    .pagination button:hover:not(:disabled) {
+      background: var(--accent-blue);
+      border-color: var(--accent-blue);
+    }
+    
+    .pagination button:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+    
+    .pagination span {
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+    
+    /* Loading State */
+    .loading {
+      text-align: center;
+      padding: 40px;
+      color: var(--text-secondary);
+    }
+    
+    /* Links */
+    .link-back {
+      display: inline-block;
+      margin-top: 24px;
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 14px;
+      transition: color 0.2s;
+    }
+    
+    .link-back:hover {
+      color: var(--accent-blue);
+    }
+    
+    @media (max-width: 768px) {
+      .orders-table {
+        font-size: 13px;
+      }
+      
+      .orders-table th,
+      .orders-table td {
+        padding: 10px 12px;
+      }
+      
+      .page-header h1 {
+        font-size: 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation Header -->
+  <header class="auth-nav">
+    <div class="nav-container">
+      <a href="/" class="brand">
+        <div class="logo"></div>
+        Deep Aggregator
+      </a>
+      <nav>
+        <a href="/">Главная</a>
+        <a href="/search.html">Поиск</a>
+        <a href="/ui/sources.html">Источники</a>
+        <a href="/ui/about.html">О нас</a>
+        <a href="/ui/my-orders.html" style="color: var(--accent-blue);">Мои заказы</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="orders-page">
+    <div class="page-header">
+      <h1>Мои заказы</h1>
+      <div class="header-actions">
+        <span class="user-info" id="user-info"></span>
+        <button class="btn-logout" onclick="logout()">Выйти</button>
+      </div>
+    </div>
+    
+    <div class="filters">
+      <div class="filter-group">
+        <label for="status-filter">Статус:</label>
+        <select id="status-filter">
+          <option value="">Все</option>
+          <option value="pending">В ожидании</option>
+          <option value="processing">В обработке</option>
+          <option value="completed">Завершён</option>
+          <option value="cancelled">Отменён</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label for="limit-filter">На странице:</label>
+        <select id="limit-filter">
+          <option value="10">10</option>
+          <option value="25" selected>25</option>
+          <option value="50">50</option>
+          <option value="100">100</option>
+        </select>
+      </div>
+    </div>
+    
+    <div class="orders-container">
+      <div id="loading" class="loading">
+        Загрузка заказов...
+      </div>
+      
+      <div id="orders-table-wrapper" style="display: none;">
+        <table class="orders-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Партномер</th>
+              <th>Количество</th>
+              <th>Статус</th>
+              <th>Создан</th>
+            </tr>
+          </thead>
+          <tbody id="orders-tbody">
+            <!-- Populated by JS -->
+          </tbody>
+        </table>
+      </div>
+      
+      <div id="empty-state" class="empty-state" style="display: none;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+        </svg>
+        <h3>Заказов не найдено</h3>
+        <p>Создайте первый заказ на главной странице</p>
+      </div>
+      
+      <div id="pagination" class="pagination" style="display: none;">
+        <button id="prev-btn" onclick="prevPage()">← Предыдущая</button>
+        <span id="page-info"></span>
+        <button id="next-btn" onclick="nextPage()">Следующая →</button>
+      </div>
+    </div>
+    
+    <a href="/ui/index.html" class="link-back">← Вернуться к агрегатору</a>
+  </div>
+  
+  <script src="/ui/my-orders.js"></script>
+</body>
+</html>

@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Диагностика — ДИПОНИКА</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles/v0-theme.css?v=1">
+  <style>
+    .diagnostics-page {
+      padding: 40px 0;
+      min-height: calc(100vh - 200px);
+    }
+    
+    .diag-header {
+      margin-bottom: 40px;
+    }
+    
+    .diag-title {
+      font-size: 36px;
+      font-weight: 500;
+      margin-bottom: 8px;
+      color: var(--foreground);
+    }
+    
+    .diag-subtitle {
+      font-size: 16px;
+      color: var(--muted-foreground);
+    }
+    
+    .diag-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 20px;
+      margin-bottom: 40px;
+    }
+    
+    .diag-card {
+      background: var(--surface);
+      border: 2px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+      transition: all 0.3s ease;
+    }
+    
+    .diag-card.loading {
+      border-color: #3b82f6;
+      animation: pulse 2s ease-in-out infinite;
+    }
+    
+    .diag-card.success {
+      border-color: #10b981;
+    }
+    
+    .diag-card.error {
+      border-color: #ef4444;
+    }
+    
+    .diag-card.warning {
+      border-color: #f59e0b;
+    }
+    
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+    
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    
+    .card-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+    }
+    
+    .card-icon.loading { background: #3b82f6; }
+    .card-icon.success { background: #10b981; }
+    .card-icon.error { background: #ef4444; }
+    .card-icon.warning { background: #f59e0b; }
+    
+    .card-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--foreground);
+    }
+    
+    .card-body {
+      color: var(--muted-foreground);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+    
+    .card-details {
+      margin-top: 12px;
+      padding: 12px;
+      background: var(--background);
+      border-radius: 8px;
+      font-family: 'Courier New', monospace;
+      font-size: 12px;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+    
+    .detail-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 4px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    
+    .detail-row:last-child {
+      border-bottom: none;
+    }
+    
+    .refresh-btn {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+    
+    .refresh-btn:hover {
+      transform: translateY(-2px);
+    }
+    
+    .refresh-btn:active {
+      transform: translateY(0);
+    }
+    
+    .timestamp {
+      text-align: center;
+      color: var(--muted-foreground);
+      font-size: 14px;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Global Header -->
+  <header class="header">
+    <div class="container">
+      <div class="header-content">
+        <a href="/" class="logo">
+          <div class="logo-chip"></div>
+          <div class="logo-text">ДИПОНИКА</div>
+        </a>
+
+        <div class="nav-wrapper">
+          <form class="search-box" id="searchForm">
+            <input type="text" id="searchInput" placeholder=" " autocomplete="off">
+            <button type="reset" id="resetBtn"></button>
+          </form>
+
+          <nav class="main-nav">
+            <button class="nav-link">Источники</button>
+            <button class="nav-link">О нас</button>
+          </nav>
+
+          <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+            <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
+            </svg>
+            <svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="main-content diagnostics-page">
+    <div class="container">
+      <div class="diag-header">
+        <h1 class="diag-title">Диагностика системы</h1>
+        <p class="diag-subtitle">Проверка работоспособности всех компонентов сайта</p>
+      </div>
+
+      <div class="diag-grid" id="diagGrid">
+        <!-- Cards will be inserted here -->
+      </div>
+
+      <div style="text-align: center;">
+        <button class="refresh-btn" onclick="runDiagnostics()">🔄 Обновить диагностику</button>
+      </div>
+
+      <div class="timestamp" id="timestamp"></div>
+    </div>
+  </main>
+
+  <!-- Global Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-left">
+          <p class="copyright">© 2025 Components Aggregator</p>
+          <span class="separator">•</span>
+          <p class="description">Агрегатор поиска электронных компонентов</p>
+        </div>
+        <div class="footer-right">
+          <div class="api-status">
+            <svg class="activity-icon online" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+            </svg>
+            <span class="status-text online">API: онлайн</span>
+          </div>
+          <button class="policy-link">Политика</button>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/scripts/diagnostics.js"></script>
+</body>
+</html>

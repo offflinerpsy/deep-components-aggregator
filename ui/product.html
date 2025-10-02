@@ -1,0 +1,222 @@
+<!DOCTYPE html><!DOCTYPE html>
+
+<html lang="ru"><html lang="ru">
+
+<head><head>
+
+  <meta charset="utf-8" />  <meta charset="utf-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Deep Aggregator — Карточка товара</title>  <title>DEEP · Карточка товара</title>
+
+  <style>  <link rel="stylesheet" href="/ui/product.css">
+
+    :root{--bg:#fafafa;--surface:#ffffff;--surface-2:#f5f7fb;--text:#111827;--muted:#6b7280;--stroke:#e5e7eb;--primary:#1d4ed8;--primary-weak:#dbeafe;--success:#16a34a;--radius-sm:8px;--radius-md:12px;--radius-lg:16px;--radius-xl:24px;--shadow-1:0 1px 2px rgba(0,0,0,.06),0 1px 1px rgba(0,0,0,.04);--shadow-2:0 4px 16px rgba(0,0,0,.08);--easing-standard:cubic-bezier(.2,0,0,1);--easing-emphasis:cubic-bezier(.05,.7,.1,1);--motion-fast:150ms;--motion-mid:220ms;--font:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,"Helvetica Neue",Arial}</head>
+
+    @media (prefers-reduced-motion:reduce){*{animation-duration:1ms!important;animation-iteration-count:1!important;transition-duration:1ms!important}}<body>
+
+    html,body{height:100%}  <div class="container" data-testid="product-container">
+
+    body{margin:0;background:var(--bg);color:var(--text);font-family:var(--font);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}    <!-- Навигация -->
+
+    .container{max-width:1200px;margin-inline:auto;padding:24px}    <nav class="breadcrumbs" data-testid="breadcrumbs">
+
+    header{position:sticky;top:0;backdrop-filter:saturate(1.2) blur(6px);background:rgba(250,250,250,.75);border-bottom:1px solid var(--stroke);z-index:10}      <a href="/">DEEP</a> / <span>Карточка товара</span>
+
+    .topbar{display:flex;align-items:center;gap:16px;padding:14px 24px}    </nav>
+
+    .brand{display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:.2px;text-decoration:none;color:var(--text)}
+
+    .logo{width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,var(--primary),#0ea5e9);box-shadow:var(--shadow-1)}    <!-- Основная сетка карточки -->
+
+    nav{margin-left:auto;display:flex;align-items:center;gap:12px}    <main class="product-grid" data-testid="product-grid">
+
+    nav a{color:var(--muted);text-decoration:none;padding:8px 12px;border-radius:999px;transition:color var(--motion-fast) var(--easing-standard),background var(--motion-fast) var(--easing-standard)}      
+
+    nav a:hover{color:var(--text);background:var(--surface-2)}      <!-- Галерея изображений -->
+
+    main{padding:24px}      <section class="gallery" data-testid="gallery" data-area="gallery">
+
+            <div class="image-main" data-testid="image-main">
+
+    /* Grid layout */          <img id="main-image" alt="Изображение товара" loading="lazy" decoding="async">
+
+    .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:16px;margin-top:24px}        </div>
+
+    .gallery{grid-column:span 5;background:var(--surface);border:1px solid var(--stroke);border-radius:var(--radius-lg);padding:14px;box-shadow:var(--shadow-1)}        <div class="image-thumbs" data-testid="image-thumbs" id="image-thumbs"></div>
+
+    .meta{grid-column:span 7;display:grid;gap:12px}        <div class="gallery-docs" data-testid="gallery-docs" id="gallery-docs"></div>
+
+    .panel{background:var(--surface);border:1px solid var(--stroke);border-radius:var(--radius-lg);padding:14px;box-shadow:var(--shadow-1)}      </section>
+
+    
+
+    /* Gallery */      <!-- Метаинформация -->
+
+    .gallery img{width:100%;aspect-ratio:4/3;border-radius:12px;object-fit:cover;border:1px solid var(--stroke)}      <section class="meta" data-testid="meta" data-area="meta">
+
+            <h1 id="product-title" data-testid="product-title"></h1>
+
+    /* Meta panels */        <div class="meta-list" data-testid="meta-list" id="meta-list">
+
+    .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;font-size:12.5px;color:#334155;margin-bottom:6px}          <div class="meta-item" data-testid="meta-mpn">
+
+    .price{font-size:20px;font-weight:800;color:var(--text)}            <span class="meta-label">Номенклатурный номер:</span>
+
+    .stock{font-weight:700;color:var(--success)}            <span class="meta-value" id="meta-mpn-value">—</span>
+
+              </div>
+
+    /* Specs grid */          <div class="meta-item" data-testid="meta-manufacturer">
+
+    .specs-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;color:var(--muted)}            <span class="meta-label">Производитель:</span>
+
+    .specs-grid div{font-size:14px}            <span class="meta-value" id="meta-manufacturer-value">—</span>
+
+    .specs-grid b{color:var(--text)}          </div>
+
+              <div class="meta-item" data-testid="meta-package">
+
+    /* Buttons */            <span class="meta-label">Корпус:</span>
+
+    .btnLink{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;background:var(--surface-2);border:1px solid var(--stroke);text-decoration:none;color:var(--text);font-weight:600;transition:transform var(--motion-fast) var(--easing-emphasis),background var(--motion-fast) var(--easing-standard)}            <span class="meta-value" id="meta-package-value">—</span>
+
+    .btnLink:hover{background:#eef2ff;transform:translateY(-1px)}          </div>
+
+              <div class="meta-item" data-testid="meta-packaging">
+
+    a:focus-visible,button:focus-visible{outline:3px solid #93c5fd;outline-offset:2px;border-radius:6px}            <span class="meta-label">Упаковка:</span>
+
+    footer{color:var(--muted);padding:40px 24px;text-align:center;border-top:1px solid var(--stroke);margin-top:60px}            <span class="meta-value" id="meta-packaging-value">—</span>
+
+              </div>
+
+    @media (max-width: 768px){        </div>
+
+      .grid{grid-template-columns:1fr}      </section>
+
+      .gallery,.meta{grid-column:span 1}
+
+    }      <!-- Блок заказа (sticky) -->
+
+  </style>      <aside class="order" data-testid="order" data-area="order">
+
+</head>        <div class="order-content">
+
+<body>          <div class="order-item" data-testid="order-stock">
+
+  <header>            <span class="order-label">Наличие:</span>
+
+    <div class="topbar container">            <span class="order-value" id="order-stock-value">—</span>
+
+      <a href="/" class="brand"><div class="logo" aria-hidden="true"></div> Deep Aggregator</a>          </div>
+
+      <nav>          <div class="order-item" data-testid="order-price">
+
+        <a href="/">Главная</a>            <span class="order-label">Мин. цена:</span>
+
+        <a href="/search.html">Поиск</a>            <span class="order-value" id="order-price-value">— ₽</span>
+
+      </nav>          </div>
+
+    </div>          <div class="order-regions" data-testid="order-regions" id="order-regions"></div>
+
+  </header>          <div class="order-quantity">
+
+            <label for="quantity-input">Количество:</label>
+
+  <main class="container">            <input id="quantity-input" type="number" min="1" value="1" inputmode="numeric">
+
+    <section class="grid" aria-label="Карточка продукта">          </div>
+
+      <div class="gallery" id="gallery-section" data-testid="gallery">          <button class="order-button" data-testid="order-button">ЗАКАЗАТЬ</button>
+
+        <img id="product-image" alt="Фото компонента" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='640' height='360'%3E%3Crect width='100%25' height='100%25' fill='%23eef2ff'/%3E%3C/svg%3E" />        </div>
+
+      </div>      </aside>
+
+      
+
+      <div class="meta">      <!-- Описание -->
+
+        <div class="panel">      <section class="desc" data-testid="desc" data-area="desc">
+
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:12px">        <h2>Описание</h2>
+
+            <div>        <div class="desc-content" data-testid="desc-content" id="desc-content">
+
+              <div class="mono">Manufacturer</div>          <p>Загрузка описания...</p>
+
+              <div id="manufacturer" style="font-weight:800;font-size:18px" data-testid="manufacturer">—</div>        </div>
+
+            </div>      </section>
+
+            <div class="price" id="price" data-testid="price">—</div>
+
+          </div>      <!-- Документация -->
+
+          <div style="margin-top:8px" class="stock" id="stock" data-testid="stock">—</div>      <section class="docs" data-testid="docs" data-area="docs">
+
+          <div style="margin-top:8px;color:var(--muted);font-size:14px">        <h2>Документация</h2>
+
+            <div class="mono" style="margin-bottom:4px">MPN</div>        <div class="docs-list" data-testid="docs-list" id="docs-list">
+
+            <div id="mpn" data-testid="mpn">—</div>          <p>Документация не найдена</p>
+
+          </div>        </div>
+
+        </div>      </section>
+
+        
+
+        <div class="panel" id="datasheets-panel" data-testid="datasheets">      <!-- Технические параметры -->
+
+          <div class="mono" style="margin-bottom:6px">Datasheets</div>      <section class="specs" data-testid="specs" data-area="specs">
+
+          <div id="datasheets-links" style="display:flex;gap:8px;flex-wrap:wrap" data-testid="datasheets-links">        <h2>Технические параметры</h2>
+
+            <span style="color:var(--muted);font-size:14px">Документация не найдена</span>        <table class="specs-table" data-testid="specs-table">
+
+          </div>          <tbody id="specs-tbody" data-testid="specs-tbody">
+
+        </div>            <tr>
+
+                      <td colspan="2" style="text-align:center;padding:24px;color:#6b7280;">
+
+        <div class="panel" id="specs-panel" data-testid="specs">                Загрузка технических параметров...
+
+          <div class="mono" style="margin-bottom:6px">Specs</div>              </td>
+
+          <div id="specs-grid" class="specs-grid" data-testid="specs-grid">            </tr>
+
+            <div style="grid-column:span 2;color:var(--muted);text-align:center">Загрузка спецификаций...</div>          </tbody>
+
+          </div>        </table>
+
+        </div>      </section>
+
+        
+
+        <div class="panel" id="pricing-panel" data-testid="pricing">    </main>
+
+          <div class="mono" style="margin-bottom:6px">Pricing</div>  </div>
+
+          <div id="pricing-list" data-testid="pricing-list" style="display:grid;gap:6px">
+
+            <div style="color:var(--muted);font-size:14px">Загрузка цен...</div>  <script src="/ui/product.js"></script>
+
+          </div></body>
+
+        </div></html>
+
+      </div>
+    </section>
+  </main>
+
+  <footer class="container">© 2025 Deep Components Aggregator</footer>
+
+  <script src="/ui/translate.js"></script>
+  <script src="/ui/product.js"></script>
+</body>
+</html>

@@ -11,12 +11,14 @@ const DATA_DIR = process.env.DATA_DIR || join(__dirname, '..', 'var');
 const dbPath = join(DATA_DIR, 'db', 'deepagg.sqlite');
 const ordersMigrationPath = join(__dirname, '..', 'db', 'migrations', '2025-10-02_orders.sql');
 const authMigrationPath = join(__dirname, '..', 'db', 'migrations', '2025-10-02_auth.sql');
+const providerLocalVkMigrationPath = join(__dirname, '..', 'db', 'migrations', '2025-10-03_provider_local_vk.sql');
 
 console.log('\n📦 Applying Database Migrations');
 console.log('='.repeat(50));
 console.log(`📄 Database: ${dbPath}`);
 console.log(`📜 Orders Migration: ${ordersMigrationPath}`);
 console.log(`📜 Auth   Migration: ${authMigrationPath}`);
+console.log(`📜 Provider/VK/Role Migration: ${providerLocalVkMigrationPath}`);
 
 // Ensure database directory exists
 const dbDir = dirname(dbPath);
@@ -29,11 +31,13 @@ const db = Database(dbPath);
 try {
   const ordersSql = readFileSync(ordersMigrationPath, 'utf-8');
   const authSql = readFileSync(authMigrationPath, 'utf-8');
+  const providerSql = readFileSync(providerLocalVkMigrationPath, 'utf-8');
 
   db.exec('PRAGMA foreign_keys = OFF;');
   db.exec('BEGIN;');
   db.exec(ordersSql);
   db.exec(authSql);
+  db.exec(providerSql);
   db.exec('COMMIT;');
   db.exec('PRAGMA foreign_keys = ON;');
 

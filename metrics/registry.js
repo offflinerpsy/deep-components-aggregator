@@ -120,6 +120,22 @@ export const rateLimitHits = new Counter({
   registers: [register]
 });
 
+// ==================== SETTINGS METRICS ====================
+
+export const settingsReadsTotal = new Counter({
+  name: 'settings_reads_total',
+  help: 'Total number of settings reads',
+  labelNames: ['key'],
+  registers: [register]
+});
+
+export const settingsUpdatesTotal = new Counter({
+  name: 'settings_updates_total',
+  help: 'Total number of settings updates',
+  labelNames: ['key'],
+  registers: [register]
+});
+
 // ==================== HELPER FUNCTIONS ====================
 
 /**
@@ -180,6 +196,8 @@ export default {
   apiCallDuration,
   cacheOperations,
   rateLimitHits,
+  settingsReadsTotal,
+  settingsUpdatesTotal,
   updateOrdersByStatusGauge,
   getMetrics,
   getMetricsContentType,

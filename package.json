@@ -15,6 +15,7 @@
     "test:e2e": "playwright test",
     "diag:live": "node ./scripts/diag-live.mjs",
     "diag:report": "node ./scripts/diag-report.mjs",
+    "providers:check": "node ./scripts/check-providers.mjs",
     "deploy": "bash ./deploy-to-server.sh"
   },
   "dependencies": {

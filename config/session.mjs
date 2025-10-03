@@ -16,6 +16,9 @@ const SQLiteStore = connectSqlite3(session);
  * Session configuration
  * Cookie settings follow security best practices
  */
+const isProd = process.env.NODE_ENV === 'production';
+const behindProxy = String(process.env.BEHIND_PROXY || '1') === '1';
+
 const SESSION_CONFIG = {
   // Session store
   store: new SQLiteStore({
@@ -34,11 +37,11 @@ const SESSION_CONFIG = {
     // HttpOnly - prevents XSS attacks
     httpOnly: true,
     
-    // Secure - HTTPS only (enable in production)
-    secure: process.env.NODE_ENV === 'production',
+    // Secure - HTTPS only; auto when behind proxy in prod
+    secure: isProd ? (behindProxy ? 'auto' : true) : false,
     
-    // SameSite - CSRF protection
-    sameSite: 'lax',
+    // SameSite - allow cross-site when behind proxy/CDN with HTTPS
+    sameSite: isProd && behindProxy ? 'none' : 'lax',
     
     // Max age - 7 days (configurable)
     maxAge: parseInt(process.env.SESSION_TTL_MS) || 7 * 24 * 60 * 60 * 1000
@@ -54,7 +57,10 @@ const SESSION_CONFIG = {
   saveUninitialized: false,
   
   // Rolling - refresh cookie on each request
-  rolling: true
+  rolling: true,
+  
+  // Trust proxy setups
+  proxy: behindProxy
 };
 
 /**

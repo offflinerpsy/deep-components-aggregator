@@ -137,6 +137,29 @@
         <button class="modal__close" id="prices-modal-close">&times;</button>
       </div>
       <div class="modal__body">
+        <!-- Filters -->
+        <div class="price-filters" style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:12px;align-items:flex-end;">
+          <label style="display:flex;flex-direction:column;gap:6px;font-size:12px;color:var(--color-text-muted);">
+            Мин. партия
+            <input id="filter-minqty" type="number" min="1" placeholder="1" style="padding:6px 10px;border:1px solid var(--color-border);border-radius:8px;min-width:120px;">
+          </label>
+          <label style="display:flex;flex-direction:column;gap:6px;font-size:12px;color:var(--color-text-muted);">
+            Макс. цена (₽)
+            <input id="filter-maxprice" type="number" min="0" step="0.01" placeholder=""
+                   style="padding:6px 10px;border:1px solid var(--color-border);border-radius:8px;min-width:140px;">
+          </label>
+          <label style="display:flex;flex-direction:column;gap:6px;font-size:12px;color:var(--color-text-muted);">
+            Поставщик
+            <select id="filter-supplier" style="padding:6px 10px;border:1px solid var(--color-border);border-radius:8px;min-width:160px;">
+              <option value="">Все</option>
+              <option value="mouser">Mouser</option>
+              <option value="tme">TME</option>
+              <option value="farnell">Farnell</option>
+              <option value="digikey">DigiKey</option>
+            </select>
+          </label>
+          <button id="filter-apply" class="cta-button" style="width:auto;padding:10px 16px;">Фильтровать</button>
+        </div>
         <table class="price-table">
           <thead>
             <tr>

@@ -2,20 +2,8 @@
 // v3.0 - With TME, Mouser, Farnell support
 
 import 'dotenv/config';
-
-// WARP Proxy Integration (OPTIONAL - falls back to direct if not configured)
-import { setGlobalDispatcher, ProxyAgent } from 'undici';
-const WARP_PROXY_URL = process.env.WARP_PROXY_URL || '';
-if (WARP_PROXY_URL) {
-  try {
-    setGlobalDispatcher(new ProxyAgent(WARP_PROXY_URL));
-    console.log(`🔒 WARP Proxy enabled: ${WARP_PROXY_URL}`);
-  } catch (e) {
-    console.warn(`⚠️  WARP Proxy setup failed, using direct connections: ${e.message}`);
-  }
-} else {
-  console.log(`📡 Direct connections enabled (WARP_PROXY_URL not set)`);
-}
+// Enable proxy-by-default before any network clients load
+import './src/bootstrap/proxy.mjs';
 
 import express from 'express';
 import path from 'path';
@@ -68,6 +56,8 @@ console.log('\n🚀 Deep Components Aggregator v3.2');
 console.log('='.repeat(50));
 
 const app = express();
+// Trust proxy to ensure correct secure cookies and IP handling behind CDN/NGINX
+app.set('trust proxy', 1);
 
 // JSON body parser
 app.use(express.json({ limit: '1mb' }));

@@ -76,7 +76,7 @@ const initGallery = (images) => {
 };
 
 // Price breaks rendering
-const renderPriceBreaks = (prices, limit = 5) => {
+const renderPriceBreaks = (prices, limit = 6) => {
   const grid = $('#price-breaks-grid');
   if (!grid || !Array.isArray(prices) || prices.length === 0) return;
   
@@ -85,7 +85,7 @@ const renderPriceBreaks = (prices, limit = 5) => {
   
   const html = display.map(p => `
     <span class="price-breaks__qty">${p.qty}+</span>
-    <span class="price-breaks__supplier">${p.supplier || 'Unknown'}</span>
+    <span class="price-breaks__supplier">${p.supplier || p.source || 'Unknown'}</span>
     <span class="price-breaks__price">${fmtRub(p.price_rub)}</span>
   `).join('');
   
@@ -133,6 +133,37 @@ const highlightRelevantPriceBreak = () => {
 };
 
 // Modal for all prices
+const applyPriceFilters = (prices) => {
+  const minQty = parseInt($('#filter-minqty')?.value || '0') || 0;
+  const maxPrice = parseFloat($('#filter-maxprice')?.value || '') || Infinity;
+  const supplier = $('#filter-supplier')?.value || '';
+  return prices.filter(p => {
+    const okQty = p.qty >= minQty;
+    const okPrice = (p.price_rub || 0) <= maxPrice;
+    const sup = (p.supplier || p.source || '').toLowerCase();
+    const okSupplier = supplier ? sup === supplier.toLowerCase() : true;
+    return okQty && okPrice && okSupplier;
+  });
+};
+
+const renderModalPrices = (tbody, prices) => {
+  const list = prices.length ? prices : [];
+  if (!list.length) {
+    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:var(--space-6);">Нет данных</td></tr>';
+    return;
+  }
+  const sorted = [...list].sort((a, b) => a.price_rub - b.price_rub);
+  tbody.innerHTML = sorted.map(p => `
+    <tr>
+      <td>${p.supplier || p.source || '—'}</td>
+      <td>${p.qty}+</td>
+      <td>${fmtRub(p.price_rub)}</td>
+      <td>${p.leadTime || '—'}</td>
+      <td>${p.moq || p.qty || '—'}</td>
+    </tr>
+  `).join('');
+};
+
 const initPricesModal = () => {
   const showAllBtn = $('#show-all-prices');
   const modal = $('#prices-modal');
@@ -142,20 +173,7 @@ const initPricesModal = () => {
   if (!showAllBtn || !modal) return;
   
   showAllBtn.addEventListener('click', () => {
-    if (!allPrices.length) {
-      tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:var(--space-6);">Нет данных</td></tr>';
-    } else {
-      const sorted = [...allPrices].sort((a, b) => a.price_rub - b.price_rub);
-      tbody.innerHTML = sorted.map(p => `
-        <tr>
-          <td>${p.supplier || '—'}</td>
-          <td>${p.qty}+</td>
-          <td>${fmtRub(p.price_rub)}</td>
-          <td>${p.leadTime || '—'}</td>
-          <td>${p.moq || p.qty || '—'}</td>
-        </tr>
-      `).join('');
-    }
+    renderModalPrices(tbody, applyPriceFilters(allPrices));
     modal.style.display = 'flex';
   });
   
@@ -166,6 +184,11 @@ const initPricesModal = () => {
   if (closeBtn) closeBtn.addEventListener('click', closeModal);
   modal.addEventListener('click', (e) => {
     if (e.target === modal) closeModal();
+  });
+
+  // Filters
+  $('#filter-apply')?.addEventListener('click', () => {
+    renderModalPrices(tbody, applyPriceFilters(allPrices));
   });
 };
 

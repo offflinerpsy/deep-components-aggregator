@@ -1,0 +1,20 @@
+[PLACEHOLDER — Manual Transcription Required]
+
+To complete Block 0, either:
+
+Option A: Run video_ingest.sh script
+  bash scripts/video_ingest.sh <path-to-video.mkv>
+
+Option B: Manual transcription
+  1. Watch the requirements video
+  2. Transcribe key points to this file
+  3. Re-run: grep -n -iE "(сделай|нужно|обязательно|...)" transcript.txt > requirements.txt
+
+Once transcription is complete, this placeholder will be replaced with actual video content.
+
+---
+
+Expected format after transcription:
+[00:00:15] Нужно сделать WARP прокси по умолчанию...
+[00:02:30] Обязательно добавить Google OAuth...
+[00:05:45] Важно: все HTTP запросы через прокси...

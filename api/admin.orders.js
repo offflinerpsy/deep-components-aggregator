@@ -1,10 +1,11 @@
 // api/admin.orders.js
 // Admin endpoints for order management
-// Protected by Nginx Basic Auth (see docs/OPERATIONS.md)
+// Protected by requireAdmin middleware (role-based access control)
 
 import Ajv from 'ajv';
 import { readFileSync } from 'node:fs';
 import { updateOrdersByStatusGauge } from '../metrics/registry.js';
+import { requireAdmin } from '../middleware/requireAdmin.js';
 
 // Initialize AJV
 const ajv = new Ajv({ allErrors: true, strict: true });
@@ -265,9 +266,10 @@ export function updateOrderHandler(db, logger) {
  * @param {Object} logger - Pino logger instance
  */
 export function mountAdminRoutes(app, db, logger) {
-  app.get('/api/admin/orders', listOrdersHandler(db, logger));
-  app.get('/api/admin/orders/:id', getOrderHandler(db, logger));
-  app.patch('/api/admin/orders/:id', updateOrderHandler(db, logger));
+  // Apply requireAdmin middleware to ALL admin routes
+  app.get('/api/admin/orders', requireAdmin, listOrdersHandler(db, logger));
+  app.get('/api/admin/orders/:id', requireAdmin, getOrderHandler(db, logger));
+  app.patch('/api/admin/orders/:id', requireAdmin, updateOrderHandler(db, logger));
 }
 
 export default {

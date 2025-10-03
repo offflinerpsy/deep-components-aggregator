@@ -8,6 +8,7 @@ import passport from 'passport';
 import { Strategy as LocalStrategy } from 'passport-local';
 import { Strategy as GoogleStrategy } from 'passport-google-oidc';
 import { Strategy as YandexStrategy } from 'passport-yandex';
+import { Strategy as VKontakteStrategy } from 'passport-vkontakte';
 import argon2 from 'argon2';
 import { randomUUID } from 'node:crypto';
 
@@ -44,8 +45,8 @@ export function configurePassport(db, logger) {
       return done(null, false);
     }
     
-    // Fetch user from database
-    const user = db.prepare('SELECT id, email, name, provider FROM users WHERE id = ?').get(id);
+    // Fetch user from database (include role for RBAC)
+    const user = db.prepare('SELECT id, email, name, provider, role FROM users WHERE id = ?').get(id);
     
     if (!user) {
       logger.warn({ userId: id }, 'User not found during deserialization');
@@ -267,10 +268,93 @@ export function configurePassport(db, logger) {
     logger.warn('Yandex OAuth not configured (missing CLIENT_ID or CLIENT_SECRET)');
   }
   
+  // ==================== VKONTAKTE STRATEGY ====================
+  
+  const vkClientId = process.env.VK_CLIENT_ID;
+  const vkClientSecret = process.env.VK_CLIENT_SECRET;
+  const vkCallbackURL = process.env.VK_CALLBACK_URL || 'http://localhost:9201/auth/vk/callback';
+  
+  if (vkClientId && vkClientSecret) {
+    passport.use(new VKontakteStrategy({
+      clientID: vkClientId,
+      clientSecret: vkClientSecret,
+      callbackURL: vkCallbackURL,
+      scope: ['email'],
+      profileFields: ['email', 'first_name', 'last_name']
+    }, (accessToken, refreshToken, params, profile, done) => {
+      const providerId = profile.id;
+      const email = profile.emails?.[0]?.value;
+      const name = profile.displayName || `${profile.name?.givenName || ''} ${profile.name?.familyName || ''}`.trim();
+      
+      // Guard: Validate required OAuth data
+      if (!providerId) {
+        logger.error({ profile }, 'VK OAuth: missing provider ID');
+        return done(new Error('Invalid OAuth response'));
+      }
+      
+      // Check if user exists by provider_id
+      let user = db.prepare(`
+        SELECT id, email, name, provider, provider_id 
+        FROM users 
+        WHERE provider = 'vk' AND provider_id = ?
+      `).get(String(providerId));
+      
+      if (user) {
+        // Existing OAuth user - log in
+        logger.info({ userId: user.id, provider: 'vk' }, 'OAuth login: existing user');
+        return done(null, user);
+      }
+      
+      // Check if email already exists (local account)
+      if (email) {
+        const existingUser = db.prepare('SELECT id FROM users WHERE email = ?').get(email.toLowerCase().trim());
+        
+        if (existingUser) {
+          logger.warn({ email: 'REDACTED', provider: 'vk' }, 'OAuth email matches existing local account');
+          return done(null, false, { message: 'Email already registered with password login' });
+        }
+      }
+      
+      // Create new OAuth user
+      const now = Date.now();
+      const userId = randomUUID();
+      
+      const insertTransaction = db.transaction(() => {
+        db.prepare(`
+          INSERT INTO users (id, created_at, updated_at, email, password_hash, provider, provider_id, name)
+          VALUES (?, ?, ?, ?, NULL, ?, ?, ?)
+        `).run(
+          userId,
+          now,
+          now,
+          email ? email.toLowerCase().trim() : null,
+          'vk',
+          String(providerId),
+          name || null
+        );
+      });
+      
+      insertTransaction();
+      
+      logger.info({ userId, provider: 'vk' }, 'OAuth login: new user created');
+      
+      done(null, {
+        id: userId,
+        email: email ? email.toLowerCase().trim() : null,
+        name: name || null,
+        provider: 'vk',
+        provider_id: String(providerId)
+      });
+    }));
+  } else {
+    logger.warn('VK OAuth not configured (missing CLIENT_ID or CLIENT_SECRET)');
+  }
+  
   logger.info({
     local: true,
     google: !!(googleClientId && googleClientSecret),
-    yandex: !!(yandexClientId && yandexClientSecret)
+    yandex: !!(yandexClientId && yandexClientSecret),
+    vk: !!(vkClientId && vkClientSecret)
   }, 'Passport strategies configured');
 }
 

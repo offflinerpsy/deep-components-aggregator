@@ -366,6 +366,48 @@ export function yandexCallbackHandler(logger) {
 }
 
 /**
+ * GET /auth/vk
+ * Initiate VKontakte OAuth flow
+ */
+export function vkAuthHandler() {
+  return passport.authenticate('vkontakte', {
+    scope: ['email']
+  });
+}
+
+/**
+ * GET /auth/vk/callback
+ * VKontakte OAuth callback
+ */
+export function vkCallbackHandler(logger) {
+  return (req, res, next) => {
+    passport.authenticate('vkontakte', (err, user, info) => {
+      if (err) {
+        logger.error({ error: err.message }, 'VK OAuth error');
+        return res.redirect('/ui/auth.html?error=oauth_failed');
+      }
+      
+      if (!user) {
+        logger.warn({ info }, 'VK OAuth failed');
+        return res.redirect('/ui/auth.html?error=oauth_failed');
+      }
+      
+      req.login(user, (loginErr) => {
+        if (loginErr) {
+          logger.error({ error: loginErr.message, userId: user.id }, 'VK OAuth session creation failed');
+          return res.redirect('/ui/auth.html?error=session_failed');
+        }
+        
+        logger.info({ userId: user.id, provider: 'vk' }, 'VK OAuth login successful');
+        
+        // Redirect to main page or dashboard
+        res.redirect('/ui/my-orders.html');
+      });
+    })(req, res, next);
+  };
+}
+
+/**
  * Mount auth routes to Express app
  * @param {Object} app - Express app instance
  * @param {Object} db - SQLite database instance
@@ -388,6 +430,10 @@ export function mountAuthRoutes(app, db, logger, authRateLimiter) {
   // Yandex OAuth
   app.get('/auth/yandex', yandexAuthHandler());
   app.get('/auth/yandex/callback', yandexCallbackHandler(logger));
+  
+  // VKontakte OAuth
+  app.get('/auth/vk', vkAuthHandler());
+  app.get('/auth/vk/callback', vkCallbackHandler(logger));
 }
 
 export default {
@@ -399,5 +445,7 @@ export default {
   googleCallbackHandler,
   yandexAuthHandler,
   yandexCallbackHandler,
+  vkAuthHandler,
+  vkCallbackHandler,
   mountAuthRoutes
 };

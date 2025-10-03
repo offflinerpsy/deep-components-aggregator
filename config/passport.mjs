@@ -68,7 +68,7 @@ export function configurePassport(db, logger) {
     const user = db.prepare(`
       SELECT id, email, password_hash, name 
       FROM users 
-      WHERE email = ? AND provider IS NULL
+      WHERE email = ? AND (provider IS NULL OR provider = 'local')
     `).get(normalizedEmail);
     
     if (!user) {

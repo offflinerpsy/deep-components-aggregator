@@ -308,20 +308,40 @@
   height: 16px;
 }
 
-/* Specs Grid */
+/* Specs Grid - DL Layout (2-column grid) */
 .specs-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-  color: var(--muted-foreground);
+  grid-template-columns: auto 1fr;
+  gap: 12px 24px;
+  color: var(--foreground);
   font-size: 14px;
+  line-height: 1.6;
 }
 
+.specs-grid dt {
+  font-weight: 600;
+  color: var(--muted-foreground);
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.specs-grid dd {
+  margin: 0;
+  font-weight: 400;
+  color: var(--foreground);
+  overflow-wrap: anywhere;
+  hyphens: auto;
+  word-break: break-word;
+}
+
+/* Fallback: Old grid structure for backward compatibility */
 .spec-item {
   display: flex;
   flex-direction: column;
   gap: 4px;
-  min-width: 0; /* Allow flex items to shrink */
+  min-width: 0;
 }
 
 .spec-item .label {

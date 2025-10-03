@@ -6,29 +6,9 @@
  */
 
 import crypto from 'crypto';
-import { request, ProxyAgent } from 'undici';
+import { fetchWithRetry } from '../../utils/fetchWithRetry.mjs';
 
 const BASE = 'https://api.tme.eu';
-
-// Proxy setup (same as DigiKey)
-let proxyDispatcherCached = undefined;
-async function getProxyDispatcher() {
-  if (proxyDispatcherCached !== undefined) return proxyDispatcherCached;
-  const proxyUrl = process.env.DIGIKEY_OUTBOUND_PROXY || process.env.HTTPS_PROXY || process.env.HTTP_PROXY || '';
-  if (!proxyUrl) {
-    proxyDispatcherCached = null;
-    return null;
-  }
-  try {
-    proxyDispatcherCached = new ProxyAgent(proxyUrl);
-    console.log(`[TME] ✅ Using outbound proxy: ${proxyUrl}`);
-    return proxyDispatcherCached;
-  } catch (e) {
-    console.error(`[TME] ⚠️ Proxy setup failed:`, e.message);
-    proxyDispatcherCached = null;
-    return null;
-  }
-}
 
 /**
  * Generate HMAC-SHA1 signature for TME API
@@ -106,31 +86,24 @@ export async function tmeSearchProducts({ token, secret, query, country = 'PL', 
     formData.append(key, value);
   }
   
-  // Use proxy if configured
-  const dispatcher = await getProxyDispatcher();
-  const requestOptions = {
+  const response = await fetchWithRetry(url, {
     method: 'POST',
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/x-www-form-urlencoded'
     },
     body: formData.toString()
-  };
-  if (dispatcher) {
-    requestOptions.dispatcher = dispatcher;
-  }
+  });
   
-  const response = await request(url, requestOptions);
-  
-  if (response.statusCode !== 200) {
-    const text = await response.body.text();
-    throw new Error(`TME API error: ${response.statusCode} - ${text}`, {
-      cause: { status: response.statusCode, data: text }
+  if (!response.ok) {
+    const text = await response.text();
+    throw new Error(`TME API error: ${response.status} - ${text}`, {
+      cause: { status: response.status, data: text }
     });
   }
   
-  const data = await response.body.json();
-  return { data, status: response.statusCode };
+  const data = await response.json();
+  return { data, status: response.status };
 }
 
 /**
@@ -166,29 +139,22 @@ export async function tmeGetProduct({ token, secret, symbol, country = 'PL', lan
     }
   }
   
-  // Use proxy if configured
-  const dispatcher = await getProxyDispatcher();
-  const requestOptions = {
+  const response = await fetchWithRetry(url, {
     method: 'POST',
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/x-www-form-urlencoded'
     },
     body: formData.toString()
-  };
-  if (dispatcher) {
-    requestOptions.dispatcher = dispatcher;
-  }
+  });
   
-  const response = await request(url, requestOptions);
-  
-  if (response.statusCode !== 200) {
-    const text = await response.body.text();
-    throw new Error(`TME API error: ${response.statusCode} - ${text}`, {
-      cause: { status: response.statusCode, data: text }
+  if (!response.ok) {
+    const text = await response.text();
+    throw new Error(`TME API error: ${response.status} - ${text}`, {
+      cause: { status: response.status, data: text }
     });
   }
   
-  const data = await response.body.json();
-  return { data, status: response.statusCode };
+  const data = await response.json();
+  return { data, status: response.status };
 }

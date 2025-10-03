@@ -2,6 +2,21 @@
 // v3.0 - With TME, Mouser, Farnell support
 
 import 'dotenv/config';
+
+// WARP Proxy Integration (OPTIONAL - falls back to direct if not configured)
+import { setGlobalDispatcher, ProxyAgent } from 'undici';
+const WARP_PROXY_URL = process.env.WARP_PROXY_URL || '';
+if (WARP_PROXY_URL) {
+  try {
+    setGlobalDispatcher(new ProxyAgent(WARP_PROXY_URL));
+    console.log(`🔒 WARP Proxy enabled: ${WARP_PROXY_URL}`);
+  } catch (e) {
+    console.warn(`⚠️  WARP Proxy setup failed, using direct connections: ${e.message}`);
+  }
+} else {
+  console.log(`📡 Direct connections enabled (WARP_PROXY_URL not set)`);
+}
+
 import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';

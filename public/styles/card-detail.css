@@ -1,0 +1,496 @@
+/**
+ * Product Card Detail Styles
+ * Grid layout, sticky sidebar, compact gallery, DL specs grid, price breaks
+ * Depends on tokens.css being loaded first
+ */
+
+/* === Main Product Card Grid Layout === */
+
+.product-card {
+  display: grid;
+  grid-template-columns: minmax(320px, 420px) 1fr;
+  grid-template-areas:
+    "gallery main"
+    "gallery aside";
+  gap: var(--space-8);
+  padding: var(--space-6);
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.product-gallery {
+  grid-area: gallery;
+  position: relative;
+}
+
+.product-main {
+  grid-area: main;
+  min-width: 0; /* Allow text wrapping */
+}
+
+.product-aside {
+  grid-area: aside;
+  position: sticky;
+  top: var(--space-4);
+  align-self: start;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  box-shadow: var(--shadow-soft);
+  max-height: calc(100vh - var(--space-8));
+  overflow-y: auto;
+}
+
+/* Tablet: 2 columns */
+@media (max-width: 1023px) {
+  .product-card {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "gallery"
+      "main"
+      "aside";
+    gap: var(--space-6);
+  }
+  
+  .product-aside {
+    position: relative;
+    top: auto;
+    max-height: none;
+  }
+}
+
+/* Mobile: 1 column + bottom bar */
+@media (max-width: 767px) {
+  .product-card {
+    grid-template-columns: 1fr;
+    padding: var(--space-4);
+    gap: var(--space-4);
+    padding-bottom: 120px; /* Space for fixed bottom bar */
+  }
+  
+  .product-aside {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    max-height: none;
+    border-radius: 0;
+    border: none;
+    border-top: 1px solid var(--color-border);
+    box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.08);
+    padding: var(--space-4);
+    z-index: var(--z-sticky);
+  }
+}
+
+/* === Gallery (Compact) === */
+
+.product-gallery__main {
+  width: 100%;
+  max-width: 420px;
+  aspect-ratio: 1 / 1;
+  background: var(--color-bg-secondary);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  cursor: zoom-in;
+  border: 1px solid var(--color-border-light);
+}
+
+.product-gallery__main img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.product-gallery__thumbnails {
+  display: flex;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+  flex-wrap: wrap;
+}
+
+.product-gallery__thumb {
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-sm);
+  border: 2px solid transparent;
+  cursor: pointer;
+  overflow: hidden;
+  transition: border-color var(--transition-fast);
+  background: var(--color-bg-secondary);
+}
+
+.product-gallery__thumb:hover,
+.product-gallery__thumb--active {
+  border-color: var(--color-primary);
+}
+
+.product-gallery__thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* Overlay zoom modal */
+.gallery-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.9);
+  z-index: var(--z-modal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-8);
+  cursor: zoom-out;
+}
+
+.gallery-overlay__image {
+  max-width: 90%;
+  max-height: 90%;
+  object-fit: contain;
+}
+
+/* === Specifications (DL Grid) === */
+
+.specs-dl {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: var(--space-2) var(--space-4);
+  margin: 0;
+  padding: 0;
+}
+
+.specs-dl dt {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-muted);
+  text-align: right;
+  padding: var(--space-2) 0;
+}
+
+.specs-dl dd {
+  font-size: var(--font-size-sm);
+  color: var(--color-text);
+  margin: 0;
+  padding: var(--space-2) 0;
+  overflow-wrap: anywhere;
+  hyphens: auto;
+  word-break: break-word;
+}
+
+.specs-section {
+  margin-bottom: var(--space-8);
+}
+
+.specs-section__title {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text);
+  margin-bottom: var(--space-4);
+  padding-bottom: var(--space-2);
+  border-bottom: 2px solid var(--color-border);
+}
+
+/* === Price Breaks (Compact Grid) === */
+
+.price-breaks {
+  margin-top: var(--space-4);
+}
+
+.price-breaks__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-3);
+}
+
+.price-breaks__title {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-muted);
+}
+
+.price-breaks__grid {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: var(--space-1) var(--space-3);
+  font-size: var(--font-size-xs);
+}
+
+.price-breaks__qty {
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text);
+  text-align: right;
+}
+
+.price-breaks__supplier {
+  color: var(--color-text-muted);
+}
+
+.price-breaks__price {
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-primary);
+  text-align: right;
+}
+
+.price-breaks__row--highlight {
+  background: var(--color-bg-hover);
+  margin: 0 calc(-1 * var(--space-2));
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-sm);
+}
+
+.price-breaks__show-all {
+  margin-top: var(--space-3);
+  font-size: var(--font-size-sm);
+  color: var(--color-primary);
+  cursor: pointer;
+  text-align: center;
+  padding: var(--space-2);
+  border-radius: var(--radius-sm);
+  transition: background-color var(--transition-fast);
+}
+
+.price-breaks__show-all:hover {
+  background: var(--color-bg-hover);
+}
+
+/* === Quantity Filter === */
+
+.qty-filter {
+  margin-bottom: var(--space-4);
+  padding: var(--space-4);
+  background: var(--color-bg-secondary);
+  border-radius: var(--radius-md);
+}
+
+.qty-filter__label {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-2);
+  display: block;
+}
+
+.qty-filter__input {
+  width: 100%;
+  padding: var(--space-2) var(--space-3);
+  font-size: var(--font-size-sm);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  margin-bottom: var(--space-3);
+}
+
+.qty-filter__chips {
+  display: flex;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+
+.qty-filter__chip {
+  padding: var(--space-1) var(--space-3);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  background: var(--color-bg);
+  color: var(--color-text);
+}
+
+.qty-filter__chip:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.qty-filter__chip--active {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: white;
+}
+
+/* === Typography Overrides === */
+
+.product-card h1 {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-tight);
+  margin-bottom: var(--space-4);
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.product-card .mpn {
+  font-family: var(--font-family-mono);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+/* === CTA Button === */
+
+.cta-button {
+  display: block;
+  width: 100%;
+  padding: var(--space-4);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  text-align: center;
+  color: white;
+  background: var(--color-primary);
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: background-color var(--transition-fast);
+  margin-bottom: var(--space-4);
+}
+
+.cta-button:hover {
+  background: var(--color-primary-hover);
+}
+
+.cta-button:active {
+  transform: translateY(1px);
+}
+
+/* === Documentation Links === */
+
+.docs-section {
+  margin-top: var(--space-6);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--color-border-light);
+}
+
+.docs-section__title {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-3);
+}
+
+.docs-section__links {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.docs-section__link {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--font-size-sm);
+  color: var(--color-primary);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+.docs-section__link:hover {
+  color: var(--color-primary-hover);
+  text-decoration: underline;
+}
+
+/* === Modal (for "All Prices") === */
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: var(--z-modal-backdrop);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-4);
+}
+
+.modal {
+  background: var(--color-bg);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-xl);
+  max-width: 900px;
+  width: 100%;
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.modal__header {
+  padding: var(--space-6);
+  border-bottom: 1px solid var(--color-border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal__title {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-semibold);
+  margin: 0;
+}
+
+.modal__close {
+  background: none;
+  border: none;
+  font-size: var(--font-size-2xl);
+  cursor: pointer;
+  color: var(--color-text-muted);
+  padding: 0;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  transition: background-color var(--transition-fast);
+}
+
+.modal__close:hover {
+  background: var(--color-bg-hover);
+}
+
+.modal__body {
+  padding: var(--space-6);
+  overflow-y: auto;
+  flex: 1;
+}
+
+/* Price table in modal */
+.price-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.price-table thead {
+  position: sticky;
+  top: 0;
+  background: var(--color-bg-secondary);
+  z-index: 1;
+}
+
+.price-table th {
+  padding: var(--space-3);
+  text-align: left;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-muted);
+  border-bottom: 2px solid var(--color-border);
+}
+
+.price-table td {
+  padding: var(--space-3);
+  font-size: var(--font-size-sm);
+  border-bottom: 1px solid var(--color-border-light);
+}
+
+.price-table tbody tr:hover {
+  background: var(--color-bg-hover);
+}

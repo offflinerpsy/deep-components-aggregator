@@ -1,336 +1,410 @@
-# Video Requirements — October 3, 2025
-
-**Source:** Project requirements video  
-**Status:** Structured requirements extracted from video transcript  
-**Branch:** `stabilize/video-warp-auth-admin-card`
-
----
-
-## Extraction Metadata
-
-- **Transcript:** `docs/_artifacts/video/transcript.txt`
-- **Raw requirements:** `docs/_artifacts/video/requirements.txt`
-- **Processing script:** `scripts/video_ingest.sh`
+# Video Requirements
+**Source:** vokoscreenNG-2025-10-03_18-39-35.mkv (10:50 duration)  
+**Language:** Russian (100% confidence)  
+**Generated:** 2025-10-03  
+**Transcript:** [`docs/_artifacts/video/transcript.txt`](../_artifacts/video/transcript.txt)
 
 ---
 
-## Core Requirements (Master Jobchain v2)
+## Executive Summary
 
-### 0. Video Ingestion ✅
-- [x] Extract audio from video (ffmpeg)
-- [x] Transcribe to text (Whisper/STT)
-- [x] Extract TODO items via keyword grep
-- [x] Structured document (this file)
-- [x] Commit artifacts
-
-**Acceptance:** Transcript exists, requirements parsed, documented.
-
----
-
-### 1. WARP/Proxy — Default & Permanent
-
-**Objective:** Route all backend HTTP(S) through Cloudflare WARP proxy (port 40000).
-
-#### 1.1 Installation & Configuration
-- [ ] Install `cloudflare-warp` on server
-- [ ] Configure proxy mode: `warp-cli set-mode proxy`
-- [ ] Set port: `warp-cli set-proxy-port 40000`
-- [ ] Enable service: `systemctl enable --now warp-svc`
-- [ ] Connect: `warp-cli connect`
-- [ ] Verify: `warp-cli status` → Connected
-- [ ] Test trace: `curl --socks5 127.0.0.1:40000 https://cloudflare.com/cdn-cgi/trace/` → `warp=on`
-
-**Docs:** [Cloudflare WARP Modes](https://developers.cloudflare.com/warp-client/)
-
-#### 1.2 Global Proxy Integration
-- [x] Create `src/bootstrap/proxy.mjs` (already done in previous commit)
-- [x] Set Undici `ProxyAgent` globally (default: `http://127.0.0.1:40000`)
-- [x] Allow disable via `NO_PROXY=1` env var
-- [ ] Verify all outbound requests use proxy
-
-**Docs:** [Undici ProxyAgent](https://undici.nodejs.org/#/docs/api/ProxyAgent)
-
-#### 1.3 Timeouts & Retries
-- [ ] All provider calls: `AbortSignal.timeout(8000)` (< 10s WARP limit)
-- [ ] Exponential backoff retries: 2–3 attempts
-- [ ] Update `src/utils/fetchWithRetry.mjs` if needed
-
-**Constraint:** WARP proxy terminates requests > 10s in proxy mode.
-
-#### 1.4 Provider Smoke Check
-- [x] Script: `scripts/check-providers.mjs` (already created)
-- [x] NPM script: `providers:check`
-- [ ] Run on server with WARP active
-- [ ] Verify DigiKey: **not** 403 (with proxy) vs 403 (without)
-- [ ] Save artifact: `docs/_artifacts/providers-<timestamp>.json`
-
-**Acceptance:**
-- ✅ `warp-cli status` → Connected
-- ✅ `cdn-cgi/trace` → `warp=on`
-- ✅ All Node HTTP via ProxyAgent
-- ✅ `providers:check` green (DigiKey responds, not 403)
-
-**Commit:** `[WARP] proxy-mode + undici ProxyAgent + providers smoke`
+User walkthrough identified **7 critical feature blocks** requiring implementation:
+1. **Russian search normalization** - translate RU queries → EN component names
+2. **Product card layout redesign** - sticky sidebar, price display, OEMstrade-style structure
+3. **Admin panel expansion** - full CMS-like control, pricing rules, API status monitoring
+4. **Footer positioning fix** - consistent layout across all pages
+5. **Popular components widget** - scrape from OEMstrade daily
+6. **Price conversion & display** - auto RUB conversion with admin-configurable margin
+7. **Dark theme refinement** - already working, needs polish
 
 ---
 
-### 2. Sessions/Cookies Behind Proxy/HTTPS
+## BLOCK 1: Russian Search Normalization
+**Priority:** 🔴 CRITICAL  
+**Timestamp:** `[37.84s - 136.26s]`
 
-**Objective:** Secure session cookies work correctly behind CDN/reverse proxy.
+### Problem
+- User types "транзистор" (transistor in Russian) → **"Ничего не найдено"** (nothing found)
+- English search works perfectly, Russian fails completely
+- Users will naturally search in native language
 
-#### Tasks
-- [x] Enable trust proxy: `app.set('trust proxy', 1)` (done)
-- [x] Session config: `cookie.secure: true` in production (done)
-- [x] Session config: `cookie.sameSite: 'none'` when behind proxy (done)
-- [x] Session config: `proxy: true` (done)
-- [ ] Test: Login persists after page reload behind HTTPS/CDN
-- [ ] Verify: Cookies marked `Secure` and `SameSite=None`
+### Requirements
+- [ ] **Implement Russian → English translation layer** before search query execution
+  - Keywords: транзистор → transistor, резистор → resistor, etc.
+  - Options considered: dictionary file, smart normalization module, translation API
+  
+- [ ] **Query normalization pipeline** (user mentioned "мы его уже писали" - check if exists)
+  - Check for existing `normalizer` in codebase
+  - Previous work mentioned: "араму/баму делали" - investigate what this refers to
+  
+- [ ] **Search must find real results for Russian queries** just like English
+  - Test case: "транзистор BC547" → should return BC547 transistor results
+  - Test case: "резистор 10k" → should return 10k resistor results
 
-**Docs:** [Express trust proxy](https://expressjs.com/en/guide/behind-proxies.html)
-
-**Acceptance:**
-- ✅ Login doesn't "drop" behind HTTPS/CDN
-- ✅ Cookies marked `Secure`
-- ✅ `SameSite=None` works correctly
-
-**Commit:** `[AUTH] sessions behind proxy`
-
----
-
-### 3. Authentication: Email + Google + Yandex + VK
-
-**Objective:** 4 authentication methods, stable sessions, no missing dependencies.
-
-#### 3.1 Email/Password
-- [ ] Argon2 password hashing (no custom crypto)
-- [ ] Routes: `/auth/register`, `/auth/login`, `/auth/logout`
-- [ ] Sessions configured (see Block 2)
-
-#### 3.2 Google (OIDC)
-- [ ] Install: `passport-google-oidc`
-- [ ] Configure: `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, callback URL
-- [ ] Routes: `/auth/google`, `/auth/google/callback`
-
-**Docs:** [Passport Google OIDC](http://www.passportjs.org/packages/passport-google-oidc/)
-
-#### 3.3 Yandex
-- [ ] Install: `passport-yandex`
-- [ ] Configure: `YANDEX_CLIENT_ID`, `YANDEX_CLIENT_SECRET`
-- [ ] Routes: `/auth/yandex`, `/auth/yandex/callback`
-
-**Docs:** [Passport Yandex](http://www.passportjs.org/packages/passport-yandex/)
-
-#### 3.4 VK
-- [x] Install: `passport-vkontakte` (already in dependencies)
-- [ ] Configure: `VK_APP_ID`, `VK_APP_SECRET`
-- [ ] Routes: `/auth/vk`, `/auth/vk/callback`
-
-**Docs:** [Passport VKontakte](http://www.passportjs.org/packages/passport-vkontakte/)
-
-**Acceptance:**
-- ✅ All 4 auth methods work (email, Google, Yandex, VK)
-- ✅ Sessions persist behind proxy/HTTPS
-- ✅ No `ERR_MODULE_NOT_FOUND` errors
-
-**Commit:** `[AUTH] google+yandex+vk wired`
+### Acceptance Criteria
+✅ Russian query "транзистор" returns same results as "transistor"  
+✅ No "nothing found" errors for common RU component names  
+✅ Works for both autocomplete and full search
 
 ---
 
-### 4. Admin & User Orders UI/API
+## BLOCK 2: Product Card Redesign (OEMstrade Style)
+**Priority:** 🔴 CRITICAL  
+**Timestamp:** `[220.38s - 591.48s]`
 
-**Objective:** Admin dashboard + user "My Orders" panel with role protection.
+### Current Issues
+- ❌ Sticky sidebar implementation is **broken** ("вот эта хуйня пристиклена" - sticky element issue)
+- ❌ Description truncated/cut off ("дискрепшен какой-то обрезанный")
+- ❌ Missing full price table like OEMstrade
+- ❌ Layout not matching approved design
 
-#### 4.1 Roles & Protection
-- [ ] Database: `users.role TEXT DEFAULT 'user'`
-- [ ] Middleware: `requireAdmin` guards all `/api/admin/*` routes
-- [ ] Migration: ensure `role` column exists
+### Reference: OEMstrade Product Page Structure
+User explicitly requests copying OEMstrade's product card layout:
 
-#### 4.2 Admin Orders Dashboard
-- [ ] List view with filters (status, date range, user)
-- [ ] Order detail card with:
-  - Status change: `new | processing | done | canceled`
-  - Admin notes field
-  - OEMstrade links: `https://oemstrade.com/search?q=<MPN>`
-  - Google site search link: `site:oemstrade.com <MPN>`
-- [ ] UI: `ui/admin-orders.html` (already exists, verify completeness)
+**Required elements** (in order):
+1. **Image gallery** - compact, clean hovers (current version approved: "мне здесь все нравится")
+2. **Price table** - FULL price display with:
+   - Stock availability ("сток есть, видишь")
+   - Quantity breaks
+   - Multiple suppliers
+   - Auto-conversion to RUB (see Block 6)
+3. **Structured description** with columns:
+   - Manufacturer
+   - MPN (full, not truncated)
+   - Datasheet link
+   - Description (full text, no truncation)
+4. **Right sticky sidebar** - needs complete redesign
+   - Current: broken sticky behavior
+   - Goal: smooth, professional, like modern component sites
 
-#### 4.3 User "My Orders" Panel
-- [ ] Route: `/api/user/orders` (authenticated users only)
-- [ ] UI: `ui/my-orders.html` or integrate into user dashboard
-- [ ] Table: order ID, date, status, items, total
-- [ ] Detail view: same data as admin sees (minus admin-only fields)
+### Tasks
+- [ ] **Research best practices for sticky product sidebars**
+  - User quote: "ты там гуглил какие-то наработки, как лучше сделать"
+  - Find 3-5 examples from major component distributors
+  - Document best UX patterns
+  
+- [ ] **Fix sticky sidebar implementation**
+  - Remove current broken version
+  - Implement clean sticky scroll with proper boundaries
+  - Test on different viewport sizes
+  
+- [ ] **Full price table (OEMstrade-style)**
+  - Show ALL prices, not limited subset
+  - Stock indicators
+  - Supplier names clearly visible
+  
+- [ ] **Description formatting**
+  - NO truncation ("может быть не полное, это нужно проверить")
+  - Structured columns: Manufacturer | MPN | Description
+  - Full MPN always visible
 
-#### 4.4 Status Consistency
-- [ ] Single source of truth: `orders` table
-- [ ] Admin status change → user sees updated status immediately
-- [ ] No caching issues
-
-#### 4.5 Markup/Pricing Settings
-- [x] Global settings: `markup_percent`, `markup_fixed_rub` (already implemented)
-- [x] Admin UI: `/ui/admin-settings.html` (done)
-- [ ] Verify: pricing calculation uses current settings
-- [ ] Display markup in order card
-
-**Acceptance:**
-- ✅ Only `role=admin` can access admin routes
-- ✅ Status changes sync between admin and user views
-- ✅ OEMstrade links clickable and functional
-- ✅ Markup settings affect displayed prices
-
-**Commits:**
-- `[ADMIN] orders ui+api + markups + role-guard`
-- `[USER] my-orders panel`
-
----
-
-### 5. Product Card — Enhance, Don't Redesign
-
-**Constraints:**
-- ❌ Do NOT touch: header, search, base theme, colors, fonts, branding
-- ✅ Enhance layout, sticky sidebar, specs grid, price modal
-
-#### 5.1 Layout & Sticky Sidebar
-- [ ] 12-column grid (if not already): gallery (3–4 cols) + specs/docs (5–6 cols) + sidebar (2–3 cols)
-- [ ] Sticky element: **right sidebar** (price, stock, CTA, docs) — NOT gallery
-- [ ] Gallery: compact, thumbnails 48–64px, main image ≤ 420px width
-
-#### 5.2 Specifications Display
-- [ ] Use semantic `<dl>` (description list) for specs
-- [ ] Two-column grid layout (term | definition)
-- [ ] Long values: text wrapping + optional expand/collapse
-
-#### 5.3 Pricing Display
-- [x] Sidebar: "Top 6" price breaks (done — limit increased to 6)
-- [x] "Show All Prices" button → modal (done)
-- [x] Modal filters: min qty, max price (₽), supplier dropdown (done)
-- [ ] Verify: filters work correctly, results update
-
-#### 5.4 Visual Regression Tests (MANDATORY)
-- [ ] Install Playwright (already in devDependencies)
-- [ ] Create test: `tests/visual/product-card.spec.js`
-- [ ] Snapshots:
-  - Desktop: 1440px width
-  - Tablet: 1024px width
-  - Mobile: 390px width
-- [ ] States to capture:
-  - Normal page load
-  - Modal opened (all prices)
-- [ ] First run: `npx playwright test --update-snapshots` (baseline)
-- [ ] CI: Compare future changes against baseline
-
-**Docs:** [Playwright Visual Comparisons](https://playwright.dev/docs/test-snapshots)
-
-**Acceptance:**
-- ✅ Header/search pixel-perfect vs baseline
-- ✅ Sticky sidebar on right side
-- ✅ Specs readable with 5 fields and with 25 fields
-- ✅ Modal and filters functional
-- ✅ Visual snapshots pass (no unintended changes)
-
-**Commit:** `[CARD] sticky-right + dl-grid + prices modal + snapshots`
+### Acceptance Criteria
+✅ Sticky sidebar works smoothly without glitches  
+✅ Price table shows complete data (stock, qty breaks, suppliers)  
+✅ Description never truncated  
+✅ Visual layout matches OEMstrade reference  
+✅ Playwright visual regression tests pass
 
 ---
 
-### 6. Non-Interactive Deploy + Artifacts
+## BLOCK 3: Admin Panel - Full Site Management
+**Priority:** 🟡 HIGH  
+**Timestamp:** `[303.90s - 511.14s]`
 
-**Objective:** Fully automated deployment with no manual prompts.
+### Current State
+- ❌ Black header bar inconsistent with main site design ("откуда взялась вот эта вот черная строка")
+- ❌ Only price settings visible, need **full CMS-like control**
+- ❌ Missing critical admin features
 
-#### 6.1 SSH Configuration
-- [ ] Use: `-o StrictHostKeyChecking=accept-new` (accept new keys, reject changed keys)
-- [ ] Document: SSH_USER, SSH_HOST, SSH_PORT, APP_DIR, SERVICE_NAME in `.env.example`
+### Required Admin Sections
 
-**Docs:** [SSH StrictHostKeyChecking](https://man.openbsd.org/ssh_config#StrictHostKeyChecking)
+#### 3.1 Pricing Rules Engine
+- [ ] **Dynamic price margin control**
+  - Admin sets percentage markup (e.g., "+20% above supplier price")
+  - Applies to RUB conversion automatically
+  - Per-supplier overrides (optional)
+  
+- [ ] **Price display configuration**
+  - Toggle which price columns show on product cards
+  - Currency conversion rate override
 
-#### 6.2 Deploy Script
-- [ ] Create: `scripts/deploy.sh`
-- [ ] Steps:
-  1. SSH to server (non-interactive)
-  2. `cd $APP_DIR`
-  3. `git fetch --all`
-  4. `git checkout $BRANCH` (this branch)
-  5. `git pull --ff-only`
-  6. `npm ci --no-audit --no-fund`
-  7. `npm run build || true` (if build step exists)
-  8. `sudo systemctl enable --now warp-svc` (ensure WARP running)
-  9. `sudo systemctl restart $SERVICE_NAME`
-  10. `node scripts/check-providers.mjs > docs/_artifacts/providers-$(date +%s).json`
+#### 3.2 API Provider Status Dashboard
+- [ ] **API keys management**
+  - List all configured providers (DigiKey, Mouser, TME, Farnell, etc.)
+  - Show connection status: ✅ working / ❌ failing / ⚠️ rate-limited
+  - Last successful request timestamp
+  - Error logs for failed APIs
+  
+- [ ] **Real-time health monitoring**
+  - User quote: "чтобы и я и администратор всегда был в курсе, что происходит"
+  - Which APIs connected/disconnected
+  - Response times
+  - Daily request quotas used
 
-#### 6.3 Artifacts Collection
-- [ ] Providers check results
-- [ ] Playwright test results (HTML report)
-- [ ] WARP status: `warp-cli status > docs/_artifacts/warp-status.txt`
-- [ ] All saved in `docs/_artifacts/`
+#### 3.3 Content Management
+- [ ] **Page editor**
+  - Edit static pages: "Источники" (Sources), "Доставка" (Delivery), "Контакты" (Contacts)
+  - Remove "API онлайн" page ("убирай нахуй, оно не нужно")
+  - Move API status to admin dashboard instead
+  
+- [ ] **Footer/Header customization**
+  - Manage footer links
+  - Header navigation items
+  - Contact info
 
-**Acceptance:**
-- ✅ Deploy runs without terminal prompts
-- ✅ Service restarts successfully
-- ✅ Artifacts generated and committed
+#### 3.4 Privacy Policy Page
+- [ ] **Auto-generate from template**
+  - User quote: "погуглишь и найдешь правильно заполненную страницу"
+  - Use standard e-commerce privacy policy template
+  - Customize for component aggregator specifics
 
-**Commit:** `[OPS] non-interactive deploy + artifacts`
+#### 3.5 (Optional) Lightweight CMS Integration
+- [ ] **Evaluate lightweight CMS options**
+  - User open to CMS if needed: "можно даже какую-нибудь легенькую cms поставить"
+  - Must be lightweight (not WordPress/Drupal/Joomla)
+  - Alternative: custom admin panel with WYSIWYG for key pages
 
----
+### Design Consistency
+- [ ] **Unified admin panel design**
+  - Match main site theme (no random black bars)
+  - Use same color scheme/typography
+  - Professional, clean interface
 
-### 7. Git Discipline & Reporting
-
-**Objective:** Clean commit history, atomic changes, comprehensive documentation.
-
-#### 7.1 Commit Structure
-- [ ] Atomic commits per block (prefix: `[VIDEO]`, `[WARP]`, `[AUTH]`, etc.)
-- [ ] Descriptive messages (what + why)
-- [ ] One feature/fix per commit (no mixing)
-
-#### 7.2 Block Reports
-- [ ] After each block: `docs/REPORT-<date>-BLOCK-<N>.md`
-- [ ] Contents:
-  - What was implemented
-  - How it was tested
-  - Links to artifacts
-  - Acceptance criteria status
-
-#### 7.3 Pull Request
-- [ ] Title: `[MASTER-v2] Video → WARP → Auth → Admin → Card → Deploy`
-- [ ] Description includes:
-  - Link to VIDEO-REQUIREMENTS.md
-  - All block reports
-  - Artifacts links
-  - Screenshots/recordings
-  - Checklist completion status
-
-**Acceptance:**
-- ✅ All commits atomic and prefixed
-- ✅ Block reports present and complete
-- ✅ PR well-documented with all artifacts
-
-**Commit:** (ongoing — meta-task)
+### Acceptance Criteria
+✅ Admin can control price margins from UI  
+✅ API status dashboard shows real-time provider health  
+✅ All static pages editable from admin  
+✅ Privacy policy page generated and linked in footer  
+✅ Design consistent with main site theme
 
 ---
 
-## Final Acceptance Checklist
+## BLOCK 4: Footer Positioning Bug
+**Priority:** 🟠 MEDIUM  
+**Timestamp:** `[427.43s - 445.42s]`
 
-Before PR submission, verify:
+### Problem
+- Footer displays correctly on homepage
+- **Footer missing/misplaced on search results page**
+- User quote: "куда делся футр, вот он почему-то где, а что он здесь делает, почему он не внизу"
 
-- [ ] ✅ Video: transcript.txt and VIDEO-REQUIREMENTS.md complete
-- [ ] ✅ WARP: `warp=on`, all HTTP via ProxyAgent, `providers:check` green (DigiKey not 403)
-- [ ] ✅ Sessions: HTTPS/proxy cookies work, `Secure` + `SameSite=None`, trust proxy enabled
-- [ ] ✅ Auth: email+password, Google, Yandex, VK — all login methods stable
-- [ ] ✅ Admin/User: role protection, status sync, markup works, OEMstrade links clickable
-- [ ] ✅ Product Card: header untouched, sticky right sidebar, specs readable, top-6 + modal filters, visual snapshots pass
-- [ ] ✅ Deploy: fully non-interactive, artifacts attached, PR documented
+### Tasks
+- [ ] **Audit footer positioning across all pages**
+  - Homepage ✅
+  - Search results page ❌ (footer not at bottom)
+  - Product card page (?)
+  - Static pages (?)
+  
+- [ ] **Fix CSS sticky footer implementation**
+  - Ensure footer stays at bottom on ALL pages
+  - Works with variable content heights
+  - No overlapping with main content
+
+### Acceptance Criteria
+✅ Footer at bottom of viewport on all pages  
+✅ Consistent position regardless of content length  
+✅ No layout shifts when navigating between pages
 
 ---
 
-## Reference Documentation
+## BLOCK 5: Popular Components Widget (OEMstrade Scraper)
+**Priority:** 🟢 NICE-TO-HAVE  
+**Timestamp:** `[190.58s - 220.38s]`
 
-- [Cloudflare WARP Modes](https://developers.cloudflare.com/warp-client/)
-- [Undici ProxyAgent](https://undici.nodejs.org/#/docs/api/ProxyAgent)
-- [Express trust proxy](https://expressjs.com/en/guide/behind-proxies.html)
-- [Playwright Visual Testing](https://playwright.dev/docs/test-snapshots)
-- [SSH StrictHostKeyChecking](https://stackoverflow.com/questions/21383806/how-can-i-force-ssh-to-accept-a-new-host-fingerprint-from-the-command-line)
-- [Passport Google OIDC](http://www.passportjs.org/packages/passport-google-oidc/)
-- [Passport Yandex](http://www.passportjs.org/packages/passport-yandex/)
-- [Passport VKontakte](http://www.passportjs.org/packages/passport-vkontakte/)
+### Feature
+Add "Popular Electronic Components" section to homepage, mirroring OEMstrade
+
+### Implementation Options
+**Option A: Manual list**
+- Copy current popular components from OEMstrade
+- Hardcode in config/database
+- Update manually as needed
+
+**Option B: Automated scraper** (user preference)
+- User quote: "можно прямо сделать какой-нибудь скрипк, который будет отсюда, автоматом тянуть"
+- Daily cron job scrapes OEMstrade popular components
+- Auto-updates homepage widget
+- Frequency: once per day
+
+### Tasks
+- [ ] **Create OEMstrade scraper script**
+  - Extract "Популярные электронные компоненты" list
+  - Store in database table `popular_components`
+  - Schedule via cron: `0 3 * * *` (3 AM daily)
+  
+- [ ] **Homepage widget component**
+  - Display grid of popular components
+  - Link to product pages
+  - Match OEMstrade visual style
+
+### Acceptance Criteria
+✅ Homepage shows "Popular Components" widget  
+✅ List updates automatically (if scraper implemented)  
+✅ Visual design matches OEMstrade reference
 
 ---
 
-**Last Updated:** October 3, 2025  
-**Status:** Block 0 complete, blocks 1–7 in progress
+## BLOCK 6: Price Display & RUB Conversion
+**Priority:** 🔴 CRITICAL  
+**Timestamp:** `[171.78s - 294.46s]`
+
+### Requirements
+
+#### Missing Price Data
+- User complaint: "у нас цены нет, пейкетж нет, пейкетж нет"
+- **Investigate why prices not showing** on search results
+  - API connection issues?
+  - Not all providers returning prices?
+  - Frontend not rendering price data?
+
+#### Auto RUB Conversion
+- [ ] **Implement automatic currency conversion**
+  - All prices display in RUB by default
+  - Show original currency in tooltip/small text (optional)
+  - User quote: "я просил, чтобы у нас сразу шла конвертация в рублей"
+  
+- [ ] **Admin-configurable margin**
+  - Conversion formula: `RUB_price = (USD_price * exchange_rate) * (1 + admin_margin)`
+  - Example: if admin sets +20%, and DigiKey price is $1.00, display = (1.00 * 90) * 1.20 = 108 RUB
+  - Set in admin panel (see Block 3)
+
+#### Price Formation Transparency
+- [ ] **Document price formation logic**
+  - User wants to know: "как она будет у нас формироваться"
+  - Show breakdown in admin: supplier price + margin + conversion = final price
+  - Optional: show to users in tooltip/info modal
+
+### Acceptance Criteria
+✅ All product cards show prices (no "нет цены")  
+✅ Prices auto-convert to RUB  
+✅ Admin can configure margin percentage  
+✅ Price formation logic documented
+
+---
+
+## BLOCK 7: Theme & Polish
+**Priority:** 🟢 LOW (already working well)  
+**Timestamp:** `[591.52s - 599.76s]`
+
+### Status
+- ✅ Dark theme toggle working ("темная тема, заебись, хорошее переключение")
+- ✅ User prefers dark theme ("мне темная тема нравится больше")
+
+### Minor Improvements
+- [ ] **Dark theme as default** (optional)
+  - Set dark mode as initial state
+  - Remember user preference in localStorage
+  
+- [ ] **Theme consistency check**
+  - Ensure dark theme works on ALL pages
+  - No white flashes on navigation
+  - Smooth transitions
+
+### Acceptance Criteria
+✅ Dark theme works consistently across all pages  
+✅ User preference persists across sessions  
+✅ No visual glitches when switching themes
+
+---
+
+## Implementation Order (JOBCHAIN)
+
+Based on user priorities and technical dependencies:
+
+### Phase 1: Critical Search & Display (Blocks 1, 6)
+1. **Russian search normalization** - blocks user adoption
+2. **Price display fix** - core value proposition
+3. **RUB conversion** - required for Russian market
+
+### Phase 2: Product Experience (Blocks 2, 4)
+4. **Product card redesign** - major UX improvement
+5. **Footer positioning** - polish, affects all pages
+
+### Phase 3: Admin & Content (Block 3)
+6. **Admin panel expansion** - enables site management
+7. **Privacy policy** - legal requirement
+
+### Phase 4: Enhancements (Blocks 5, 7)
+8. **Popular components widget** - nice-to-have feature
+9. **Theme polish** - already working, minor tweaks
+
+---
+
+## Technical Constraints (from user)
+
+### Code Quality Rules
+- ❌ **No `try/catch` blocks** - use Promise-based error handling + central middleware
+- ❌ **Don't touch header/search/brand styles** unless explicitly required
+- ✅ **Verification after each block** - smoke tests, snapshots, e2e
+- ✅ **Fix immediately if tests fail** - no proceeding with red tests
+- ✅ **Atomic commits** - one block = one commit with prefix ([VIDEO], [SEARCH], [CARD], [ADMIN], etc.)
+
+### Git Workflow
+- Branch: `stabilize/video-warp-auth-admin-card`
+- Commit format: `[BLOCK_PREFIX] description`
+- Each block requires: code + tests + report (docs/REPORT-2025-10-03-BLOCK-X.md)
+
+---
+
+## Open Questions
+
+1. **Existing normalizer** - user mentioned "мы его уже писали, мы какую-то араму, а баму какую-то делали"
+   - Search codebase for existing Russian search normalization
+   - Check if `normalizer`, `transliteration`, or translation module exists
+
+2. **Provider coverage** - "я так понимаю из-за того, что у нас не вся пипотоключена"
+   - Which APIs are NOT yet integrated?
+   - Priority order for adding missing providers?
+
+3. **OEMstrade scraper legality**
+   - Confirm scraping popular components is acceptable
+   - Check robots.txt, terms of service
+   - Alternative: manual curation
+
+4. **CMS preference**
+   - Does user want lightweight CMS, or custom admin?
+   - If CMS: which one? (Strapi, Directus, Payload, KeystoneJS?)
+
+---
+
+## Files to Review
+
+Based on transcript references:
+- [ ] Search query handling (`src/routes/search.mjs`?)
+- [ ] Product card component (`src/components/ProductCard.jsx`?)
+- [ ] Admin panel (`src/routes/admin.mjs`?)
+- [ ] Footer component (`src/components/Footer.jsx`?)
+- [ ] Price formatting utils (`src/utils/price.mjs`?)
+- [ ] Existing normalizer (if exists)
+
+---
+
+## Success Metrics
+
+### User Satisfaction Indicators
+- ✅ Russian searches return results
+- ✅ Product card looks "professional" ("грамотно, аккуратно, скампановано")
+- ✅ Admin panel provides full control
+- ✅ Prices always visible and accurate
+- ✅ Dark theme preferred and working
+
+### Technical Completion
+- ✅ All 7 blocks implemented
+- ✅ Playwright visual regression tests passing
+- ✅ No console errors
+- ✅ Admin can manage site without code changes
+- ✅ Comprehensive reports for each block
+
+---
+
+## Next Steps
+
+1. **Review this requirements doc** - confirm understanding with user
+2. **Ask clarifying questions** (see Open Questions section)
+3. **Begin Phase 1** - Russian search + price display
+4. **Iterate with verification** - test after each block, fix before proceeding
+
+---
+
+**Video Transcript Location:** `docs/_artifacts/video/transcript.txt` (80 segments, 10:50 duration)  
+**Audio File:** `docs/_artifacts/video/audio.wav` (16kHz mono WAV, extracted from MKV)

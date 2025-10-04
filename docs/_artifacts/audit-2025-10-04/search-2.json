@@ -1,11 +1,11 @@
 {
   "ok": true,
-  "q": "транзистор 2N3904",
+  "q": "конденсатор 1000мкф 25в",
   "rows": [],
   "meta": {
     "source": "none",
     "total": 0,
     "cached": false,
-    "elapsed": 9594
+    "elapsed": 7020
   }
 }

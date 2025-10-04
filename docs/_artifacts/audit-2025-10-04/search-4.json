@@ -1,11 +1,11 @@
 {
   "ok": true,
-  "q": "транзистор 2N3904",
+  "q": "микросхема NE555",
   "rows": [],
   "meta": {
     "source": "none",
     "total": 0,
     "cached": false,
-    "elapsed": 9594
+    "elapsed": 6668
   }
 }

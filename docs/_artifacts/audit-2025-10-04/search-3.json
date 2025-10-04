@@ -1,11 +1,11 @@
 {
   "ok": true,
-  "q": "транзистор 2N3904",
+  "q": "диод Шоттки 3А",
   "rows": [],
   "meta": {
     "source": "none",
     "total": 0,
     "cached": false,
-    "elapsed": 9594
+    "elapsed": 8422
   }
 }

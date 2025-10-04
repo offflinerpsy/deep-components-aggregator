@@ -1,0 +1,6664 @@
+{
+  "ok": true,
+  "q": "resistor 10k 1%",
+  "rows": [
+    {
+      "_src": "mouser",
+      "_id": "G00310K00FB1280",
+      "photo": "https://www.mouser.com/images/vishay/images/G_GN_series_DSL.jpg",
+      "title": "G00310K00FB1280",
+      "mpn": "G00310K00FB1280",
+      "manufacturer": "Vishay / Dale",
+      "description": "Wirewound Resistors - Through Hole 2watts 10Kohms 1%",
+      "package": "",
+      "packaging": "",
+      "regions": [
+        "US"
+      ],
+      "stock": 276,
+      "minRub": 200,
+      "openUrl": "/product.html?src=mouser&id=G00310K00FB1280",
+      "_raw": {
+        "Availability": "276 In Stock",
+        "DataSheetUrl": "",
+        "Description": "Wirewound Resistors - Through Hole 2watts 10Kohms 1%",
+        "FactoryStock": "0",
+        "ImagePath": "https://www.mouser.com/images/vishay/images/G_GN_series_DSL.jpg",
+        "Category": "Wirewound Resistors - Through Hole",
+        "LeadTime": "161 Days",
+        "LifecycleStatus": null,
+        "Manufacturer": "Vishay / Dale",
+        "ManufacturerPartNumber": "G00310K00FB1280",
+        "Min": "1",
+        "Mult": "1",
+        "MouserPartNumber": "71-G3-80-F-10K",
+        "ProductAttributes": [
+          {
+            "AttributeName": "Packaging",
+            "AttributeValue": "Bulk"
+          },
+          {
+            "AttributeName": "Standard Pack Qty",
+            "AttributeValue": "100"
+          }
+        ],
+        "PriceBreaks": [
+          {
+            "Quantity": 1,
+            "Price": "$6.11",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 10,
+            "Price": "$3.82",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 50,
+            "Price": "$3.56",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 100,
+            "Price": "$2.80",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 200,
+            "Price": "$2.50",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 500,
+            "Price": "$2.46",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 1000,
+            "Price": "$2.45",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 2500,
+            "Price": "$2.41",
+            "Currency": "USD"
+          }
+        ],
+        "AlternatePackagings": null,
+        "ProductDetailUrl": "https://www.mouser.com/ProductDetail/Vishay-Dale/G00310K00FB1280?qs=KbkO2%2FpCUcH0eibkEDdwWA%3D%3D",
+        "Reeling": false,
+        "ROHSStatus": "No",
+        "SuggestedReplacement": "",
+        "MultiSimBlue": 0,
+        "UnitWeightKg": {
+          "UnitWeight": 0.00034
+        },
+        "AvailabilityInStock": "276",
+        "AvailabilityOnOrder": [],
+        "InfoMessages": [],
+        "SurchargeMessages": null,
+        "ProductCompliance": [
+          {
+            "ComplianceName": "USHTS",
+            "ComplianceValue": "8533210080"
+          },
+          {
+            "ComplianceName": "CNHTS",
+            "ComplianceValue": "8533219000"
+          },
+          {
+            "ComplianceName": "CAHTS",
+            "ComplianceValue": "8533210000"
+          },
+          {
+            "ComplianceName": "JPHTS",
+            "ComplianceValue": "853321000"
+          },
+          {
+            "ComplianceName": "KRHTS",
+            "ComplianceValue": "8533219000"
+          },
+          {
+            "ComplianceName": "TARIC",
+            "ComplianceValue": "8533210000"
+          },
+          {
+            "ComplianceName": "MXHTS",
+            "ComplianceValue": "8533210100"
+          },
+          {
+            "ComplianceName": "BRHTS",
+            "ComplianceValue": "85332110"
+          },
+          {
+            "ComplianceName": "ECCN",
+            "ComplianceValue": "EAR99"
+          }
+        ]
+      }
+    },
+    {
+      "_src": "mouser",
+      "_id": "RCMS0510001FHS14",
+      "photo": "https://www.mouser.com/images/vishay/images/rcms.jpg",
+      "title": "RCMS0510001FHS14",
+      "mpn": "RCMS0510001FHS14",
+      "manufacturer": "Vishay / Sfernice",
+      "description": "Metal Film Resistors - Through Hole 10Kohm 1% 50ppm",
+      "package": "",
+      "packaging": "",
+      "regions": [
+        "US"
+      ],
+      "stock": 147,
+      "minRub": 265,
+      "openUrl": "/product.html?src=mouser&id=RCMS0510001FHS14",
+      "_raw": {
+        "Availability": "147 In Stock",
+        "DataSheetUrl": "",
+        "Description": "Metal Film Resistors - Through Hole 10Kohm 1% 50ppm",
+        "FactoryStock": "0",
+        "ImagePath": "https://www.mouser.com/images/vishay/images/rcms.jpg",
+        "Category": "Metal Film Resistors - Through Hole",
+        "LeadTime": "42 Days",
+        "LifecycleStatus": null,
+        "Manufacturer": "Vishay / Sfernice",
+        "ManufacturerPartNumber": "RCMS0510001FHS14",
+        "Min": "1",
+        "Mult": "1",
+        "MouserPartNumber": "72-RCMS0510001FHS14",
+        "ProductAttributes": [
+          {
+            "AttributeName": "Packaging",
+            "AttributeValue": "Bulk"
+          },
+          {
+            "AttributeName": "Standard Pack Qty",
+            "AttributeValue": "100"
+          }
+        ],
+        "PriceBreaks": [
+          {
+            "Quantity": 1,
+            "Price": "$8.67",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 10,
+            "Price": "$5.38",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 20,
+            "Price": "$5.06",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 50,
+            "Price": "$4.63",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 100,
+            "Price": "$3.97",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 200,
+            "Price": "$3.55",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 500,
+            "Price": "$3.42",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 1000,
+            "Price": "$3.26",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 2000,
+            "Price": "$3.20",
+            "Currency": "USD"
+          }
+        ],
+        "AlternatePackagings": null,
+        "ProductDetailUrl": "https://www.mouser.com/ProductDetail/Vishay-Sfernice/RCMS0510001FHS14?qs=NbbpSngelQ053viXEngHOg%3D%3D",
+        "Reeling": false,
+        "ROHSStatus": "RoHS Compliant",
+        "SuggestedReplacement": "",
+        "MultiSimBlue": 0,
+        "UnitWeightKg": {
+          "UnitWeight": 0.00026
+        },
+        "AvailabilityInStock": "147",
+        "AvailabilityOnOrder": [],
+        "InfoMessages": [],
+        "SurchargeMessages": null,
+        "ProductCompliance": [
+          {
+            "ComplianceName": "USHTS",
+            "ComplianceValue": "8533210090"
+          },
+          {
+            "ComplianceName": "CNHTS",
+            "ComplianceValue": "8533219000"
+          },
+          {
+            "ComplianceName": "CAHTS",
+            "ComplianceValue": "8533400000"
+          },
+          {
+            "ComplianceName": "JPHTS",
+            "ComplianceValue": "8533400002"
+          },
+          {
+            "ComplianceName": "KRHTS",
+            "ComplianceValue": "8533409000"
+          },
+          {
+            "ComplianceName": "TARIC",
+            "ComplianceValue": "8533210000"
+          },
+          {
+            "ComplianceName": "MXHTS",
+            "ComplianceValue": "8533210100"
+          },
+          {
+            "ComplianceName": "BRHTS",
+            "ComplianceValue": "85332190"
+          },
+          {
+            "ComplianceName": "ECCN",
+            "ComplianceValue": "EAR99"
+          }
+        ]
+      }
+    },
+    {
+      "_src": "mouser",
+      "_id": "HS50 10K F",
+      "photo": "https://www.mouser.com/images/ohmite/images/HS-10_50-series_SPL.jpg",
+      "title": "HS50 10K F",
+      "mpn": "HS50 10K F",
+      "manufacturer": "Ohmite",
+      "description": "Wirewound Resistors - Chassis Mount 50W 10K OHM1%",
+      "package": "",
+      "packaging": "",
+      "regions": [
+        "US"
+      ],
+      "stock": 3749,
+      "minRub": 335,
+      "openUrl": "/product.html?src=mouser&id=HS50%2010K%20F",
+      "_raw": {
+        "Availability": "3749 In Stock",
+        "DataSheetUrl": "https://www.mouser.com/datasheet/3/132/1/acl_hs10.pdf",
+        "Description": "Wirewound Resistors - Chassis Mount 50W 10K OHM1%",
+        "FactoryStock": "0",
+        "ImagePath": "https://www.mouser.com/images/ohmite/images/HS-10_50-series_SPL.jpg",
+        "Category": "Wirewound Resistors - Chassis Mount",
+        "LeadTime": "133 Days",
+        "LifecycleStatus": null,
+        "Manufacturer": "Ohmite",
+        "ManufacturerPartNumber": "HS50 10K F",
+        "Min": "1",
+        "Mult": "1",
+        "MouserPartNumber": "284-HS50-10KF",
+        "ProductAttributes": [
+          {
+            "AttributeName": "Packaging",
+            "AttributeValue": "Bulk"
+          },
+          {
+            "AttributeName": "Standard Pack Qty",
+            "AttributeValue": "40"
+          }
+        ],
+        "PriceBreaks": [
+          {
+            "Quantity": 1,
+            "Price": "$8.03",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 10,
+            "Price": "$6.06",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 25,
+            "Price": "$5.77",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 40,
+            "Price": "$5.64",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 120,
+            "Price": "$4.77",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 280,
+            "Price": "$4.43",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 1000,
+            "Price": "$4.17",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 2520,
+            "Price": "$4.04",
+            "Currency": "USD"
+          }
+        ],
+        "AlternatePackagings": null,
+        "ProductDetailUrl": "https://www.mouser.com/ProductDetail/Ohmite/HS50-10K-F?qs=bvCpHSZmQjmCmWl3sSOmow%3D%3D",
+        "Reeling": false,
+        "ROHSStatus": "RoHS Compliant",
+        "SuggestedReplacement": "",
+        "MultiSimBlue": 0,
+        "UnitWeightKg": {
+          "UnitWeight": 0.02392
+        },
+        "AvailabilityInStock": "3749",
+        "AvailabilityOnOrder": [],
+        "InfoMessages": [],
+        "SurchargeMessages": [
+          {
+            "code": "TARIFF_US",
+            "message": "A tariff of 7 % may be applied."
+          }
+        ],
+        "ProductCompliance": [
+          {
+            "ComplianceName": "USHTS",
+            "ComplianceValue": "8533290000"
+          },
+          {
+            "ComplianceName": "CNHTS",
+            "ComplianceValue": "8533290000"
+          },
+          {
+            "ComplianceName": "CAHTS",
+            "ComplianceValue": "8533290000"
+          },
+          {
+            "ComplianceName": "JPHTS",
+            "ComplianceValue": "853329000"
+          },
+          {
+            "ComplianceName": "KRHTS",
+            "ComplianceValue": "8533299000"
+          },
+          {
+            "ComplianceName": "TARIC",
+            "ComplianceValue": "8533290000"
+          },
+          {
+            "ComplianceName": "MXHTS",
+            "ComplianceValue": "8533299900"
+          },
+          {
+            "ComplianceName": "BRHTS",
+            "ComplianceValue": "85332900"
+          },
+          {
+            "ComplianceName": "ECCN",
+            "ComplianceValue": "EAR99"
+          }
+        ]
+      }
+    },
+    {
+      "_src": "mouser",
+      "_id": "RCMS0210001FHS14",
+      "photo": "https://www.mouser.com/images/vishay/images/rcms.jpg",
+      "title": "RCMS0210001FHS14",
+      "mpn": "RCMS0210001FHS14",
+      "manufacturer": "Vishay / Sfernice",
+      "description": "Metal Film Resistors - Through Hole 10K OHM 1% 50PPM 1/8W",
+      "package": "",
+      "packaging": "",
+      "regions": [
+        "US"
+      ],
+      "stock": 99,
+      "minRub": 236,
+      "openUrl": "/product.html?src=mouser&id=RCMS0210001FHS14",
+      "_raw": {
+        "Availability": "99 In Stock",
+        "DataSheetUrl": "",
+        "Description": "Metal Film Resistors - Through Hole 10K   OHM  1%   50PPM  1/8W",
+        "FactoryStock": "0",
+        "ImagePath": "https://www.mouser.com/images/vishay/images/rcms.jpg",
+        "Category": "Metal Film Resistors - Through Hole",
+        "LeadTime": "42 Days",
+        "LifecycleStatus": "New at Mouser",
+        "Manufacturer": "Vishay / Sfernice",
+        "ManufacturerPartNumber": "RCMS0210001FHS14",
+        "Min": "1",
+        "Mult": "1",
+        "MouserPartNumber": "72-RCMS0210001FHS14",
+        "ProductAttributes": [
+          {
+            "AttributeName": "Packaging",
+            "AttributeValue": "Bag"
+          },
+          {
+            "AttributeName": "Standard Pack Qty",
+            "AttributeValue": "100"
+          }
+        ],
+        "PriceBreaks": [
+          {
+            "Quantity": 1,
+            "Price": "$7.41",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 10,
+            "Price": "$5.08",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 20,
+            "Price": "$4.45",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 50,
+            "Price": "$4.06",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 100,
+            "Price": "$3.55",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 200,
+            "Price": "$3.13",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 500,
+            "Price": "$3.02",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 1000,
+            "Price": "$2.87",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 2000,
+            "Price": "$2.85",
+            "Currency": "USD"
+          }
+        ],
+        "AlternatePackagings": null,
+        "ProductDetailUrl": "https://www.mouser.com/ProductDetail/Vishay-Sfernice/RCMS0210001FHS14?qs=BJJcA2Q%2FCNZgYHiRo8HSHA%3D%3D",
+        "Reeling": false,
+        "ROHSStatus": "RoHS Compliant",
+        "SuggestedReplacement": "",
+        "MultiSimBlue": 0,
+        "UnitWeightKg": {
+          "UnitWeight": 0.00022
+        },
+        "AvailabilityInStock": "99",
+        "AvailabilityOnOrder": [],
+        "InfoMessages": [],
+        "SurchargeMessages": [
+          {
+            "code": "TARIFF_US",
+            "message": "A tariff of 14 % may be applied."
+          }
+        ],
+        "ProductCompliance": [
+          {
+            "ComplianceName": "USHTS",
+            "ComplianceValue": "8533210090"
+          },
+          {
+            "ComplianceName": "CNHTS",
+            "ComplianceValue": "8533219000"
+          },
+          {
+            "ComplianceName": "CAHTS",
+            "ComplianceValue": "8533210000"
+          },
+          {
+            "ComplianceName": "JPHTS",
+            "ComplianceValue": "853321000"
+          },
+          {
+            "ComplianceName": "KRHTS",
+            "ComplianceValue": "8533219000"
+          },
+          {
+            "ComplianceName": "TARIC",
+            "ComplianceValue": "8533210000"
+          },
+          {
+            "ComplianceName": "MXHTS",
+            "ComplianceValue": "8533210100"
+          },
+          {
+            "ComplianceName": "BRHTS",
+            "ComplianceValue": "85366990"
+          },
+          {
+            "ComplianceName": "ECCN",
+            "ComplianceValue": "EAR99"
+          }
+        ]
+      }
+    },
+    {
+      "_src": "mouser",
+      "_id": "MBA02040C1002FC100",
+      "photo": "https://www.mouser.com/images/vishay/images/MBA_MBB_MBE_SMA_pro_series_DSL.jpg",
+      "title": "MBA02040C1002FC100",
+      "mpn": "MBA02040C1002FC100",
+      "manufacturer": "Vishay / Beyschlag",
+      "description": "Metal Film Resistors - Through Hole .4watt 10Kohms 1% 1/8watt body size",
+      "package": "",
+      "packaging": "",
+      "regions": [
+        "US"
+      ],
+      "stock": 2092,
+      "minRub": 12,
+      "openUrl": "/product.html?src=mouser&id=MBA02040C1002FC100",
+      "_raw": {
+        "Availability": "2092 In Stock",
+        "DataSheetUrl": "",
+        "Description": "Metal Film Resistors - Through Hole .4watt 10Kohms 1% 1/8watt body size",
+        "FactoryStock": "0",
+        "ImagePath": "https://www.mouser.com/images/vishay/images/MBA_MBB_MBE_SMA_pro_series_DSL.jpg",
+        "Category": "Metal Film Resistors - Through Hole",
+        "LeadTime": "35 Days",
+        "LifecycleStatus": null,
+        "Manufacturer": "Vishay / Beyschlag",
+        "ManufacturerPartNumber": "MBA02040C1002FC100",
+        "Min": "1",
+        "Mult": "1",
+        "MouserPartNumber": "594-5063JD10K00F",
+        "ProductAttributes": [
+          {
+            "AttributeName": "Packaging",
+            "AttributeValue": "Bulk"
+          },
+          {
+            "AttributeName": "Standard Pack Qty",
+            "AttributeValue": "1000"
+          }
+        ],
+        "PriceBreaks": [
+          {
+            "Quantity": 1,
+            "Price": "$0.31",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 10,
+            "Price": "$0.26",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 25,
+            "Price": "$0.228",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 100,
+            "Price": "$0.216",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 250,
+            "Price": "$0.201",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 500,
+            "Price": "$0.191",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 1000,
+            "Price": "$0.149",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 10000,
+            "Price": "$0.147",
+            "Currency": "USD"
+          }
+        ],
+        "AlternatePackagings": [
+          {
+            "APMfrPN": "MBA02040C1002FCT00"
+          },
+          {
+            "APMfrPN": " MBA02040C1002FRP00"
+          }
+        ],
+        "ProductDetailUrl": "https://www.mouser.com/ProductDetail/Vishay-Beyschlag/MBA02040C1002FC100?qs=nlQjf3QnJCoHnMMMaOw%2FFA%3D%3D",
+        "Reeling": false,
+        "ROHSStatus": "RoHS Compliant",
+        "SuggestedReplacement": "",
+        "MultiSimBlue": 0,
+        "UnitWeightKg": {
+          "UnitWeight": 0.000125
+        },
+        "AvailabilityInStock": "2092",
+        "AvailabilityOnOrder": [],
+        "InfoMessages": [],
+        "SurchargeMessages": [
+          {
+            "code": "TARIFF_US",
+            "message": "A tariff of 10 % may be applied."
+          }
+        ],
+        "ProductCompliance": [
+          {
+            "ComplianceName": "USHTS",
+            "ComplianceValue": "8533210090"
+          },
+          {
+            "ComplianceName": "CNHTS",
+            "ComplianceValue": "8533219000"
+          },
+          {
+            "ComplianceName": "TARIC",
+            "ComplianceValue": "8533210000"
+          },
+          {
+            "ComplianceName": "CAHTS",
+            "ComplianceValue": "8533210000"
+          },
+          {
+            "ComplianceName": "JPHTS",
+            "ComplianceValue": "853321000"
+          },
+          {
+            "ComplianceName": "KRHTS",
+            "ComplianceValue": "8533219000"
+          },
+          {
+            "ComplianceName": "MXHTS",
+            "ComplianceValue": "8533210100"
+          },
+          {
+            "ComplianceName": "BRHTS",
+            "ComplianceValue": "85332190"
+          },
+          {
+            "ComplianceName": "ECCN",
+            "ComplianceValue": "EAR99"
+          }
+        ]
+      }
+    },
+    {
+      "_src": "mouser",
+      "_id": "HS25 10K F",
+      "photo": "https://www.mouser.com/images/ohmite/images/HS-10_50-series_SPL.jpg",
+      "title": "HS25 10K F",
+      "mpn": "HS25 10K F",
+      "manufacturer": "Ohmite",
+      "description": "Wirewound Resistors - Chassis Mount 25W 10K OHM1%",
+      "package": "",
+      "packaging": "",
+      "regions": [
+        "US"
+      ],
+      "stock": 225,
+      "minRub": 273,
+      "openUrl": "/product.html?src=mouser&id=HS25%2010K%20F",
+      "_raw": {
+        "Availability": "225 In Stock",
+        "DataSheetUrl": "https://www.mouser.com/datasheet/3/132/1/acl_hs10.pdf",
+        "Description": "Wirewound Resistors - Chassis Mount 25W 10K OHM1%",
+        "FactoryStock": "0",
+        "ImagePath": "https://www.mouser.com/images/ohmite/images/HS-10_50-series_SPL.jpg",
+        "Category": "Wirewound Resistors - Chassis Mount",
+        "LeadTime": "133 Days",
+        "LifecycleStatus": null,
+        "Manufacturer": "Ohmite",
+        "ManufacturerPartNumber": "HS25 10K F",
+        "Min": "1",
+        "Mult": "1",
+        "MouserPartNumber": "284-HS25-10KF",
+        "ProductAttributes": [
+          {
+            "AttributeName": "Packaging",
+            "AttributeValue": "Bulk"
+          },
+          {
+            "AttributeName": "Standard Pack Qty",
+            "AttributeValue": "40"
+          }
+        ],
+        "PriceBreaks": [
+          {
+            "Quantity": 1,
+            "Price": "$8.63",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 10,
+            "Price": "$4.77",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 25,
+            "Price": "$4.21",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 40,
+            "Price": "$4.01",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 120,
+            "Price": "$3.83",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 280,
+            "Price": "$3.75",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 520,
+            "Price": "$3.68",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 1000,
+            "Price": "$3.56",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 2520,
+            "Price": "$3.30",
+            "Currency": "USD"
+          }
+        ],
+        "AlternatePackagings": null,
+        "ProductDetailUrl": "https://www.mouser.com/ProductDetail/Ohmite/HS25-10K-F?qs=bvCpHSZmQjmWRgEyee0R7g%3D%3D",
+        "Reeling": false,
+        "ROHSStatus": "RoHS Compliant",
+        "SuggestedReplacement": "",
+        "MultiSimBlue": 0,
+        "UnitWeightKg": {
+          "UnitWeight": 0.014
+        },
+        "AvailabilityInStock": "225",
+        "AvailabilityOnOrder": [],
+        "InfoMessages": [],
+        "SurchargeMessages": [
+          {
+            "code": "TARIFF_US",
+            "message": "A tariff of 17 % may be applied."
+          }
+        ],
+        "ProductCompliance": [
+          {
+            "ComplianceName": "USHTS",
+            "ComplianceValue": "8533290000"
+          },
+          {
+            "ComplianceName": "CNHTS",
+            "ComplianceValue": "8533290000"
+          },
+          {
+            "ComplianceName": "CAHTS",
+            "ComplianceValue": "8533290000"
+          },
+          {
+            "ComplianceName": "JPHTS",
+            "ComplianceValue": "853329000"
+          },
+          {
+            "ComplianceName": "KRHTS",
+            "ComplianceValue": "8533299000"
+          },
+          {
+            "ComplianceName": "TARIC",
+            "ComplianceValue": "8533290000"
+          },
+          {
+            "ComplianceName": "MXHTS",
+            "ComplianceValue": "8533299900"
+          },
+          {
+            "ComplianceName": "BRHTS",
+            "ComplianceValue": "85332900"
+          },
+          {
+            "ComplianceName": "ECCN",
+            "ComplianceValue": "EAR99"
+          }
+        ]
+      }
+    },
+    {
+      "_src": "mouser",
+      "_id": "HS300 10K F",
+      "photo": "https://www.mouser.com/images/ohmite/images/HS-200_300-series_SPL.jpg",
+      "title": "HS300 10K F",
+      "mpn": "HS300 10K F",
+      "manufacturer": "Ohmite",
+      "description": "Wirewound Resistors - Chassis Mount 300W 10K 1%",
+      "package": "",
+      "packaging": "",
+      "regions": [
+        "US"
+      ],
+      "stock": 20,
+      "minRub": 3833,
+      "openUrl": "/product.html?src=mouser&id=HS300%2010K%20F",
+      "_raw": {
+        "Availability": "20 In Stock",
+        "DataSheetUrl": "https://www.mouser.com/datasheet/3/132/1/acl_hs10.pdf",
+        "Description": "Wirewound Resistors - Chassis Mount 300W 10K 1%",
+        "FactoryStock": "0",
+        "ImagePath": "https://www.mouser.com/images/ohmite/images/HS-200_300-series_SPL.jpg",
+        "Category": "Wirewound Resistors - Chassis Mount",
+        "LeadTime": "154 Days",
+        "LifecycleStatus": null,
+        "Manufacturer": "Ohmite",
+        "ManufacturerPartNumber": "HS300 10K F",
+        "Min": "1",
+        "Mult": "1",
+        "MouserPartNumber": "284-HS300-10KF",
+        "ProductAttributes": [
+          {
+            "AttributeName": "Packaging",
+            "AttributeValue": "Bulk"
+          },
+          {
+            "AttributeName": "Standard Pack Qty",
+            "AttributeValue": "1"
+          }
+        ],
+        "PriceBreaks": [
+          {
+            "Quantity": 1,
+            "Price": "$70.70",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 10,
+            "Price": "$50.13",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 50,
+            "Price": "$48.09",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 100,
+            "Price": "$46.26",
+            "Currency": "USD"
+          }
+        ],
+        "AlternatePackagings": null,
+        "ProductDetailUrl": "https://www.mouser.com/ProductDetail/Ohmite/HS300-10K-F?qs=bvCpHSZmQjlfJv4tP9EM%2FQ%3D%3D",
+        "Reeling": false,
+        "ROHSStatus": "RoHS Compliant",
+        "SuggestedReplacement": "",
+        "MultiSimBlue": 0,
+        "UnitWeightKg": {
+          "UnitWeight": 0.55934
+        },
+        "AvailabilityInStock": "20",
+        "AvailabilityOnOrder": [],
+        "InfoMessages": [],
+        "SurchargeMessages": [
+          {
+            "code": "TARIFF_US",
+            "message": "A tariff of 10 % may be applied."
+          }
+        ],
+        "ProductCompliance": [
+          {
+            "ComplianceName": "USHTS",
+            "ComplianceValue": "8533290000"
+          },
+          {
+            "ComplianceName": "CNHTS",
+            "ComplianceValue": "8533290000"
+          },
+          {
+            "ComplianceName": "CAHTS",
+            "ComplianceValue": "8533290000"
+          },
+          {
+            "ComplianceName": "JPHTS",
+            "ComplianceValue": "853329000"
+          },
+          {
+            "ComplianceName": "KRHTS",
+            "ComplianceValue": "8533299000"
+          },
+          {
+            "ComplianceName": "TARIC",
+            "ComplianceValue": "8533290000"
+          },
+          {
+            "ComplianceName": "MXHTS",
+            "ComplianceValue": "8533299900"
+          },
+          {
+            "ComplianceName": "BRHTS",
+            "ComplianceValue": "85332900"
+          },
+          {
+            "ComplianceName": "ECCN",
+            "ComplianceValue": "EAR99"
+          }
+        ]
+      }
+    },
+    {
+      "_src": "mouser",
+      "_id": "HS15 10K F",
+      "photo": "https://www.mouser.com/images/ohmite/images/HS-10_50-series_SPL.jpg",
+      "title": "HS15 10K F",
+      "mpn": "HS15 10K F",
+      "manufacturer": "Ohmite",
+      "description": "Wirewound Resistors - Chassis Mount 15W 10K OHM1%",
+      "package": "",
+      "packaging": "",
+      "regions": [
+        "US"
+      ],
+      "stock": null,
+      "minRub": 288,
+      "openUrl": "/product.html?src=mouser&id=HS15%2010K%20F",
+      "_raw": {
+        "DataSheetUrl": "https://www.mouser.com/datasheet/3/132/1/acl_hs10.pdf",
+        "Description": "Wirewound Resistors - Chassis Mount 15W 10K OHM1%",
+        "FactoryStock": "0",
+        "ImagePath": "https://www.mouser.com/images/ohmite/images/HS-10_50-series_SPL.jpg",
+        "Category": "Wirewound Resistors - Chassis Mount",
+        "LeadTime": "140 Days",
+        "LifecycleStatus": null,
+        "Manufacturer": "Ohmite",
+        "ManufacturerPartNumber": "HS15 10K F",
+        "Min": "1",
+        "Mult": "1",
+        "MouserPartNumber": "284-HS15-10KF",
+        "ProductAttributes": [
+          {
+            "AttributeName": "Packaging",
+            "AttributeValue": "Bulk"
+          },
+          {
+            "AttributeName": "Standard Pack Qty",
+            "AttributeValue": "200"
+          }
+        ],
+        "PriceBreaks": [
+          {
+            "Quantity": 1,
+            "Price": "$6.13",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 10,
+            "Price": "$4.71",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 25,
+            "Price": "$4.57",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 50,
+            "Price": "$4.11",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 100,
+            "Price": "$3.59",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 200,
+            "Price": "$3.48",
+            "Currency": "USD"
+          }
+        ],
+        "AlternatePackagings": null,
+        "ProductDetailUrl": "https://www.mouser.com/ProductDetail/Ohmite/HS15-10K-F?qs=bvCpHSZmQjlIFBcyckkEmQ%3D%3D",
+        "Reeling": false,
+        "ROHSStatus": "RoHS Compliant",
+        "SuggestedReplacement": "",
+        "MultiSimBlue": 0,
+        "UnitWeightKg": {
+          "UnitWeight": 0.00572
+        },
+        "AvailabilityInStock": "0",
+        "AvailabilityOnOrder": [
+          {
+            "Quantity": 200,
+            "Date": "2025-10-08T00:00:00"
+          }
+        ],
+        "InfoMessages": [],
+        "SurchargeMessages": [
+          {
+            "code": "TARIFF_US",
+            "message": "A tariff of 17 % may be applied."
+          }
+        ],
+        "ProductCompliance": [
+          {
+            "ComplianceName": "USHTS",
+            "ComplianceValue": "8533210080"
+          },
+          {
+            "ComplianceName": "CNHTS",
+            "ComplianceValue": "8533219000"
+          },
+          {
+            "ComplianceName": "CAHTS",
+            "ComplianceValue": "8533210000"
+          },
+          {
+            "ComplianceName": "JPHTS",
+            "ComplianceValue": "853321000"
+          },
+          {
+            "ComplianceName": "KRHTS",
+            "ComplianceValue": "8533219000"
+          },
+          {
+            "ComplianceName": "TARIC",
+            "ComplianceValue": "8533210000"
+          },
+          {
+            "ComplianceName": "MXHTS",
+            "ComplianceValue": "8533210100"
+          },
+          {
+            "ComplianceName": "BRHTS",
+            "ComplianceValue": "85332110"
+          },
+          {
+            "ComplianceName": "ECCN",
+            "ComplianceValue": "EAR99"
+          }
+        ]
+      }
+    },
+    {
+      "_src": "mouser",
+      "_id": "MMU01020C1002FB300",
+      "photo": "https://www.mouser.com/images/vishay/images/MMA_MMB_MMU_HF_DSL.jpg",
+      "title": "MMU01020C1002FB300",
+      "mpn": "MMU01020C1002FB300",
+      "manufacturer": "Vishay / Beyschlag",
+      "description": "MELF Resistors 0.2W 10Kohms 1% 0102 MELF 150V 50ppm",
+      "package": "",
+      "packaging": "",
+      "regions": [
+        "US"
+      ],
+      "stock": 1067418,
+      "minRub": 4,
+      "openUrl": "/product.html?src=mouser&id=MMU01020C1002FB300",
+      "_raw": {
+        "Availability": "1067418 In Stock",
+        "DataSheetUrl": "",
+        "Description": "MELF Resistors 0.2W 10Kohms 1% 0102 MELF 150V 50ppm",
+        "FactoryStock": "0",
+        "ImagePath": "https://www.mouser.com/images/vishay/images/MMA_MMB_MMU_HF_DSL.jpg",
+        "Category": "MELF Resistors",
+        "LeadTime": "56 Days",
+        "LifecycleStatus": null,
+        "Manufacturer": "Vishay / Beyschlag",
+        "ManufacturerPartNumber": "MMU01020C1002FB300",
+        "Min": "1",
+        "Mult": "1",
+        "MouserPartNumber": "594-MMU01020C1002FB3",
+        "ProductAttributes": [
+          {
+            "AttributeName": "Packaging",
+            "AttributeValue": "Reel"
+          },
+          {
+            "AttributeName": "Packaging",
+            "AttributeValue": "Cut Tape"
+          },
+          {
+            "AttributeName": "Packaging",
+            "AttributeValue": "MouseReel",
+            "AttributeCost": "$7.00 MouseReel™ fee will be added and calculated in your shopping cart. All MouseReel™ orders are non-cancellable and non-returnable."
+          },
+          {
+            "AttributeName": "Standard Pack Qty",
+            "AttributeValue": "3000"
+          }
+        ],
+        "PriceBreaks": [
+          {
+            "Quantity": 1,
+            "Price": "$0.10",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 10,
+            "Price": "$0.081",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 25,
+            "Price": "$0.072",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 100,
+            "Price": "$0.068",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 250,
+            "Price": "$0.063",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 500,
+            "Price": "$0.06",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 1000,
+            "Price": "$0.051",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 3000,
+            "Price": "$0.049",
+            "Currency": "USD"
+          }
+        ],
+        "AlternatePackagings": [
+          {
+            "APMfrPN": "MMU01020C1002FB000"
+          }
+        ],
+        "ProductDetailUrl": "https://www.mouser.com/ProductDetail/Vishay-Beyschlag/MMU01020C1002FB300?qs=H30XFsNYD%2FFf3%2FiEQDFOCA%3D%3D",
+        "Reeling": true,
+        "ROHSStatus": "RoHS Compliant",
+        "SuggestedReplacement": "",
+        "MultiSimBlue": 0,
+        "UnitWeightKg": {
+          "UnitWeight": 0.000008
+        },
+        "AvailabilityInStock": "1067418",
+        "AvailabilityOnOrder": [],
+        "InfoMessages": [],
+        "SurchargeMessages": null,
+        "ProductCompliance": [
+          {
+            "ComplianceName": "USHTS",
+            "ComplianceValue": "8533210040"
+          },
+          {
+            "ComplianceName": "CNHTS",
+            "ComplianceValue": "8533211000"
+          },
+          {
+            "ComplianceName": "TARIC",
+            "ComplianceValue": "8533210000"
+          },
+          {
+            "ComplianceName": "CAHTS",
+            "ComplianceValue": "8533210000"
+          },
+          {
+            "ComplianceName": "JPHTS",
+            "ComplianceValue": "853321000"
+          },
+          {
+            "ComplianceName": "KRHTS",
+            "ComplianceValue": "8533219000"
+          },
+          {
+            "ComplianceName": "MXHTS",
+            "ComplianceValue": "8533210100"
+          },
+          {
+            "ComplianceName": "BRHTS",
+            "ComplianceValue": "85332190"
+          },
+          {
+            "ComplianceName": "ECCN",
+            "ComplianceValue": "EAR99"
+          }
+        ]
+      }
+    },
+    {
+      "_src": "mouser",
+      "_id": "SMM02040C1002FB300",
+      "photo": "https://www.mouser.com/images/vishay/images/SMM0102_SPL.JPG",
+      "title": "SMM02040C1002FB300",
+      "mpn": "SMM02040C1002FB300",
+      "manufacturer": "Vishay / Draloric",
+      "description": "MELF Resistors 1/4watt 10Kohms 1% 50ppm",
+      "package": "",
+      "packaging": "",
+      "regions": [
+        "US"
+      ],
+      "stock": 7276,
+      "minRub": 2,
+      "openUrl": "/product.html?src=mouser&id=SMM02040C1002FB300",
+      "_raw": {
+        "Availability": "7276 In Stock",
+        "DataSheetUrl": "",
+        "Description": "MELF Resistors 1/4watt 10Kohms 1% 50ppm",
+        "FactoryStock": "0",
+        "ImagePath": "https://www.mouser.com/images/vishay/images/SMM0102_SPL.JPG",
+        "Category": "MELF Resistors",
+        "LeadTime": "70 Days",
+        "LifecycleStatus": null,
+        "Manufacturer": "Vishay / Draloric",
+        "ManufacturerPartNumber": "SMM02040C1002FB300",
+        "Min": "1",
+        "Mult": "1",
+        "MouserPartNumber": "71-SMM02040C1002FB30",
+        "ProductAttributes": [
+          {
+            "AttributeName": "Packaging",
+            "AttributeValue": "Reel"
+          },
+          {
+            "AttributeName": "Packaging",
+            "AttributeValue": "Cut Tape"
+          },
+          {
+            "AttributeName": "Packaging",
+            "AttributeValue": "MouseReel",
+            "AttributeCost": "$7.00 MouseReel™ fee will be added and calculated in your shopping cart. All MouseReel™ orders are non-cancellable and non-returnable."
+          },
+          {
+            "AttributeName": "Standard Pack Qty",
+            "AttributeValue": "3000"
+          }
+        ],
+        "PriceBreaks": [
+          {
+            "Quantity": 1,
+            "Price": "$0.11",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 10,
+            "Price": "$0.06",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 25,
+            "Price": "$0.043",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 250,
+            "Price": "$0.042",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 1000,
+            "Price": "$0.034",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 3000,
+            "Price": "$0.032",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 6000,
+            "Price": "$0.029",
+            "Currency": "USD"
+          }
+        ],
+        "AlternatePackagings": [
+          {
+            "APMfrPN": "SMM02040C1002FB000"
+          }
+        ],
+        "ProductDetailUrl": "https://www.mouser.com/ProductDetail/Vishay-Draloric/SMM02040C1002FB300?qs=qWN1TmMR3zWb5eg%2FHJtpkQ%3D%3D",
+        "Reeling": true,
+        "ROHSStatus": "RoHS Compliant",
+        "SuggestedReplacement": "",
+        "MultiSimBlue": 0,
+        "UnitWeightKg": {
+          "UnitWeight": 0.000053
+        },
+        "AvailabilityInStock": "7276",
+        "AvailabilityOnOrder": [
+          {
+            "Quantity": 15000,
+            "Date": "2025-10-23T00:00:00"
+          }
+        ],
+        "InfoMessages": [],
+        "SurchargeMessages": [
+          {
+            "code": "TARIFF_US",
+            "message": "A tariff of 14 % may be applied."
+          }
+        ],
+        "ProductCompliance": [
+          {
+            "ComplianceName": "USHTS",
+            "ComplianceValue": "8533210040"
+          },
+          {
+            "ComplianceName": "CNHTS",
+            "ComplianceValue": "8533211000"
+          },
+          {
+            "ComplianceName": "TARIC",
+            "ComplianceValue": "8533210000"
+          },
+          {
+            "ComplianceName": "CAHTS",
+            "ComplianceValue": "8533210000"
+          },
+          {
+            "ComplianceName": "JPHTS",
+            "ComplianceValue": "853321000"
+          },
+          {
+            "ComplianceName": "KRHTS",
+            "ComplianceValue": "8533219000"
+          },
+          {
+            "ComplianceName": "MXHTS",
+            "ComplianceValue": "8533210100"
+          },
+          {
+            "ComplianceName": "BRHTS",
+            "ComplianceValue": "85332190"
+          },
+          {
+            "ComplianceName": "ECCN",
+            "ComplianceValue": "EAR99"
+          }
+        ]
+      }
+    },
+    {
+      "_src": "mouser",
+      "_id": "CRCW040210K0FKTDHP",
+      "photo": "https://www.mouser.com/images/vishay/images/CRCW06030000Z0TAHP_SPL.jpg",
+      "title": "CRCW040210K0FKTDHP",
+      "mpn": "CRCW040210K0FKTDHP",
+      "manufacturer": "Vishay",
+      "description": "Thick Film Resistors - SMD CRCW0402-HP 100 10K 1% RT7",
+      "package": "",
+      "packaging": "",
+      "regions": [
+        "US"
+      ],
+      "stock": 5264,
+      "minRub": 15,
+      "openUrl": "/product.html?src=mouser&id=CRCW040210K0FKTDHP",
+      "_raw": {
+        "Availability": "5264 In Stock",
+        "DataSheetUrl": "",
+        "Description": "Thick Film Resistors - SMD CRCW0402-HP 100 10K 1% RT7",
+        "FactoryStock": "0",
+        "ImagePath": "https://www.mouser.com/images/vishay/images/CRCW06030000Z0TAHP_SPL.jpg",
+        "Category": "Thick Film Resistors - SMD",
+        "LeadTime": "98 Days",
+        "LifecycleStatus": "New Product",
+        "Manufacturer": "Vishay",
+        "ManufacturerPartNumber": "CRCW040210K0FKTDHP",
+        "Min": "1",
+        "Mult": "1",
+        "MouserPartNumber": "71-CRCW040210K0FKTDH",
+        "ProductAttributes": [
+          {
+            "AttributeName": "Packaging",
+            "AttributeValue": "Reel"
+          },
+          {
+            "AttributeName": "Packaging",
+            "AttributeValue": "Cut Tape"
+          },
+          {
+            "AttributeName": "Standard Pack Qty",
+            "AttributeValue": "10000"
+          }
+        ],
+        "PriceBreaks": [
+          {
+            "Quantity": 1,
+            "Price": "$0.83",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 10,
+            "Price": "$0.478",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 100,
+            "Price": "$0.302",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 1000,
+            "Price": "$0.206",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 10000,
+            "Price": "$0.176",
+            "Currency": "USD"
+          }
+        ],
+        "AlternatePackagings": null,
+        "ProductDetailUrl": "https://www.mouser.com/ProductDetail/Vishay/CRCW040210K0FKTDHP?qs=bN4HulGPsrFSMIaVDDrS8Q%3D%3D",
+        "Reeling": true,
+        "ROHSStatus": "RoHS Compliant",
+        "SuggestedReplacement": "",
+        "MultiSimBlue": 0,
+        "AvailabilityInStock": "5264",
+        "AvailabilityOnOrder": [],
+        "InfoMessages": [],
+        "SurchargeMessages": [
+          {
+            "code": "TARIFF_US",
+            "message": "A tariff of 14 % may be applied."
+          }
+        ],
+        "ProductCompliance": [
+          {
+            "ComplianceName": "USHTS",
+            "ComplianceValue": "8533210030"
+          },
+          {
+            "ComplianceName": "CAHTS",
+            "ComplianceValue": "8533210000"
+          },
+          {
+            "ComplianceName": "JPHTS",
+            "ComplianceValue": "853321000"
+          },
+          {
+            "ComplianceName": "KRHTS",
+            "ComplianceValue": "8533219000"
+          },
+          {
+            "ComplianceName": "TARIC",
+            "ComplianceValue": "8533210000"
+          },
+          {
+            "ComplianceName": "MXHTS",
+            "ComplianceValue": "8533210100"
+          },
+          {
+            "ComplianceName": "BRHTS",
+            "ComplianceValue": "85332120"
+          },
+          {
+            "ComplianceName": "ECCN",
+            "ComplianceValue": "EAR99"
+          }
+        ]
+      }
+    },
+    {
+      "_src": "mouser",
+      "_id": "CRCW060310K0FKTAHP",
+      "photo": "https://www.mouser.com/images/vishay/images/CRCW06030000Z0TAHP_SPL.jpg",
+      "title": "CRCW060310K0FKTAHP",
+      "mpn": "CRCW060310K0FKTAHP",
+      "manufacturer": "Vishay",
+      "description": "Thick Film Resistors - SMD CRCW0603-HP 100 10K 1% RT1",
+      "package": "",
+      "packaging": "",
+      "regions": [
+        "US"
+      ],
+      "stock": 2672,
+      "minRub": 33,
+      "openUrl": "/product.html?src=mouser&id=CRCW060310K0FKTAHP",
+      "_raw": {
+        "Availability": "2672 In Stock",
+        "DataSheetUrl": "",
+        "Description": "Thick Film Resistors - SMD CRCW0603-HP 100 10K 1% RT1",
+        "FactoryStock": "0",
+        "ImagePath": "https://www.mouser.com/images/vishay/images/CRCW06030000Z0TAHP_SPL.jpg",
+        "Category": "Thick Film Resistors - SMD",
+        "LeadTime": "98 Days",
+        "LifecycleStatus": "New Product",
+        "Manufacturer": "Vishay",
+        "ManufacturerPartNumber": "CRCW060310K0FKTAHP",
+        "Min": "1",
+        "Mult": "1",
+        "MouserPartNumber": "71-CRCW060310K0FKTAH",
+        "ProductAttributes": [
+          {
+            "AttributeName": "Packaging",
+            "AttributeValue": "Reel"
+          },
+          {
+            "AttributeName": "Packaging",
+            "AttributeValue": "Cut Tape"
+          },
+          {
+            "AttributeName": "Standard Pack Qty",
+            "AttributeValue": "5000"
+          }
+        ],
+        "PriceBreaks": [
+          {
+            "Quantity": 1,
+            "Price": "$1.47",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 10,
+            "Price": "$0.868",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 100,
+            "Price": "$0.568",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 1000,
+            "Price": "$0.469",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 5000,
+            "Price": "$0.398",
+            "Currency": "USD"
+          }
+        ],
+        "AlternatePackagings": null,
+        "ProductDetailUrl": "https://www.mouser.com/ProductDetail/Vishay/CRCW060310K0FKTAHP?qs=bN4HulGPsrGi6OofqjFV2g%3D%3D",
+        "Reeling": true,
+        "ROHSStatus": "RoHS Compliant",
+        "SuggestedReplacement": "",
+        "MultiSimBlue": 0,
+        "AvailabilityInStock": "2672",
+        "AvailabilityOnOrder": [],
+        "InfoMessages": [],
+        "SurchargeMessages": [
+          {
+            "code": "TARIFF_US",
+            "message": "A tariff of 14 % may be applied."
+          }
+        ],
+        "ProductCompliance": [
+          {
+            "ComplianceName": "USHTS",
+            "ComplianceValue": "8533210030"
+          },
+          {
+            "ComplianceName": "CAHTS",
+            "ComplianceValue": "8533210000"
+          },
+          {
+            "ComplianceName": "JPHTS",
+            "ComplianceValue": "853321000"
+          },
+          {
+            "ComplianceName": "KRHTS",
+            "ComplianceValue": "8533219000"
+          },
+          {
+            "ComplianceName": "TARIC",
+            "ComplianceValue": "8533210000"
+          },
+          {
+            "ComplianceName": "MXHTS",
+            "ComplianceValue": "8533210100"
+          },
+          {
+            "ComplianceName": "BRHTS",
+            "ComplianceValue": "85332120"
+          },
+          {
+            "ComplianceName": "ECCN",
+            "ComplianceValue": "EAR99"
+          }
+        ]
+      }
+    },
+    {
+      "_src": "mouser",
+      "_id": "HS10 10K F",
+      "photo": "https://www.mouser.com/images/ohmite/images/HS-10_50-series_SPL.jpg",
+      "title": "HS10 10K F",
+      "mpn": "HS10 10K F",
+      "manufacturer": "Ohmite",
+      "description": "Wirewound Resistors - Chassis Mount PER RES 10W 10K 1%",
+      "package": "",
+      "packaging": "",
+      "regions": [
+        "US"
+      ],
+      "stock": 191,
+      "minRub": 235,
+      "openUrl": "/product.html?src=mouser&id=HS10%2010K%20F",
+      "_raw": {
+        "Availability": "191 In Stock",
+        "DataSheetUrl": "https://www.mouser.com/datasheet/3/132/1/acl_hs10.pdf",
+        "Description": "Wirewound Resistors - Chassis Mount PER RES 10W 10K 1%",
+        "FactoryStock": "0",
+        "ImagePath": "https://www.mouser.com/images/ohmite/images/HS-10_50-series_SPL.jpg",
+        "Category": "Wirewound Resistors - Chassis Mount",
+        "LeadTime": "140 Days",
+        "LifecycleStatus": null,
+        "Manufacturer": "Ohmite",
+        "ManufacturerPartNumber": "HS10 10K F",
+        "Min": "1",
+        "Mult": "1",
+        "MouserPartNumber": "284-HS10-10KF",
+        "ProductAttributes": [
+          {
+            "AttributeName": "Packaging",
+            "AttributeValue": "Bulk"
+          },
+          {
+            "AttributeName": "Standard Pack Qty",
+            "AttributeValue": "200"
+          }
+        ],
+        "PriceBreaks": [
+          {
+            "Quantity": 1,
+            "Price": "$6.25",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 10,
+            "Price": "$4.54",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 25,
+            "Price": "$4.32",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 50,
+            "Price": "$4.07",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 100,
+            "Price": "$3.45",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 200,
+            "Price": "$3.00",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 1000,
+            "Price": "$2.87",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 2600,
+            "Price": "$2.83",
+            "Currency": "USD"
+          }
+        ],
+        "AlternatePackagings": null,
+        "ProductDetailUrl": "https://www.mouser.com/ProductDetail/Ohmite/HS10-10K-F?qs=bvCpHSZmQjmYMWkLQBoCuQ%3D%3D",
+        "Reeling": false,
+        "ROHSStatus": "RoHS Compliant",
+        "SuggestedReplacement": "",
+        "MultiSimBlue": 0,
+        "UnitWeightKg": {
+          "UnitWeight": 0.0029
+        },
+        "AvailabilityInStock": "191",
+        "AvailabilityOnOrder": [],
+        "InfoMessages": [],
+        "SurchargeMessages": [
+          {
+            "code": "TARIFF_US",
+            "message": "A tariff of 10 % may be applied."
+          }
+        ],
+        "ProductCompliance": [
+          {
+            "ComplianceName": "USHTS",
+            "ComplianceValue": "8533210080"
+          },
+          {
+            "ComplianceName": "CNHTS",
+            "ComplianceValue": "8533219000"
+          },
+          {
+            "ComplianceName": "CAHTS",
+            "ComplianceValue": "8533210000"
+          },
+          {
+            "ComplianceName": "JPHTS",
+            "ComplianceValue": "853321000"
+          },
+          {
+            "ComplianceName": "KRHTS",
+            "ComplianceValue": "8533219000"
+          },
+          {
+            "ComplianceName": "TARIC",
+            "ComplianceValue": "8533210000"
+          },
+          {
+            "ComplianceName": "MXHTS",
+            "ComplianceValue": "8533210100"
+          },
+          {
+            "ComplianceName": "BRHTS",
+            "ComplianceValue": "85332110"
+          },
+          {
+            "ComplianceName": "ECCN",
+            "ComplianceValue": "EAR99"
+          }
+        ]
+      }
+    },
+    {
+      "_src": "mouser",
+      "_id": "HS200 10K F",
+      "photo": "https://www.mouser.com/images/ohmite/images/HS-200_300-series_SPL.jpg",
+      "title": "HS200 10K F",
+      "mpn": "HS200 10K F",
+      "manufacturer": "Ohmite",
+      "description": "Wirewound Resistors - Chassis Mount 200W 10K OHMS 1%",
+      "package": "",
+      "packaging": "",
+      "regions": [
+        "US"
+      ],
+      "stock": null,
+      "minRub": 2482,
+      "openUrl": "/product.html?src=mouser&id=HS200%2010K%20F",
+      "_raw": {
+        "Availability": "None",
+        "DataSheetUrl": "https://www.mouser.com/datasheet/3/132/1/acl_hs10.pdf",
+        "Description": "Wirewound Resistors - Chassis Mount 200W 10K OHMS 1%",
+        "FactoryStock": "0",
+        "ImagePath": "https://www.mouser.com/images/ohmite/images/HS-200_300-series_SPL.jpg",
+        "Category": "Wirewound Resistors - Chassis Mount",
+        "LeadTime": "154 Days",
+        "LifecycleStatus": null,
+        "Manufacturer": "Ohmite",
+        "ManufacturerPartNumber": "HS200 10K F",
+        "Min": "18",
+        "Mult": "18",
+        "MouserPartNumber": "284-HS200-10KF",
+        "ProductAttributes": [
+          {
+            "AttributeName": "Packaging",
+            "AttributeValue": "Bulk"
+          },
+          {
+            "AttributeName": "Standard Pack Qty",
+            "AttributeValue": "1"
+          }
+        ],
+        "PriceBreaks": [
+          {
+            "Quantity": 18,
+            "Price": "$29.95",
+            "Currency": "USD"
+          }
+        ],
+        "AlternatePackagings": null,
+        "ProductDetailUrl": "https://www.mouser.com/ProductDetail/Ohmite/HS200-10K-F?qs=bvCpHSZmQjkRUvjNhf%252BdsA%3D%3D",
+        "Reeling": false,
+        "ROHSStatus": "RoHS Compliant",
+        "SuggestedReplacement": "",
+        "MultiSimBlue": 0,
+        "UnitWeightKg": {
+          "UnitWeight": 0.435
+        },
+        "AvailabilityInStock": "0",
+        "AvailabilityOnOrder": [],
+        "InfoMessages": [],
+        "SurchargeMessages": [
+          {
+            "code": "TARIFF_US",
+            "message": "A tariff of 7 % may be applied."
+          }
+        ],
+        "ProductCompliance": [
+          {
+            "ComplianceName": "USHTS",
+            "ComplianceValue": "8533290000"
+          },
+          {
+            "ComplianceName": "CNHTS",
+            "ComplianceValue": "8533290000"
+          },
+          {
+            "ComplianceName": "CAHTS",
+            "ComplianceValue": "8533210000"
+          },
+          {
+            "ComplianceName": "JPHTS",
+            "ComplianceValue": "853329000"
+          },
+          {
+            "ComplianceName": "KRHTS",
+            "ComplianceValue": "8533299000"
+          },
+          {
+            "ComplianceName": "TARIC",
+            "ComplianceValue": "8533290000"
+          },
+          {
+            "ComplianceName": "MXHTS",
+            "ComplianceValue": "85332999"
+          },
+          {
+            "ComplianceName": "BRHTS",
+            "ComplianceValue": "85332900"
+          },
+          {
+            "ComplianceName": "ECCN",
+            "ComplianceValue": "EAR99"
+          }
+        ]
+      }
+    },
+    {
+      "_src": "mouser",
+      "_id": "RS02B10K00FS70",
+      "photo": "https://www.mouser.com/images/vishay/images/RS_NS_DSL.jpg",
+      "title": "RS02B10K00FS70",
+      "mpn": "RS02B10K00FS70",
+      "manufacturer": "Vishay / Dale",
+      "description": "Wirewound Resistors - Through Hole 3watts 10Kohms 1%",
+      "package": "",
+      "packaging": "",
+      "regions": [
+        "US"
+      ],
+      "stock": 161,
+      "minRub": 122,
+      "openUrl": "/product.html?src=mouser&id=RS02B10K00FS70",
+      "_raw": {
+        "Availability": "161 In Stock",
+        "DataSheetUrl": "",
+        "Description": "Wirewound Resistors - Through Hole 3watts 10Kohms 1%",
+        "FactoryStock": "0",
+        "ImagePath": "https://www.mouser.com/images/vishay/images/RS_NS_DSL.jpg",
+        "Category": "Wirewound Resistors - Through Hole",
+        "LeadTime": "77 Days",
+        "LifecycleStatus": null,
+        "Manufacturer": "Vishay / Dale",
+        "ManufacturerPartNumber": "RS02B10K00FS70",
+        "Min": "1",
+        "Mult": "1",
+        "MouserPartNumber": "71-RS2B-10K/R",
+        "ProductAttributes": [
+          {
+            "AttributeName": "Standard Pack Qty",
+            "AttributeValue": "1000"
+          }
+        ],
+        "PriceBreaks": [
+          {
+            "Quantity": 1,
+            "Price": "$3.10",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 10,
+            "Price": "$2.08",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 25,
+            "Price": "$1.80",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 50,
+            "Price": "$1.63",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 100,
+            "Price": "$1.48",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 1000,
+            "Price": "$1.47",
+            "Currency": "USD"
+          }
+        ],
+        "AlternatePackagings": null,
+        "ProductDetailUrl": "https://www.mouser.com/ProductDetail/Vishay-Dale/RS02B10K00FS70?qs=v4SOexxHmwElXekBXJ8m6A%3D%3D",
+        "Reeling": false,
+        "ROHSStatus": "No",
+        "SuggestedReplacement": "",
+        "MultiSimBlue": 0,
+        "UnitWeightKg": {
+          "UnitWeight": 0.0021
+        },
+        "AvailabilityInStock": "161",
+        "AvailabilityOnOrder": [],
+        "InfoMessages": [],
+        "SurchargeMessages": [
+          {
+            "code": "TARIFF_US",
+            "message": "A tariff of 20 % may be applied."
+          }
+        ],
+        "ProductCompliance": [
+          {
+            "ComplianceName": "USHTS",
+            "ComplianceValue": "8533210080"
+          },
+          {
+            "ComplianceName": "CNHTS",
+            "ComplianceValue": "8533219000"
+          },
+          {
+            "ComplianceName": "CAHTS",
+            "ComplianceValue": "8533210000"
+          },
+          {
+            "ComplianceName": "JPHTS",
+            "ComplianceValue": "853321000"
+          },
+          {
+            "ComplianceName": "KRHTS",
+            "ComplianceValue": "8533219000"
+          },
+          {
+            "ComplianceName": "TARIC",
+            "ComplianceValue": "8533210000"
+          },
+          {
+            "ComplianceName": "MXHTS",
+            "ComplianceValue": "8533210100"
+          },
+          {
+            "ComplianceName": "BRHTS",
+            "ComplianceValue": "85332110"
+          },
+          {
+            "ComplianceName": "ECCN",
+            "ComplianceValue": "EAR99"
+          }
+        ]
+      }
+    },
+    {
+      "_src": "mouser",
+      "_id": "HS250 10K F",
+      "photo": "https://www.mouser.com/images/ohmite/images/HS-200_300-series_SPL.jpg",
+      "title": "HS250 10K F",
+      "mpn": "HS250 10K F",
+      "manufacturer": "Ohmite",
+      "description": "Wirewound Resistors - Chassis Mount 250W 10K OHM 1%",
+      "package": "",
+      "packaging": "",
+      "regions": [
+        "US"
+      ],
+      "stock": null,
+      "minRub": 1823,
+      "openUrl": "/product.html?src=mouser&id=HS250%2010K%20F",
+      "_raw": {
+        "Availability": "None",
+        "DataSheetUrl": "https://www.mouser.com/datasheet/3/132/1/acl_hs10.pdf",
+        "Description": "Wirewound Resistors - Chassis Mount 250W 10K OHM 1%",
+        "FactoryStock": "0",
+        "ImagePath": "https://www.mouser.com/images/ohmite/images/HS-200_300-series_SPL.jpg",
+        "Category": "Wirewound Resistors - Chassis Mount",
+        "LeadTime": "154 Days",
+        "LifecycleStatus": null,
+        "Manufacturer": "Ohmite",
+        "ManufacturerPartNumber": "HS250 10K F",
+        "Min": "16",
+        "Mult": "16",
+        "MouserPartNumber": "284-HS250-10KF",
+        "ProductAttributes": [
+          {
+            "AttributeName": "Packaging",
+            "AttributeValue": "Bulk"
+          },
+          {
+            "AttributeName": "Standard Pack Qty",
+            "AttributeValue": "1"
+          }
+        ],
+        "PriceBreaks": [
+          {
+            "Quantity": 16,
+            "Price": "$26.06",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 32,
+            "Price": "$24.52",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 64,
+            "Price": "$23.64",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 112,
+            "Price": "$23.39",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 256,
+            "Price": "$22.21",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 512,
+            "Price": "$22.00",
+            "Currency": "USD"
+          }
+        ],
+        "AlternatePackagings": null,
+        "ProductDetailUrl": "https://www.mouser.com/ProductDetail/Ohmite/HS250-10K-F?qs=bvCpHSZmQjmv0huwbxUFvg%3D%3D",
+        "Reeling": false,
+        "ROHSStatus": "RoHS Compliant",
+        "SuggestedReplacement": "",
+        "MultiSimBlue": 0,
+        "UnitWeightKg": {
+          "UnitWeight": 0.6
+        },
+        "AvailabilityInStock": "0",
+        "AvailabilityOnOrder": [],
+        "InfoMessages": [],
+        "SurchargeMessages": [
+          {
+            "code": "TARIFF_US",
+            "message": "A tariff of 7 % may be applied."
+          }
+        ],
+        "ProductCompliance": [
+          {
+            "ComplianceName": "USHTS",
+            "ComplianceValue": "8533290000"
+          },
+          {
+            "ComplianceName": "CNHTS",
+            "ComplianceValue": "8533290000"
+          },
+          {
+            "ComplianceName": "CAHTS",
+            "ComplianceValue": "8533210000"
+          },
+          {
+            "ComplianceName": "JPHTS",
+            "ComplianceValue": "853329000"
+          },
+          {
+            "ComplianceName": "KRHTS",
+            "ComplianceValue": "8533299000"
+          },
+          {
+            "ComplianceName": "TARIC",
+            "ComplianceValue": "8533290000"
+          },
+          {
+            "ComplianceName": "MXHTS",
+            "ComplianceValue": "85332999"
+          },
+          {
+            "ComplianceName": "BRHTS",
+            "ComplianceValue": "85332900"
+          },
+          {
+            "ComplianceName": "ECCN",
+            "ComplianceValue": "EAR99"
+          }
+        ]
+      }
+    },
+    {
+      "_src": "mouser",
+      "_id": "RCV2010510KFKEFAT",
+      "photo": "https://www.mouser.com/images/vishay/images/RCV2010_series_SPL.JPG",
+      "title": "RCV2010510KFKEFAT",
+      "mpn": "RCV2010510KFKEFAT",
+      "manufacturer": "Vishay / Draloric",
+      "description": "Thick Film Resistors - SMD RCV2010-AT 100 510K 1% E02 e3",
+      "package": "",
+      "packaging": "",
+      "regions": [
+        "US"
+      ],
+      "stock": 2980,
+      "minRub": 19,
+      "openUrl": "/product.html?src=mouser&id=RCV2010510KFKEFAT",
+      "_raw": {
+        "Availability": "2980 In Stock",
+        "DataSheetUrl": "",
+        "Description": "Thick Film Resistors - SMD RCV2010-AT 100 510K 1% E02 e3",
+        "FactoryStock": "0",
+        "ImagePath": "https://www.mouser.com/images/vishay/images/RCV2010_series_SPL.JPG",
+        "Category": "Thick Film Resistors - SMD",
+        "LeadTime": "84 Days",
+        "LifecycleStatus": "New Product",
+        "Manufacturer": "Vishay / Draloric",
+        "ManufacturerPartNumber": "RCV2010510KFKEFAT",
+        "Min": "1",
+        "Mult": "1",
+        "MouserPartNumber": "71-RCV2010510KFKEFAT",
+        "ProductAttributes": [
+          {
+            "AttributeName": "Packaging",
+            "AttributeValue": "Reel"
+          },
+          {
+            "AttributeName": "Packaging",
+            "AttributeValue": "Cut Tape"
+          },
+          {
+            "AttributeName": "Packaging",
+            "AttributeValue": "MouseReel",
+            "AttributeCost": "$7.00 MouseReel™ fee will be added and calculated in your shopping cart. All MouseReel™ orders are non-cancellable and non-returnable."
+          },
+          {
+            "AttributeName": "Standard Pack Qty",
+            "AttributeValue": "4000"
+          }
+        ],
+        "PriceBreaks": [
+          {
+            "Quantity": 1,
+            "Price": "$1.03",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 10,
+            "Price": "$0.591",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 100,
+            "Price": "$0.38",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 1000,
+            "Price": "$0.276",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 2000,
+            "Price": "$0.275",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 4000,
+            "Price": "$0.233",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 24000,
+            "Price": "$0.231",
+            "Currency": "USD"
+          }
+        ],
+        "AlternatePackagings": null,
+        "ProductDetailUrl": "https://www.mouser.com/ProductDetail/Vishay-Draloric/RCV2010510KFKEFAT?qs=wT7LY0lnAe19OBp14TNfBg%3D%3D",
+        "Reeling": true,
+        "ROHSStatus": "RoHS Compliant By Exemption",
+        "SuggestedReplacement": "",
+        "MultiSimBlue": 0,
+        "AvailabilityInStock": "2980",
+        "AvailabilityOnOrder": [],
+        "InfoMessages": [],
+        "SurchargeMessages": null,
+        "ProductCompliance": [
+          {
+            "ComplianceName": "USHTS",
+            "ComplianceValue": "8533210030"
+          },
+          {
+            "ComplianceName": "CAHTS",
+            "ComplianceValue": "8533210000"
+          },
+          {
+            "ComplianceName": "JPHTS",
+            "ComplianceValue": "853321000"
+          },
+          {
+            "ComplianceName": "KRHTS",
+            "ComplianceValue": "8533219000"
+          },
+          {
+            "ComplianceName": "TARIC",
+            "ComplianceValue": "8533210000"
+          },
+          {
+            "ComplianceName": "MXHTS",
+            "ComplianceValue": "8533210100"
+          },
+          {
+            "ComplianceName": "BRHTS",
+            "ComplianceValue": "85332120"
+          },
+          {
+            "ComplianceName": "ECCN",
+            "ComplianceValue": "EAR99"
+          }
+        ]
+      }
+    },
+    {
+      "_src": "mouser",
+      "_id": "RCV0805510KFKEA",
+      "photo": "https://www.mouser.com/images/vishay/images/RCV2010_series_SPL.JPG",
+      "title": "RCV0805510KFKEA",
+      "mpn": "RCV0805510KFKEA",
+      "manufacturer": "Vishay / Draloric",
+      "description": "Thick Film Resistors - SMD RCV0805 100 510K 1% ET1 E3",
+      "package": "",
+      "packaging": "",
+      "regions": [
+        "US"
+      ],
+      "stock": 7209,
+      "minRub": 2,
+      "openUrl": "/product.html?src=mouser&id=RCV0805510KFKEA",
+      "_raw": {
+        "Availability": "7209 In Stock",
+        "DataSheetUrl": "",
+        "Description": "Thick Film Resistors - SMD RCV0805 100 510K 1% ET1 E3",
+        "FactoryStock": "0",
+        "ImagePath": "https://www.mouser.com/images/vishay/images/RCV2010_series_SPL.JPG",
+        "Category": "Thick Film Resistors - SMD",
+        "LeadTime": "84 Days",
+        "LifecycleStatus": "New Product",
+        "Manufacturer": "Vishay / Draloric",
+        "ManufacturerPartNumber": "RCV0805510KFKEA",
+        "Min": "1",
+        "Mult": "1",
+        "MouserPartNumber": "71-RCV0805510KFKEA",
+        "ProductAttributes": [
+          {
+            "AttributeName": "Packaging",
+            "AttributeValue": "Reel"
+          },
+          {
+            "AttributeName": "Packaging",
+            "AttributeValue": "Cut Tape"
+          },
+          {
+            "AttributeName": "Packaging",
+            "AttributeValue": "MouseReel",
+            "AttributeCost": "$7.00 MouseReel™ fee will be added and calculated in your shopping cart. All MouseReel™ orders are non-cancellable and non-returnable."
+          },
+          {
+            "AttributeName": "Standard Pack Qty",
+            "AttributeValue": "5000"
+          }
+        ],
+        "PriceBreaks": [
+          {
+            "Quantity": 1,
+            "Price": "$0.24",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 10,
+            "Price": "$0.122",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 100,
+            "Price": "$0.071",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 1000,
+            "Price": "$0.046",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 2000,
+            "Price": "$0.04",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 5000,
+            "Price": "$0.036",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 10000,
+            "Price": "$0.033",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 25000,
+            "Price": "$0.031",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 50000,
+            "Price": "$0.03",
+            "Currency": "USD"
+          }
+        ],
+        "AlternatePackagings": null,
+        "ProductDetailUrl": "https://www.mouser.com/ProductDetail/Vishay-Draloric/RCV0805510KFKEA?qs=wT7LY0lnAe2DtqayN6LYMw%3D%3D",
+        "Reeling": true,
+        "ROHSStatus": "RoHS Compliant By Exemption",
+        "SuggestedReplacement": "",
+        "MultiSimBlue": 0,
+        "AvailabilityInStock": "7209",
+        "AvailabilityOnOrder": [],
+        "InfoMessages": [],
+        "SurchargeMessages": null,
+        "ProductCompliance": [
+          {
+            "ComplianceName": "USHTS",
+            "ComplianceValue": "8533210030"
+          },
+          {
+            "ComplianceName": "CNHTS",
+            "ComplianceValue": "8533211000"
+          },
+          {
+            "ComplianceName": "CAHTS",
+            "ComplianceValue": "8533210000"
+          },
+          {
+            "ComplianceName": "JPHTS",
+            "ComplianceValue": "853321000"
+          },
+          {
+            "ComplianceName": "KRHTS",
+            "ComplianceValue": "8533219000"
+          },
+          {
+            "ComplianceName": "TARIC",
+            "ComplianceValue": "8533210000"
+          },
+          {
+            "ComplianceName": "MXHTS",
+            "ComplianceValue": "8533210100"
+          },
+          {
+            "ComplianceName": "BRHTS",
+            "ComplianceValue": "85332120"
+          },
+          {
+            "ComplianceName": "ECCN",
+            "ComplianceValue": "EAR99"
+          }
+        ]
+      }
+    },
+    {
+      "_src": "mouser",
+      "_id": "RCV2512510KFKEGAT",
+      "photo": "https://www.mouser.com/images/vishay/images/RCV2010_series_SPL.JPG",
+      "title": "RCV2512510KFKEGAT",
+      "mpn": "RCV2512510KFKEGAT",
+      "manufacturer": "Vishay / Draloric",
+      "description": "Thick Film Resistors - SMD RCV2512-AT 100 510K 1% E67 e3",
+      "package": "",
+      "packaging": "",
+      "regions": [
+        "US"
+      ],
+      "stock": 1582,
+      "minRub": 35,
+      "openUrl": "/product.html?src=mouser&id=RCV2512510KFKEGAT",
+      "_raw": {
+        "Availability": "1582 In Stock",
+        "DataSheetUrl": "",
+        "Description": "Thick Film Resistors - SMD RCV2512-AT 100 510K 1% E67 e3",
+        "FactoryStock": "0",
+        "ImagePath": "https://www.mouser.com/images/vishay/images/RCV2010_series_SPL.JPG",
+        "Category": "Thick Film Resistors - SMD",
+        "LeadTime": "84 Days",
+        "LifecycleStatus": "New Product",
+        "Manufacturer": "Vishay / Draloric",
+        "ManufacturerPartNumber": "RCV2512510KFKEGAT",
+        "Min": "1",
+        "Mult": "1",
+        "MouserPartNumber": "71-RCV2512510KFKEGAT",
+        "ProductAttributes": [
+          {
+            "AttributeName": "Packaging",
+            "AttributeValue": "Reel"
+          },
+          {
+            "AttributeName": "Packaging",
+            "AttributeValue": "Cut Tape"
+          },
+          {
+            "AttributeName": "Packaging",
+            "AttributeValue": "MouseReel",
+            "AttributeCost": "$7.00 MouseReel™ fee will be added and calculated in your shopping cart. All MouseReel™ orders are non-cancellable and non-returnable."
+          },
+          {
+            "AttributeName": "Standard Pack Qty",
+            "AttributeValue": "2000"
+          }
+        ],
+        "PriceBreaks": [
+          {
+            "Quantity": 1,
+            "Price": "$1.70",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 10,
+            "Price": "$1.01",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 100,
+            "Price": "$0.66",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 1000,
+            "Price": "$0.499",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 2000,
+            "Price": "$0.424",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 10000,
+            "Price": "$0.423",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 24000,
+            "Price": "$0.418",
+            "Currency": "USD"
+          }
+        ],
+        "AlternatePackagings": null,
+        "ProductDetailUrl": "https://www.mouser.com/ProductDetail/Vishay-Draloric/RCV2512510KFKEGAT?qs=wT7LY0lnAe3Br8dfkUwyiA%3D%3D",
+        "Reeling": true,
+        "ROHSStatus": "RoHS Compliant By Exemption",
+        "SuggestedReplacement": "",
+        "MultiSimBlue": 0,
+        "AvailabilityInStock": "1582",
+        "AvailabilityOnOrder": [],
+        "InfoMessages": [],
+        "SurchargeMessages": null,
+        "ProductCompliance": [
+          {
+            "ComplianceName": "USHTS",
+            "ComplianceValue": "8533210030"
+          },
+          {
+            "ComplianceName": "CNHTS",
+            "ComplianceValue": "8533211000"
+          },
+          {
+            "ComplianceName": "CAHTS",
+            "ComplianceValue": "8533210000"
+          },
+          {
+            "ComplianceName": "JPHTS",
+            "ComplianceValue": "853321000"
+          },
+          {
+            "ComplianceName": "KRHTS",
+            "ComplianceValue": "8533219000"
+          },
+          {
+            "ComplianceName": "TARIC",
+            "ComplianceValue": "8533210000"
+          },
+          {
+            "ComplianceName": "MXHTS",
+            "ComplianceValue": "8533210100"
+          },
+          {
+            "ComplianceName": "BRHTS",
+            "ComplianceValue": "85332120"
+          },
+          {
+            "ComplianceName": "ECCN",
+            "ComplianceValue": "EAR99"
+          }
+        ]
+      }
+    },
+    {
+      "_src": "mouser",
+      "_id": "CRMA2510AF10K0FKEF",
+      "photo": "https://www.mouser.com/images/vishay/images/CRMA1206AF120KFKEF_SPL.jpg",
+      "title": "CRMA2510AF10K0FKEF",
+      "mpn": "CRMA2510AF10K0FKEF",
+      "manufacturer": "Vishay / Techno",
+      "description": "Thick Film Resistors - SMD 0.50W 10Kohms 1% AEC-Q200",
+      "package": "",
+      "packaging": "",
+      "regions": [
+        "US"
+      ],
+      "stock": 4000,
+      "minRub": 33,
+      "openUrl": "/product.html?src=mouser&id=CRMA2510AF10K0FKEF",
+      "_raw": {
+        "Availability": "4000 In Stock",
+        "DataSheetUrl": "",
+        "Description": "Thick Film Resistors - SMD 0.50W 10Kohms 1% AEC-Q200",
+        "FactoryStock": "0",
+        "ImagePath": "https://www.mouser.com/images/vishay/images/CRMA1206AF120KFKEF_SPL.jpg",
+        "Category": "Thick Film Resistors - SMD",
+        "LeadTime": "91 Days",
+        "LifecycleStatus": "New Product",
+        "Manufacturer": "Vishay / Techno",
+        "ManufacturerPartNumber": "CRMA2510AF10K0FKEF",
+        "Min": "1",
+        "Mult": "1",
+        "MouserPartNumber": "71-CRMA2510AF10K0FKF",
+        "ProductAttributes": [
+          {
+            "AttributeName": "Packaging",
+            "AttributeValue": "Reel"
+          },
+          {
+            "AttributeName": "Packaging",
+            "AttributeValue": "Cut Tape"
+          },
+          {
+            "AttributeName": "Packaging",
+            "AttributeValue": "MouseReel",
+            "AttributeCost": "$7.00 MouseReel™ fee will be added and calculated in your shopping cart. All MouseReel™ orders are non-cancellable and non-returnable."
+          },
+          {
+            "AttributeName": "Standard Pack Qty",
+            "AttributeValue": "2000"
+          }
+        ],
+        "PriceBreaks": [
+          {
+            "Quantity": 1,
+            "Price": "$1.54",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 10,
+            "Price": "$0.879",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 100,
+            "Price": "$0.566",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 1000,
+            "Price": "$0.41",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 2000,
+            "Price": "$0.401",
+            "Currency": "USD"
+          }
+        ],
+        "AlternatePackagings": null,
+        "ProductDetailUrl": "https://www.mouser.com/ProductDetail/Vishay-Techno/CRMA2510AF10K0FKEF?qs=wT7LY0lnAe191x9leklhjg%3D%3D",
+        "Reeling": true,
+        "ROHSStatus": "RoHS Compliant By Exemption",
+        "SuggestedReplacement": "",
+        "MultiSimBlue": 0,
+        "AvailabilityInStock": "4000",
+        "AvailabilityOnOrder": [],
+        "InfoMessages": [],
+        "SurchargeMessages": [
+          {
+            "code": "TARIFF_US",
+            "message": "A tariff of 14 % may be applied."
+          }
+        ],
+        "ProductCompliance": [
+          {
+            "ComplianceName": "USHTS",
+            "ComplianceValue": "8533210030"
+          },
+          {
+            "ComplianceName": "CAHTS",
+            "ComplianceValue": "8533210000"
+          },
+          {
+            "ComplianceName": "JPHTS",
+            "ComplianceValue": "853321000"
+          },
+          {
+            "ComplianceName": "KRHTS",
+            "ComplianceValue": "8533219000"
+          },
+          {
+            "ComplianceName": "TARIC",
+            "ComplianceValue": "8533210000"
+          },
+          {
+            "ComplianceName": "MXHTS",
+            "ComplianceValue": "8533210100"
+          },
+          {
+            "ComplianceName": "BRHTS",
+            "ComplianceValue": "85332120"
+          },
+          {
+            "ComplianceName": "ECCN",
+            "ComplianceValue": "EAR99"
+          }
+        ]
+      }
+    },
+    {
+      "_src": "mouser",
+      "_id": "RCV1206510KFKEAAT",
+      "photo": "https://www.mouser.com/images/vishay/images/RCV2010_series_SPL.JPG",
+      "title": "RCV1206510KFKEAAT",
+      "mpn": "RCV1206510KFKEAAT",
+      "manufacturer": "Vishay / Draloric",
+      "description": "Thick Film Resistors - SMD RCV1206-AT 100 510K 1% ET1 e3",
+      "package": "",
+      "packaging": "",
+      "regions": [
+        "US"
+      ],
+      "stock": 4848,
+      "minRub": 3,
+      "openUrl": "/product.html?src=mouser&id=RCV1206510KFKEAAT",
+      "_raw": {
+        "Availability": "4848 In Stock",
+        "DataSheetUrl": "",
+        "Description": "Thick Film Resistors - SMD RCV1206-AT 100 510K 1% ET1 e3",
+        "FactoryStock": "0",
+        "ImagePath": "https://www.mouser.com/images/vishay/images/RCV2010_series_SPL.JPG",
+        "Category": "Thick Film Resistors - SMD",
+        "LeadTime": "182 Days",
+        "LifecycleStatus": "New Product",
+        "Manufacturer": "Vishay / Draloric",
+        "ManufacturerPartNumber": "RCV1206510KFKEAAT",
+        "Min": "1",
+        "Mult": "1",
+        "MouserPartNumber": "71-RCV1206510KFKEAAT",
+        "ProductAttributes": [
+          {
+            "AttributeName": "Packaging",
+            "AttributeValue": "Reel"
+          },
+          {
+            "AttributeName": "Packaging",
+            "AttributeValue": "Cut Tape"
+          },
+          {
+            "AttributeName": "Packaging",
+            "AttributeValue": "MouseReel",
+            "AttributeCost": "$7.00 MouseReel™ fee will be added and calculated in your shopping cart. All MouseReel™ orders are non-cancellable and non-returnable."
+          },
+          {
+            "AttributeName": "Standard Pack Qty",
+            "AttributeValue": "5000"
+          }
+        ],
+        "PriceBreaks": [
+          {
+            "Quantity": 1,
+            "Price": "$0.31",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 10,
+            "Price": "$0.162",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 100,
+            "Price": "$0.096",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 1000,
+            "Price": "$0.063",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 2000,
+            "Price": "$0.054",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 5000,
+            "Price": "$0.048",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 10000,
+            "Price": "$0.044",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 25000,
+            "Price": "$0.042",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 50000,
+            "Price": "$0.039",
+            "Currency": "USD"
+          }
+        ],
+        "AlternatePackagings": null,
+        "ProductDetailUrl": "https://www.mouser.com/ProductDetail/Vishay-Draloric/RCV1206510KFKEAAT?qs=wT7LY0lnAe1j7CPeRVS%2FTw%3D%3D",
+        "Reeling": true,
+        "ROHSStatus": "RoHS Compliant By Exemption",
+        "SuggestedReplacement": "",
+        "MultiSimBlue": 0,
+        "AvailabilityInStock": "4848",
+        "AvailabilityOnOrder": [],
+        "InfoMessages": [],
+        "SurchargeMessages": null,
+        "ProductCompliance": [
+          {
+            "ComplianceName": "USHTS",
+            "ComplianceValue": "8533210030"
+          },
+          {
+            "ComplianceName": "CAHTS",
+            "ComplianceValue": "8533210000"
+          },
+          {
+            "ComplianceName": "JPHTS",
+            "ComplianceValue": "853321000"
+          },
+          {
+            "ComplianceName": "KRHTS",
+            "ComplianceValue": "8533219000"
+          },
+          {
+            "ComplianceName": "TARIC",
+            "ComplianceValue": "8533210000"
+          },
+          {
+            "ComplianceName": "MXHTS",
+            "ComplianceValue": "8533210100"
+          },
+          {
+            "ComplianceName": "BRHTS",
+            "ComplianceValue": "85332120"
+          },
+          {
+            "ComplianceName": "ECCN",
+            "ComplianceValue": "EAR99"
+          }
+        ]
+      }
+    },
+    {
+      "_src": "mouser",
+      "_id": "HS100 10K F",
+      "photo": "https://www.mouser.com/images/ohmite/images/HS-75_150-series_SPL.jpg",
+      "title": "HS100 10K F",
+      "mpn": "HS100 10K F",
+      "manufacturer": "Ohmite",
+      "description": "Wirewound Resistors - Chassis Mount PWR RES 100W 10K 1%",
+      "package": "",
+      "packaging": "",
+      "regions": [
+        "US"
+      ],
+      "stock": null,
+      "minRub": 603,
+      "openUrl": "/product.html?src=mouser&id=HS100%2010K%20F",
+      "_raw": {
+        "Availability": "None",
+        "DataSheetUrl": "https://www.mouser.com/datasheet/3/132/1/acl_hs10.pdf",
+        "Description": "Wirewound Resistors - Chassis Mount PWR RES 100W 10K 1%",
+        "FactoryStock": "0",
+        "ImagePath": "https://www.mouser.com/images/ohmite/images/HS-75_150-series_SPL.jpg",
+        "Category": "Wirewound Resistors - Chassis Mount",
+        "LeadTime": "154 Days",
+        "LifecycleStatus": null,
+        "Manufacturer": "Ohmite",
+        "ManufacturerPartNumber": "HS100 10K F",
+        "Min": "45",
+        "Mult": "45",
+        "MouserPartNumber": "284-HS100-10KF",
+        "ProductAttributes": [
+          {
+            "AttributeName": "Packaging",
+            "AttributeValue": "Bulk"
+          },
+          {
+            "AttributeName": "Standard Pack Qty",
+            "AttributeValue": "45"
+          }
+        ],
+        "PriceBreaks": [
+          {
+            "Quantity": 45,
+            "Price": "$8.65",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 90,
+            "Price": "$8.22",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 270,
+            "Price": "$8.02",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 540,
+            "Price": "$7.54",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 1035,
+            "Price": "$7.28",
+            "Currency": "USD"
+          }
+        ],
+        "AlternatePackagings": null,
+        "ProductDetailUrl": "https://www.mouser.com/ProductDetail/Ohmite/HS100-10K-F?qs=bvCpHSZmQjmuxAeMqa03pw%3D%3D",
+        "Reeling": false,
+        "ROHSStatus": "RoHS Compliant",
+        "SuggestedReplacement": "",
+        "MultiSimBlue": 0,
+        "UnitWeightKg": {
+          "UnitWeight": 0.105
+        },
+        "AvailabilityInStock": "0",
+        "AvailabilityOnOrder": [],
+        "InfoMessages": [],
+        "SurchargeMessages": [
+          {
+            "code": "TARIFF_US",
+            "message": "A tariff of 7 % may be applied."
+          }
+        ],
+        "ProductCompliance": [
+          {
+            "ComplianceName": "USHTS",
+            "ComplianceValue": "8533290000"
+          },
+          {
+            "ComplianceName": "CNHTS",
+            "ComplianceValue": "8533290000"
+          },
+          {
+            "ComplianceName": "CAHTS",
+            "ComplianceValue": "8533210000"
+          },
+          {
+            "ComplianceName": "JPHTS",
+            "ComplianceValue": "853329000"
+          },
+          {
+            "ComplianceName": "KRHTS",
+            "ComplianceValue": "8533299000"
+          },
+          {
+            "ComplianceName": "TARIC",
+            "ComplianceValue": "8533290000"
+          },
+          {
+            "ComplianceName": "MXHTS",
+            "ComplianceValue": "85332999"
+          },
+          {
+            "ComplianceName": "BRHTS",
+            "ComplianceValue": "85332900"
+          },
+          {
+            "ComplianceName": "ECCN",
+            "ComplianceValue": "EAR99"
+          }
+        ]
+      }
+    },
+    {
+      "_src": "mouser",
+      "_id": "CRMV1206AF10K0FKE5",
+      "photo": "https://www.mouser.com/images/vishay/images/CRMA_series_DSL.jpg",
+      "title": "CRMV1206AF10K0FKE5",
+      "mpn": "CRMV1206AF10K0FKE5",
+      "manufacturer": "Vishay / Techno",
+      "description": "Thick Film Resistors - SMD 10K OHM 1% 1KV",
+      "package": "",
+      "packaging": "",
+      "regions": [
+        "US"
+      ],
+      "stock": 2022,
+      "minRub": 18,
+      "openUrl": "/product.html?src=mouser&id=CRMV1206AF10K0FKE5",
+      "_raw": {
+        "Availability": "2022 In Stock",
+        "DataSheetUrl": "",
+        "Description": "Thick Film Resistors - SMD 10K   OHM   1% 1KV",
+        "FactoryStock": "0",
+        "ImagePath": "https://www.mouser.com/images/vishay/images/CRMA_series_DSL.jpg",
+        "Category": "Thick Film Resistors - SMD",
+        "LeadTime": "98 Days",
+        "LifecycleStatus": "New Product",
+        "Manufacturer": "Vishay / Techno",
+        "ManufacturerPartNumber": "CRMV1206AF10K0FKE5",
+        "Min": "1",
+        "Mult": "1",
+        "MouserPartNumber": "71-RMV1206AF10K0FKE5",
+        "ProductAttributes": [
+          {
+            "AttributeName": "Packaging",
+            "AttributeValue": "Reel"
+          },
+          {
+            "AttributeName": "Packaging",
+            "AttributeValue": "Cut Tape"
+          },
+          {
+            "AttributeName": "Standard Pack Qty",
+            "AttributeValue": "500"
+          }
+        ],
+        "PriceBreaks": [
+          {
+            "Quantity": 1,
+            "Price": "$0.92",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 10,
+            "Price": "$0.527",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 100,
+            "Price": "$0.333",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 500,
+            "Price": "$0.261",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 1000,
+            "Price": "$0.222",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 2500,
+            "Price": "$0.218",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 5000,
+            "Price": "$0.213",
+            "Currency": "USD"
+          }
+        ],
+        "AlternatePackagings": null,
+        "ProductDetailUrl": "https://www.mouser.com/ProductDetail/Vishay-Techno/CRMV1206AF10K0FKE5?qs=l8RvIzyJx4lLA%2F4RSSc%2F9A%3D%3D",
+        "Reeling": true,
+        "ROHSStatus": "RoHS Compliant",
+        "SuggestedReplacement": "",
+        "MultiSimBlue": 0,
+        "AvailabilityInStock": "2022",
+        "AvailabilityOnOrder": [
+          {
+            "Quantity": 5000,
+            "Date": "2026-01-26T00:00:00"
+          }
+        ],
+        "InfoMessages": [],
+        "SurchargeMessages": null,
+        "ProductCompliance": [
+          {
+            "ComplianceName": "USHTS",
+            "ComplianceValue": "8533210020"
+          },
+          {
+            "ComplianceName": "CNHTS",
+            "ComplianceValue": "8533211000"
+          },
+          {
+            "ComplianceName": "CAHTS",
+            "ComplianceValue": "8533210000"
+          },
+          {
+            "ComplianceName": "JPHTS",
+            "ComplianceValue": "853321000"
+          },
+          {
+            "ComplianceName": "KRHTS",
+            "ComplianceValue": "8533219000"
+          },
+          {
+            "ComplianceName": "TARIC",
+            "ComplianceValue": "8533210000"
+          },
+          {
+            "ComplianceName": "MXHTS",
+            "ComplianceValue": "8533210100"
+          },
+          {
+            "ComplianceName": "BRHTS",
+            "ComplianceValue": "85332120"
+          },
+          {
+            "ComplianceName": "ECCN",
+            "ComplianceValue": "EAR99"
+          }
+        ]
+      }
+    },
+    {
+      "_src": "mouser",
+      "_id": "CRCW060310K0FKEI",
+      "photo": "https://www.mouser.com/images/vishay/images/CRCW_SPL.jpg",
+      "title": "CRCW060310K0FKEI",
+      "mpn": "CRCW060310K0FKEI",
+      "manufacturer": "Vishay",
+      "description": "Thick Film Resistors - SMD 10K OHM 1%",
+      "package": "",
+      "packaging": "",
+      "regions": [
+        "US"
+      ],
+      "stock": 112727,
+      "minRub": 2,
+      "openUrl": "/product.html?src=mouser&id=CRCW060310K0FKEI",
+      "_raw": {
+        "Availability": "112727 In Stock",
+        "DataSheetUrl": "",
+        "Description": "Thick Film Resistors - SMD 10K    OHM   1%",
+        "FactoryStock": "0",
+        "ImagePath": "https://www.mouser.com/images/vishay/images/CRCW_SPL.jpg",
+        "Category": "Thick Film Resistors - SMD",
+        "LeadTime": "84 Days",
+        "LifecycleStatus": null,
+        "Manufacturer": "Vishay",
+        "ManufacturerPartNumber": "CRCW060310K0FKEI",
+        "Min": "1",
+        "Mult": "1",
+        "MouserPartNumber": "71-CRCW060310K0FKEI",
+        "ProductAttributes": [
+          {
+            "AttributeName": "Packaging",
+            "AttributeValue": "Reel"
+          },
+          {
+            "AttributeName": "Packaging",
+            "AttributeValue": "Cut Tape"
+          },
+          {
+            "AttributeName": "Packaging",
+            "AttributeValue": "MouseReel",
+            "AttributeCost": "$7.00 MouseReel™ fee will be added and calculated in your shopping cart. All MouseReel™ orders are non-cancellable and non-returnable."
+          },
+          {
+            "AttributeName": "Standard Pack Qty",
+            "AttributeValue": "5000"
+          }
+        ],
+        "PriceBreaks": [
+          {
+            "Quantity": 1,
+            "Price": "$0.12",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 10,
+            "Price": "$0.033",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 5000,
+            "Price": "$0.029",
+            "Currency": "USD"
+          }
+        ],
+        "AlternatePackagings": null,
+        "ProductDetailUrl": "https://www.mouser.com/ProductDetail/Vishay/CRCW060310K0FKEI?qs=3qWEzBg5KnKofE%252B8acPBRA%3D%3D",
+        "Reeling": true,
+        "ROHSStatus": "RoHS Compliant By Exemption",
+        "SuggestedReplacement": "",
+        "MultiSimBlue": 0,
+        "UnitWeightKg": {
+          "UnitWeight": 0.000002
+        },
+        "AvailabilityInStock": "112727",
+        "AvailabilityOnOrder": [],
+        "InfoMessages": [],
+        "SurchargeMessages": [
+          {
+            "code": "TARIFF_US",
+            "message": "A tariff of 14 % may be applied."
+          }
+        ],
+        "ProductCompliance": [
+          {
+            "ComplianceName": "USHTS",
+            "ComplianceValue": "8533210030"
+          },
+          {
+            "ComplianceName": "CNHTS",
+            "ComplianceValue": "8533211000"
+          },
+          {
+            "ComplianceName": "CAHTS",
+            "ComplianceValue": "8533210000"
+          },
+          {
+            "ComplianceName": "JPHTS",
+            "ComplianceValue": "853321000"
+          },
+          {
+            "ComplianceName": "KRHTS",
+            "ComplianceValue": "8533219000"
+          },
+          {
+            "ComplianceName": "TARIC",
+            "ComplianceValue": "8533210000"
+          },
+          {
+            "ComplianceName": "MXHTS",
+            "ComplianceValue": "8533210100"
+          },
+          {
+            "ComplianceName": "BRHTS",
+            "ComplianceValue": "85332120"
+          },
+          {
+            "ComplianceName": "ECCN",
+            "ComplianceValue": "EAR99"
+          }
+        ]
+      }
+    },
+    {
+      "_src": "mouser",
+      "_id": "CRCW080510K7FKEAHP",
+      "photo": "https://www.mouser.com/images/vishay/images/CRCW_series_DSL.jpg",
+      "title": "CRCW080510K7FKEAHP",
+      "mpn": "CRCW080510K7FKEAHP",
+      "manufacturer": "Vishay",
+      "description": "Thick Film Resistors - SMD CRCW0805-HP 100 10K7 1% ET1 e3",
+      "package": "",
+      "packaging": "",
+      "regions": [
+        "US"
+      ],
+      "stock": 10720,
+      "minRub": 2,
+      "openUrl": "/product.html?src=mouser&id=CRCW080510K7FKEAHP",
+      "_raw": {
+        "Availability": "10720 In Stock",
+        "DataSheetUrl": "",
+        "Description": "Thick Film Resistors - SMD CRCW0805-HP 100 10K7 1% ET1 e3",
+        "FactoryStock": "0",
+        "ImagePath": "https://www.mouser.com/images/vishay/images/CRCW_series_DSL.jpg",
+        "Category": "Thick Film Resistors - SMD",
+        "LeadTime": "84 Days",
+        "LifecycleStatus": null,
+        "Manufacturer": "Vishay",
+        "ManufacturerPartNumber": "CRCW080510K7FKEAHP",
+        "Min": "1",
+        "Mult": "1",
+        "MouserPartNumber": "71-CRCW080510K7FKEAH",
+        "ProductAttributes": [
+          {
+            "AttributeName": "Packaging",
+            "AttributeValue": "Reel"
+          },
+          {
+            "AttributeName": "Packaging",
+            "AttributeValue": "Cut Tape"
+          },
+          {
+            "AttributeName": "Packaging",
+            "AttributeValue": "MouseReel",
+            "AttributeCost": "$7.00 MouseReel™ fee will be added and calculated in your shopping cart. All MouseReel™ orders are non-cancellable and non-returnable."
+          },
+          {
+            "AttributeName": "Standard Pack Qty",
+            "AttributeValue": "5000"
+          }
+        ],
+        "PriceBreaks": [
+          {
+            "Quantity": 1,
+            "Price": "$0.23",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 10,
+            "Price": "$0.115",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 100,
+            "Price": "$0.065",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 1000,
+            "Price": "$0.042",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 2000,
+            "Price": "$0.036",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 5000,
+            "Price": "$0.034",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 25000,
+            "Price": "$0.027",
+            "Currency": "USD"
+          }
+        ],
+        "AlternatePackagings": null,
+        "ProductDetailUrl": "https://www.mouser.com/ProductDetail/Vishay/CRCW080510K7FKEAHP?qs=VAB4DzKv5wVV5jLFvyZIgA%3D%3D",
+        "Reeling": true,
+        "ROHSStatus": "RoHS Compliant By Exemption",
+        "SuggestedReplacement": "",
+        "MultiSimBlue": 0,
+        "UnitWeightKg": {
+          "UnitWeight": 0.0000055
+        },
+        "AvailabilityInStock": "10720",
+        "AvailabilityOnOrder": [],
+        "InfoMessages": [],
+        "SurchargeMessages": null,
+        "ProductCompliance": [
+          {
+            "ComplianceName": "USHTS",
+            "ComplianceValue": "8533210030"
+          },
+          {
+            "ComplianceName": "CAHTS",
+            "ComplianceValue": "8533210000"
+          },
+          {
+            "ComplianceName": "JPHTS",
+            "ComplianceValue": "853321000"
+          },
+          {
+            "ComplianceName": "KRHTS",
+            "ComplianceValue": "8533219000"
+          },
+          {
+            "ComplianceName": "TARIC",
+            "ComplianceValue": "8533210000"
+          },
+          {
+            "ComplianceName": "MXHTS",
+            "ComplianceValue": "8533210100"
+          },
+          {
+            "ComplianceName": "BRHTS",
+            "ComplianceValue": "85332120"
+          },
+          {
+            "ComplianceName": "ECCN",
+            "ComplianceValue": "EAR99"
+          }
+        ]
+      }
+    },
+    {
+      "_src": "mouser",
+      "_id": "CRCW121810K0FKTK",
+      "photo": "https://www.mouser.com/images/vishay/images/CRCW_SPL.jpg",
+      "title": "CRCW121810K0FKTK",
+      "mpn": "CRCW121810K0FKTK",
+      "manufacturer": "Vishay",
+      "description": "Thick Film Resistors - SMD 10K OHM 1%",
+      "package": "",
+      "packaging": "",
+      "regions": [
+        "US"
+      ],
+      "stock": 1790,
+      "minRub": 14,
+      "openUrl": "/product.html?src=mouser&id=CRCW121810K0FKTK",
+      "_raw": {
+        "Availability": "1790 In Stock",
+        "DataSheetUrl": "",
+        "Description": "Thick Film Resistors - SMD 10K   OHM   1%",
+        "FactoryStock": "0",
+        "ImagePath": "https://www.mouser.com/images/vishay/images/CRCW_SPL.jpg",
+        "Category": "Thick Film Resistors - SMD",
+        "LeadTime": "84 Days",
+        "LifecycleStatus": null,
+        "Manufacturer": "Vishay",
+        "ManufacturerPartNumber": "CRCW121810K0FKTK",
+        "Min": "1",
+        "Mult": "1",
+        "MouserPartNumber": "71-CRCW121810K0FKTK",
+        "ProductAttributes": [
+          {
+            "AttributeName": "Packaging",
+            "AttributeValue": "Bulk"
+          },
+          {
+            "AttributeName": "Standard Pack Qty",
+            "AttributeValue": "4000"
+          }
+        ],
+        "PriceBreaks": [
+          {
+            "Quantity": 1,
+            "Price": "$0.84",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 10,
+            "Price": "$0.48",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 100,
+            "Price": "$0.303",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 1000,
+            "Price": "$0.207",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 4000,
+            "Price": "$0.173",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 12000,
+            "Price": "$0.172",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 24000,
+            "Price": "$0.171",
+            "Currency": "USD"
+          }
+        ],
+        "AlternatePackagings": null,
+        "ProductDetailUrl": "https://www.mouser.com/ProductDetail/Vishay/CRCW121810K0FKTK?qs=WAoeuW9P7%2F5lSqaN9OJHMQ%3D%3D",
+        "Reeling": false,
+        "ROHSStatus": "RoHS Compliant By Exemption",
+        "REACH-SVHC": [
+          "Lead (7439-92-1)"
+        ],
+        "SuggestedReplacement": "",
+        "MultiSimBlue": 0,
+        "UnitWeightKg": {
+          "UnitWeight": 0.0000295
+        },
+        "AvailabilityInStock": "1790",
+        "AvailabilityOnOrder": [],
+        "InfoMessages": [],
+        "SurchargeMessages": null,
+        "ProductCompliance": [
+          {
+            "ComplianceName": "USHTS",
+            "ComplianceValue": "8533210030"
+          },
+          {
+            "ComplianceName": "CNHTS",
+            "ComplianceValue": "8533211000"
+          },
+          {
+            "ComplianceName": "CAHTS",
+            "ComplianceValue": "8533210000"
+          },
+          {
+            "ComplianceName": "JPHTS",
+            "ComplianceValue": "853321000"
+          },
+          {
+            "ComplianceName": "KRHTS",
+            "ComplianceValue": "8533219000"
+          },
+          {
+            "ComplianceName": "TARIC",
+            "ComplianceValue": "8533210000"
+          },
+          {
+            "ComplianceName": "MXHTS",
+            "ComplianceValue": "8533210100"
+          },
+          {
+            "ComplianceName": "BRHTS",
+            "ComplianceValue": "85332120"
+          },
+          {
+            "ComplianceName": "ECCN",
+            "ComplianceValue": "EAR99"
+          }
+        ]
+      }
+    },
+    {
+      "_src": "mouser",
+      "_id": "RCV1206110KFKEA",
+      "photo": "https://www.mouser.com/images/vishay/images/RCV2010_series_SPL.jpg",
+      "title": "RCV1206110KFKEA",
+      "mpn": "RCV1206110KFKEA",
+      "manufacturer": "Vishay / Draloric",
+      "description": "Thick Film Resistors - SMD .25w 110Kohms 1% 100ppm",
+      "package": "",
+      "packaging": "",
+      "regions": [
+        "US"
+      ],
+      "stock": 13647,
+      "minRub": 3,
+      "openUrl": "/product.html?src=mouser&id=RCV1206110KFKEA",
+      "_raw": {
+        "Availability": "13647 In Stock",
+        "DataSheetUrl": "",
+        "Description": "Thick Film Resistors - SMD .25w 110Kohms 1% 100ppm",
+        "FactoryStock": "0",
+        "ImagePath": "https://www.mouser.com/images/vishay/images/RCV2010_series_SPL.jpg",
+        "Category": "Thick Film Resistors - SMD",
+        "LeadTime": "77 Days",
+        "LifecycleStatus": null,
+        "Manufacturer": "Vishay / Draloric",
+        "ManufacturerPartNumber": "RCV1206110KFKEA",
+        "Min": "1",
+        "Mult": "1",
+        "MouserPartNumber": "71-RCV1206110KFKEA",
+        "ProductAttributes": [
+          {
+            "AttributeName": "Packaging",
+            "AttributeValue": "Reel"
+          },
+          {
+            "AttributeName": "Packaging",
+            "AttributeValue": "Cut Tape"
+          },
+          {
+            "AttributeName": "Packaging",
+            "AttributeValue": "MouseReel",
+            "AttributeCost": "$7.00 MouseReel™ fee will be added and calculated in your shopping cart. All MouseReel™ orders are non-cancellable and non-returnable."
+          },
+          {
+            "AttributeName": "Standard Pack Qty",
+            "AttributeValue": "5000"
+          }
+        ],
+        "PriceBreaks": [
+          {
+            "Quantity": 1,
+            "Price": "$0.27",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 10,
+            "Price": "$0.137",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 100,
+            "Price": "$0.079",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 1000,
+            "Price": "$0.052",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 2000,
+            "Price": "$0.045",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 5000,
+            "Price": "$0.04",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 10000,
+            "Price": "$0.037",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 25000,
+            "Price": "$0.035",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 50000,
+            "Price": "$0.034",
+            "Currency": "USD"
+          }
+        ],
+        "AlternatePackagings": null,
+        "ProductDetailUrl": "https://www.mouser.com/ProductDetail/Vishay-Draloric/RCV1206110KFKEA?qs=hWgE7mdIu5TPKGxhEvxm6w%3D%3D",
+        "Reeling": true,
+        "ROHSStatus": "RoHS Compliant By Exemption",
+        "SuggestedReplacement": "",
+        "MultiSimBlue": 0,
+        "AvailabilityInStock": "13647",
+        "AvailabilityOnOrder": [],
+        "InfoMessages": [],
+        "SurchargeMessages": [
+          {
+            "code": "TARIFF_US",
+            "message": "A tariff of 10 % may be applied."
+          }
+        ],
+        "ProductCompliance": [
+          {
+            "ComplianceName": "USHTS",
+            "ComplianceValue": "8533210030"
+          },
+          {
+            "ComplianceName": "CNHTS",
+            "ComplianceValue": "8533211000"
+          },
+          {
+            "ComplianceName": "CAHTS",
+            "ComplianceValue": "8533210000"
+          },
+          {
+            "ComplianceName": "JPHTS",
+            "ComplianceValue": "853321000"
+          },
+          {
+            "ComplianceName": "KRHTS",
+            "ComplianceValue": "8533219000"
+          },
+          {
+            "ComplianceName": "TARIC",
+            "ComplianceValue": "8533210000"
+          },
+          {
+            "ComplianceName": "MXHTS",
+            "ComplianceValue": "8533210100"
+          },
+          {
+            "ComplianceName": "BRHTS",
+            "ComplianceValue": "85332120"
+          },
+          {
+            "ComplianceName": "ECCN",
+            "ComplianceValue": "EAR99"
+          }
+        ]
+      }
+    },
+    {
+      "_src": "mouser",
+      "_id": "CCF6010K2FKE36",
+      "photo": "https://www.mouser.com/images/vishay/images/Vishay_CCF_series_DSL.jpg",
+      "title": "CCF6010K2FKE36",
+      "mpn": "CCF6010K2FKE36",
+      "manufacturer": "Vishay / Dale",
+      "description": "Metal Film Resistors - Through Hole 1/2watt 10.2Kohms 1% Rated to 1watt",
+      "package": "",
+      "packaging": "",
+      "regions": [
+        "US"
+      ],
+      "stock": 1950,
+      "minRub": 65,
+      "openUrl": "/product.html?src=mouser&id=CCF6010K2FKE36",
+      "_raw": {
+        "Availability": "1950 In Stock",
+        "DataSheetUrl": "",
+        "Description": "Metal Film Resistors - Through Hole 1/2watt 10.2Kohms 1% Rated to 1watt",
+        "FactoryStock": "0",
+        "ImagePath": "https://www.mouser.com/images/vishay/images/Vishay_CCF_series_DSL.jpg",
+        "Category": "Metal Film Resistors - Through Hole",
+        "LeadTime": "84 Days",
+        "LifecycleStatus": null,
+        "Manufacturer": "Vishay / Dale",
+        "ManufacturerPartNumber": "CCF6010K2FKE36",
+        "Min": "1",
+        "Mult": "1",
+        "MouserPartNumber": "71-CCF60-10.2K-E3",
+        "ProductAttributes": [
+          {
+            "AttributeName": "Packaging",
+            "AttributeValue": "Reel"
+          },
+          {
+            "AttributeName": "Packaging",
+            "AttributeValue": "Cut Tape"
+          },
+          {
+            "AttributeName": "Standard Pack Qty",
+            "AttributeValue": "2500"
+          }
+        ],
+        "PriceBreaks": [
+          {
+            "Quantity": 1,
+            "Price": "$2.79",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 10,
+            "Price": "$1.65",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 25,
+            "Price": "$1.42",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 100,
+            "Price": "$1.17",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 250,
+            "Price": "$1.02",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 500,
+            "Price": "$0.933",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 1000,
+            "Price": "$0.863",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 2500,
+            "Price": "$0.815",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 7500,
+            "Price": "$0.785",
+            "Currency": "USD"
+          }
+        ],
+        "AlternatePackagings": null,
+        "ProductDetailUrl": "https://www.mouser.com/ProductDetail/Vishay-Dale/CCF6010K2FKE36?qs=VYOSbEusJFWOxmoPqEDaSQ%3D%3D",
+        "Reeling": true,
+        "ROHSStatus": "RoHS Compliant",
+        "SuggestedReplacement": "",
+        "MultiSimBlue": 0,
+        "UnitWeightKg": {
+          "UnitWeight": 0.00075
+        },
+        "AvailabilityInStock": "1950",
+        "AvailabilityOnOrder": [],
+        "InfoMessages": [],
+        "SurchargeMessages": null,
+        "ProductCompliance": [
+          {
+            "ComplianceName": "USHTS",
+            "ComplianceValue": "8533210090"
+          },
+          {
+            "ComplianceName": "CNHTS",
+            "ComplianceValue": "8533219000"
+          },
+          {
+            "ComplianceName": "CAHTS",
+            "ComplianceValue": "8533210000"
+          },
+          {
+            "ComplianceName": "JPHTS",
+            "ComplianceValue": "853321000"
+          },
+          {
+            "ComplianceName": "KRHTS",
+            "ComplianceValue": "8533219000"
+          },
+          {
+            "ComplianceName": "TARIC",
+            "ComplianceValue": "8533210000"
+          },
+          {
+            "ComplianceName": "MXHTS",
+            "ComplianceValue": "8533210100"
+          },
+          {
+            "ComplianceName": "BRHTS",
+            "ComplianceValue": "85332190"
+          },
+          {
+            "ComplianceName": "ECCN",
+            "ComplianceValue": "EAR99"
+          }
+        ]
+      }
+    },
+    {
+      "_src": "mouser",
+      "_id": "CPF310K000FKE36",
+      "photo": "https://www.mouser.com/images/vishay/images/CPF_3_axial_SPL.jpg",
+      "title": "CPF310K000FKE36",
+      "mpn": "CPF310K000FKE36",
+      "manufacturer": "Vishay / Dale",
+      "description": "Metal Film Resistors - Through Hole 3watts 10Kohms 1%",
+      "package": "",
+      "packaging": "",
+      "regions": [
+        "US"
+      ],
+      "stock": 9144,
+      "minRub": 40,
+      "openUrl": "/product.html?src=mouser&id=CPF310K000FKE36",
+      "_raw": {
+        "Availability": "9144 In Stock",
+        "DataSheetUrl": "",
+        "Description": "Metal Film Resistors - Through Hole 3watts 10Kohms 1%",
+        "FactoryStock": "0",
+        "ImagePath": "https://www.mouser.com/images/vishay/images/CPF_3_axial_SPL.jpg",
+        "Category": "Metal Film Resistors - Through Hole",
+        "LeadTime": "77 Days",
+        "LifecycleStatus": null,
+        "Manufacturer": "Vishay / Dale",
+        "ManufacturerPartNumber": "CPF310K000FKE36",
+        "Min": "1",
+        "Mult": "1",
+        "MouserPartNumber": "71-CPF310K000FKE36",
+        "ProductAttributes": [
+          {
+            "AttributeName": "Packaging",
+            "AttributeValue": "Reel"
+          },
+          {
+            "AttributeName": "Packaging",
+            "AttributeValue": "Cut Tape"
+          },
+          {
+            "AttributeName": "Standard Pack Qty",
+            "AttributeValue": "2500"
+          }
+        ],
+        "PriceBreaks": [
+          {
+            "Quantity": 1,
+            "Price": "$1.47",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 10,
+            "Price": "$0.968",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 25,
+            "Price": "$0.746",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 100,
+            "Price": "$0.673",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 250,
+            "Price": "$0.592",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 500,
+            "Price": "$0.542",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 1000,
+            "Price": "$0.517",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 2500,
+            "Price": "$0.486",
+            "Currency": "USD"
+          }
+        ],
+        "AlternatePackagings": [
+          {
+            "APMfrPN": "CPF310K000FKE14"
+          }
+        ],
+        "ProductDetailUrl": "https://www.mouser.com/ProductDetail/Vishay-Dale/CPF310K000FKE36?qs=LZJzOuaToaXE8%2F89bYul%252BA%3D%3D",
+        "Reeling": true,
+        "ROHSStatus": "RoHS Compliant",
+        "SuggestedReplacement": "",
+        "MultiSimBlue": 0,
+        "UnitWeightKg": {
+          "UnitWeight": 0.001031216
+        },
+        "AvailabilityInStock": "9144",
+        "AvailabilityOnOrder": [],
+        "InfoMessages": [],
+        "SurchargeMessages": null,
+        "ProductCompliance": [
+          {
+            "ComplianceName": "USHTS",
+            "ComplianceValue": "8533210090"
+          },
+          {
+            "ComplianceName": "CNHTS",
+            "ComplianceValue": "8533219000"
+          },
+          {
+            "ComplianceName": "CAHTS",
+            "ComplianceValue": "8533210000"
+          },
+          {
+            "ComplianceName": "JPHTS",
+            "ComplianceValue": "853321000"
+          },
+          {
+            "ComplianceName": "KRHTS",
+            "ComplianceValue": "8533219000"
+          },
+          {
+            "ComplianceName": "TARIC",
+            "ComplianceValue": "8533210000"
+          },
+          {
+            "ComplianceName": "MXHTS",
+            "ComplianceValue": "8533210100"
+          },
+          {
+            "ComplianceName": "BRHTS",
+            "ComplianceValue": "85332190"
+          },
+          {
+            "ComplianceName": "ECCN",
+            "ComplianceValue": "EAR99"
+          }
+        ]
+      }
+    },
+    {
+      "_src": "mouser",
+      "_id": "CRCW121810K0FKEK",
+      "photo": "https://www.mouser.com/images/vishay/images/CRCW_SPL.jpg",
+      "title": "CRCW121810K0FKEK",
+      "mpn": "CRCW121810K0FKEK",
+      "manufacturer": "Vishay",
+      "description": "Thick Film Resistors - SMD 1watt 10Kohms 1%",
+      "package": "",
+      "packaging": "",
+      "regions": [
+        "US"
+      ],
+      "stock": 64153,
+      "minRub": 10,
+      "openUrl": "/product.html?src=mouser&id=CRCW121810K0FKEK",
+      "_raw": {
+        "Availability": "64153 In Stock",
+        "DataSheetUrl": "",
+        "Description": "Thick Film Resistors - SMD 1watt 10Kohms 1%",
+        "FactoryStock": "0",
+        "ImagePath": "https://www.mouser.com/images/vishay/images/CRCW_SPL.jpg",
+        "Category": "Thick Film Resistors - SMD",
+        "LeadTime": "84 Days",
+        "LifecycleStatus": null,
+        "Manufacturer": "Vishay",
+        "ManufacturerPartNumber": "CRCW121810K0FKEK",
+        "Min": "1",
+        "Mult": "1",
+        "MouserPartNumber": "71-CRCW121810K0FKEK",
+        "ProductAttributes": [
+          {
+            "AttributeName": "Packaging",
+            "AttributeValue": "Reel"
+          },
+          {
+            "AttributeName": "Packaging",
+            "AttributeValue": "Cut Tape"
+          },
+          {
+            "AttributeName": "Packaging",
+            "AttributeValue": "MouseReel",
+            "AttributeCost": "$7.00 MouseReel™ fee will be added and calculated in your shopping cart. All MouseReel™ orders are non-cancellable and non-returnable."
+          },
+          {
+            "AttributeName": "Standard Pack Qty",
+            "AttributeValue": "4000"
+          }
+        ],
+        "PriceBreaks": [
+          {
+            "Quantity": 1,
+            "Price": "$0.56",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 10,
+            "Price": "$0.307",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 100,
+            "Price": "$0.19",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 1000,
+            "Price": "$0.134",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 4000,
+            "Price": "$0.116",
+            "Currency": "USD"
+          }
+        ],
+        "AlternatePackagings": [
+          {
+            "APMfrPN": "CRCW121810K0FKEF"
+          }
+        ],
+        "ProductDetailUrl": "https://www.mouser.com/ProductDetail/Vishay/CRCW121810K0FKEK?qs=Ss1Lzmtc12UYWftF3%2F783w%3D%3D",
+        "Reeling": true,
+        "ROHSStatus": "RoHS Compliant By Exemption",
+        "SuggestedReplacement": "",
+        "MultiSimBlue": 0,
+        "UnitWeightKg": {
+          "UnitWeight": 0.0000295
+        },
+        "AvailabilityInStock": "64153",
+        "AvailabilityOnOrder": [],
+        "InfoMessages": [],
+        "SurchargeMessages": null,
+        "ProductCompliance": [
+          {
+            "ComplianceName": "USHTS",
+            "ComplianceValue": "8533210030"
+          },
+          {
+            "ComplianceName": "CNHTS",
+            "ComplianceValue": "8533211000"
+          },
+          {
+            "ComplianceName": "CAHTS",
+            "ComplianceValue": "8533210000"
+          },
+          {
+            "ComplianceName": "JPHTS",
+            "ComplianceValue": "853321000"
+          },
+          {
+            "ComplianceName": "KRHTS",
+            "ComplianceValue": "8533219000"
+          },
+          {
+            "ComplianceName": "TARIC",
+            "ComplianceValue": "8533210000"
+          },
+          {
+            "ComplianceName": "MXHTS",
+            "ComplianceValue": "8533210100"
+          },
+          {
+            "ComplianceName": "BRHTS",
+            "ComplianceValue": "85332120"
+          },
+          {
+            "ComplianceName": "ECCN",
+            "ComplianceValue": "EAR99"
+          }
+        ]
+      }
+    },
+    {
+      "_src": "mouser",
+      "_id": "3503G2B10K7FTDF",
+      "photo": "https://www.mouser.com/images/tycoelectronics/images/3503G-series_SPL.jpg",
+      "title": "3503G2B10K7FTDF",
+      "mpn": "3503G2B10K7FTDF",
+      "manufacturer": "TE Connectivity / Holsworthy",
+      "description": "Thin Film Resistors - SMD 3503G 2B 10K7 1% 1K RL",
+      "package": "",
+      "packaging": "",
+      "regions": [
+        "US"
+      ],
+      "stock": 907,
+      "minRub": 54,
+      "openUrl": "/product.html?src=mouser&id=3503G2B10K7FTDF",
+      "_raw": {
+        "Availability": "907 In Stock",
+        "DataSheetUrl": "",
+        "Description": "Thin Film Resistors - SMD 3503G 2B 10K7 1% 1K RL",
+        "FactoryStock": "0",
+        "ImagePath": "https://www.mouser.com/images/tycoelectronics/images/3503G-series_SPL.jpg",
+        "Category": "Thin Film Resistors - SMD",
+        "LeadTime": "108 Days",
+        "LifecycleStatus": null,
+        "Manufacturer": "TE Connectivity / Holsworthy",
+        "ManufacturerPartNumber": "3503G2B10K7FTDF",
+        "Min": "1",
+        "Mult": "1",
+        "MouserPartNumber": "279-3503G2B10K7FTDF",
+        "ProductAttributes": [
+          {
+            "AttributeName": "Packaging",
+            "AttributeValue": "Reel"
+          },
+          {
+            "AttributeName": "Packaging",
+            "AttributeValue": "Cut Tape"
+          },
+          {
+            "AttributeName": "Standard Pack Qty",
+            "AttributeValue": "1000"
+          }
+        ],
+        "PriceBreaks": [
+          {
+            "Quantity": 1,
+            "Price": "$1.60",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 10,
+            "Price": "$1.14",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 50,
+            "Price": "$0.853",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 100,
+            "Price": "$0.807",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 500,
+            "Price": "$0.786",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 1000,
+            "Price": "$0.667",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 10000,
+            "Price": "$0.652",
+            "Currency": "USD"
+          }
+        ],
+        "AlternatePackagings": null,
+        "ProductDetailUrl": "https://www.mouser.com/ProductDetail/TE-Connectivity-Holsworthy/3503G2B10K7FTDF?qs=By6Nw2ByBD0s12s6pky2WQ%3D%3D",
+        "Reeling": true,
+        "ROHSStatus": "RoHS Compliant",
+        "SuggestedReplacement": "279-2-2176525-6",
+        "MultiSimBlue": 0,
+        "AvailabilityInStock": "907",
+        "AvailabilityOnOrder": [],
+        "InfoMessages": [],
+        "SurchargeMessages": null,
+        "ProductCompliance": [
+          {
+            "ComplianceName": "USHTS",
+            "ComplianceValue": "8533210030"
+          },
+          {
+            "ComplianceName": "CAHTS",
+            "ComplianceValue": "8533210000"
+          },
+          {
+            "ComplianceName": "JPHTS",
+            "ComplianceValue": "853321000"
+          },
+          {
+            "ComplianceName": "KRHTS",
+            "ComplianceValue": "8533219000"
+          },
+          {
+            "ComplianceName": "TARIC",
+            "ComplianceValue": "8533210000"
+          },
+          {
+            "ComplianceName": "MXHTS",
+            "ComplianceValue": "8533210100"
+          },
+          {
+            "ComplianceName": "BRHTS",
+            "ComplianceValue": "85332120"
+          },
+          {
+            "ComplianceName": "ECCN",
+            "ComplianceValue": "EAR99"
+          }
+        ]
+      }
+    },
+    {
+      "_src": "mouser",
+      "_id": "CRCW080510K0FKTAHP",
+      "photo": "https://www.mouser.com/images/vishay/images/CRCW06030000Z0TAHP_SPL.jpg",
+      "title": "CRCW080510K0FKTAHP",
+      "mpn": "CRCW080510K0FKTAHP",
+      "manufacturer": "Vishay",
+      "description": "Thick Film Resistors - SMD CRCW0805-HP 100 10K 1% RT1",
+      "package": "",
+      "packaging": "",
+      "regions": [
+        "US"
+      ],
+      "stock": 3693,
+      "minRub": 37,
+      "openUrl": "/product.html?src=mouser&id=CRCW080510K0FKTAHP",
+      "_raw": {
+        "Availability": "3693 In Stock",
+        "DataSheetUrl": "",
+        "Description": "Thick Film Resistors - SMD CRCW0805-HP 100 10K 1% RT1",
+        "FactoryStock": "0",
+        "ImagePath": "https://www.mouser.com/images/vishay/images/CRCW06030000Z0TAHP_SPL.jpg",
+        "Category": "Thick Film Resistors - SMD",
+        "LeadTime": "84 Days",
+        "LifecycleStatus": "New Product",
+        "Manufacturer": "Vishay",
+        "ManufacturerPartNumber": "CRCW080510K0FKTAHP",
+        "Min": "1",
+        "Mult": "1",
+        "MouserPartNumber": "71-CRCW080510K0FKTAH",
+        "ProductAttributes": [
+          {
+            "AttributeName": "Packaging",
+            "AttributeValue": "Reel"
+          },
+          {
+            "AttributeName": "Packaging",
+            "AttributeValue": "Cut Tape"
+          },
+          {
+            "AttributeName": "Standard Pack Qty",
+            "AttributeValue": "5000"
+          }
+        ],
+        "PriceBreaks": [
+          {
+            "Quantity": 1,
+            "Price": "$1.71",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 10,
+            "Price": "$1.02",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 100,
+            "Price": "$0.663",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 500,
+            "Price": "$0.662",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 1000,
+            "Price": "$0.54",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 5000,
+            "Price": "$0.459",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 25000,
+            "Price": "$0.45",
+            "Currency": "USD"
+          }
+        ],
+        "AlternatePackagings": null,
+        "ProductDetailUrl": "https://www.mouser.com/ProductDetail/Vishay/CRCW080510K0FKTAHP?qs=bN4HulGPsrGgd12NZyfiug%3D%3D",
+        "Reeling": true,
+        "ROHSStatus": "RoHS Compliant",
+        "SuggestedReplacement": "",
+        "MultiSimBlue": 0,
+        "AvailabilityInStock": "3693",
+        "AvailabilityOnOrder": [],
+        "InfoMessages": [],
+        "SurchargeMessages": [
+          {
+            "code": "TARIFF_US",
+            "message": "A tariff of 14 % may be applied."
+          }
+        ],
+        "ProductCompliance": [
+          {
+            "ComplianceName": "USHTS",
+            "ComplianceValue": "8533210030"
+          },
+          {
+            "ComplianceName": "CAHTS",
+            "ComplianceValue": "8533210000"
+          },
+          {
+            "ComplianceName": "JPHTS",
+            "ComplianceValue": "853321000"
+          },
+          {
+            "ComplianceName": "KRHTS",
+            "ComplianceValue": "8533219000"
+          },
+          {
+            "ComplianceName": "TARIC",
+            "ComplianceValue": "8533210000"
+          },
+          {
+            "ComplianceName": "MXHTS",
+            "ComplianceValue": "8533210100"
+          },
+          {
+            "ComplianceName": "BRHTS",
+            "ComplianceValue": "85332120"
+          },
+          {
+            "ComplianceName": "ECCN",
+            "ComplianceValue": "EAR99"
+          }
+        ]
+      }
+    },
+    {
+      "_src": "mouser",
+      "_id": "CSC09A0110K0FEK",
+      "photo": "https://www.mouser.com/images/vishay/images/CSC_series_SPL.JPG",
+      "title": "CSC09A0110K0FEK",
+      "mpn": "CSC09A0110K0FEK",
+      "manufacturer": "Vishay / Dale",
+      "description": "Resistor Networks & Arrays 0.20watts 10Kohms 1%",
+      "package": "",
+      "packaging": "",
+      "regions": [
+        "US"
+      ],
+      "stock": 10142,
+      "minRub": 102,
+      "openUrl": "/product.html?src=mouser&id=CSC09A0110K0FEK",
+      "_raw": {
+        "Availability": "10142 In Stock",
+        "DataSheetUrl": "",
+        "Description": "Resistor Networks & Arrays 0.20watts 10Kohms 1%",
+        "FactoryStock": "0",
+        "ImagePath": "https://www.mouser.com/images/vishay/images/CSC_series_SPL.JPG",
+        "Category": "Resistor Networks & Arrays",
+        "LeadTime": "70 Days",
+        "LifecycleStatus": null,
+        "Manufacturer": "Vishay / Dale",
+        "ManufacturerPartNumber": "CSC09A0110K0FEK",
+        "Min": "1",
+        "Mult": "1",
+        "MouserPartNumber": "71-CSC09A0110K0FEK",
+        "ProductAttributes": [
+          {
+            "AttributeName": "Packaging",
+            "AttributeValue": "Bulk"
+          },
+          {
+            "AttributeName": "Standard Pack Qty",
+            "AttributeValue": "1000"
+          }
+        ],
+        "PriceBreaks": [
+          {
+            "Quantity": 1,
+            "Price": "$3.45",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 10,
+            "Price": "$1.82",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 25,
+            "Price": "$1.64",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 100,
+            "Price": "$1.46",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 250,
+            "Price": "$1.34",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 1000,
+            "Price": "$1.26",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 5000,
+            "Price": "$1.23",
+            "Currency": "USD"
+          }
+        ],
+        "AlternatePackagings": null,
+        "ProductDetailUrl": "https://www.mouser.com/ProductDetail/Vishay-Dale/CSC09A0110K0FEK?qs=Jzz%252BfO4IBMcoozLel8YKzA%3D%3D",
+        "Reeling": false,
+        "ROHSStatus": "RoHS Compliant By Exemption",
+        "REACH-SVHC": [
+          "Lead (7439-92-1)"
+        ],
+        "SuggestedReplacement": "",
+        "MultiSimBlue": 0,
+        "AvailabilityInStock": "10142",
+        "AvailabilityOnOrder": [],
+        "InfoMessages": [],
+        "SurchargeMessages": [
+          {
+            "code": "TARIFF_US",
+            "message": "A tariff of 10 % may be applied."
+          }
+        ],
+        "ProductCompliance": [
+          {
+            "ComplianceName": "USHTS",
+            "ComplianceValue": "8533210050"
+          },
+          {
+            "ComplianceName": "CNHTS",
+            "ComplianceValue": "8533219000"
+          },
+          {
+            "ComplianceName": "CAHTS",
+            "ComplianceValue": "8533210000"
+          },
+          {
+            "ComplianceName": "JPHTS",
+            "ComplianceValue": "853321000"
+          },
+          {
+            "ComplianceName": "KRHTS",
+            "ComplianceValue": "8533219000"
+          },
+          {
+            "ComplianceName": "TARIC",
+            "ComplianceValue": "8533210000"
+          },
+          {
+            "ComplianceName": "MXHTS",
+            "ComplianceValue": "8533210100"
+          },
+          {
+            "ComplianceName": "BRHTS",
+            "ComplianceValue": "85332190"
+          },
+          {
+            "ComplianceName": "ECCN",
+            "ComplianceValue": "EAR99"
+          }
+        ]
+      }
+    },
+    {
+      "_src": "mouser",
+      "_id": "CPF210K000FKEE6",
+      "photo": "https://www.mouser.com/images/vishay/images/CPF_3_axial_SPL.jpg",
+      "title": "CPF210K000FKEE6",
+      "mpn": "CPF210K000FKEE6",
+      "manufacturer": "Vishay / Dale",
+      "description": "Metal Film Resistors - Through Hole CPF-2 10K 1% T-1 EE6 e3",
+      "package": "",
+      "packaging": "",
+      "regions": [
+        "US"
+      ],
+      "stock": 1008,
+      "minRub": 43,
+      "openUrl": "/product.html?src=mouser&id=CPF210K000FKEE6",
+      "_raw": {
+        "Availability": "1008 In Stock",
+        "DataSheetUrl": "",
+        "Description": "Metal Film Resistors - Through Hole CPF-2 10K 1% T-1 EE6 e3",
+        "FactoryStock": "0",
+        "ImagePath": "https://www.mouser.com/images/vishay/images/CPF_3_axial_SPL.jpg",
+        "Category": "Metal Film Resistors - Through Hole",
+        "LeadTime": "98 Days",
+        "LifecycleStatus": null,
+        "Manufacturer": "Vishay / Dale",
+        "ManufacturerPartNumber": "CPF210K000FKEE6",
+        "Min": "1",
+        "Mult": "1",
+        "MouserPartNumber": "71-CPF210K000FKEE6",
+        "ProductAttributes": [
+          {
+            "AttributeName": "Packaging",
+            "AttributeValue": "Reel"
+          },
+          {
+            "AttributeName": "Packaging",
+            "AttributeValue": "Cut Tape"
+          },
+          {
+            "AttributeName": "Packaging",
+            "AttributeValue": "MouseReel",
+            "AttributeCost": "$7.00 MouseReel™ fee will be added and calculated in your shopping cart. All MouseReel™ orders are non-cancellable and non-returnable."
+          },
+          {
+            "AttributeName": "Standard Pack Qty",
+            "AttributeValue": "1000"
+          }
+        ],
+        "PriceBreaks": [
+          {
+            "Quantity": 1,
+            "Price": "$1.85",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 10,
+            "Price": "$1.09",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 25,
+            "Price": "$0.973",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 100,
+            "Price": "$0.769",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 250,
+            "Price": "$0.658",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 1000,
+            "Price": "$0.563",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 5000,
+            "Price": "$0.515",
+            "Currency": "USD"
+          }
+        ],
+        "AlternatePackagings": null,
+        "ProductDetailUrl": "https://www.mouser.com/ProductDetail/Vishay-Dale/CPF210K000FKEE6?qs=r1jFGV7aGFeBcvI6ka3x%2FA%3D%3D",
+        "Reeling": true,
+        "ROHSStatus": "RoHS Compliant",
+        "SuggestedReplacement": "",
+        "MultiSimBlue": 0,
+        "UnitWeightKg": {
+          "UnitWeight": 0.0005
+        },
+        "AvailabilityInStock": "1008",
+        "AvailabilityOnOrder": [],
+        "InfoMessages": [],
+        "SurchargeMessages": null,
+        "ProductCompliance": [
+          {
+            "ComplianceName": "USHTS",
+            "ComplianceValue": "8533210090"
+          },
+          {
+            "ComplianceName": "CAHTS",
+            "ComplianceValue": "8533210000"
+          },
+          {
+            "ComplianceName": "JPHTS",
+            "ComplianceValue": "853321000"
+          },
+          {
+            "ComplianceName": "KRHTS",
+            "ComplianceValue": "8533219000"
+          },
+          {
+            "ComplianceName": "TARIC",
+            "ComplianceValue": "8533210000"
+          },
+          {
+            "ComplianceName": "MXHTS",
+            "ComplianceValue": "8533210100"
+          },
+          {
+            "ComplianceName": "ECCN",
+            "ComplianceValue": "EAR99"
+          }
+        ]
+      }
+    },
+    {
+      "_src": "mouser",
+      "_id": "RCA060310K0FKEC",
+      "photo": "https://www.mouser.com/images/vishay/images/RCA_SPL.JPG",
+      "title": "RCA060310K0FKEC",
+      "mpn": "RCA060310K0FKEC",
+      "manufacturer": "Vishay / Draloric",
+      "description": "Thick Film Resistors - SMD Thick Film Resistors - SMD",
+      "package": "",
+      "packaging": "",
+      "regions": [
+        "US"
+      ],
+      "stock": 11960,
+      "minRub": 1,
+      "openUrl": "/product.html?src=mouser&id=RCA060310K0FKEC",
+      "_raw": {
+        "Availability": "11960 In Stock",
+        "DataSheetUrl": "",
+        "Description": "Thick Film Resistors - SMD Thick Film Resistors - SMD",
+        "FactoryStock": "0",
+        "ImagePath": "https://www.mouser.com/images/vishay/images/RCA_SPL.JPG",
+        "Category": "Thick Film Resistors - SMD",
+        "LeadTime": "77 Days",
+        "LifecycleStatus": "New at Mouser",
+        "Manufacturer": "Vishay / Draloric",
+        "ManufacturerPartNumber": "RCA060310K0FKEC",
+        "Min": "1",
+        "Mult": "1",
+        "MouserPartNumber": "71-RCA060310K0FKEC",
+        "ProductAttributes": [
+          {
+            "AttributeName": "Standard Pack Qty",
+            "AttributeValue": "20000"
+          }
+        ],
+        "PriceBreaks": [
+          {
+            "Quantity": 1,
+            "Price": "$0.11",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 10,
+            "Price": "$0.033",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 100,
+            "Price": "$0.02",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 1000,
+            "Price": "$0.016",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 2000,
+            "Price": "$0.013",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 5000,
+            "Price": "$0.012",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 10000,
+            "Price": "$0.011",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 20000,
+            "Price": "$0.008",
+            "Currency": "USD"
+          }
+        ],
+        "AlternatePackagings": null,
+        "ProductDetailUrl": "https://www.mouser.com/ProductDetail/Vishay-Draloric/RCA060310K0FKEC?qs=u16ybLDytRYdhXNur4HWZA%3D%3D",
+        "Reeling": false,
+        "ROHSStatus": "RoHS Compliant",
+        "SuggestedReplacement": "",
+        "MultiSimBlue": 0,
+        "UnitWeightKg": {
+          "UnitWeight": 0.000002
+        },
+        "AvailabilityInStock": "11960",
+        "AvailabilityOnOrder": [],
+        "InfoMessages": [],
+        "SurchargeMessages": [
+          {
+            "code": "TARIFF_US",
+            "message": "A tariff of 14 % may be applied."
+          }
+        ],
+        "ProductCompliance": [
+          {
+            "ComplianceName": "USHTS",
+            "ComplianceValue": "8533210030"
+          },
+          {
+            "ComplianceName": "TARIC",
+            "ComplianceValue": "8533210000"
+          },
+          {
+            "ComplianceName": "ECCN",
+            "ComplianceValue": "EAR99"
+          }
+        ]
+      }
+    },
+    {
+      "_src": "mouser",
+      "_id": "RCWP120610K0FKTP",
+      "photo": "https://www.mouser.com/images/vishay/images/rcwp.jpg",
+      "title": "RCWP120610K0FKTP",
+      "mpn": "RCWP120610K0FKTP",
+      "manufacturer": "Vishay / Dale",
+      "description": "Thick Film Resistors - SMD 0.25watts 10Kohms 1% 100ppm THK FILM CHi",
+      "package": "",
+      "packaging": "",
+      "regions": [
+        "US"
+      ],
+      "stock": 3543,
+      "minRub": 46,
+      "openUrl": "/product.html?src=mouser&id=RCWP120610K0FKTP",
+      "_raw": {
+        "Availability": "3543 In Stock",
+        "DataSheetUrl": "",
+        "Description": "Thick Film Resistors - SMD 0.25watts 10Kohms 1% 100ppm THK FILM CHi",
+        "FactoryStock": "0",
+        "ImagePath": "https://www.mouser.com/images/vishay/images/rcwp.jpg",
+        "Category": "Thick Film Resistors - SMD",
+        "LeadTime": "49 Days",
+        "LifecycleStatus": null,
+        "Manufacturer": "Vishay / Dale",
+        "ManufacturerPartNumber": "RCWP120610K0FKTP",
+        "Min": "1",
+        "Mult": "1",
+        "MouserPartNumber": "71-RCWP1206-F-10K",
+        "ProductAttributes": [
+          {
+            "AttributeName": "Packaging",
+            "AttributeValue": "Reel"
+          },
+          {
+            "AttributeName": "Packaging",
+            "AttributeValue": "Cut Tape"
+          },
+          {
+            "AttributeName": "Packaging",
+            "AttributeValue": "MouseReel",
+            "AttributeCost": "$7.00 MouseReel™ fee will be added and calculated in your shopping cart. All MouseReel™ orders are non-cancellable and non-returnable."
+          },
+          {
+            "AttributeName": "Standard Pack Qty",
+            "AttributeValue": "4000"
+          }
+        ],
+        "PriceBreaks": [
+          {
+            "Quantity": 1,
+            "Price": "$1.92",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 10,
+            "Price": "$1.16",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 100,
+            "Price": "$0.79",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 1000,
+            "Price": "$0.655",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 4000,
+            "Price": "$0.556",
+            "Currency": "USD"
+          }
+        ],
+        "AlternatePackagings": null,
+        "ProductDetailUrl": "https://www.mouser.com/ProductDetail/Vishay-Dale/RCWP120610K0FKTP?qs=9%2FCyznrMg3Up4cXAvddzEg%3D%3D",
+        "Reeling": true,
+        "ROHSStatus": "No",
+        "SuggestedReplacement": "",
+        "MultiSimBlue": 0,
+        "UnitWeightKg": {
+          "UnitWeight": 0.0000162
+        },
+        "AvailabilityInStock": "3543",
+        "AvailabilityOnOrder": [],
+        "InfoMessages": [],
+        "SurchargeMessages": [
+          {
+            "code": "TARIFF_US",
+            "message": "A tariff of 10 % may be applied."
+          }
+        ],
+        "ProductCompliance": [
+          {
+            "ComplianceName": "USHTS",
+            "ComplianceValue": "8533210030"
+          },
+          {
+            "ComplianceName": "CNHTS",
+            "ComplianceValue": "8533211000"
+          },
+          {
+            "ComplianceName": "CAHTS",
+            "ComplianceValue": "8533210000"
+          },
+          {
+            "ComplianceName": "JPHTS",
+            "ComplianceValue": "853321000"
+          },
+          {
+            "ComplianceName": "KRHTS",
+            "ComplianceValue": "8533219000"
+          },
+          {
+            "ComplianceName": "TARIC",
+            "ComplianceValue": "8533210000"
+          },
+          {
+            "ComplianceName": "MXHTS",
+            "ComplianceValue": "8533210100"
+          },
+          {
+            "ComplianceName": "BRHTS",
+            "ComplianceValue": "85332120"
+          },
+          {
+            "ComplianceName": "ECCN",
+            "ComplianceValue": "EAR99"
+          }
+        ]
+      }
+    },
+    {
+      "_src": "mouser",
+      "_id": "3503G2B10K2FTDF",
+      "photo": "https://www.mouser.com/images/tycoelectronics/images/3503G-series_SPL.jpg",
+      "title": "3503G2B10K2FTDF",
+      "mpn": "3503G2B10K2FTDF",
+      "manufacturer": "TE Connectivity / Holsworthy",
+      "description": "Thin Film Resistors - SMD 3503G 2B 10K2 1% 1K RL",
+      "package": "",
+      "packaging": "",
+      "regions": [
+        "US"
+      ],
+      "stock": 864,
+      "minRub": 54,
+      "openUrl": "/product.html?src=mouser&id=3503G2B10K2FTDF",
+      "_raw": {
+        "Availability": "864 In Stock",
+        "DataSheetUrl": "",
+        "Description": "Thin Film Resistors - SMD 3503G 2B 10K2 1% 1K RL",
+        "FactoryStock": "0",
+        "ImagePath": "https://www.mouser.com/images/tycoelectronics/images/3503G-series_SPL.jpg",
+        "Category": "Thin Film Resistors - SMD",
+        "LeadTime": "108 Days",
+        "LifecycleStatus": null,
+        "Manufacturer": "TE Connectivity / Holsworthy",
+        "ManufacturerPartNumber": "3503G2B10K2FTDF",
+        "Min": "1",
+        "Mult": "1",
+        "MouserPartNumber": "279-3503G2B10K2FTDF",
+        "ProductAttributes": [
+          {
+            "AttributeName": "Packaging",
+            "AttributeValue": "Reel"
+          },
+          {
+            "AttributeName": "Packaging",
+            "AttributeValue": "Cut Tape"
+          },
+          {
+            "AttributeName": "Standard Pack Qty",
+            "AttributeValue": "1000"
+          }
+        ],
+        "PriceBreaks": [
+          {
+            "Quantity": 1,
+            "Price": "$1.60",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 10,
+            "Price": "$1.14",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 50,
+            "Price": "$0.853",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 100,
+            "Price": "$0.807",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 500,
+            "Price": "$0.786",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 1000,
+            "Price": "$0.667",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 10000,
+            "Price": "$0.652",
+            "Currency": "USD"
+          }
+        ],
+        "AlternatePackagings": null,
+        "ProductDetailUrl": "https://www.mouser.com/ProductDetail/TE-Connectivity-Holsworthy/3503G2B10K2FTDF?qs=By6Nw2ByBD3KdSUZ7Iw%252BUg%3D%3D",
+        "Reeling": true,
+        "ROHSStatus": "RoHS Compliant",
+        "SuggestedReplacement": "279-2-2176525-4",
+        "MultiSimBlue": 0,
+        "AvailabilityInStock": "864",
+        "AvailabilityOnOrder": [],
+        "InfoMessages": [],
+        "SurchargeMessages": null,
+        "ProductCompliance": [
+          {
+            "ComplianceName": "USHTS",
+            "ComplianceValue": "8533210030"
+          },
+          {
+            "ComplianceName": "CAHTS",
+            "ComplianceValue": "8533210000"
+          },
+          {
+            "ComplianceName": "JPHTS",
+            "ComplianceValue": "853321000"
+          },
+          {
+            "ComplianceName": "KRHTS",
+            "ComplianceValue": "8533219000"
+          },
+          {
+            "ComplianceName": "TARIC",
+            "ComplianceValue": "8533210000"
+          },
+          {
+            "ComplianceName": "MXHTS",
+            "ComplianceValue": "8533210100"
+          },
+          {
+            "ComplianceName": "BRHTS",
+            "ComplianceValue": "85332120"
+          },
+          {
+            "ComplianceName": "ECCN",
+            "ComplianceValue": "EAR99"
+          }
+        ]
+      }
+    },
+    {
+      "_src": "mouser",
+      "_id": "3503G2B10K5FTDF",
+      "photo": "https://www.mouser.com/images/tycoelectronics/images/3503G-series_SPL.jpg",
+      "title": "3503G2B10K5FTDF",
+      "mpn": "3503G2B10K5FTDF",
+      "manufacturer": "TE Connectivity / Holsworthy",
+      "description": "Thin Film Resistors - SMD 3503G 2B 10K5 1% 1K RL",
+      "package": "",
+      "packaging": "",
+      "regions": [
+        "US"
+      ],
+      "stock": 949,
+      "minRub": 54,
+      "openUrl": "/product.html?src=mouser&id=3503G2B10K5FTDF",
+      "_raw": {
+        "Availability": "949 In Stock",
+        "DataSheetUrl": "",
+        "Description": "Thin Film Resistors - SMD 3503G 2B 10K5 1% 1K RL",
+        "FactoryStock": "0",
+        "ImagePath": "https://www.mouser.com/images/tycoelectronics/images/3503G-series_SPL.jpg",
+        "Category": "Thin Film Resistors - SMD",
+        "LeadTime": "108 Days",
+        "LifecycleStatus": null,
+        "Manufacturer": "TE Connectivity / Holsworthy",
+        "ManufacturerPartNumber": "3503G2B10K5FTDF",
+        "Min": "1",
+        "Mult": "1",
+        "MouserPartNumber": "279-3503G2B10K5FTDF",
+        "ProductAttributes": [
+          {
+            "AttributeName": "Packaging",
+            "AttributeValue": "Reel"
+          },
+          {
+            "AttributeName": "Packaging",
+            "AttributeValue": "Cut Tape"
+          },
+          {
+            "AttributeName": "Standard Pack Qty",
+            "AttributeValue": "1000"
+          }
+        ],
+        "PriceBreaks": [
+          {
+            "Quantity": 1,
+            "Price": "$1.60",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 10,
+            "Price": "$1.14",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 50,
+            "Price": "$0.853",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 100,
+            "Price": "$0.807",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 500,
+            "Price": "$0.786",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 1000,
+            "Price": "$0.667",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 10000,
+            "Price": "$0.652",
+            "Currency": "USD"
+          }
+        ],
+        "AlternatePackagings": null,
+        "ProductDetailUrl": "https://www.mouser.com/ProductDetail/TE-Connectivity-Holsworthy/3503G2B10K5FTDF?qs=By6Nw2ByBD3JQ0DGsrYAAQ%3D%3D",
+        "Reeling": true,
+        "ROHSStatus": "RoHS Compliant",
+        "SuggestedReplacement": "279-2-2176525-5",
+        "MultiSimBlue": 0,
+        "AvailabilityInStock": "949",
+        "AvailabilityOnOrder": [],
+        "InfoMessages": [],
+        "SurchargeMessages": null,
+        "ProductCompliance": [
+          {
+            "ComplianceName": "USHTS",
+            "ComplianceValue": "8533210030"
+          },
+          {
+            "ComplianceName": "CAHTS",
+            "ComplianceValue": "8533210000"
+          },
+          {
+            "ComplianceName": "JPHTS",
+            "ComplianceValue": "853321000"
+          },
+          {
+            "ComplianceName": "KRHTS",
+            "ComplianceValue": "8533219000"
+          },
+          {
+            "ComplianceName": "TARIC",
+            "ComplianceValue": "8533210000"
+          },
+          {
+            "ComplianceName": "MXHTS",
+            "ComplianceValue": "8533210100"
+          },
+          {
+            "ComplianceName": "BRHTS",
+            "ComplianceValue": "85332120"
+          },
+          {
+            "ComplianceName": "ECCN",
+            "ComplianceValue": "EAR99"
+          }
+        ]
+      }
+    },
+    {
+      "_src": "mouser",
+      "_id": "CRGCQ2512F10K",
+      "photo": "https://www.mouser.com/images/tycoelectronics/images/CRGCQ_series_DSL.jpg",
+      "title": "CRGCQ2512F10K",
+      "mpn": "CRGCQ2512F10K",
+      "manufacturer": "TE Connectivity / Holsworthy",
+      "description": "Thick Film Resistors - SMD CRGCQ 2512 10K 1% SMD Resistor",
+      "package": "",
+      "packaging": "",
+      "regions": [
+        "US"
+      ],
+      "stock": 25338,
+      "minRub": 5,
+      "openUrl": "/product.html?src=mouser&id=CRGCQ2512F10K",
+      "_raw": {
+        "Availability": "25338 In Stock",
+        "DataSheetUrl": "",
+        "Description": "Thick Film Resistors - SMD CRGCQ 2512 10K 1% SMD Resistor",
+        "FactoryStock": "0",
+        "ImagePath": "https://www.mouser.com/images/tycoelectronics/images/CRGCQ_series_DSL.jpg",
+        "Category": "Thick Film Resistors - SMD",
+        "LeadTime": "87 Days",
+        "LifecycleStatus": null,
+        "Manufacturer": "TE Connectivity / Holsworthy",
+        "ManufacturerPartNumber": "CRGCQ2512F10K",
+        "Min": "1",
+        "Mult": "1",
+        "MouserPartNumber": "279-CRGCQ2512F10K",
+        "ProductAttributes": [
+          {
+            "AttributeName": "Packaging",
+            "AttributeValue": "Reel"
+          },
+          {
+            "AttributeName": "Packaging",
+            "AttributeValue": "Cut Tape"
+          },
+          {
+            "AttributeName": "Packaging",
+            "AttributeValue": "MouseReel",
+            "AttributeCost": "$7.00 MouseReel™ fee will be added and calculated in your shopping cart. All MouseReel™ orders are non-cancellable and non-returnable."
+          },
+          {
+            "AttributeName": "Standard Pack Qty",
+            "AttributeValue": "4000"
+          }
+        ],
+        "PriceBreaks": [
+          {
+            "Quantity": 1,
+            "Price": "$0.35",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 10,
+            "Price": "$0.124",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 100,
+            "Price": "$0.096",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 1000,
+            "Price": "$0.088",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 2000,
+            "Price": "$0.065",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 4000,
+            "Price": "$0.062",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 8000,
+            "Price": "$0.06",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 24000,
+            "Price": "$0.058",
+            "Currency": "USD"
+          }
+        ],
+        "AlternatePackagings": null,
+        "ProductDetailUrl": "https://www.mouser.com/ProductDetail/TE-Connectivity-Holsworthy/CRGCQ2512F10K?qs=wUXugUrL1qxGCDJGN9I4xQ%3D%3D",
+        "Reeling": true,
+        "ROHSStatus": "RoHS Compliant",
+        "SuggestedReplacement": "",
+        "MultiSimBlue": 0,
+        "UnitWeightKg": {
+          "UnitWeight": 0.0000405
+        },
+        "AvailabilityInStock": "25338",
+        "AvailabilityOnOrder": [],
+        "InfoMessages": [],
+        "SurchargeMessages": null,
+        "ProductCompliance": [
+          {
+            "ComplianceName": "USHTS",
+            "ComplianceValue": "8533210030"
+          },
+          {
+            "ComplianceName": "CNHTS",
+            "ComplianceValue": "8533211000"
+          },
+          {
+            "ComplianceName": "CAHTS",
+            "ComplianceValue": "8533210000"
+          },
+          {
+            "ComplianceName": "JPHTS",
+            "ComplianceValue": "853321000"
+          },
+          {
+            "ComplianceName": "KRHTS",
+            "ComplianceValue": "8533219000"
+          },
+          {
+            "ComplianceName": "TARIC",
+            "ComplianceValue": "8533210000"
+          },
+          {
+            "ComplianceName": "MXHTS",
+            "ComplianceValue": "8533210100"
+          },
+          {
+            "ComplianceName": "BRHTS",
+            "ComplianceValue": "85332120"
+          },
+          {
+            "ComplianceName": "ECCN",
+            "ComplianceValue": "EAR99"
+          }
+        ]
+      }
+    },
+    {
+      "_src": "mouser",
+      "_id": "CRCW0603910KFKEAHP",
+      "photo": "https://www.mouser.com/images/vishay/images/CRCW_series_DSL.jpg",
+      "title": "CRCW0603910KFKEAHP",
+      "mpn": "CRCW0603910KFKEAHP",
+      "manufacturer": "Vishay",
+      "description": "Thick Film Resistors - SMD Thick Film Resistors - SMD",
+      "package": "",
+      "packaging": "",
+      "regions": [
+        "US"
+      ],
+      "stock": 14633,
+      "minRub": 1,
+      "openUrl": "/product.html?src=mouser&id=CRCW0603910KFKEAHP",
+      "_raw": {
+        "Availability": "14633 In Stock",
+        "DataSheetUrl": "",
+        "Description": "Thick Film Resistors - SMD Thick Film Resistors - SMD",
+        "FactoryStock": "0",
+        "ImagePath": "https://www.mouser.com/images/vishay/images/CRCW_series_DSL.jpg",
+        "Category": "Thick Film Resistors - SMD",
+        "LeadTime": "84 Days",
+        "LifecycleStatus": "New at Mouser",
+        "Manufacturer": "Vishay",
+        "ManufacturerPartNumber": "CRCW0603910KFKEAHP",
+        "Min": "1",
+        "Mult": "1",
+        "MouserPartNumber": "71-CRCW0603910KFKEAH",
+        "ProductAttributes": [
+          {
+            "AttributeName": "Packaging",
+            "AttributeValue": "Reel"
+          },
+          {
+            "AttributeName": "Standard Pack Qty",
+            "AttributeValue": "5000"
+          }
+        ],
+        "PriceBreaks": [
+          {
+            "Quantity": 1,
+            "Price": "$0.17",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 10,
+            "Price": "$0.084",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 100,
+            "Price": "$0.049",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 1000,
+            "Price": "$0.03",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 2000,
+            "Price": "$0.025",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 5000,
+            "Price": "$0.024",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 25000,
+            "Price": "$0.018",
+            "Currency": "USD"
+          }
+        ],
+        "AlternatePackagings": null,
+        "ProductDetailUrl": "https://www.mouser.com/ProductDetail/Vishay/CRCW0603910KFKEAHP?qs=YaA%252B3EhhSt0M9oqQRTryCA%3D%3D",
+        "Reeling": true,
+        "ROHSStatus": "RoHS Compliant",
+        "SuggestedReplacement": "",
+        "MultiSimBlue": 0,
+        "UnitWeightKg": {
+          "UnitWeight": 0.000002
+        },
+        "AvailabilityInStock": "14633",
+        "AvailabilityOnOrder": [],
+        "InfoMessages": [],
+        "SurchargeMessages": [
+          {
+            "code": "TARIFF_US",
+            "message": "A tariff of 10 % may be applied."
+          }
+        ],
+        "ProductCompliance": [
+          {
+            "ComplianceName": "USHTS",
+            "ComplianceValue": "8533210030"
+          },
+          {
+            "ComplianceName": "CAHTS",
+            "ComplianceValue": "8533210000"
+          },
+          {
+            "ComplianceName": "JPHTS",
+            "ComplianceValue": "853321000"
+          },
+          {
+            "ComplianceName": "KRHTS",
+            "ComplianceValue": "8533219000"
+          },
+          {
+            "ComplianceName": "TARIC",
+            "ComplianceValue": "8533210000"
+          },
+          {
+            "ComplianceName": "MXHTS",
+            "ComplianceValue": "8533210100"
+          },
+          {
+            "ComplianceName": "BRHTS",
+            "ComplianceValue": "85332120"
+          },
+          {
+            "ComplianceName": "ECCN",
+            "ComplianceValue": "EAR99"
+          }
+        ]
+      }
+    },
+    {
+      "_src": "mouser",
+      "_id": "RC0402FR-0710K5L",
+      "photo": "https://www.mouser.com/images/yageo/images/RC_series_SPL.jpg",
+      "title": "RC0402FR-0710K5L",
+      "mpn": "RC0402FR-0710K5L",
+      "manufacturer": "YAGEO",
+      "description": "Thick Film Resistors - SMD General Purpose Chip Resistor 0402, 10.5kOhms, 1%, 1/16W",
+      "package": "",
+      "packaging": "",
+      "regions": [
+        "US"
+      ],
+      "stock": 1922389,
+      "minRub": 0,
+      "openUrl": "/product.html?src=mouser&id=RC0402FR-0710K5L",
+      "_raw": {
+        "Availability": "1922389 In Stock",
+        "DataSheetUrl": "https://www.mouser.com/catalog/specsheets/YAGEO_PYu_RC_Group_51_RoHS_L_12.pdf",
+        "Description": "Thick Film Resistors - SMD General Purpose Chip Resistor 0402, 10.5kOhms, 1%, 1/16W",
+        "FactoryStock": "0",
+        "ImagePath": "https://www.mouser.com/images/yageo/images/RC_series_SPL.jpg",
+        "Category": "Thick Film Resistors - SMD",
+        "LeadTime": "182 Days",
+        "LifecycleStatus": null,
+        "Manufacturer": "YAGEO",
+        "ManufacturerPartNumber": "RC0402FR-0710K5L",
+        "Min": "1",
+        "Mult": "1",
+        "MouserPartNumber": "603-RC0402FR-0710K5L",
+        "ProductAttributes": [
+          {
+            "AttributeName": "Packaging",
+            "AttributeValue": "Reel"
+          },
+          {
+            "AttributeName": "Packaging",
+            "AttributeValue": "Cut Tape"
+          },
+          {
+            "AttributeName": "Packaging",
+            "AttributeValue": "MouseReel",
+            "AttributeCost": "$7.00 MouseReel™ fee will be added and calculated in your shopping cart. All MouseReel™ orders are non-cancellable and non-returnable."
+          },
+          {
+            "AttributeName": "Standard Pack Qty",
+            "AttributeValue": "10000"
+          }
+        ],
+        "PriceBreaks": [
+          {
+            "Quantity": 1,
+            "Price": "$0.10",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 10,
+            "Price": "$0.005",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 100,
+            "Price": "$0.004",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 10000,
+            "Price": "$0.001",
+            "Currency": "USD"
+          }
+        ],
+        "AlternatePackagings": null,
+        "ProductDetailUrl": "https://www.mouser.com/ProductDetail/YAGEO/RC0402FR-0710K5L?qs=sxZXDnvRBEg0eqTVjwh5%252Bg%3D%3D",
+        "Reeling": true,
+        "ROHSStatus": "RoHS Compliant By Exemption",
+        "SuggestedReplacement": "",
+        "MultiSimBlue": 0,
+        "UnitWeightKg": {
+          "UnitWeight": 6.5e-7
+        },
+        "AvailabilityInStock": "1922389",
+        "AvailabilityOnOrder": [],
+        "InfoMessages": [],
+        "SurchargeMessages": null,
+        "ProductCompliance": [
+          {
+            "ComplianceName": "USHTS",
+            "ComplianceValue": "8533210030"
+          },
+          {
+            "ComplianceName": "CNHTS",
+            "ComplianceValue": "8533211000"
+          },
+          {
+            "ComplianceName": "TARIC",
+            "ComplianceValue": "8533210000"
+          },
+          {
+            "ComplianceName": "CAHTS",
+            "ComplianceValue": "8533210000"
+          },
+          {
+            "ComplianceName": "JPHTS",
+            "ComplianceValue": "853321000"
+          },
+          {
+            "ComplianceName": "KRHTS",
+            "ComplianceValue": "8533219000"
+          },
+          {
+            "ComplianceName": "MXHTS",
+            "ComplianceValue": "8533210100"
+          },
+          {
+            "ComplianceName": "BRHTS",
+            "ComplianceValue": "85332120"
+          },
+          {
+            "ComplianceName": "ECCN",
+            "ComplianceValue": "EAR99"
+          }
+        ]
+      }
+    },
+    {
+      "_src": "mouser",
+      "_id": "G00310K00FE1280",
+      "photo": "https://www.mouser.com/images/vishay/images/G_GN_series_DSL.jpg",
+      "title": "G00310K00FE1280",
+      "mpn": "G00310K00FE1280",
+      "manufacturer": "Vishay / Dale",
+      "description": "Wirewound Resistors - Through Hole 2watt 10Kohms 1%",
+      "package": "",
+      "packaging": "",
+      "regions": [
+        "US"
+      ],
+      "stock": 2844,
+      "minRub": 161,
+      "openUrl": "/product.html?src=mouser&id=G00310K00FE1280",
+      "_raw": {
+        "Availability": "2844 In Stock",
+        "DataSheetUrl": "",
+        "Description": "Wirewound Resistors - Through Hole 2watt 10Kohms 1%",
+        "FactoryStock": "0",
+        "ImagePath": "https://www.mouser.com/images/vishay/images/G_GN_series_DSL.jpg",
+        "Category": "Wirewound Resistors - Through Hole",
+        "LeadTime": "161 Days",
+        "LifecycleStatus": null,
+        "Manufacturer": "Vishay / Dale",
+        "ManufacturerPartNumber": "G00310K00FE1280",
+        "Min": "1",
+        "Mult": "1",
+        "MouserPartNumber": "71-G00310K00FE1280",
+        "ProductAttributes": [
+          {
+            "AttributeName": "Standard Pack Qty",
+            "AttributeValue": "100"
+          }
+        ],
+        "PriceBreaks": [
+          {
+            "Quantity": 1,
+            "Price": "$3.50",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 10,
+            "Price": "$2.78",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 100,
+            "Price": "$2.35",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 200,
+            "Price": "$2.12",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 500,
+            "Price": "$2.09",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 5000,
+            "Price": "$1.94",
+            "Currency": "USD"
+          }
+        ],
+        "AlternatePackagings": null,
+        "ProductDetailUrl": "https://www.mouser.com/ProductDetail/Vishay-Dale/G00310K00FE1280?qs=9Q8%2Fg2cKd%2FsKp1y3qBio9g%3D%3D",
+        "Reeling": false,
+        "ROHSStatus": "RoHS Compliant",
+        "SuggestedReplacement": "",
+        "MultiSimBlue": 0,
+        "UnitWeightKg": {
+          "UnitWeight": 0.00034
+        },
+        "AvailabilityInStock": "2844",
+        "AvailabilityOnOrder": [],
+        "InfoMessages": [],
+        "SurchargeMessages": null,
+        "ProductCompliance": [
+          {
+            "ComplianceName": "USHTS",
+            "ComplianceValue": "8533210080"
+          },
+          {
+            "ComplianceName": "CNHTS",
+            "ComplianceValue": "8533211000"
+          },
+          {
+            "ComplianceName": "CAHTS",
+            "ComplianceValue": "8533210000"
+          },
+          {
+            "ComplianceName": "JPHTS",
+            "ComplianceValue": "853321000"
+          },
+          {
+            "ComplianceName": "KRHTS",
+            "ComplianceValue": "8533219000"
+          },
+          {
+            "ComplianceName": "TARIC",
+            "ComplianceValue": "8533210000"
+          },
+          {
+            "ComplianceName": "MXHTS",
+            "ComplianceValue": "8533210100"
+          },
+          {
+            "ComplianceName": "BRHTS",
+            "ComplianceValue": "85332110"
+          },
+          {
+            "ComplianceName": "ECCN",
+            "ComplianceValue": "EAR99"
+          }
+        ]
+      }
+    },
+    {
+      "_src": "mouser",
+      "_id": "CPCF0210K00FE32",
+      "photo": "",
+      "title": "CPCF0210K00FE32",
+      "mpn": "CPCF0210K00FE32",
+      "manufacturer": "Vishay / Dale",
+      "description": "Metal Film Resistors - Through Hole CPCF-2 10K 1% E32 e3",
+      "package": "",
+      "packaging": "",
+      "regions": [
+        "US"
+      ],
+      "stock": 485,
+      "minRub": 107,
+      "openUrl": "/product.html?src=mouser&id=CPCF0210K00FE32",
+      "_raw": {
+        "Availability": "485 In Stock",
+        "DataSheetUrl": "",
+        "Description": "Metal Film Resistors - Through Hole CPCF-2 10K 1% E32 e3",
+        "FactoryStock": "0",
+        "ImagePath": null,
+        "Category": "Metal Film Resistors - Through Hole",
+        "LeadTime": "105 Days",
+        "LifecycleStatus": null,
+        "Manufacturer": "Vishay / Dale",
+        "ManufacturerPartNumber": "CPCF0210K00FE32",
+        "Min": "1",
+        "Mult": "1",
+        "MouserPartNumber": "71-CPCF0210K00FE32",
+        "ProductAttributes": [
+          {
+            "AttributeName": "Packaging",
+            "AttributeValue": "Bulk"
+          },
+          {
+            "AttributeName": "Standard Pack Qty",
+            "AttributeValue": "1"
+          }
+        ],
+        "PriceBreaks": [
+          {
+            "Quantity": 1,
+            "Price": "$3.81",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 10,
+            "Price": "$2.33",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 25,
+            "Price": "$2.16",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 100,
+            "Price": "$1.78",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 250,
+            "Price": "$1.52",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 500,
+            "Price": "$1.40",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 5000,
+            "Price": "$1.29",
+            "Currency": "USD"
+          }
+        ],
+        "AlternatePackagings": null,
+        "ProductDetailUrl": "https://www.mouser.com/ProductDetail/Vishay-Dale/CPCF0210K00FE32?qs=NcBTt3PsE6VaKElLZdJ42g%3D%3D",
+        "Reeling": false,
+        "ROHSStatus": "RoHS Compliant",
+        "SuggestedReplacement": "",
+        "MultiSimBlue": 0,
+        "UnitWeightKg": {
+          "UnitWeight": 0.0035
+        },
+        "AvailabilityInStock": "485",
+        "AvailabilityOnOrder": [],
+        "InfoMessages": [],
+        "SurchargeMessages": [
+          {
+            "code": "TARIFF_US",
+            "message": "A tariff of 20 % may be applied."
+          }
+        ],
+        "ProductCompliance": [
+          {
+            "ComplianceName": "USHTS",
+            "ComplianceValue": "8533210080"
+          },
+          {
+            "ComplianceName": "ECCN",
+            "ComplianceValue": "EAR99"
+          }
+        ]
+      }
+    },
+    {
+      "_src": "mouser",
+      "_id": "CRCW080510K5FKEAHP",
+      "photo": "https://www.mouser.com/images/vishay/images/CRCW_series_DSL.jpg",
+      "title": "CRCW080510K5FKEAHP",
+      "mpn": "CRCW080510K5FKEAHP",
+      "manufacturer": "Vishay",
+      "description": "Thick Film Resistors - SMD 0.5W 10.5Kohms 1% 150V 0805",
+      "package": "",
+      "packaging": "",
+      "regions": [
+        "US"
+      ],
+      "stock": 4786,
+      "minRub": 2,
+      "openUrl": "/product.html?src=mouser&id=CRCW080510K5FKEAHP",
+      "_raw": {
+        "Availability": "4786 In Stock",
+        "DataSheetUrl": "",
+        "Description": "Thick Film Resistors - SMD 0.5W 10.5Kohms 1% 150V 0805",
+        "FactoryStock": "0",
+        "ImagePath": "https://www.mouser.com/images/vishay/images/CRCW_series_DSL.jpg",
+        "Category": "Thick Film Resistors - SMD",
+        "LeadTime": "84 Days",
+        "LifecycleStatus": null,
+        "Manufacturer": "Vishay",
+        "ManufacturerPartNumber": "CRCW080510K5FKEAHP",
+        "Min": "1",
+        "Mult": "1",
+        "MouserPartNumber": "71-CRCW080510K5FKEAH",
+        "ProductAttributes": [
+          {
+            "AttributeName": "Packaging",
+            "AttributeValue": "Reel"
+          },
+          {
+            "AttributeName": "Packaging",
+            "AttributeValue": "Cut Tape"
+          },
+          {
+            "AttributeName": "Packaging",
+            "AttributeValue": "MouseReel",
+            "AttributeCost": "$7.00 MouseReel™ fee will be added and calculated in your shopping cart. All MouseReel™ orders are non-cancellable and non-returnable."
+          },
+          {
+            "AttributeName": "Standard Pack Qty",
+            "AttributeValue": "5000"
+          }
+        ],
+        "PriceBreaks": [
+          {
+            "Quantity": 1,
+            "Price": "$0.23",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 10,
+            "Price": "$0.115",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 100,
+            "Price": "$0.065",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 1000,
+            "Price": "$0.042",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 2000,
+            "Price": "$0.036",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 5000,
+            "Price": "$0.03",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 25000,
+            "Price": "$0.027",
+            "Currency": "USD"
+          }
+        ],
+        "AlternatePackagings": null,
+        "ProductDetailUrl": "https://www.mouser.com/ProductDetail/Vishay/CRCW080510K5FKEAHP?qs=VAB4DzKv5wVu3Sj%252BBhHBig%3D%3D",
+        "Reeling": true,
+        "ROHSStatus": "RoHS Compliant By Exemption",
+        "SuggestedReplacement": "",
+        "MultiSimBlue": 0,
+        "UnitWeightKg": {
+          "UnitWeight": 0.0000055
+        },
+        "AvailabilityInStock": "4786",
+        "AvailabilityOnOrder": [],
+        "InfoMessages": [],
+        "SurchargeMessages": [
+          {
+            "code": "TARIFF_US",
+            "message": "A tariff of 14 % may be applied."
+          }
+        ],
+        "ProductCompliance": [
+          {
+            "ComplianceName": "USHTS",
+            "ComplianceValue": "8533210030"
+          },
+          {
+            "ComplianceName": "CAHTS",
+            "ComplianceValue": "8533210000"
+          },
+          {
+            "ComplianceName": "JPHTS",
+            "ComplianceValue": "853321000"
+          },
+          {
+            "ComplianceName": "KRHTS",
+            "ComplianceValue": "8533219000"
+          },
+          {
+            "ComplianceName": "TARIC",
+            "ComplianceValue": "8533210000"
+          },
+          {
+            "ComplianceName": "MXHTS",
+            "ComplianceValue": "8533210100"
+          },
+          {
+            "ComplianceName": "BRHTS",
+            "ComplianceValue": "85332120"
+          },
+          {
+            "ComplianceName": "ECCN",
+            "ComplianceValue": "EAR99"
+          }
+        ]
+      }
+    },
+    {
+      "_src": "mouser",
+      "_id": "CCF55210KFKE36",
+      "photo": "https://www.mouser.com/images/vishay/images/Vishay_CCF_series_DSL.jpg",
+      "title": "CCF55210KFKE36",
+      "mpn": "CCF55210KFKE36",
+      "manufacturer": "Vishay / Dale",
+      "description": "Metal Film Resistors - Through Hole 1/4watt 210Kohms 1% Rated to 1/2watt",
+      "package": "",
+      "packaging": "",
+      "regions": [
+        "US"
+      ],
+      "stock": 1813,
+      "minRub": 3,
+      "openUrl": "/product.html?src=mouser&id=CCF55210KFKE36",
+      "_raw": {
+        "Availability": "1813 In Stock",
+        "DataSheetUrl": "",
+        "Description": "Metal Film Resistors - Through Hole 1/4watt 210Kohms 1% Rated to 1/2watt",
+        "FactoryStock": "0",
+        "ImagePath": "https://www.mouser.com/images/vishay/images/Vishay_CCF_series_DSL.jpg",
+        "Category": "Metal Film Resistors - Through Hole",
+        "LeadTime": "84 Days",
+        "LifecycleStatus": null,
+        "Manufacturer": "Vishay / Dale",
+        "ManufacturerPartNumber": "CCF55210KFKE36",
+        "Min": "1",
+        "Mult": "1",
+        "MouserPartNumber": "71-CCF55210KFKE36",
+        "ProductAttributes": [
+          {
+            "AttributeName": "Packaging",
+            "AttributeValue": "Reel"
+          },
+          {
+            "AttributeName": "Packaging",
+            "AttributeValue": "Cut Tape"
+          },
+          {
+            "AttributeName": "Standard Pack Qty",
+            "AttributeValue": "5000"
+          }
+        ],
+        "PriceBreaks": [
+          {
+            "Quantity": 1,
+            "Price": "$0.30",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 10,
+            "Price": "$0.252",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 25,
+            "Price": "$0.184",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 100,
+            "Price": "$0.099",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 250,
+            "Price": "$0.076",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 500,
+            "Price": "$0.06",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 1000,
+            "Price": "$0.052",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 5000,
+            "Price": "$0.042",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 10000,
+            "Price": "$0.039",
+            "Currency": "USD"
+          }
+        ],
+        "AlternatePackagings": null,
+        "ProductDetailUrl": "https://www.mouser.com/ProductDetail/Vishay-Dale/CCF55210KFKE36?qs=rMX6kfwPG0rEjAMgtaMbkg%3D%3D",
+        "Reeling": true,
+        "ROHSStatus": "RoHS Compliant",
+        "SuggestedReplacement": "",
+        "MultiSimBlue": 0,
+        "UnitWeightKg": {
+          "UnitWeight": 0.00035
+        },
+        "AvailabilityInStock": "1813",
+        "AvailabilityOnOrder": [],
+        "InfoMessages": [],
+        "SurchargeMessages": null,
+        "ProductCompliance": [
+          {
+            "ComplianceName": "USHTS",
+            "ComplianceValue": "8533210090"
+          },
+          {
+            "ComplianceName": "CNHTS",
+            "ComplianceValue": "8533219000"
+          },
+          {
+            "ComplianceName": "CAHTS",
+            "ComplianceValue": "8533210000"
+          },
+          {
+            "ComplianceName": "JPHTS",
+            "ComplianceValue": "853321000"
+          },
+          {
+            "ComplianceName": "KRHTS",
+            "ComplianceValue": "8533219000"
+          },
+          {
+            "ComplianceName": "TARIC",
+            "ComplianceValue": "8533210000"
+          },
+          {
+            "ComplianceName": "MXHTS",
+            "ComplianceValue": "8533210100"
+          },
+          {
+            "ComplianceName": "BRHTS",
+            "ComplianceValue": "85332190"
+          },
+          {
+            "ComplianceName": "ECCN",
+            "ComplianceValue": "EAR99"
+          }
+        ]
+      }
+    },
+    {
+      "_src": "mouser",
+      "_id": "CCF5510K2FKE36",
+      "photo": "https://www.mouser.com/images/vishay/images/Vishay_CCF_series_DSL.jpg",
+      "title": "CCF5510K2FKE36",
+      "mpn": "CCF5510K2FKE36",
+      "manufacturer": "Vishay / Dale",
+      "description": "Metal Film Resistors - Through Hole 1/4watt 10.2Kohms 1% Rated to 1/2watt",
+      "package": "",
+      "packaging": "",
+      "regions": [
+        "US"
+      ],
+      "stock": 12867,
+      "minRub": 3,
+      "openUrl": "/product.html?src=mouser&id=CCF5510K2FKE36",
+      "_raw": {
+        "Availability": "12867 In Stock",
+        "DataSheetUrl": "",
+        "Description": "Metal Film Resistors - Through Hole 1/4watt 10.2Kohms 1% Rated to 1/2watt",
+        "FactoryStock": "0",
+        "ImagePath": "https://www.mouser.com/images/vishay/images/Vishay_CCF_series_DSL.jpg",
+        "Category": "Metal Film Resistors - Through Hole",
+        "LeadTime": "84 Days",
+        "LifecycleStatus": null,
+        "Manufacturer": "Vishay / Dale",
+        "ManufacturerPartNumber": "CCF5510K2FKE36",
+        "Min": "1",
+        "Mult": "1",
+        "MouserPartNumber": "71-CCF5510K2FKE36",
+        "ProductAttributes": [
+          {
+            "AttributeName": "Packaging",
+            "AttributeValue": "Reel"
+          },
+          {
+            "AttributeName": "Packaging",
+            "AttributeValue": "Cut Tape"
+          },
+          {
+            "AttributeName": "Standard Pack Qty",
+            "AttributeValue": "5000"
+          }
+        ],
+        "PriceBreaks": [
+          {
+            "Quantity": 1,
+            "Price": "$0.30",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 10,
+            "Price": "$0.252",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 25,
+            "Price": "$0.184",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 100,
+            "Price": "$0.099",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 250,
+            "Price": "$0.076",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 500,
+            "Price": "$0.06",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 1000,
+            "Price": "$0.052",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 5000,
+            "Price": "$0.042",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 10000,
+            "Price": "$0.039",
+            "Currency": "USD"
+          }
+        ],
+        "AlternatePackagings": null,
+        "ProductDetailUrl": "https://www.mouser.com/ProductDetail/Vishay-Dale/CCF5510K2FKE36?qs=rMX6kfwPG0pHMBI9q4OP1g%3D%3D",
+        "Reeling": true,
+        "ROHSStatus": "RoHS Compliant",
+        "SuggestedReplacement": "",
+        "MultiSimBlue": 0,
+        "UnitWeightKg": {
+          "UnitWeight": 0.00035
+        },
+        "AvailabilityInStock": "12867",
+        "AvailabilityOnOrder": [],
+        "InfoMessages": [],
+        "SurchargeMessages": null,
+        "ProductCompliance": [
+          {
+            "ComplianceName": "USHTS",
+            "ComplianceValue": "8533210090"
+          },
+          {
+            "ComplianceName": "CNHTS",
+            "ComplianceValue": "8533219000"
+          },
+          {
+            "ComplianceName": "CAHTS",
+            "ComplianceValue": "8533210000"
+          },
+          {
+            "ComplianceName": "JPHTS",
+            "ComplianceValue": "853321000"
+          },
+          {
+            "ComplianceName": "KRHTS",
+            "ComplianceValue": "8533219000"
+          },
+          {
+            "ComplianceName": "TARIC",
+            "ComplianceValue": "8533210000"
+          },
+          {
+            "ComplianceName": "MXHTS",
+            "ComplianceValue": "8533210100"
+          },
+          {
+            "ComplianceName": "BRHTS",
+            "ComplianceValue": "85332190"
+          },
+          {
+            "ComplianceName": "ECCN",
+            "ComplianceValue": "EAR99"
+          }
+        ]
+      }
+    },
+    {
+      "_src": "mouser",
+      "_id": "CCF5510K7FKE36",
+      "photo": "https://www.mouser.com/images/vishay/images/Vishay_CCF_series_DSL.jpg",
+      "title": "CCF5510K7FKE36",
+      "mpn": "CCF5510K7FKE36",
+      "manufacturer": "Vishay / Dale",
+      "description": "Metal Film Resistors - Through Hole 1/4watt 10.7Kohms 1% Rated to 1/2watt",
+      "package": "",
+      "packaging": "",
+      "regions": [
+        "US"
+      ],
+      "stock": 6920,
+      "minRub": 3,
+      "openUrl": "/product.html?src=mouser&id=CCF5510K7FKE36",
+      "_raw": {
+        "Availability": "6920 In Stock",
+        "DataSheetUrl": "",
+        "Description": "Metal Film Resistors - Through Hole 1/4watt 10.7Kohms 1% Rated to 1/2watt",
+        "FactoryStock": "0",
+        "ImagePath": "https://www.mouser.com/images/vishay/images/Vishay_CCF_series_DSL.jpg",
+        "Category": "Metal Film Resistors - Through Hole",
+        "LeadTime": "84 Days",
+        "LifecycleStatus": null,
+        "Manufacturer": "Vishay / Dale",
+        "ManufacturerPartNumber": "CCF5510K7FKE36",
+        "Min": "1",
+        "Mult": "1",
+        "MouserPartNumber": "71-CCF5510K7FKE36",
+        "ProductAttributes": [
+          {
+            "AttributeName": "Packaging",
+            "AttributeValue": "Reel"
+          },
+          {
+            "AttributeName": "Packaging",
+            "AttributeValue": "Cut Tape"
+          },
+          {
+            "AttributeName": "Standard Pack Qty",
+            "AttributeValue": "5000"
+          }
+        ],
+        "PriceBreaks": [
+          {
+            "Quantity": 1,
+            "Price": "$0.30",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 10,
+            "Price": "$0.252",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 25,
+            "Price": "$0.184",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 100,
+            "Price": "$0.099",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 250,
+            "Price": "$0.076",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 500,
+            "Price": "$0.06",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 1000,
+            "Price": "$0.052",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 5000,
+            "Price": "$0.037",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 10000,
+            "Price": "$0.034",
+            "Currency": "USD"
+          }
+        ],
+        "AlternatePackagings": null,
+        "ProductDetailUrl": "https://www.mouser.com/ProductDetail/Vishay-Dale/CCF5510K7FKE36?qs=rMX6kfwPG0oJ7GrZQ45BfA%3D%3D",
+        "Reeling": true,
+        "ROHSStatus": "RoHS Compliant",
+        "SuggestedReplacement": "",
+        "MultiSimBlue": 0,
+        "UnitWeightKg": {
+          "UnitWeight": 0.00035
+        },
+        "AvailabilityInStock": "6920",
+        "AvailabilityOnOrder": [],
+        "InfoMessages": [],
+        "SurchargeMessages": null,
+        "ProductCompliance": [
+          {
+            "ComplianceName": "USHTS",
+            "ComplianceValue": "8533210090"
+          },
+          {
+            "ComplianceName": "CNHTS",
+            "ComplianceValue": "8533219000"
+          },
+          {
+            "ComplianceName": "CAHTS",
+            "ComplianceValue": "8533210000"
+          },
+          {
+            "ComplianceName": "JPHTS",
+            "ComplianceValue": "853321000"
+          },
+          {
+            "ComplianceName": "KRHTS",
+            "ComplianceValue": "8533219000"
+          },
+          {
+            "ComplianceName": "TARIC",
+            "ComplianceValue": "8533210000"
+          },
+          {
+            "ComplianceName": "MXHTS",
+            "ComplianceValue": "8533210100"
+          },
+          {
+            "ComplianceName": "BRHTS",
+            "ComplianceValue": "85332190"
+          },
+          {
+            "ComplianceName": "ECCN",
+            "ComplianceValue": "EAR99"
+          }
+        ]
+      }
+    },
+    {
+      "_src": "mouser",
+      "_id": "LR2F910K",
+      "photo": "https://www.mouser.com/images/tycoelectronics/images/LR_series_Gen_SPL.jpg",
+      "title": "LR2F910K",
+      "mpn": "LR2F910K",
+      "manufacturer": "TE Connectivity / Holsworthy",
+      "description": "Metal Film Resistors - Through Hole LR2 1% 910K",
+      "package": "",
+      "packaging": "",
+      "regions": [
+        "US"
+      ],
+      "stock": 706,
+      "minRub": 4,
+      "openUrl": "/product.html?src=mouser&id=LR2F910K",
+      "_raw": {
+        "Availability": "706 In Stock",
+        "DataSheetUrl": "",
+        "Description": "Metal Film Resistors - Through Hole LR2 1% 910K",
+        "FactoryStock": "0",
+        "ImagePath": "https://www.mouser.com/images/tycoelectronics/images/LR_series_Gen_SPL.jpg",
+        "Category": "Metal Film Resistors - Through Hole",
+        "LeadTime": "66 Days",
+        "LifecycleStatus": null,
+        "Manufacturer": "TE Connectivity / Holsworthy",
+        "ManufacturerPartNumber": "LR2F910K",
+        "Min": "1",
+        "Mult": "1",
+        "MouserPartNumber": "279-LR2F910K",
+        "ProductAttributes": [
+          {
+            "AttributeName": "Packaging",
+            "AttributeValue": "Bulk"
+          },
+          {
+            "AttributeName": "Standard Pack Qty",
+            "AttributeValue": "1000"
+          }
+        ],
+        "PriceBreaks": [
+          {
+            "Quantity": 1,
+            "Price": "$0.37",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 10,
+            "Price": "$0.268",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 25,
+            "Price": "$0.198",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 100,
+            "Price": "$0.108",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 250,
+            "Price": "$0.089",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 500,
+            "Price": "$0.074",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 1000,
+            "Price": "$0.046",
+            "Currency": "USD"
+          }
+        ],
+        "AlternatePackagings": null,
+        "ProductDetailUrl": "https://www.mouser.com/ProductDetail/TE-Connectivity-Holsworthy/LR2F910K?qs=ip69W3eHERVG0wwNIAtojA%3D%3D",
+        "Reeling": false,
+        "ROHSStatus": "RoHS Compliant",
+        "SuggestedReplacement": "",
+        "MultiSimBlue": 0,
+        "UnitWeightKg": {
+          "UnitWeight": 0.00035
+        },
+        "AvailabilityInStock": "706",
+        "AvailabilityOnOrder": [],
+        "InfoMessages": [],
+        "SurchargeMessages": null,
+        "ProductCompliance": [
+          {
+            "ComplianceName": "USHTS",
+            "ComplianceValue": "8533210090"
+          },
+          {
+            "ComplianceName": "CNHTS",
+            "ComplianceValue": "8533219000"
+          },
+          {
+            "ComplianceName": "CAHTS",
+            "ComplianceValue": "8533210000"
+          },
+          {
+            "ComplianceName": "JPHTS",
+            "ComplianceValue": "853321000"
+          },
+          {
+            "ComplianceName": "KRHTS",
+            "ComplianceValue": "8533219000"
+          },
+          {
+            "ComplianceName": "TARIC",
+            "ComplianceValue": "8533210000"
+          },
+          {
+            "ComplianceName": "MXHTS",
+            "ComplianceValue": "8533210100"
+          },
+          {
+            "ComplianceName": "BRHTS",
+            "ComplianceValue": "85332190"
+          },
+          {
+            "ComplianceName": "ECCN",
+            "ComplianceValue": "EAR99"
+          }
+        ]
+      }
+    },
+    {
+      "_src": "mouser",
+      "_id": "RC0805FR-0710KP",
+      "photo": "https://www.mouser.com/images/yageo/images/RC_series_SPL.jpg",
+      "title": "RC0805FR-0710KP",
+      "mpn": "RC0805FR-0710KP",
+      "manufacturer": "YAGEO",
+      "description": "Thick Film Resistors - SMD General Purpose Chip Resistor 0805, 10kOhms, 1%, 1/8W",
+      "package": "",
+      "packaging": "",
+      "regions": [
+        "US"
+      ],
+      "stock": 103625,
+      "minRub": 1,
+      "openUrl": "/product.html?src=mouser&id=RC0805FR-0710KP",
+      "_raw": {
+        "Availability": "103625 In Stock",
+        "DataSheetUrl": "https://www.mouser.com/datasheet/3/508/1/pyu-rc_51_rohs_p.pdf",
+        "Description": "Thick Film Resistors - SMD General Purpose Chip Resistor 0805, 10kOhms, 1%, 1/8W",
+        "FactoryStock": "0",
+        "ImagePath": "https://www.mouser.com/images/yageo/images/RC_series_SPL.jpg",
+        "Category": "Thick Film Resistors - SMD",
+        "LeadTime": "182 Days",
+        "LifecycleStatus": null,
+        "Manufacturer": "YAGEO",
+        "ManufacturerPartNumber": "RC0805FR-0710KP",
+        "Min": "1",
+        "Mult": "1",
+        "MouserPartNumber": "603-RC0805FR-0710KP",
+        "ProductAttributes": [
+          {
+            "AttributeName": "Packaging",
+            "AttributeValue": "Reel"
+          },
+          {
+            "AttributeName": "Packaging",
+            "AttributeValue": "Cut Tape"
+          },
+          {
+            "AttributeName": "Packaging",
+            "AttributeValue": "MouseReel",
+            "AttributeCost": "$7.00 MouseReel™ fee will be added and calculated in your shopping cart. All MouseReel™ orders are non-cancellable and non-returnable."
+          },
+          {
+            "AttributeName": "Standard Pack Qty",
+            "AttributeValue": "5000"
+          }
+        ],
+        "PriceBreaks": [
+          {
+            "Quantity": 1,
+            "Price": "$0.10",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 10,
+            "Price": "$0.025",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 100,
+            "Price": "$0.019",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 1000,
+            "Price": "$0.012",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 5000,
+            "Price": "$0.008",
+            "Currency": "USD"
+          },
+          {
+            "Quantity": 10000,
+            "Price": "$0.007",
+            "Currency": "USD"
+          }
+        ],
+        "AlternatePackagings": null,
+        "ProductDetailUrl": "https://www.mouser.com/ProductDetail/YAGEO/RC0805FR-0710KP?qs=oypCK0zG325T0D5knsDwJg%3D%3D",
+        "Reeling": true,
+        "ROHSStatus": "RoHS Compliant",
+        "SuggestedReplacement": "",
+        "MultiSimBlue": 0,
+        "UnitWeightKg": {
+          "UnitWeight": 0.0000055
+        },
+        "AvailabilityInStock": "103625",
+        "AvailabilityOnOrder": [],
+        "InfoMessages": [],
+        "SurchargeMessages": [
+          {
+            "code": "TARIFF_US",
+            "message": "A tariff of 35 % may be applied."
+          }
+        ],
+        "ProductCompliance": [
+          {
+            "ComplianceName": "USHTS",
+            "ComplianceValue": "8533210030"
+          },
+          {
+            "ComplianceName": "CNHTS",
+            "ComplianceValue": "8533211000"
+          },
+          {
+            "ComplianceName": "TARIC",
+            "ComplianceValue": "8533210000"
+          },
+          {
+            "ComplianceName": "CAHTS",
+            "ComplianceValue": "8533210000"
+          },
+          {
+            "ComplianceName": "JPHTS",
+            "ComplianceValue": "853321000"
+          },
+          {
+            "ComplianceName": "KRHTS",
+            "ComplianceValue": "8533219000"
+          },
+          {
+            "ComplianceName": "MXHTS",
+            "ComplianceValue": "8533210100"
+          },
+          {
+            "ComplianceName": "BRHTS",
+            "ComplianceValue": "85332120"
+          },
+          {
+            "ComplianceName": "ECCN",
+            "ComplianceValue": "EAR99"
+          }
+        ]
+      }
+    },
+    {
+      "_src": "mouser",
+      "_id": "HB110KFZRE",
+      "photo": "https://www.mouser.com/images/tycoelectronics/images/prfrhb.jpg",
+      "title": "HB110KFZRE",
+      "mpn": "HB110KFZRE",
+      "manufacturer": "TE Connectivity / Holsworthy",
+      "description": "Thick Film Resistors - Through Hole HB01RE 10K 1% 100PPM",
+      "package": "",
+      "packaging": "",
+      "regions": [
+        "US"
+      ],
+      "stock": 1467,
+      "minRub": 427,
+      "openUrl": "/product.html?src=mouser&id=HB110KFZRE",
+      "_raw": {
+        "Availability": "1467 In Stock",
+        "DataSheetUrl": "https://www.mouser.com/datasheet/3/2640/1/ENG_CD_1625958_B2.pdf",
+        "Description": "Thick Film Resistors - Through Hole HB01RE 10K 1% 100PPM",
+        "FactoryStock": "0",
+        "ImagePath": "https://www.mouser.com/images/tycoelectronics/images/prfrhb.jpg",
+        "Category": "Thick Film Resistors - Through Hole",
+        "LeadTime": "194 Days",
+        "LifecycleStatus": null,
+        "Manufacturer": "TE Connectivity / Holsworthy",
+        "ManufacturerPartNumber": "HB110KFZRE",
+        "Min": "1",
+        "Mult": "1",
+        "MouserPartNumber": "279-HB110KFZRE",
+        "ProductAttributes": [
+          {
+            "AttributeName": "Packaging",
+            "AttributeValue": "Bulk"
+          },
+          {
+            "AttributeName": "Standard Pack Qty",
+            "AttributeValue": "500"
+          }
+        ],
+        "PriceBreaks": [
+          {
+            "Quantity": 1,
+            "Price": "$5.15",
+            "Currency": "USD"
+          }
+        ],
+        "AlternatePackagings": null,
+        "ProductDetailUrl": "https://www.mouser.com/ProductDetail/TE-Connectivity-Holsworthy/HB110KFZRE?qs=iJVBkmKXgrkPLGPaYtbxvA%3D%3D",
+        "Reeling": false,
+        "ROHSStatus": "RoHS Compliant By Exemption",
+        "SuggestedReplacement": "",
+        "MultiSimBlue": 0,
+        "UnitWeightKg": {
+          "UnitWeight": 0.001008
+        },
+        "AvailabilityInStock": "1467",
+        "AvailabilityOnOrder": [],
+        "InfoMessages": [],
+        "SurchargeMessages": null,
+        "ProductCompliance": [
+          {
+            "ComplianceName": "USHTS",
+            "ComplianceValue": "8533210090"
+          },
+          {
+            "ComplianceName": "CNHTS",
+            "ComplianceValue": "8533219000"
+          },
+          {
+            "ComplianceName": "CAHTS",
+            "ComplianceValue": "8533210000"
+          },
+          {
+            "ComplianceName": "JPHTS",
+            "ComplianceValue": "853321000"
+          },
+          {
+            "ComplianceName": "KRHTS",
+            "ComplianceValue": "8533219000"
+          },
+          {
+            "ComplianceName": "TARIC",
+            "ComplianceValue": "8533210000"
+          },
+          {
+            "ComplianceName": "MXHTS",
+            "ComplianceValue": "8533210100"
+          },
+          {
+            "ComplianceName": "BRHTS",
+            "ComplianceValue": "85332110"
+          },
+          {
+            "ComplianceName": "ECCN",
+            "ComplianceValue": "EAR99"
+          }
+        ]
+      }
+    }
+  ],
+  "meta": {
+    "source": "mouser",
+    "total": 50,
+    "cached": false,
+    "elapsed": 2291
+  }
+}

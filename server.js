@@ -2,6 +2,9 @@
 // v3.0 - With TME, Mouser, Farnell support
 
 import 'dotenv/config';
+// Enable proxy-by-default before any network clients load
+import './src/bootstrap/proxy.mjs';
+
 import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -44,6 +47,7 @@ import { createOrderRateLimiter, createAuthRateLimiter, createGeneralRateLimiter
 // Orders API
 import { createOrderHandler } from './api/order.js';
 import { mountAdminRoutes } from './api/admin.orders.js';
+import { mountAdminSettingsRoutes } from './api/admin.settings.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -52,6 +56,8 @@ console.log('\n🚀 Deep Components Aggregator v3.2');
 console.log('='.repeat(50));
 
 const app = express();
+// Trust proxy to ensure correct secure cookies and IP handling behind CDN/NGINX
+app.set('trust proxy', 1);
 
 // JSON body parser
 app.use(express.json({ limit: '1mb' }));
@@ -161,6 +167,7 @@ app.post('/api/order', orderRateLimiter, createOrderHandler(db, logger));
 
 // Admin API (protected by Nginx Basic Auth at proxy level)
 mountAdminRoutes(app, db, logger);
+mountAdminSettingsRoutes(app, db, logger);
 
 // Digi-Key server-only endpoints (to ensure calls go through server IP)
 app.get('/api/digikey/keyword', async (req, res) => {

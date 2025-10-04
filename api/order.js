@@ -160,6 +160,18 @@ export function createOrderHandler(db, logger) {
     // Generate dealer links
     const dealerLinks = generateDealerLinks(item.mpn, item.manufacturer);
     
+    // Generate OEMsTrade supplier links for admin panel
+    const suppliersLinks = [
+      `https://oemstrade.com/search?q=${encodeURIComponent(item.mpn)}`,
+      `https://www.google.com/search?q=site:oemstrade.com+${encodeURIComponent(item.mpn)}`
+    ];
+    
+    // Merge meta with suppliers links
+    const finalMeta = {
+      ...meta,
+      suppliersLinks
+    };
+    
     // Insert order into database (transaction)
     const insertStmt = db.prepare(`
       INSERT INTO orders (
@@ -186,7 +198,7 @@ export function createOrderHandler(db, logger) {
         JSON.stringify(finalPricing),
         JSON.stringify(dealerLinks),
         'pending',
-        meta ? JSON.stringify(meta) : null
+        JSON.stringify(finalMeta)
       );
     });
     

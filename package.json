@@ -15,6 +15,7 @@
     "test:e2e": "playwright test",
     "diag:live": "node ./scripts/diag-live.mjs",
     "diag:report": "node ./scripts/diag-report.mjs",
+    "providers:check": "node ./scripts/check-providers.mjs",
     "deploy": "bash ./deploy-to-server.sh"
   },
   "dependencies": {
@@ -36,6 +37,7 @@
     "passport": "^0.7.0",
     "passport-google-oidc": "^0.1.0",
     "passport-local": "^1.0.0",
+    "passport-vkontakte": "^0.3.3",
     "passport-yandex": "^0.0.5",
     "pino": "^8.16.0",
     "prom-client": "^15.0.0",

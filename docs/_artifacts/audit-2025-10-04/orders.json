@@ -1,0 +1,91 @@
+{
+  "test_date": "2025-10-04",
+  "endpoints": {
+    "create_order": {
+      "method": "POST",
+      "path": "/api/order",
+      "auth": "required",
+      "request_example": {
+        "items": [
+          {
+            "mpn": "2N3904",
+            "manufacturer": "ON Semiconductor",
+            "quantity": 10,
+            "price_rub": 8.41,
+            "source": "mouser"
+          }
+        ],
+        "customer": {
+          "name": "Иван Тестовый",
+          "email": "test@local",
+          "phone": "+79001234567"
+        }
+      },
+      "response_example": {
+        "ok": true,
+        "order": {
+          "id": 1,
+          "status": "pending",
+          "total_rub": 84.10
+        }
+      }
+    },
+    "get_order": {
+      "method": "GET",
+      "path": "/api/admin/orders/:id",
+      "auth": "admin",
+      "response_example": {
+        "ok": true,
+        "order": {
+          "id": 1,
+          "user_id": 1,
+          "status": "pending",
+          "items": [
+            {
+              "mpn": "2N3904",
+              "quantity": 10,
+              "price_rub": 8.41
+            }
+          ]
+        }
+      }
+    },
+    "update_order_status": {
+      "method": "PATCH",
+      "path": "/api/admin/orders/:id",
+      "auth": "admin",
+      "request_example": {
+        "status": "processing"
+      },
+      "response_example": {
+        "ok": true,
+        "order": {
+          "id": 1,
+          "status": "processing"
+        }
+      }
+    },
+    "get_user_orders": {
+      "method": "GET",
+      "path": "/api/user/orders",
+      "auth": "user",
+      "response_example": {
+        "ok": true,
+        "orders": [
+          {
+            "id": 1,
+            "status": "processing",
+            "total_rub": 84.10
+          }
+        ]
+      }
+    }
+  },
+  "test_results": {
+    "server_status": "NOT_RUNNING",
+    "tests_performed": 0,
+    "tests_passed": 0,
+    "tests_failed": 0,
+    "notes": "Cannot test without running server. Endpoints documented from source code review."
+  }
+}

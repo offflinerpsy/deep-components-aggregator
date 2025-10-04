@@ -1,0 +1,56 @@
+[
+  {
+    "q": "транзистор 2N3904",
+    "lang_detected": "ru",
+    "description": "Russian search with MPN",
+    "api_status": 200,
+    "result_count": 0,
+    "source": "none",
+    "api_raw": "search-1.json"
+  },
+  {
+    "q": "конденсатор 1000мкф 25в",
+    "lang_detected": "ru",
+    "description": "Russian capacitor specs",
+    "api_status": 200,
+    "result_count": 0,
+    "source": "none",
+    "api_raw": "search-2.json"
+  },
+  {
+    "q": "диод Шоттки 3А",
+    "lang_detected": "ru",
+    "description": "Russian Schottky diode",
+    "api_status": 200,
+    "result_count": 0,
+    "source": "none",
+    "api_raw": "search-3.json"
+  },
+  {
+    "q": "микросхема NE555",
+    "lang_detected": "ru",
+    "description": "Russian IC with MPN",
+    "api_status": 200,
+    "result_count": 0,
+    "source": "none",
+    "api_raw": "search-4.json"
+  },
+  {
+    "q": "транзисторы",
+    "lang_detected": "ru",
+    "description": "Russian generic search",
+    "api_status": 200,
+    "result_count": 0,
+    "source": "none",
+    "api_raw": "search-5.json"
+  },
+  {
+    "q": "resistor 10k 1%",
+    "lang_detected": "en",
+    "description": "English resistor specs",
+    "api_status": 200,
+    "result_count": 50,
+    "source": "mouser",
+    "api_raw": "search-6.json"
+  }
+]

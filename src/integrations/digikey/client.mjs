@@ -6,7 +6,7 @@
  * Endpoints: Product Information v4
  */
 
-import { fetch, ProxyAgent } from 'undici';
+import { fetchWithRetry } from '../../utils/fetchWithRetry.mjs';
 
 const RAW_BASE = process.env.DIGIKEY_API_BASE || 'https://api.digikey.com';
 const API_BASE = RAW_BASE.endsWith('/') ? RAW_BASE.slice(0, -1) : RAW_BASE;
@@ -22,31 +22,6 @@ const PRODUCT_DETAILS_BY_DKPN_URL = (dkpn) => `${V4_BASE}/search/${encodeURIComp
 // Use a browser-like UA by default to avoid upstream WAF over-filtering. Can be overridden via env.
 const USER_AGENT = process.env.DIGIKEY_USER_AGENT ||
   'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0 Safari/537.36';
-
-let proxyDispatcherCached = undefined;
-async function getProxyDispatcher() {
-  if (proxyDispatcherCached !== undefined) return proxyDispatcherCached;
-  const proxyUrl = process.env.DIGIKEY_OUTBOUND_PROXY || process.env.HTTPS_PROXY || process.env.HTTP_PROXY || '';
-  if (!proxyUrl) {
-    proxyDispatcherCached = null;
-    console.log('[DigiKey] No outbound proxy configured');
-    return null;
-  }
-  try {
-    proxyDispatcherCached = new ProxyAgent(proxyUrl);
-    console.log(`[DigiKey] ✅ Using outbound proxy: ${proxyUrl}`);
-    return proxyDispatcherCached;
-  } catch (e) {
-    console.error(`[DigiKey] ⚠️ Proxy setup failed (${proxyUrl}):`, e.message);
-    proxyDispatcherCached = null;
-    return null;
-  }
-}
-
-async function withDispatcher(init) {
-  const dispatcher = await getProxyDispatcher();
-  return dispatcher ? { ...init, dispatcher } : init;
-}
 
 let cachedToken = null;
 let tokenExpiry = 0;
@@ -74,7 +49,7 @@ async function getAccessToken({ clientId, clientSecret }) {
 
   console.log('[DigiKey] Requesting new access token...');
 
-  const response = await fetch(TOKEN_URL, await withDispatcher({
+  const response = await fetchWithRetry(TOKEN_URL, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
@@ -87,7 +62,7 @@ async function getAccessToken({ clientId, clientSecret }) {
       client_secret: clientSecret,
       grant_type: 'client_credentials'
     })
-  }));
+  });
 
   if (!response.ok) {
     const error = await response.text();
@@ -128,7 +103,7 @@ function commonHeaders(clientId, token) {
 export async function digikeySearchByKeyword({ clientId, clientSecret, keyword, limit = 10, offset = 0 }) {
   const token = await getAccessToken({ clientId, clientSecret });
 
-  const response = await fetch(SEARCH_KEYWORD_URL, await withDispatcher({
+  const response = await fetchWithRetry(SEARCH_KEYWORD_URL, {
     method: 'POST',
     headers: {
       ...commonHeaders(clientId, token),
@@ -139,7 +114,7 @@ export async function digikeySearchByKeyword({ clientId, clientSecret, keyword, 
       RecordCount: Number(limit) || 10,
       RecordStartPosition: Number(offset) || 0
     })
-  }));
+  });
 
   if (!response.ok) {
     const error = await response.text();
@@ -164,10 +139,10 @@ export async function digikeyGetProduct({ clientId, clientSecret, partNumber }) 
   // If it looks like a DigiKey Part Number (often ends with -ND), try productdetails by DKPN first
   const looksLikeDkpn = /-ND$/i.test(String(partNumber));
   if (looksLikeDkpn) {
-    const response = await fetch(PRODUCT_DETAILS_BY_DKPN_URL(partNumber), await withDispatcher({
+    const response = await fetchWithRetry(PRODUCT_DETAILS_BY_DKPN_URL(partNumber), {
       method: 'GET',
       headers: commonHeaders(clientId, token)
-    }));
+    });
     if (response.ok) {
       const data = await response.json();
       return { ok: true, status: response.status, data };
@@ -176,7 +151,7 @@ export async function digikeyGetProduct({ clientId, clientSecret, partNumber }) 
   }
 
   // Fallback: keyword search and return payload as-is (caller can pick first result)
-  const response = await fetch(SEARCH_KEYWORD_URL, await withDispatcher({
+  const response = await fetchWithRetry(SEARCH_KEYWORD_URL, {
     method: 'POST',
     headers: {
       ...commonHeaders(clientId, token),
@@ -187,7 +162,7 @@ export async function digikeyGetProduct({ clientId, clientSecret, partNumber }) 
       RecordCount: 5,
       RecordStartPosition: 0
     })
-  }));
+  });
 
   if (!response.ok) {
     const error = await response.text();

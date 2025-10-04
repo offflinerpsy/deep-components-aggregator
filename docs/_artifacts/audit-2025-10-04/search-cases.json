@@ -1,0 +1,62 @@
+[
+  {
+    "q": "транзистор 2N3904",
+    "lang_detected": "ru",
+    "description": "Russian search with MPN",
+    "api_status": "SERVER_NOT_RUNNING",
+    "result_count": 0,
+    "source": null,
+    "api_raw": "search-1.json",
+    "notes": "Server must be running for actual test. This is a mock structure."
+  },
+  {
+    "q": "конденсатор 1000мкф 25в",
+    "lang_detected": "ru",
+    "description": "Russian capacitor specs",
+    "api_status": "SERVER_NOT_RUNNING",
+    "result_count": 0,
+    "source": null,
+    "api_raw": "search-2.json",
+    "notes": "Expected: Should find capacitors 1000µF 25V if Russian normalization works"
+  },
+  {
+    "q": "диод Шоттки 3А",
+    "lang_detected": "ru",
+    "description": "Russian Schottky diode",
+    "api_status": "SERVER_NOT_RUNNING",
+    "result_count": 0,
+    "source": null,
+    "api_raw": "search-3.json",
+    "notes": "Expected: Should translate 'диод Шоттки' to 'Schottky diode'"
+  },
+  {
+    "q": "микросхема NE555",
+    "lang_detected": "ru",
+    "description": "Russian IC with MPN",
+    "api_status": "SERVER_NOT_RUNNING",
+    "result_count": 0,
+    "source": null,
+    "api_raw": "search-4.json",
+    "notes": "Expected: Should find NE555 ICs despite Russian prefix"
+  },
+  {
+    "q": "транзисторы",
+    "lang_detected": "ru",
+    "description": "Russian generic search",
+    "api_status": "SERVER_NOT_RUNNING",
+    "result_count": 0,
+    "source": null,
+    "api_raw": "search-5.json",
+    "notes": "Expected: Should translate to 'transistors' and return generic results"
+  },
+  {
+    "q": "resistor 10k 1%",
+    "lang_detected": "en",
+    "description": "English resistor specs",
+    "api_status": "SERVER_NOT_RUNNING",
+    "result_count": 0,
+    "source": null,
+    "api_raw": "search-6.json",
+    "notes": "Expected: Should work without translation, find 10kΩ ±1% resistors"
+  }
+]

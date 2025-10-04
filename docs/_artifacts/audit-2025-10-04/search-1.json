@@ -1,0 +1,24 @@
+{
+  "error": "SERVER_NOT_RUNNING",
+  "test_case": "транзистор 2N3904",
+  "expected_behavior": "Should translate 'транзистор' to 'transistor' and search for '2N3904'",
+  "test_date": "2025-10-04",
+  "mock_response": {
+    "ok": true,
+    "q": "транзистор 2N3904",
+    "rows": [
+      {
+        "mpn": "2N3904",
+        "manufacturer": "ON Semiconductor",
+        "title": "Bipolar (BJT) Transistor NPN 40V 200mA",
+        "price_rub": 5.50,
+        "source": "mouser"
+      }
+    ],
+    "meta": {
+      "source": "mouser",
+      "total": 1,
+      "cached": false
+    }
+  }
+}

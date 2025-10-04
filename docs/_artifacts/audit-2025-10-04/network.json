@@ -1,0 +1,68 @@
+{
+  "warp_proxy": "http://127.0.0.1:40000",
+  "proxy_mode": "http",
+  "via_proxy_ip": "ERROR: fetch failed",
+  "direct_ip": "185.196.117.49",
+  "proxy_active": false,
+  "cloudflare_timeout_limit": "10 seconds",
+  "cloudflare_docs": "https://developers.cloudflare.com/cloudflare-one/connections/connect-devices/warp/configure-warp/route-traffic/warp-architecture/#connect",
+  "targets": [
+    {
+      "url": "https://www.digikey.com",
+      "status": 0,
+      "latency_ms": 2,
+      "ok": false,
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://www.mouser.com",
+      "status": 0,
+      "latency_ms": 2,
+      "ok": false,
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://www.element14.com",
+      "status": 0,
+      "latency_ms": 2,
+      "ok": false,
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://www.tme.eu",
+      "status": 0,
+      "latency_ms": 2,
+      "ok": false,
+      "error": "fetch failed"
+    }
+  ],
+  "tested_at": "2025-10-04T13:44:04.152Z",
+  "direct_tests": [
+    {
+      "url": "https://www.digikey.com",
+      "status": 200,
+      "latency_ms": 935,
+      "ok": true
+    },
+    {
+      "url": "https://www.mouser.com",
+      "status": 200,
+      "latency_ms": 605,
+      "ok": true
+    },
+    {
+      "url": "https://www.element14.com",
+      "status": 0,
+      "latency_ms": 10014,
+      "ok": false,
+      "error": "The operation was aborted due to timeout"
+    },
+    {
+      "url": "https://www.tme.eu",
+      "status": 200,
+      "latency_ms": 1344,
+      "ok": true
+    }
+  ],
+  "direct_connectivity": false
+}

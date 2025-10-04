@@ -1,0 +1,52 @@
+{
+  "cb_source": "https://www.cbr.ru/scripts/XML_daily.asp",
+  "cb_date": "2025-10-04",
+  "cb_implementation": "src/currency/cbr.mjs",
+  "cb_cache_file": "data/rates.json",
+  "cb_cache_ttl": "12 hours",
+  "markup": {
+    "type": "not_implemented",
+    "value": null,
+    "notes": "Markup feature not yet implemented in admin panel. Prices shown are direct conversions from supplier APIs."
+  },
+  "current_rates": {
+    "USD": 88.5,
+    "EUR": 98.2,
+    "GBP": 111.0,
+    "last_updated": "2025-10-03T22:00:00Z"
+  },
+  "examples": [
+    {
+      "src": "$10.00",
+      "currency": "USD",
+      "markup": "N/A",
+      "fx_rate": 88.5,
+      "fx_formula": "10.00 * 88.5",
+      "rub_total": "885₽",
+      "notes": "Direct conversion, no markup applied"
+    },
+    {
+      "src": "€7.50",
+      "currency": "EUR",
+      "markup": "N/A",
+      "fx_rate": 98.2,
+      "fx_formula": "7.50 * 98.2",
+      "rub_total": "736₽",
+      "notes": "Direct conversion, no markup applied"
+    }
+  ],
+  "findings": {
+    "cbr_api_working": true,
+    "cache_exists": true,
+    "cache_stale": true,
+    "cache_age_hours": 22,
+    "markup_admin_ui": false,
+    "markup_in_prices": false,
+    "recommendations": [
+      "Add cron job to refresh CBR rates daily",
+      "Implement admin UI for markup configuration",
+      "Add markup to product pricing logic",
+      "Display markup info in order details"
+    ]
+  }
+}

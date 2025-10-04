@@ -1,0 +1,105 @@
+name: Agent Task
+description: Каркас задачи для агента (PLAN → VERIFY → ARTIFACTS)
+title: "[Task]: "
+labels: ["agent", "work"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Задача для агента
+        Используйте этот шаблон для структурированных задач, следующих workspace-инструкциям.
+
+  - type: textarea
+    id: plan
+    attributes:
+      label: PLAN (точные шаги)
+      description: Список конкретных шагов выполнения задачи
+      placeholder: |
+        - Шаг 1: Создать файл X по пути Y
+        - Шаг 2: Обновить конфигурацию Z
+        - Шаг 3: Запустить тесты
+    validations:
+      required: true
+
+  - type: textarea
+    id: changes
+    attributes:
+      label: CHANGES (список файлов)
+      description: Ожидаемые изменения файлов
+      placeholder: |
+        created:   src/features/new-feature.mjs
+        modified:  src/api/router.mjs
+        modified:  package.json
+    validations:
+      required: true
+
+  - type: textarea
+    id: run
+    attributes:
+      label: RUN (команды для выполнения)
+      description: Команды для выполнения/проверки
+      placeholder: |
+        ```bash
+        npm test
+        node scripts/verify-feature.mjs
+        ```
+    validations:
+      required: false
+
+  - type: textarea
+    id: verify
+    attributes:
+      label: VERIFY (что и как проверить)
+      description: Критерии приёмки и способы проверки
+      placeholder: |
+        - Запустить: node scripts/audit-feature.mjs
+        - Ожидаемый результат: 5/5 тестов зелёные
+        - Артефакт: docs/_artifacts/2025-10-05/verification.json
+    validations:
+      required: true
+
+  - type: textarea
+    id: artifacts
+    attributes:
+      label: ARTIFACTS (куда положены результаты)
+      description: Структура папки с артефактами
+      placeholder: |
+        docs/_artifacts/2025-10-05/
+        ├── verification.json
+        ├── test-results.txt
+        └── screenshot-desktop.png
+    validations:
+      required: false
+
+  - type: textarea
+    id: git
+    attributes:
+      label: GIT (ветка и PR)
+      description: Git workflow для задачи
+      placeholder: |
+        Branch: feature/new-feature-name
+        Commits: 
+          - feat(scope): add new feature
+          - test(scope): verify feature works
+        PR: #XX to main
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Чек-лист выполнения
+      description: Убедитесь, что всё соблюдено
+      options:
+        - label: Следовал `.github/copilot-instructions.md`
+          required: true
+        - label: Коммиты следуют Conventional Commits
+          required: true
+        - label: Нет `try/catch` в новом коде
+          required: true
+        - label: Тесты написаны и проходят
+          required: true
+        - label: Артефакты сохранены в `docs/_artifacts/<date>/`
+          required: false
+        - label: Секреты не захардкожены
+          required: true

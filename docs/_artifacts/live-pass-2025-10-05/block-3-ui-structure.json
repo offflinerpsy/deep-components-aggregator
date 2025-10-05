@@ -1,0 +1,75 @@
+{
+  "timestamp": "2025-10-05T13:27:07.155Z",
+  "productionUrl": "http://5.129.228.88:9201",
+  "tableFound": true,
+  "headers": [
+    "Фото",
+    "MPN / Title",
+    "Manufacturer",
+    "Description",
+    "Package",
+    "Packaging",
+    "Regions",
+    "Stock",
+    "Min ₽",
+    "Открыть"
+  ],
+  "expectedHeaders": [
+    "Manufacturer",
+    "MPN",
+    "Description",
+    "Region",
+    "Price ₽",
+    "CTA"
+  ],
+  "rowCount": 50,
+  "sampleRows": [
+    [
+      "N",
+      "NSVMUN5136T1G\n            Digital Transistors Bias",
+      "onsemi",
+      "Digital Transistors Bias Resistor Transistor",
+      "—",
+      "—",
+      "US",
+      "17 960",
+      "—",
+      "Открыть"
+    ],
+    [
+      "C",
+      "CRCW12060000Z0TAHP\n            Thick Film Resistor",
+      "Vishay",
+      "Thick Film Resistors - SMD CRCW1206-HP 0R0 RT1",
+      "—",
+      "—",
+      "US",
+      "3 087",
+      "—",
+      "Открыть"
+    ],
+    [
+      "C",
+      "CMF55806K00FHEA\n            Metal Film Resistors -",
+      "Vishay / Dale",
+      "Metal Film Resistors - Through Hole Metal Film Res",
+      "—",
+      "—",
+      "US",
+      "3 336",
+      "—",
+      "Открыть"
+    ]
+  ],
+  "screenshots": [
+    {
+      "name": "homepage",
+      "path": "docs\\_artifacts\\live-pass-2025-10-05\\screenshots\\block-3-homepage.png"
+    },
+    {
+      "name": "search-results",
+      "path": "docs\\_artifacts\\live-pass-2025-10-05\\screenshots\\block-3-search-results.png"
+    }
+  ],
+  "verdict": "PASSED"
+}

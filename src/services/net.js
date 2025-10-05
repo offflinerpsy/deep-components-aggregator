@@ -1,7 +1,7 @@
 import { ProxyAgent } from 'undici';
 import * as cheerio from 'cheerio';
 
-const DEFAULT_TIMEOUT = 10000;
+const DEFAULT_TIMEOUT = 9500; // WARP proxy has ~10s limit, use 9.5s
 const DEFAULT_RETRIES = 3;
 const DEFAULT_DELAY = 600;
 

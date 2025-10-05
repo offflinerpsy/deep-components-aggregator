@@ -158,7 +158,7 @@ function saveToCache(url, html, provider, status) {
  * @returns {Promise<object>} Результат запроса
  */
 export const fetchHtmlCached = async (url, options = {}) => {
-  const { providerHint = null, timeoutMs = 10000, retries = 2, diagnostics } = options;
+  const { providerHint = null, timeoutMs = 9500, retries = 2, diagnostics } = options;
 
   console.log(`[CACHE] Fetching ${url} with cache`);
 

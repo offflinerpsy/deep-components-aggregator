@@ -8,7 +8,7 @@ import { fetch } from 'undici';
  * @returns {Promise<object>} Результат запроса
  */
 export async function directFetch(url, options = {}) {
-  const { timeout = 10000, headers = {} } = options;
+  const { timeout = 9500, headers = {} } = options;
 
   console.log(`[DIRECT] Fetching ${url} directly`);
 

@@ -7,7 +7,7 @@ import { fetch } from 'undici';
  * @returns {Promise<object>} Результат запроса
  */
 export async function fetchWithTimeout(url, options = {}) {
-  const { timeout = 10000, ...fetchOptions } = options;
+  const { timeout = 9500, ...fetchOptions } = options;
 
   // Создаем контроллер для таймаута
   const controller = new AbortController();

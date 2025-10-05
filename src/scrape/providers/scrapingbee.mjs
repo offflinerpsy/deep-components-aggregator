@@ -1,4 +1,4 @@
-export function fetchViaScrapingBee({ key, url, timeout = 10000, render = false, premium = false, stealth = false, wait = null, solveCaptcha = false }) {
+export function fetchViaScrapingBee({ key, url, timeout = 9500, render = false, premium = false, stealth = false, wait = null, solveCaptcha = false }) {
   const u = new URL('https://app.scrapingbee.com/api/v1');
   u.searchParams.set('api_key', key);
   u.searchParams.set('url', url);

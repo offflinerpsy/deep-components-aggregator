@@ -1,7 +1,7 @@
 import { fetchViaScraperAPI } from './providers/scraperapi.mjs';
 import { fetchViaScrapingBee } from './providers/scrapingbee.mjs';
 
-export function fetchHtmlRotating({ url, timeout = 10000, session = 0, primary = 'scraperapi', keys = {} }) {
+export function fetchHtmlRotating({ url, timeout = 9500, session = 0, primary = 'scraperapi', keys = {} }) {
   const a = () => fetchViaScraperAPI({ key: keys.scraperapi || '', url, timeout, country: 'ru', session, render: false });
   const b = () => fetchViaScrapingBee({ key: (keys.scrapingbee || '').split(',')[0] || '', url, timeout, render: false });
 

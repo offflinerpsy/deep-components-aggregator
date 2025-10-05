@@ -35,7 +35,7 @@ export async function fetchCBRRates() {
       'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
       'Accept': 'application/xml, text/xml, */*'
     },
-    timeout: 10000
+    timeout: 9500
   });
   
   if (!response.ok) {

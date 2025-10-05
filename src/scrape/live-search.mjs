@@ -25,7 +25,7 @@ export async function liveSearch({
   onNote,
   onError,
   onEnd,
-  timeout = 10000,
+  timeout = 9500,
   maxItems = 20
 }) {
   // Создаем сборщик диагностики

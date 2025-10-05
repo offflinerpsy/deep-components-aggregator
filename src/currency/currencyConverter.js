@@ -45,7 +45,7 @@ class CurrencyConverter {
         }
         
         const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 10000); // 10s timeout
+        const timeoutId = setTimeout(() => controller.abort(), 9500); // 9.5s timeout (WARP proxy limit)
         
         const response = await fetch(this.baseUrl, {
             signal: controller.signal,

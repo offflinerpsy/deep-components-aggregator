@@ -27,7 +27,7 @@ export function createDispatcher() {
       uri: proxyUrl,
       
       // WARP Proxy Mode timeout constraint: ≤10s
-      requestTimeout: 10000, // 10 seconds
+      requestTimeout: 9500, // 9.5 seconds (WARP limit)
       
       // Connection settings
       keepAliveTimeout: 60000, // 60 seconds
@@ -42,7 +42,7 @@ export function createDispatcher() {
   
   // Fallback to direct connection with same timeout settings
   return new Agent({
-    requestTimeout: 10000,
+    requestTimeout: 9500,
     keepAliveTimeout: 60000,
     keepAliveMaxTimeout: 600000,
     maxRedirections: 3

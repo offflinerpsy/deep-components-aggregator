@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Comparison Cards - DEEP Components Aggregator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #fafafa;
+            color: #111827;
+            line-height: 1.5;
+            padding-bottom: 120px; /* Space for sticky cards */
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 32px;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        /* Main product listing (from previous implementation) */
+        .product-list {
+            display: grid;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        
+        .product-item {
+            background: white;
+            border-radius: 8px;
+            padding: 16px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            transition: all 0.2s ease;
+            cursor: pointer;
+            position: relative;
+        }
+        
+        .product-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        .product-item.selected {
+            border: 2px solid #1d4ed8;
+            background: #eff6ff;
+        }
+        
+        .product-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+        
+        .product-mpn {
+            font-weight: 600;
+            color: #1d4ed8;
+            font-size: 16px;
+        }
+        
+        .add-to-comparison {
+            background: #10b981;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+        
+        .add-to-comparison:hover {
+            background: #059669;
+        }
+        
+        .add-to-comparison.added {
+            background: #ef4444;
+        }
+        
+        .add-to-comparison.added:hover {
+            background: #dc2626;
+        }
+        
+        .product-manufacturer {
+            color: #6b7280;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+        
+        .product-description {
+            color: #374151;
+            font-size: 14px;
+            margin-bottom: 12px;
+        }
+        
+        .product-price {
+            font-weight: 600;
+            color: #059669;
+            font-size: 16px;
+        }
+        
+        /* Sticky Comparison Cards Widget */
+        .comparison-widget {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            border-top: 1px solid #e5e7eb;
+            box-shadow: 0 -4px 12px rgba(0,0,0,0.1);
+            z-index: 1000;
+            transition: transform 0.3s ease;
+        }
+        
+        .comparison-widget.hidden {
+            transform: translateY(100%);
+        }
+        
+        .comparison-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            padding: 12px 20px;
+            border-bottom: 1px solid #f3f4f6;
+            background: #f8fafc;
+        }
+        
+        .comparison-title {
+            font-weight: 600;
+            color: #374151;
+        }
+        
+        .comparison-count {
+            background: #1d4ed8;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-left: 8px;
+        }
+        
+        .comparison-actions {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .clear-all {
+            background: #ef4444;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+        
+        .clear-all:hover {
+            background: #dc2626;
+        }
+        
+        .compare-now {
+            background: #1d4ed8;
+            color: white;
+            border: none;
+            padding: 6px 16px;
+            border-radius: 4px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+        
+        .compare-now:hover {
+            background: #1e40af;
+        }
+        
+        .comparison-cards {
+            display: flex;
+            gap: 12px;
+            padding: 16px 20px;
+            overflow-x: auto;
+            max-height: 200px;
+        }
+        
+        .comparison-card {
+            background: #fafafa;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            padding: 12px;
+            min-width: 200px;
+            position: relative;
+            transition: all 0.2s ease;
+        }
+        
+        .comparison-card:hover {
+            background: #f3f4f6;
+        }
+        
+        .card-remove {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            background: #ef4444;
+            color: white;
+            border: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            font-size: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .card-remove:hover {
+            background: #dc2626;
+        }
+        
+        .card-mpn {
+            font-weight: 600;
+            color: #1d4ed8;
+            margin-bottom: 4px;
+            font-size: 14px;
+        }
+        
+        .card-manufacturer {
+            color: #6b7280;
+            font-size: 12px;
+            margin-bottom: 8px;
+        }
+        
+        .card-price {
+            font-weight: 600;
+            color: #059669;
+            font-size: 14px;
+        }
+        
+        .card-region {
+            margin-top: 6px;
+        }
+        
+        .region-badge {
+            background: #dbeafe;
+            color: #1e40af;
+            padding: 2px 6px;
+            border-radius: 8px;
+            font-size: 10px;
+            font-weight: 500;
+        }
+        
+        /* Drag and Drop */
+        .comparison-card.dragging {
+            opacity: 0.5;
+            transform: rotate(5deg);
+        }
+        
+        .drop-zone {
+            border: 2px dashed #1d4ed8;
+            background: #eff6ff;
+            border-radius: 6px;
+            min-width: 200px;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #1d4ed8;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        /* Empty state */
+        .empty-comparison {
+            text-align: center;
+            padding: 24px;
+            color: #6b7280;
+        }
+        
+        .empty-comparison-icon {
+            font-size: 32px;
+            margin-bottom: 8px;
+            opacity: 0.5;
+        }
+        
+        /* Mobile responsiveness */
+        @media (max-width: 768px) {
+            .comparison-header {
+                padding: 8px 16px;
+            }
+            
+            .comparison-cards {
+                padding: 12px 16px;
+            }
+            
+            .comparison-card {
+                min-width: 160px;
+                padding: 8px;
+            }
+            
+            .comparison-actions {
+                flex-direction: column;
+                gap: 4px;
+            }
+            
+            .comparison-actions button {
+                font-size: 11px;
+                padding: 4px 8px;
+            }
+        }
+        
+        /* Animation for card addition */
+        @keyframes cardAdded {
+            0% {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+        
+        .comparison-card.new {
+            animation: cardAdded 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>DEEP Components Aggregator</h1>
+            <p>Sticky Product Cards Demo - Floating Comparison Widget</p>
+        </div>
+        
+        <!-- Sample Product Listing -->
+        <div class="product-list" role="main" aria-label="Список продуктов">
+            <div class="product-item" data-mpn="2N3904" data-manufacturer="ON Semiconductor" data-price="9.80-15.50" data-region="US,EU" role="article" tabindex="0">
+                <div class="product-header">
+                    <div class="product-mpn">2N3904</div>
+                    <button class="add-to-comparison" onclick="addToComparison(this)" aria-label="Добавить 2N3904 в сравнение">Сравнить</button>
+                </div>
+                <div class="product-manufacturer">ON Semiconductor</div>
+                <div class="product-description">NPN General Purpose Amplifier</div>
+                <div class="product-price">9,80 ₽ — 15,50 ₽</div>
+            </div>
+            
+            <div class="product-item" data-mpn="LM317T" data-manufacturer="Texas Instruments" data-price="87.40-95.20" data-region="US" role="article" tabindex="0">
+                <div class="product-header">
+                    <div class="product-mpn">LM317T</div>
+                    <button class="add-to-comparison" onclick="addToComparison(this)" aria-label="Добавить LM317T в сравнение">Сравнить</button>
+                </div>
+                <div class="product-manufacturer">Texas Instruments</div>
+                <div class="product-description">3-Terminal Adjustable Positive Voltage Regulator</div>
+                <div class="product-price">87,40 ₽ — 95,20 ₽</div>
+            </div>
+            
+            <div class="product-item" data-mpn="STM32F407VGT6" data-manufacturer="STMicroelectronics" data-price="1180.50-1250.30" data-region="EU,PL" role="article" tabindex="0">
+                <div class="product-header">
+                    <div class="product-mpn">STM32F407VGT6</div>
+                    <button class="add-to-comparison" onclick="addToComparison(this)" aria-label="Добавить STM32F407VGT6 в сравнение">Сравнить</button>
+                </div>
+                <div class="product-manufacturer">STMicroelectronics</div>
+                <div class="product-description">32-bit ARM Cortex-M4 MCU 168MHz 1MB Flash</div>
+                <div class="product-price">1 180,50 ₽ — 1 250,30 ₽</div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Sticky Comparison Widget -->
+    <div class="comparison-widget hidden" id="comparisonWidget" role="complementary" aria-label="Product comparison widget">
+        <div class="comparison-header">
+            <div>
+                <span class="comparison-title">Сравнение товаров</span>
+                <span class="comparison-count" id="comparisonCount" aria-label="Количество выбранных товаров">0</span>
+            </div>
+            <div class="comparison-actions">
+                <button class="clear-all" onclick="clearAllComparisons()" aria-label="Очистить все выбранные товары">Очистить</button>
+                <button class="compare-now" onclick="showComparisonModal()" aria-label="Открыть детальное сравнение">Сравнить</button>
+            </div>
+        </div>
+        <div class="comparison-cards" id="comparisonCards" role="list" aria-label="Список товаров для сравнения">
+            <div class="empty-comparison">
+                <div class="empty-comparison-icon">📦</div>
+                <div>Добавьте товары для сравнения</div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="product-cards.js"></script>
+</body>
+</html>

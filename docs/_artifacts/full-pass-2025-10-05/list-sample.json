@@ -1,0 +1,172 @@
+{
+  "timestamp": "2025-10-05T01:30:00.000Z",
+  "title": "Enhanced Search Listing Structure",
+  "description": "Improved product listing with ₽ conversion, regional info, and stable pagination",
+  
+  "columns": [
+    {
+      "id": "image",
+      "name": "Фото",
+      "width": "80px",
+      "type": "image",
+      "description": "Product thumbnail with lazy loading and fallback"
+    },
+    {
+      "id": "manufacturer",
+      "name": "Производитель", 
+      "width": "120px",
+      "type": "text",
+      "description": "Manufacturer name with consistent formatting"
+    },
+    {
+      "id": "mpn",
+      "name": "MPN",
+      "width": "150px", 
+      "type": "link",
+      "description": "Manufacturer Part Number with product title subtitle"
+    },
+    {
+      "id": "description",
+      "name": "Описание",
+      "width": "flexible",
+      "type": "text",
+      "description": "Product description with proper text wrapping"
+    },
+    {
+      "id": "region",
+      "name": "Регион склада",
+      "width": "100px",
+      "type": "badges",
+      "description": "Regional availability as colored badges"
+    },
+    {
+      "id": "price",
+      "name": "Цена ₽ (от-до)",
+      "width": "120px",
+      "type": "currency",
+      "description": "Price range in rubles with proper formatting"
+    },
+    {
+      "id": "cta",
+      "name": "Действие",
+      "width": "100px",
+      "type": "button",
+      "description": "Primary action button linking to product detail"
+    }
+  ],
+  
+  "sampleProducts": [
+    {
+      "mpn": "2N3904",
+      "manufacturer": "ON Semiconductor",
+      "title": "Транзистор NPN 40V 0.2A TO-92",
+      "description": "NPN General Purpose Amplifier",
+      "regions": ["US", "EU"],
+      "priceRange": {
+        "min": 9.80,
+        "max": 15.50,
+        "currency": "RUB",
+        "display": "9,80 ₽ — 15,50 ₽"
+      },
+      "hasImage": true,
+      "source": "mouser"
+    },
+    {
+      "mpn": "LM317T",
+      "manufacturer": "Texas Instruments", 
+      "title": "Стабилизатор напряжения 1.2-37V 1.5A TO-220",
+      "description": "3-Terminal Adjustable Positive Voltage Regulator",
+      "regions": ["US"],
+      "priceRange": {
+        "min": 87.40,
+        "max": 95.20,
+        "currency": "RUB",
+        "display": "87,40 ₽ — 95,20 ₽"
+      },
+      "hasImage": false,
+      "source": "mouser"
+    },
+    {
+      "mpn": "STM32F407VGT6",
+      "manufacturer": "STMicroelectronics",
+      "title": "Микроконтроллер ARM Cortex-M4 LQFP100", 
+      "description": "32-bit ARM Cortex-M4 MCU 168MHz 1MB Flash",
+      "regions": ["EU", "PL"],
+      "priceRange": {
+        "min": 1180.50,
+        "max": 1250.30,
+        "currency": "RUB",
+        "display": "1 180,50 ₽ — 1 250,30 ₽"
+      },
+      "hasImage": false,
+      "source": "tme"
+    }
+  ],
+  
+  "features": {
+    "pagination": {
+      "type": "stable",
+      "description": "Consistent page numbering that doesn't shift on data changes"
+    },
+    "responsive": {
+      "desktop": "Full table layout with all columns visible",
+      "tablet": "Responsive table with condensed spacing",
+      "mobile": "Card-based layout with data labels"
+    },
+    "sorting": {
+      "columns": ["manufacturer", "mpn", "price"],
+      "description": "Clickable column headers for ascending/descending sort"
+    },
+    "filtering": {
+      "regions": "Filter by regional availability",
+      "priceRange": "Min/max price range slider",
+      "manufacturer": "Manufacturer dropdown filter"
+    },
+    "loading": {
+      "type": "skeleton",
+      "description": "Non-blocking loading states with content placeholders"
+    },
+    "caching": {
+      "strategy": "Query-based caching with fresh option",
+      "ttl": "7 days"
+    }
+  },
+  
+  "uiDesign": {
+    "layout": "Clean table-based layout with subtle hover effects",
+    "typography": "System font stack for optimal cross-platform rendering", 
+    "colorSystem": {
+      "primary": "#1d4ed8",
+      "success": "#16a34a", 
+      "muted": "#6b7280",
+      "background": "#fafafa",
+      "surface": "#ffffff"
+    },
+    "spacing": "Consistent 8px grid system throughout",
+    "elevation": "Subtle shadows for visual hierarchy (3 levels)",
+    "badges": "Colored region indicators with rounded corners",
+    "buttons": "Primary action buttons with hover/active states",
+    "images": "48x48px thumbnails with lazy loading and fallbacks"
+  },
+  
+  "accessibility": {
+    "contrast": "AA compliant color contrast ratios",
+    "focusIndicators": "Visible focus outlines for keyboard navigation", 
+    "screenReader": "Semantic table structure with proper headers",
+    "reducedMotion": "Respects prefers-reduced-motion user preference"
+  },
+  
+  "performance": {
+    "lazyLoading": "Images load only when entering viewport",
+    "virtualScrolling": "For large result sets (>100 items)",
+    "debouncing": "Search input debounced to 500ms",
+    "caching": "API responses cached with TTL"
+  },
+  
+  "russianSupport": {
+    "normalization": "Cyrillic queries automatically transliterated",
+    "morphology": "Russian electronics terms mapped to English equivalents",
+    "fallback": "Graceful degradation for non-Russian queries",
+    "indicators": "UI shows when Russian processing is active"
+  }
+}

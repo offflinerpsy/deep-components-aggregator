@@ -1,0 +1,41 @@
+{
+  "proxy": {
+    "enabled": true,
+    "method": "undici-global-dispatcher",
+    "url": "http://127.0.0.1:40000",
+    "fallback": "direct-connections",
+    "bypass": ["NO_PROXY=1", "DIRECT_CONNECTIONS=1", "WARP_DISABLE=1"]
+  },
+  "timeouts": {
+    "default": "7000ms",
+    "rationale": "Cloudflare WARP proxy limit is 10s, using 7s for headroom",
+    "retries": {
+      "max": 2,
+      "delays": ["500ms", "1500ms"]
+    }
+  },
+  "express": {
+    "trust_proxy": true,
+    "value": 1,
+    "purpose": "Correct IP handling behind CDN/NGINX"
+  },
+  "sessions": {
+    "secure_cookies": true,
+    "behind_proxy": true,
+    "same_site": "none (production with proxy)",
+    "http_only": true,
+    "store": "SQLite",
+    "max_age": "7 days"
+  },
+  "testing": {
+    "proxy_status": "needs verification",
+    "latency": "needs measurement",
+    "failover": "needs testing"
+  },
+  "compliance": {
+    "cloudflare_warp": true,
+    "timeout_limits": true,
+    "secure_headers": true,
+    "cors_ready": true
+  }
+}

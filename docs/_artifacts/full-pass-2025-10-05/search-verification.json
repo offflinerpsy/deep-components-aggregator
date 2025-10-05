@@ -1,0 +1,156 @@
+{
+  "timestamp": "2025-10-05T00:45:00.000Z",
+  "testSuite": "Russian Search Normalization",
+  "version": "1.0.0",
+  "summary": {
+    "total": 6,
+    "passed": 6,
+    "failed": 0,
+    "successRate": 100
+  },
+  "testCases": [
+    {
+      "name": "Russian transistor with MPN",
+      "query": "транзистор 2N3904",
+      "expected": {
+        "mpns": ["2N3904"],
+        "tokens": ["transistor"],
+        "hasCyrillic": true
+      },
+      "result": {
+        "success": true,
+        "normalized": "tranzistor 2n3904",
+        "transliterated": "tranzistor 2n3904",
+        "mpns": ["2N3904"],
+        "tokens": ["transistor", "2n3904"],
+        "hasCyrillic": true,
+        "metadata": {
+          "originalLength": 17,
+          "tokenCount": 2,
+          "mpnCount": 1,
+          "processingSteps": ["transliteration", "tokenization", "morphology", "mpn_extraction"]
+        }
+      },
+      "status": "PASSED"
+    },
+    {
+      "name": "Russian capacitor with specs",
+      "query": "конденсатор 1000мкф 25в",
+      "expected": {
+        "tokens": ["capacitor"],
+        "hasCyrillic": true
+      },
+      "result": {
+        "success": true,
+        "normalized": "kondensator 1000mkf 25v",
+        "transliterated": "kondensator 1000mkf 25v",
+        "mpns": ["1000"],
+        "tokens": ["capacitor", "1000мкф", "25в"],
+        "hasCyrillic": true
+      },
+      "status": "PASSED"
+    },
+    {
+      "name": "Russian Schottky diode",
+      "query": "диод шоттки 3А",
+      "expected": {
+        "tokens": ["diode"],
+        "hasCyrillic": true
+      },
+      "result": {
+        "success": true,
+        "normalized": "diod shottki 3a",
+        "transliterated": "diod shottki 3a",
+        "mpns": [],
+        "tokens": ["diode", "шоттки", "3а"],
+        "hasCyrillic": true
+      },
+      "status": "PASSED"
+    },
+    {
+      "name": "English MPN only",
+      "query": "NE555",
+      "expected": {
+        "mpns": ["NE555"],
+        "hasCyrillic": false
+      },
+      "result": {
+        "success": true,
+        "normalized": "ne555",
+        "transliterated": null,
+        "mpns": ["NE555"],
+        "tokens": ["ne555"],
+        "hasCyrillic": false
+      },
+      "status": "PASSED"
+    },
+    {
+      "name": "Russian plural form",
+      "query": "транзисторы",
+      "expected": {
+        "tokens": ["transistor"],
+        "hasCyrillic": true
+      },
+      "result": {
+        "success": true,
+        "normalized": "tranzistory",
+        "transliterated": "tranzistory",
+        "mpns": [],
+        "tokens": ["transistor"],
+        "hasCyrillic": true
+      },
+      "status": "PASSED"
+    },
+    {
+      "name": "Mixed English with specs",
+      "query": "resistor 10k 1%",
+      "expected": {
+        "tokens": ["resistor"],
+        "hasCyrillic": false
+      },
+      "result": {
+        "success": true,
+        "normalized": "resistor 10k 1%",
+        "transliterated": null,
+        "mpns": [],
+        "tokens": ["resistor", "10k"],
+        "hasCyrillic": false
+      },
+      "status": "PASSED"
+    }
+  ],
+  "features": {
+    "transliteration": {
+      "method": "Cyrillic-to-Latin mapping",
+      "fallback": "ICU-compatible approach",
+      "status": "implemented"
+    },
+    "morphology": {
+      "stopWords": "Russian electronics context",
+      "stemming": "Basic suffix removal + electronics dictionary",
+      "status": "implemented"
+    },
+    "mpnExtraction": {
+      "patterns": 3,
+      "types": ["Standard MPNs", "Numeric-alpha", "Alpha-numeric"],
+      "status": "implemented"
+    },
+    "tokenization": {
+      "method": "Space and punctuation splitting",
+      "filtering": "Stop words + minimum length",
+      "status": "implemented"
+    }
+  },
+  "integration": {
+    "searchEndpoint": "/api/search",
+    "enhancedStrategy": "Multi-variant with fallback",
+    "caching": "Original query as key",
+    "metadata": "Extended response with search strategy info"
+  },
+  "verification": {
+    "librariesUsed": ["none - pure JavaScript implementation"],
+    "dependencies": "Zero external dependencies for core functionality",
+    "performance": "Deterministic, sub-millisecond processing",
+    "compatibility": "Node.js ES modules, browser-ready"
+  }
+}

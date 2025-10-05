@@ -1,0 +1,177 @@
+русский,english
+транзистор,transistor
+биполярный транзистор,bipolar transistor
+полевой транзистор,MOSFET; field-effect transistor
+IGBT,IGBT
+микросхема,integrated circuit; IC
+операционный усилитель,operational amplifier; op-amp
+компаратор,comparator
+логический элемент,logic gate
+микроконтроллер,microcontroller; MCU
+микропроцессор,microprocessor; CPU
+память,memory
+ОЗУ,RAM
+ПЗУ,ROM
+Flash,flash memory
+EEPROM,EEPROM
+АЦП,ADC; analog-to-digital converter
+ЦАП,DAC; digital-to-analog converter
+датчик,sensor
+гироскоп,gyroscope
+акселерометр,accelerometer
+магнитометр,magnetometer
+температурный датчик,temperature sensor
+датчик влажности,humidity sensor
+датчик давления,pressure sensor
+джойстик,joystick
+энкодер,encoder
+резистор,resistor; R
+переменный резистор,potentiometer; trimmer; variable resistor
+термистор,thermistor
+NTC,NTC thermistor
+PTC,PTC thermistor
+варистор,varistor
+делитель напряжения,voltage divider
+конденсатор,capacitor; cap; C
+электролитический конденсатор,electrolytic capacitor
+танталовый конденсатор,tantalum capacitor
+керамический конденсатор,ceramic capacitor
+плёночный конденсатор,film capacitor
+суперконденсатор,supercapacitor; ultracapacitor
+индуктивность,inductor; choke; L
+дроссель,inductor; choke
+трансформатор,transformer
+диод,diode
+шоттки диод,Schottky diode
+стабилитрон,Zener diode
+TVS диод,TVS diode; transient voltage suppressor
+светодиод,LED; light-emitting diode
+лазерный диод,laser diode
+фотодиод,photodiode
+фоторезистор,photoresistor; LDR
+фототранзистор,phototransistor
+мост выпрямительный,bridge rectifier
+реле,relay
+контактор,contactor
+кнопка,pushbutton; button
+переключатель,switch
+переключатель тумблер,toggle switch
+переключатель ползунковый,slide switch
+переключатель поворотный,rotary switch
+разъём,connector
+клеммник,terminal block
+пин-хедер,pin header
+гнездо,socket
+плата,PCB; printed circuit board
+слоты расширения,expansion slots
+батарейный держатель,battery holder
+предохранитель,fuse
+держатель предохранителя,fuse holder
+драйвер,driver
+драйвер светодиодов,LED driver
+драйвер двигателя,motor driver
+двигатель постоянного тока,DC motor
+шаговый двигатель,stepper motor
+серводвигатель,servo motor
+энкодер инкрементальный,incremental encoder
+энкодер абсолютный,absolute encoder
+источник питания,power supply
+преобразователь DC-DC,DC-DC converter
+понижающий преобразователь,buck converter
+повышающий преобразователь,boost converter
+инвертирующий преобразователь,inverting converter
+линейный стабилизатор,linear regulator; LDO
+стабилизатор напряжения,voltage regulator
+контроллер заряда,charge controller
+MOSFET драйвер,MOSFET driver
+ШИМ контроллер,PWM controller
+PLL,PLL; phase-locked loop
+тактовый генератор,clock generator
+RTC,real-time clock; RTC
+интерфейс,interface
+интерфейс I2C,I2C
+интерфейс SPI,SPI
+интерфейс UART,UART; serial
+интерфейс USB,USB
+интерфейс CAN,CAN bus
+интерфейс LIN,LIN bus
+Ethernet,Ethernet
+RS-232,RS-232
+RS-485,RS-485
+Modbus,Modbus
+PCIe,PCI Express
+MIPI,MIPI
+LVDS,LVDS
+HDMI,HDMI
+DisplayPort,DisplayPort
+Wi-Fi,Wi-Fi
+Bluetooth,Bluetooth
+Zigbee,Zigbee
+NFC,NFC
+LoRa,LoRa
+UWB,ultra-wideband
+GNSS,GPS; GNSS
+антенна,antenna
+радиомодуль,radio module; RF module
+усилитель мощности,power amplifier
+малошумящий усилитель,low-noise amplifier; LNA
+смеситель,mixer
+фильтр,filter
+кварц,quartz crystal; crystal resonator
+резонатор,resonator
+осциллятор,oscillator
+даташит,datasheet
+корпус package,package
+корпус SOT-23,SOT-23
+SOIC,SOIC
+TSSOP,TSSOP
+QFN,QFN
+QFP,QFP
+WSON,WSON
+DFN,DFN
+BGA,BGA
+LGA,LGA
+DIP,DIP
+THT,through-hole; THT
+SMD,SMD; surface-mount
+SMA,SMA connector
+SMB,SMB connector
+SMD резистор,SMD resistor
+SMD конденсатор,SMD capacitor
+допуск,tolerance
+номинал,value
+ESR,ESR; equivalent series resistance
+температурный коэффициент,temperature coefficient; TCR
+рабочее напряжение,working voltage; rated voltage
+ток,current
+напряжение,voltage
+мощность,power
+частота,frequency
+шум,noise
+дрейф,drift
+защита от ESD,ESD protection
+защита от перенапряжения,over-voltage protection; OVP
+защита от перегрузки по току,over-current protection; OCP
+защита от перегрева,over-temperature protection; OTP
+герметичный,sealed
+экранированный,shielded
+RoHS,RoHS compliant
+REACH,REACH compliant
+новинка,new product
+устаревший,obsolete
+снят с производства,end of life; EOL
+под заказ,backorder; on order
+в наличии,in stock
+склад,warehouse
+регион,region
+минимальная партия,minimum order quantity; MOQ
+прайс,price list
+цена,price
+скидка,discount
+поставщик,distributor; supplier
+дилер,dealer
+производитель,manufacturer
+артикул производителя,manufacturer part number; MPN
+артикул продавца,SKU; seller part number
+совместимый,compatible
+аналог,equivalent; substitute

@@ -244,9 +244,9 @@ export function assembleQuery(translatedText, mpns) {
 /**
  * Main translation pipeline
  * @param {string} query - User query (Russian or mixed)
- * @returns {Promise<Object>} Translation result
+ * @returns {Object} Translation result (synchronous, local glossary only)
  */
-export async function translateRuToEn(query) {
+export function translateRuToEn(query) {
   const startTime = Date.now();
   
   // Stage 1: Language detection

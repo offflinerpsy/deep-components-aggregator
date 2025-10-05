@@ -1,15 +1,17 @@
 /**
- * Search Integration with Russian Normalization
+ * Search Integration with RU→EN Translation
  * 
- * Integrates Russian search normalization into the main search pipeline
- * Enhances existing search with transliteration and morphological analysis
+ * Integrates Russian-to-English translation into the main search pipeline
+ * Enhances existing search with intelligent glossary-based translation
+ * 
+ * Pipeline: Detect Russian → Translate with glossary → Search providers → Cache
  */
 
-import { normalizeRussianQuery } from './russianNormalization.mjs';
+import { translateRuToEn, containsRussian } from '../i18n/ru-en-translator.mjs';
 
 /**
  * Enhanced search query processor
- * Processes queries with Russian normalization before provider searches
+ * Processes queries with RU→EN translation before provider searches
  * 
  * @param {string} originalQuery - Raw user query
  * @returns {Object} Enhanced search parameters
@@ -37,54 +39,67 @@ export function processSearchQuery(originalQuery) {
     };
   }
   
-  // Apply Russian normalization
-  const normalized = normalizeRussianQuery(trimmed);
+  // Check if Russian translation needed
+  const hasRussian = containsRussian(trimmed);
   
-  if (!normalized.success) {
+  if (!hasRussian) {
+    // Non-Russian query: pass through
     return {
-      success: false,
-      error: normalized.error,
+      success: true,
+      originalQuery: trimmed,
       queries: [trimmed],
       mpns: [],
-      metadata: { fallback: true }
+      metadata: {
+        hasCyrillic: false,
+        translationUsed: false
+      }
+    };
+  }
+  
+  // Apply RU→EN translation (synchronous with local glossary)
+  const translation = translateRuToEn(trimmed);
+  
+  if (!translation.translated || translation.translated === trimmed) {
+    // Translation failed or returned same: fallback to original
+    return {
+      success: true,
+      originalQuery: trimmed,
+      queries: [trimmed],
+      mpns: translation.stages?.mpnsExtracted || [],
+      metadata: {
+        hasCyrillic: true,
+        translationUsed: false,
+        translationFailed: true,
+        coverage: translation.stages?.glossaryCoverage || 0
+      }
     };
   }
   
   // Build search query variants
   const queries = [];
   
-  // 1. Original query (always include)
-  queries.push(trimmed);
+  // 1. Translated query (primary for Russian)
+  queries.push(translation.translated);
   
-  // 2. Normalized/transliterated query (if different)
-  if (normalized.normalized !== trimmed.toLowerCase()) {
-    queries.push(normalized.normalized);
+  // 2. Original query (fallback)
+  if (translation.translated !== trimmed) {
+    queries.push(trimmed);
   }
   
-  // 3. Token-based query (semantic search)
-  if (normalized.tokens.length > 0) {
-    const tokenQuery = normalized.tokens.join(' ');
-    if (!queries.includes(tokenQuery)) {
-      queries.push(tokenQuery);
-    }
-  }
-  
-  // 4. MPN-focused queries (if MPNs detected)
-  const mpnQueries = normalized.mpns.filter(mpn => 
-    !queries.some(q => q.includes(mpn))
-  );
-  queries.push(...mpnQueries);
+  // Extract MPNs from translation stages
+  const mpns = translation.stages?.mpnsExtracted || [];
   
   return {
     success: true,
     originalQuery: trimmed,
     queries: [...new Set(queries)],  // Deduplicate
-    mpns: normalized.mpns,
+    mpns,
     metadata: {
-      hasCyrillic: normalized.hasCyrillic,
-      transliterated: normalized.transliterated,
-      tokenCount: normalized.tokens.length,
-      processingSteps: normalized.metadata?.processingSteps || []
+      hasCyrillic: true,
+      translationUsed: true,
+      coverage: translation.stages?.glossaryCoverage || 0,
+      missingWords: translation.stages?.missingWords || [],
+      translationStages: Object.keys(translation.stages || {})
     }
   };
 }
@@ -108,7 +123,8 @@ export function selectSearchStrategy(processedQuery) {
   
   const hasMultipleQueries = processedQuery.queries.length > 1;
   const hasMPNs = processedQuery.mpns.length > 0;
-  const hasCyrillic = processedQuery.metadata.hasCyrillic;
+  const hasRussian = processedQuery.metadata.hasCyrillic;
+  const translationUsed = processedQuery.metadata.translationUsed;
   
   // Strategy 1: MPN-first (when MPNs detected)
   if (hasMPNs) {
@@ -121,14 +137,14 @@ export function selectSearchStrategy(processedQuery) {
     };
   }
   
-  // Strategy 2: Russian-enhanced (Cyrillic detected)
-  if (hasCyrillic && hasMultipleQueries) {
+  // Strategy 2: RU→EN translation (Russian detected and translated)
+  if (hasRussian && translationUsed && hasMultipleQueries) {
     return {
-      strategy: 'russian-enhanced',
-      primaryQuery: processedQuery.queries[1] || processedQuery.queries[0],  // Use normalized
-      alternativeQueries: processedQuery.queries,
+      strategy: 'ru-en-translation',
+      primaryQuery: processedQuery.queries[0],  // Translated query first
+      alternativeQueries: processedQuery.queries.slice(1),
       mpnFirst: false,
-      reasoning: 'Cyrillic detected - using transliterated query'
+      reasoning: `Russian detected - using translated query (${processedQuery.metadata.coverage}% coverage)`
     };
   }
   

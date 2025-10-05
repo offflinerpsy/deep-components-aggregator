@@ -28,6 +28,9 @@ import { normTME } from './src/integrations/tme/normalize.mjs';
 import { digikeyGetProduct, digikeySearch } from './src/integrations/digikey/client.mjs';
 import { normDigiKey } from './src/integrations/digikey/normalize.mjs';
 
+// Search integration
+import { executeEnhancedSearch } from './src/search/searchIntegration.mjs';
+
 // Currency
 import { toRUB } from './src/currency/toRUB.mjs';
 
@@ -236,7 +239,7 @@ app.get('/api/digikey/selftest', async (req, res) => {
   }
 });
 
-// Search endpoint
+// Search endpoint with Russian normalization
 app.get('/api/search', async (req, res) => {
   try {
     const q = String(req.query.q || '').trim();
@@ -248,7 +251,7 @@ app.get('/api/search', async (req, res) => {
       return res.json({ ok: true, q, rows: [], meta: { source: 'none', total: 0 } });
     }
 
-    // Check cache
+    // Check cache (use original query for cache key)
     const TTL = 7 * 24 * 60 * 60 * 1000;
     const cached = readCachedSearch(db, q.toLowerCase(), TTL);
     if (cached && req.query.fresh !== '1') {
@@ -258,106 +261,116 @@ app.get('/api/search', async (req, res) => {
 
     let rows = [];
     let source = 'none';
+    let searchMetadata = {};
 
-    // STEP 1: Try Mouser (ALWAYS keyword search first)
+    // STEP 1: Try Mouser with Russian enhancement
     if (keys.mouser) {
-      try {
-        console.log('   → Mouser: keyword search...');
-        const result = await mouserSearchByKeyword({ apiKey: keys.mouser, q });
-        const parts = result?.data?.SearchResults?.Parts || [];
-        
+      const enhancedResult = await executeEnhancedSearch(q, async (query) => {
+        return await mouserSearchByKeyword({ apiKey: keys.mouser, q: query });
+      });
+      
+      if (enhancedResult.result) {
+        const parts = enhancedResult.result?.data?.SearchResults?.Parts || [];
         if (parts.length > 0) {
           rows = parts.map(normMouser);
           source = 'mouser';
-          console.log(`   ✅ Mouser: ${parts.length} results`);
-        } else {
-          console.log(`   ⚠️  Mouser: 0 results`);
+          searchMetadata = enhancedResult.metadata;
+          console.log(`   ✅ Mouser: ${parts.length} results (used: "${enhancedResult.metadata.usedQuery}")`);
         }
-      } catch (error) {
-        console.log(`   ❌ Mouser error: ${error.message}`);
       }
     }
 
-    // STEP 2: Try Digi-Key (server-side v4) if Mouser failed
+    // STEP 2: Try Digi-Key with Russian enhancement if Mouser failed
     if (rows.length === 0 && keys.digikeyClientId && keys.digikeyClientSecret) {
-      try {
-        console.log('   → Digi-Key: keyword search...');
-        const result = await digikeySearch({
+      const enhancedResult = await executeEnhancedSearch(q, async (query) => {
+        return await digikeySearch({
           clientId: keys.digikeyClientId,
           clientSecret: keys.digikeyClientSecret,
-          keyword: q,
+          keyword: query,
           limit: 25
         });
-
-        const products = result?.data?.Products || result?.data?.Items || [];
+      });
+      
+      if (enhancedResult.result) {
+        const products = enhancedResult.result?.data?.Products || enhancedResult.result?.data?.Items || [];
         if (products.length > 0) {
           rows = products.map(normDigiKey).filter(Boolean);
           source = 'digikey';
-          console.log(`   ✅ Digi-Key: ${products.length} results`);
-        } else {
-          console.log('   ⚠️  Digi-Key: 0 results');
+          searchMetadata = enhancedResult.metadata;
+          console.log(`   ✅ Digi-Key: ${products.length} results (used: "${enhancedResult.metadata.usedQuery}")`);
         }
-      } catch (error) {
-        console.log(`   ❌ Digi-Key error: ${error.message}`);
       }
     }
 
-    // STEP 3: Try TME if still nothing
+    // STEP 3: Try TME with Russian enhancement if still nothing
     if (rows.length === 0 && keys.tmeToken && keys.tmeSecret) {
-      try {
-        console.log('   → TME: searching...');
-        const result = await tmeSearchProducts({
+      const enhancedResult = await executeEnhancedSearch(q, async (query) => {
+        return await tmeSearchProducts({
           token: keys.tmeToken,
           secret: keys.tmeSecret,
-          q
+          q: query
         });
-        
-        const products = result?.data?.ProductList || [];
+      });
+      
+      if (enhancedResult.result) {
+        const products = enhancedResult.result?.data?.ProductList || [];
         if (products.length > 0) {
           rows = products.map(normTME);
           source = 'tme';
-          console.log(`   ✅ TME: ${products.length} results`);
-        } else {
-          console.log(`   ⚠️  TME: 0 results`);
+          searchMetadata = enhancedResult.metadata;
+          console.log(`   ✅ TME: ${products.length} results (used: "${enhancedResult.metadata.usedQuery}")`);
         }
-      } catch (error) {
-        console.log(`   ❌ TME error: ${error.message}`);
       }
     }
 
-  // STEP 4: Try Farnell as last resort
+    // STEP 4: Try Farnell with Russian enhancement as last resort
     if (rows.length === 0 && keys.farnell) {
-      try {
-        console.log('   → Farnell: keyword search...');
-        const result = await farnellByKeyword({
+      const enhancedResult = await executeEnhancedSearch(q, async (query) => {
+        return await farnellByKeyword({
           apiKey: keys.farnell,
           region: keys.farnellRegion,
-          q,
+          q: query,
           limit: 25
         });
-        
-        const products = result?.data?.products || [];
+      });
+      
+      if (enhancedResult.result) {
+        const products = enhancedResult.result?.data?.products || [];
         if (products.length > 0) {
           rows = products.map(p => normFarnell(p, keys.farnellRegion));
           source = 'farnell';
-          console.log(`   ✅ Farnell: ${products.length} results`);
-        } else {
-          console.log(`   ⚠️  Farnell: 0 results`);
+          searchMetadata = enhancedResult.metadata;
+          console.log(`   ✅ Farnell: ${products.length} results (used: "${enhancedResult.metadata.usedQuery}")`);
         }
-      } catch (error) {
-        console.log(`   ❌ Farnell error: ${error.message}`);
       }
     }
 
-    // Cache results
+    // Cache results (use original query for cache key)
     if (rows.length > 0) {
       cacheSearch(db, q.toLowerCase(), rows, { source });
     }
 
     const elapsed = Date.now() - startTime;
-    console.log(`⏱️  Completed in ${elapsed}ms: ${rows.length} results from ${source}\n`);
+    
+    // Enhanced metadata including Russian search info
+    const responseMeta = {
+      source,
+      total: rows.length,
+      cached: false,
+      elapsed,
+      searchStrategy: searchMetadata.strategy || 'direct',
+      usedQuery: searchMetadata.usedQuery || q,
+      hasCyrillic: searchMetadata.processed?.metadata?.hasCyrillic || false,
+      attempts: searchMetadata.attempts || 1
+    };
+    
+    console.log(`⏱️  Completed in ${elapsed}ms: ${rows.length} results from ${source}`);
+    if (searchMetadata.usedQuery && searchMetadata.usedQuery !== q) {
+      console.log(`   📝 Enhanced: "${q}" → "${searchMetadata.usedQuery}"`);
+    }
+    console.log('');
 
-    res.json({ ok: true, q, rows, meta: { source, total: rows.length, cached: false, elapsed } });
+    res.json({ ok: true, q, rows, meta: responseMeta });
   } catch (error) {
     console.error('❌ Search error:', error);
     res.status(500).json({ ok: false, error: error.message });

@@ -1,10 +1,13 @@
 русский,english
 транзистор,transistor
 биполярный транзистор,bipolar transistor
+биполярный,bipolar
 полевой транзистор,MOSFET; field-effect transistor
+полевой,field-effect
 IGBT,IGBT
 микросхема,integrated circuit; IC
 операционный усилитель,operational amplifier; op-amp
+оу,op-amp
 компаратор,comparator
 логический элемент,logic gate
 микроконтроллер,microcontroller; MCU
@@ -21,6 +24,8 @@ EEPROM,EEPROM
 акселерометр,accelerometer
 магнитометр,magnetometer
 температурный датчик,temperature sensor
+температурный,temperature
+температуры,temperature
 датчик влажности,humidity sensor
 датчик давления,pressure sensor
 джойстик,joystick
@@ -42,6 +47,7 @@ PTC,PTC thermistor
 дроссель,inductor; choke
 трансформатор,transformer
 диод,diode
+шоттки,Schottky
 шоттки диод,Schottky diode
 стабилитрон,Zener diode
 TVS диод,TVS diode; transient voltage suppressor
@@ -70,6 +76,7 @@ TVS диод,TVS diode; transient voltage suppressor
 драйвер,driver
 драйвер светодиодов,LED driver
 драйвер двигателя,motor driver
+двигателя,motor
 двигатель постоянного тока,DC motor
 шаговый двигатель,stepper motor
 серводвигатель,servo motor
@@ -81,7 +88,9 @@ TVS диод,TVS diode; transient voltage suppressor
 повышающий преобразователь,boost converter
 инвертирующий преобразователь,inverting converter
 линейный стабилизатор,linear regulator; LDO
+линейный,linear
 стабилизатор напряжения,voltage regulator
+стабилизатор,regulator
 контроллер заряда,charge controller
 MOSFET драйвер,MOSFET driver
 ШИМ контроллер,PWM controller
@@ -175,3 +184,11 @@ REACH,REACH compliant
 артикул продавца,SKU; seller part number
 совместимый,compatible
 аналог,equivalent; substitute
+красный,red
+зелёный,green
+синий,blue
+жёлтый,yellow
+белый,white
+тактовая,tactile
+тактовый,clock
+стеклянный,glass

@@ -13,10 +13,11 @@ Write-Host "`n🚀 Quick Deploy to Production`n" -ForegroundColor Cyan
 
 # Step 1: Create archive (only existing files)
 Write-Host "[1/4] Creating archive..." -ForegroundColor Yellow
-$filesToInclude = @("server.js", "package.json", "package-lock.json")
-$dirsToInclude = @("src", "ui", "public", "scripts", "backend") | Where-Object { Test-Path $_ }
+$files = @("server.js", "package.json", "package-lock.json", "src", "ui", "public", "scripts", "backend", "api", "metrics", "adapters", "config", "db", "middleware", "schemas", ".env.example")
+$existing = $files | Where-Object { Test-Path $_ }
 
-tar -czf deploy.tar.gz --exclude=node_modules --exclude=.git @filesToInclude @dirsToInclude
+Write-Host "  Including: $($existing -join ', ')" -ForegroundColor DarkGray
+tar -czf deploy.tar.gz --exclude=node_modules --exclude=.git $existing
 if ($LASTEXITCODE -ne 0) { Write-Host "❌ Archive failed" -ForegroundColor Red; exit 1 }
 
 # Step 2: Upload
@@ -24,10 +25,17 @@ Write-Host "[2/4] Uploading..." -ForegroundColor Yellow
 & scp -i $KEY -o ConnectTimeout=5 -o ServerAliveInterval=5 deploy.tar.gz ${SERVER}:${DIR}/
 if ($LASTEXITCODE -ne 0) { Write-Host "❌ Upload failed" -ForegroundColor Red; exit 1 }
 
-# Step 3: Deploy (single command, times out in 30s)
-Write-Host "[3/4] Extracting & restarting..." -ForegroundColor Yellow
-$deployCmd = "cd $DIR && tar -xzf deploy.tar.gz && rm deploy.tar.gz && npm ci --omit=dev 2>&1 | tail -5 && systemctl restart deep-agg && sleep 2 && curl -sf http://localhost:9201/api/health"
-& ssh -i $KEY -o ConnectTimeout=5 -o ServerAliveInterval=5 $SERVER "timeout 30 bash -c '$deployCmd'"
+# Step 3: Deploy (extract, install deps, restart - with proper error checking)
+Write-Host "[3/4] Extracting & installing..." -ForegroundColor Yellow
+$deployCmd = @"
+cd $DIR && \
+tar -xzf deploy.tar.gz && \
+rm deploy.tar.gz && \
+npm ci --omit=dev && \
+pkill -f 'node.*server.js' || true && \
+nohup node server.js > server.log 2>&1 &
+"@
+& ssh -i $KEY -o ConnectTimeout=10 -o ServerAliveInterval=5 $SERVER $deployCmd
 
 # Step 4: Verify
 Write-Host "[4/4] Verifying..." -ForegroundColor Yellow

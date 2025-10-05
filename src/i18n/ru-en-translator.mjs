@@ -3,11 +3,13 @@
  * Translates Russian electronics queries to English with MPN preservation
  * 
  * Pipeline:
+ * 0. Cache lookup (LRU, 10K entries, 30d TTL)
  * 1. Language detection (Cyrillic check)
  * 2. MPN extraction (preserve manufacturer codes)
  * 3. Units normalization (мкФ→uF, кОм→kΩ)
- * 4. Term translation (Local Glossary → Azure → DeepL → Cache)
+ * 4. Term translation (Local Glossary → Azure → DeepL)
  * 5. Assembly (combine translated terms + MPNs)
+ * 6. Cache storage
  * 
  * @module i18n/ru-en-translator
  */
@@ -15,6 +17,7 @@
 import { readFileSync } from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
+import translationCache from './translation-cache.mjs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -249,6 +252,24 @@ export function assembleQuery(translatedText, mpns) {
 export function translateRuToEn(query) {
   const startTime = Date.now();
   
+  // Stage 0: Cache lookup
+  const cached = translationCache.get(query);
+  if (cached) {
+    return {
+      original: query,
+      translated: cached.translated,
+      skipped: false,
+      fromCache: true,
+      cacheAge: cached.cacheAge,
+      stages: {
+        glossaryCoverage: cached.coverage,
+        missingWords: cached.missingWords
+      },
+      provider: 'cache',
+      latency: Date.now() - startTime
+    };
+  }
+  
   // Stage 1: Language detection
   if (!containsRussian(query)) {
     return {
@@ -276,6 +297,7 @@ export function translateRuToEn(query) {
     original: query,
     translated: finalQuery,
     skipped: false,
+    fromCache: false,
     stages: {
       mpnsExtracted: mpns,
       textWithoutMpns,
@@ -288,9 +310,9 @@ export function translateRuToEn(query) {
     latency: Date.now() - startTime
   };
   
-  // Warning if low coverage (might need Azure/DeepL)
-  if (coverage < 80 && missingWords.length > 0) {
-    result.warning = `Low glossary coverage (${coverage}%). Missing: ${missingWords.join(', ')}`;
+  // Stage 6: Cache storage (only if translation was successful)
+  if (finalQuery !== query) {
+    translationCache.set(query, result);
   }
   
   return result;
@@ -320,9 +342,10 @@ export function getStats() {
   return {
     glossaryTerms: GLOSSARY.size,
     unitConversions: UNITS_MAP.size,
+    cache: translationCache.getStats(),
     glossarySample: Array.from(GLOSSARY.entries()).slice(0, 10).map(([ru, en]) => ({ ru, en }))
   };
 }
 
 // Export for testing
-export { GLOSSARY, UNITS_MAP, MPN_PATTERN };
+export { GLOSSARY, UNITS_MAP, MPN_PATTERN, translationCache };

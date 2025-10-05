@@ -1,0 +1,25 @@
+{
+  "timestamp": "2025-10-05T21:52:00+03:00",
+  "environment": "production",
+  "query": "процессор",
+  "translation": {
+    "translated": "processor",
+    "glossaryCoverage": 100,
+    "missingWords": [],
+    "provider": "local_glossary"
+  },
+  "searchMeta": {
+    "source": "none",
+    "total": 0,
+    "cached": false,
+    "elapsedMs": 15,
+    "searchStrategy": "ru-en-translation",
+    "usedQuery": "processor",
+    "hasCyrillic": true,
+    "attempts": 1
+  },
+  "evidence": {
+    "curl": "curl -s -m 10 'http://localhost:9201/api/search?q=%D0%BF%D1%80%D0%BE%D1%86%D0%B5%D1%81%D1%81%D0%BE%D1%80'",
+    "logSnippet": "tail -40 /var/log/deep-agg.log"
+  }
+}

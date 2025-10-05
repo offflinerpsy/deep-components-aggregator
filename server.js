@@ -29,7 +29,7 @@ import { digikeyGetProduct, digikeySearch } from './src/integrations/digikey/cli
 import { normDigiKey } from './src/integrations/digikey/normalize.mjs';
 
 // Search integration
-import { executeEnhancedSearch } from './src/search/searchIntegration.mjs';
+import { executeEnhancedSearch, processSearchQuery, selectSearchStrategy } from './src/search/searchIntegration.mjs';
 
 // Currency
 import { toRUB } from './src/currency/toRUB.mjs';
@@ -229,11 +229,13 @@ app.get('/api/digikey/selftest', async (req, res) => {
       limit: 1
     });
     const products = result?.data?.Products || result?.data?.Items || [];
-    res.json({ ok: true, status: result.status, count: products.length, sample: products[0] ? {
-      ManufacturerPartNumber: products[0].ManufacturerPartNumber,
-      Description: products[0].Description,
-      ParametersCount: Array.isArray(products[0].Parameters) ? products[0].Parameters.length : undefined
-    } : null });
+    res.json({
+      ok: true, status: result.status, count: products.length, sample: products[0] ? {
+        ManufacturerPartNumber: products[0].ManufacturerPartNumber,
+        Description: products[0].Description,
+        ParametersCount: Array.isArray(products[0].Parameters) ? products[0].Parameters.length : undefined
+      } : null
+    });
   } catch (e) {
     res.status(500).json({ ok: false, error: e.message });
   }
@@ -244,9 +246,9 @@ app.get('/api/search', async (req, res) => {
   try {
     const q = String(req.query.q || '').trim();
     const startTime = Date.now();
-    
+
     console.log(`\n🔍 Search: "${q}"`);
-    
+
     if (!q) {
       return res.json({ ok: true, q, rows: [], meta: { source: 'none', total: 0 } });
     }
@@ -263,12 +265,28 @@ app.get('/api/search', async (req, res) => {
     let source = 'none';
     let searchMetadata = {};
 
+    const baselineProcessed = processSearchQuery(q);
+    const baselineStrategy = selectSearchStrategy(baselineProcessed);
+    searchMetadata = {
+      originalQuery: q,
+      usedQuery: baselineStrategy.primaryQuery || q,
+      strategy: baselineStrategy.strategy,
+      attempts: 0,
+      elapsed: 0,
+      processed: baselineProcessed,
+      hasResults: false
+    };
+
     // STEP 1: Try Mouser with Russian enhancement
     if (keys.mouser) {
       const enhancedResult = await executeEnhancedSearch(q, async (query) => {
         return await mouserSearchByKeyword({ apiKey: keys.mouser, q: query });
       });
-      
+
+      if (enhancedResult?.metadata) {
+        searchMetadata = enhancedResult.metadata;
+      }
+
       if (enhancedResult.result) {
         const parts = enhancedResult.result?.data?.SearchResults?.Parts || [];
         if (parts.length > 0) {
@@ -290,7 +308,11 @@ app.get('/api/search', async (req, res) => {
           limit: 25
         });
       });
-      
+
+      if (enhancedResult?.metadata) {
+        searchMetadata = enhancedResult.metadata;
+      }
+
       if (enhancedResult.result) {
         const products = enhancedResult.result?.data?.Products || enhancedResult.result?.data?.Items || [];
         if (products.length > 0) {
@@ -311,7 +333,11 @@ app.get('/api/search', async (req, res) => {
           q: query
         });
       });
-      
+
+      if (enhancedResult?.metadata) {
+        searchMetadata = enhancedResult.metadata;
+      }
+
       if (enhancedResult.result) {
         const products = enhancedResult.result?.data?.ProductList || [];
         if (products.length > 0) {
@@ -333,7 +359,11 @@ app.get('/api/search', async (req, res) => {
           limit: 25
         });
       });
-      
+
+      if (enhancedResult?.metadata) {
+        searchMetadata = enhancedResult.metadata;
+      }
+
       if (enhancedResult.result) {
         const products = enhancedResult.result?.data?.products || [];
         if (products.length > 0) {
@@ -351,7 +381,7 @@ app.get('/api/search', async (req, res) => {
     }
 
     const elapsed = Date.now() - startTime;
-    
+
     // Enhanced metadata including Russian search info
     const responseMeta = {
       source,
@@ -363,7 +393,7 @@ app.get('/api/search', async (req, res) => {
       hasCyrillic: searchMetadata.processed?.metadata?.hasCyrillic || false,
       attempts: searchMetadata.attempts || 1
     };
-    
+
     console.log(`⏱️  Completed in ${elapsed}ms: ${rows.length} results from ${source}`);
     if (searchMetadata.usedQuery && searchMetadata.usedQuery !== q) {
       console.log(`   📝 Enhanced: "${q}" → "${searchMetadata.usedQuery}"`);
@@ -413,7 +443,7 @@ app.get('/api/product', async (req, res) => {
 
           // Parse Mouser data - GET ALL FIELDS!
           const technical_specs = {};
-          
+
           // 1. ProductAttributes (primary specs)
           (p.ProductAttributes || []).forEach(a => {
             const k = clean(a.AttributeName);
@@ -460,17 +490,17 @@ app.get('/api/product', async (req, res) => {
             const v = clean(c.ComplianceValue);
             if (k && v) technical_specs[k] = v;
           });
-          
+
           // 4. AlternatePackaging info
           if (p.AlternatePackagings && p.AlternatePackagings.length > 0) {
             technical_specs['Alternate Packaging Available'] = 'Yes';
           }
-          
+
           // 5. SuggestedReplacement if exists
           if (p.SuggestedReplacement) {
             technical_specs['Suggested Replacement'] = clean(p.SuggestedReplacement);
           }
-          
+
           // 6. UnitWeightKg if exists
           if (p.UnitWeightKg) {
             technical_specs['Unit Weight'] = `${p.UnitWeightKg} kg`;
@@ -506,9 +536,9 @@ app.get('/api/product', async (req, res) => {
             datasheets: [...new Set(datasheets)],
             technical_specs,
             pricing,
-            availability: { 
-              inStock: Number(clean(p.AvailabilityInStock)) || Number((clean(p.Availability) || '').match(/\d+/)?.[0]) || 0, 
-              leadTime: clean(p.LeadTime) 
+            availability: {
+              inStock: Number(clean(p.AvailabilityInStock)) || Number((clean(p.Availability) || '').match(/\d+/)?.[0]) || 0,
+              leadTime: clean(p.LeadTime)
             },
             regions: ['US'],
             package: clean(p.Package),
@@ -526,42 +556,42 @@ app.get('/api/product', async (req, res) => {
       (keys.tmeToken && keys.tmeSecret) ? (async () => {
         try {
           console.log('   → TME: Searching for', mpn);
-          const result = await tmeSearchProducts({ 
-            token: keys.tmeToken, 
-            secret: keys.tmeSecret, 
+          const result = await tmeSearchProducts({
+            token: keys.tmeToken,
+            secret: keys.tmeSecret,
             query: mpn,
             country: 'PL',
             language: 'EN'
           });
-          
+
           // TME returns { Status: 'OK', Data: { ProductList: [...] } }
           const tmeData = result?.data?.Data || result?.data;  // Handle both cases
           const products = tmeData?.ProductList || [];
-          
+
           console.log('   🔍 TME response:', JSON.stringify({
             status: result?.status,
             hasData: !!result?.data,
             productCount: products.length,
             firstProduct: products[0]?.Symbol || 'none'
           }));
-          
+
           if (products.length === 0) {
             console.log('   ⚠️  TME: No products in ProductList');
             return null;
           }
 
           // Find exact match by OriginalSymbol (manufacturer part number)
-          let p = products.find(prod => 
+          let p = products.find(prod =>
             prod.OriginalSymbol && prod.OriginalSymbol.toUpperCase() === mpn.toUpperCase()
           );
-          
+
           // Fallback: try Symbol field
           if (!p) {
-            p = products.find(prod => 
+            p = products.find(prod =>
               prod.Symbol && prod.Symbol.toUpperCase() === mpn.toUpperCase()
             );
           }
-          
+
           // If no exact match found, skip TME result
           if (!p) {
             console.log('   ⚠️  TME: No exact match for', mpn, '(found', products.length, 'related products)');
@@ -616,20 +646,20 @@ app.get('/api/product', async (req, res) => {
         try {
           console.log('   → Farnell: Searching for', mpn);
           const result = await farnellByMPN({ apiKey: keys.farnell, region: keys.farnellRegion, q: mpn, limit: 1 });
-          
+
           console.log('   🔍 Farnell raw response status:', result?.status);
-          
+
           // Farnell API returns: { premierFarnellPartNumberReturn: { numberOfResults, products: [...] } }
           const returnData = result?.data?.premierFarnellPartNumberReturn || result?.data;
           const products = returnData?.products || [];
-          
-          console.log('   🔍 Farnell result:', JSON.stringify({ 
+
+          console.log('   🔍 Farnell result:', JSON.stringify({
             hasData: !!result?.data,
             hasReturn: !!returnData,
             numberOfResults: returnData?.numberOfResults || 0,
             productCount: products.length
           }));
-          
+
           const p = products[0];
           if (!p) {
             console.log('   ⚠️  Farnell: No product found');
@@ -687,12 +717,12 @@ app.get('/api/product', async (req, res) => {
       (keys.digikeyClientId && keys.digikeyClientSecret) ? (async () => {
         console.log('   🔍 DigiKey: Starting search...');
         try {
-          const result = await digikeyGetProduct({ 
-            clientId: keys.digikeyClientId, 
-            clientSecret: keys.digikeyClientSecret, 
-            partNumber: mpn 
+          const result = await digikeyGetProduct({
+            clientId: keys.digikeyClientId,
+            clientSecret: keys.digikeyClientSecret,
+            partNumber: mpn
           });
-          
+
           console.log(`   🔍 DigiKey: Got response, status=${result?.status}`);
           const p = result?.data?.Product || result?.data?.Products?.[0];
           if (!p) {
@@ -797,8 +827,8 @@ app.get('/api/product', async (req, res) => {
             datasheets: [...new Set(datasheets)],
             technical_specs,
             pricing,
-            availability: { 
-              inStock, 
+            availability: {
+              inStock,
               leadTime: clean(p.ManufacturerLeadWeeks),
               minQty
             },
@@ -816,7 +846,7 @@ app.get('/api/product', async (req, res) => {
     ]);
 
     // Extract successful results
-    const [mouserResult, tmeResult, farnellResult, digikeyResult] = results.map(r => 
+    const [mouserResult, tmeResult, farnellResult, digikeyResult] = results.map(r =>
       r.status === 'fulfilled' ? r.value : null
     );
 
@@ -826,10 +856,10 @@ app.get('/api/product', async (req, res) => {
     const product = mergeProductData(mouserResult, tmeResult, farnellResult, digikeyResult);
 
     if (!product) {
-      return res.status(404).json({ 
-        ok: false, 
+      return res.status(404).json({
+        ok: false,
         code: 'not_found',
-        message: 'Product not found in any source' 
+        message: 'Product not found in any source'
       });
     }
 
@@ -838,13 +868,13 @@ app.get('/api/product', async (req, res) => {
     // Cache merged result
     cacheProduct(db, 'merged', mpn, product);
 
-    res.json({ 
-      ok: true, 
+    res.json({
+      ok: true,
       product,
-      meta: { 
+      meta: {
         cached: false,
-        sources: product.sources 
-      } 
+        sources: product.sources
+      }
     });
   } catch (error) {
     console.error('❌ Product endpoint error:', error);
@@ -856,13 +886,13 @@ app.get('/api/product', async (req, res) => {
 app.get('/api/image', async (req, res) => {
   try {
     const url = String(req.query.url || '').trim();
-    
+
     if (!url || !url.startsWith('http')) {
       return res.status(400).json({ ok: false, code: 'bad_url' });
     }
-    
+
     console.log(`🖼️  Image Proxy: ${url}`);
-    
+
     const response = await fetch(url, {
       headers: {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
@@ -870,24 +900,24 @@ app.get('/api/image', async (req, res) => {
         'Accept': 'image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8'
       }
     });
-    
+
     if (!response.ok) {
       console.log(`   ❌ Image fetch failed: ${response.status}`);
       // Return placeholder instead of error
       res.status(404).send('Image not found');
       return;
     }
-    
+
     const contentType = response.headers.get('content-type') || 'image/jpeg';
     const buffer = await response.arrayBuffer();
-    
+
     console.log(`   ✅ Image served: ${buffer.byteLength} bytes`);
-    
+
     // Set headers for image
     res.setHeader('Content-Type', contentType);
     res.setHeader('Cache-Control', 'public, max-age=86400'); // Cache for 1 day
     res.send(Buffer.from(buffer));
-    
+
   } catch (error) {
     console.error('❌ Image proxy error:', error);
     res.status(500).send('Image proxy error');
@@ -898,33 +928,33 @@ app.get('/api/image', async (req, res) => {
 app.get('/api/pdf', async (req, res) => {
   try {
     const url = String(req.query.url || '').trim();
-    
+
     if (!url || !url.startsWith('http')) {
       return res.status(400).json({ ok: false, code: 'bad_url' });
     }
-    
+
     console.log(`📄 PDF Proxy: ${url}`);
-    
+
     const response = await fetch(url, {
       headers: {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
       }
     });
-    
+
     if (!response.ok) {
       throw new Error(`HTTP ${response.status}`);
     }
-    
+
     const contentType = response.headers.get('content-type') || 'application/pdf';
     const buffer = await response.arrayBuffer();
-    
+
     // Set headers for PDF display/download
     res.setHeader('Content-Type', contentType);
     res.setHeader('Content-Disposition', 'inline');
     res.send(Buffer.from(buffer));
-    
+
     console.log(`   ✅ PDF served: ${buffer.byteLength} bytes`);
-    
+
   } catch (error) {
     console.error('❌ PDF proxy error:', error);
     res.status(500).json({ ok: false, error: error.message });

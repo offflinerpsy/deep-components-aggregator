@@ -186,6 +186,39 @@ function updateResultsTable(results) {
     const mpnSpan = document.createElement('div');
     mpnSpan.textContent = item.mpn || '';
     mpnSpan.style.fontWeight = 'bold';
+    
+    // Source badge
+    if (item.source) {
+      const badge = document.createElement('span');
+      badge.style.marginLeft = '8px';
+      badge.style.padding = '2px 6px';
+      badge.style.fontSize = '10px';
+      badge.style.fontWeight = '600';
+      badge.style.borderRadius = '3px';
+      badge.style.textTransform = 'uppercase';
+      
+      const sourceColors = {
+        'digikey': { bg: '#cc0000', text: '#fff' },
+        'mouser': { bg: '#0066b2', text: '#fff' },
+        'tme': { bg: '#009fe3', text: '#fff' },
+        'farnell': { bg: '#ff6600', text: '#fff' }
+      };
+      
+      const sourceLabels = {
+        'digikey': 'DK',
+        'mouser': 'MO',
+        'tme': 'TME',
+        'farnell': 'FN'
+      };
+      
+      const colors = sourceColors[item.source.toLowerCase()] || { bg: '#666', text: '#fff' };
+      badge.style.backgroundColor = colors.bg;
+      badge.style.color = colors.text;
+      badge.textContent = sourceLabels[item.source.toLowerCase()] || item.source.toUpperCase();
+      
+      mpnSpan.appendChild(badge);
+    }
+    
     titleCell.appendChild(mpnSpan);
 
     const titleSpan = document.createElement('div');
@@ -200,7 +233,7 @@ function updateResultsTable(results) {
 
     // Описание
     const descCell = document.createElement('td');
-    descCell.textContent = item.description ? item.description.substring(0, 100) + (item.description.length > 100 ? '...' : '') : '';
+    descCell.textContent = item.description ? item.description.substring(0, 100) + (item.description.length > 100 ? ' —' : '') : '';
     row.appendChild(descCell);
 
     // Корпус

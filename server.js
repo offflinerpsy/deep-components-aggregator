@@ -33,6 +33,7 @@ import { executeEnhancedSearch } from './src/search/searchIntegration.mjs';
 
 // Currency
 import { toRUB } from './src/currency/toRUB.mjs';
+import { refreshRates, getRatesAge, loadRates } from './src/currency/cbr.mjs';
 
 // Product data merging
 import { mergeProductData } from './src/utils/mergeProductData.mjs';
@@ -46,6 +47,13 @@ import { mountUserOrderRoutes } from './api/user.orders.js';
 
 // Metrics & Rate Limiting
 import { createOrderRateLimiter, createAuthRateLimiter, createGeneralRateLimiter } from './middleware/rateLimiter.js';
+import { 
+  searchRequestsTotal, 
+  searchErrorsTotal, 
+  searchLatencySeconds,
+  searchResultsBySource,
+  cacheOperations
+} from './metrics/registry.js';
 
 // Orders API
 import { createOrderHandler } from './api/order.js';
@@ -135,18 +143,101 @@ app.get('/', (req, res) => {
 });
 
 // Health check
-app.get('/api/health', (req, res) => {
+app.get('/api/health', async (req, res) => {
+  const startTime = Date.now();
+  const sources = {};
+  
+  // DigiKey health check
+  if (keys.digikeyClientId && keys.digikeyClientSecret) {
+    sources.digikey = {
+      status: 'configured',
+      note: 'OAuth credentials present'
+    };
+  } else {
+    sources.digikey = { status: 'disabled' };
+  }
+  
+  // Mouser health check
+  if (keys.mouser) {
+    sources.mouser = { 
+      status: 'configured',
+      note: 'API key present'
+    };
+  } else {
+    sources.mouser = { status: 'disabled' };
+  }
+  
+  // TME health check
+  if (keys.tmeToken && keys.tmeSecret) {
+    sources.tme = { 
+      status: 'configured',
+      note: 'Token/secret present'
+    };
+  } else {
+    sources.tme = { status: 'disabled' };
+  }
+  
+  // Farnell health check
+  if (keys.farnell) {
+    sources.farnell = { 
+      status: 'configured',
+      note: 'API key present'
+    };
+  } else {
+    sources.farnell = { status: 'disabled' };
+  }
+  
+  // Currency health
+  const currencyAge = getRatesAge();
+  const currencyAgeHours = Math.floor(currencyAge / (1000 * 60 * 60));
+  const currencyStatus = currencyAgeHours < 24 ? 'ok' : 'stale';
+  
+  const totalLatency = Date.now() - startTime;
+  
   res.json({
     status: 'ok',
     version: '3.2',
     ts: Date.now(),
-    sources: {
-      mouser: keys.mouser ? 'ready' : 'disabled',
-      tme: (keys.tmeToken && keys.tmeSecret) ? 'ready' : 'disabled',
-      farnell: keys.farnell ? 'ready' : 'disabled',
-      digikey: (keys.digikeyClientId && keys.digikeyClientSecret) ? 'ready' : 'disabled'
+    latency_ms: totalLatency,
+    sources,
+    currency: {
+      status: currencyStatus,
+      age_hours: currencyAgeHours,
+      rates: {
+        USD: loadRates().rates.USD,
+        EUR: loadRates().rates.EUR
+      }
+    },
+    cache: {
+      db_path: './data/db/deep-agg.db',
+      status: 'ok'
     }
   });
+});
+
+// Currency rates endpoint
+app.get('/api/currency/rates', (req, res) => {
+  try {
+    const rates = loadRates();
+    const age = getRatesAge();
+    const ageHours = Math.floor(age / (1000 * 60 * 60));
+    const date = new Date(rates.timestamp);
+    
+    res.json({
+      ok: true,
+      timestamp: rates.timestamp,
+      date: date.toISOString().split('T')[0], // YYYY-MM-DD
+      age_hours: ageHours,
+      rates: {
+        USD: rates.rates.USD,
+        EUR: rates.rates.EUR,
+        GBP: rates.rates.GBP || null
+      },
+      source: 'ЦБ РФ'
+    });
+  } catch (error) {
+    res.status(500).json({ ok: false, error: error.message });
+  }
 });
 
 // Metrics endpoint
@@ -241,6 +332,8 @@ app.get('/api/digikey/selftest', async (req, res) => {
 
 // Search endpoint with Russian normalization
 app.get('/api/search', async (req, res) => {
+  const searchTimer = searchLatencySeconds.startTimer();
+  
   try {
     const q = String(req.query.q || '').trim();
     const startTime = Date.now();
@@ -248,6 +341,8 @@ app.get('/api/search', async (req, res) => {
     console.log(`\n🔍 Search: "${q}"`);
     
     if (!q) {
+      searchRequestsTotal.inc({ status: 'success' });
+      searchTimer();
       return res.json({ ok: true, q, rows: [], meta: { source: 'none', total: 0 } });
     }
 
@@ -256,7 +351,34 @@ app.get('/api/search', async (req, res) => {
     const cached = readCachedSearch(db, q.toLowerCase(), TTL);
     if (cached && req.query.fresh !== '1') {
       console.log(`📦 Cache HIT: ${cached.rows.length} rows from ${cached.meta.source}`);
-      return res.json({ ok: true, q, rows: cached.rows, meta: { ...cached.meta, cached: true } });
+      
+      // Metrics
+      cacheOperations.inc({ operation: 'hit', type: 'search' });
+      searchRequestsTotal.inc({ status: 'success' });
+      searchResultsBySource.inc({ source: cached.meta.source }, cached.rows.length);
+      searchTimer();
+      
+      // Add currency info to cached response
+      const ratesData = loadRates();
+      const ratesDate = new Date(ratesData.timestamp).toISOString().split('T')[0];
+      
+      return res.json({ 
+        ok: true, 
+        q, 
+        rows: cached.rows, 
+        meta: { 
+          ...cached.meta, 
+          cached: true,
+          currency: {
+            rates: {
+              USD: ratesData.rates.USD,
+              EUR: ratesData.rates.EUR
+            },
+            date: ratesDate,
+            source: 'ЦБ РФ'
+          }
+        } 
+      });
     }
 
     let rows = [];
@@ -348,9 +470,14 @@ app.get('/api/search', async (req, res) => {
     // Cache results (use original query for cache key)
     if (rows.length > 0) {
       cacheSearch(db, q.toLowerCase(), rows, { source });
+      cacheOperations.inc({ operation: 'miss', type: 'search' });
     }
 
     const elapsed = Date.now() - startTime;
+    
+    // Get currency rates info
+    const ratesData = loadRates();
+    const ratesDate = new Date(ratesData.timestamp).toISOString().split('T')[0];
     
     // Enhanced metadata including Russian search info
     const responseMeta = {
@@ -361,7 +488,15 @@ app.get('/api/search', async (req, res) => {
       searchStrategy: searchMetadata.strategy || 'direct',
       usedQuery: searchMetadata.usedQuery || q,
       hasCyrillic: searchMetadata.processed?.metadata?.hasCyrillic || false,
-      attempts: searchMetadata.attempts || 1
+      attempts: searchMetadata.attempts || 1,
+      currency: {
+        rates: {
+          USD: ratesData.rates.USD,
+          EUR: ratesData.rates.EUR
+        },
+        date: ratesDate,
+        source: 'ЦБ РФ'
+      }
     };
     
     console.log(`⏱️  Completed in ${elapsed}ms: ${rows.length} results from ${source}`);
@@ -370,9 +505,22 @@ app.get('/api/search', async (req, res) => {
     }
     console.log('');
 
+    // Metrics for successful search
+    searchRequestsTotal.inc({ status: 'success' });
+    if (rows.length > 0) {
+      searchResultsBySource.inc({ source }, rows.length);
+    }
+    searchTimer();
+
     res.json({ ok: true, q, rows, meta: responseMeta });
   } catch (error) {
     console.error('❌ Search error:', error);
+    
+    // Metrics for failed search
+    searchRequestsTotal.inc({ status: 'error' });
+    searchErrorsTotal.inc({ error_type: error.code || error.name || 'unknown' });
+    searchTimer();
+    
     res.status(500).json({ ok: false, error: error.message });
   }
 });
@@ -932,6 +1080,22 @@ app.get('/api/pdf', async (req, res) => {
 });
 
 const PORT = Number(process.env.PORT || 9201);
+
+// Initialize currency rates from CBR on startup
+(async () => {
+  try {
+    console.log('💱 Initializing currency rates from CBR...');
+    await refreshRates();
+    const rates = loadRates();
+    const age = getRatesAge();
+    const ageHours = Math.floor(age / (1000 * 60 * 60));
+    console.log(`✅ Currency rates loaded (age: ${ageHours}h)`);
+    console.log(`   USD: ${rates.rates.USD?.toFixed(4)}₽`);
+    console.log(`   EUR: ${rates.rates.EUR?.toFixed(4)}₽`);
+  } catch (error) {
+    console.error('⚠️  Failed to load currency rates:', error.message);
+  }
+})();
 
 const server = app.listen(PORT, '0.0.0.0', () => {
   console.log('\n✅ Server Started');

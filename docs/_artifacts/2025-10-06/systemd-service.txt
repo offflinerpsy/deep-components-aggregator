@@ -1,0 +1,117 @@
+=== SYSTEMD SERVICE PATH ===
+/etc/systemd/system/deep-agg.service
+
+=== SERVICE CONTENT ===
+[Unit]
+Description=Deep Components Aggregator - Electronics Parts Search & Price Aggregation
+Documentation=https://github.com/offflinerpsy/deep-components-aggregator
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/deep-agg
+ExecStart=/usr/bin/node /opt/deep-agg/server.js
+Restart=always
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=deep-agg
+
+# Environment from .env
+Environment="NODE_ENV=production"
+Environment="PORT=9201"
+Environment="SESSION_SECRET=production-hotfix-temp-secret-5129228"
+Environment="DIGIKEY_CLIENT_ID=JaGDn87OXtjKuGJvIA6FOO75MYqj1z6UtAwLdlAeWc91m412"
+Environment="DIGIKEY_CLIENT_SECRET=5vlwGIui6h6HV4kkKptCqby2dLdbmUKX0jE2cWNaSmvN1C0QWyip5Ah5jhpbBBbe"
+Environment="DIGIKEY_API_BASE=https://api.digikey.com"
+Environment="DIGIKEY_OUTBOUND_PROXY=http://127.0.0.1:25345"
+Environment="DIGIKEY_USER_AGENT=Mozilla/5.0 (Windows NT 10.0; Win64; x64) DeepAgg/2025"
+Environment="WARP_PROXY_URL=http://127.0.0.1:25345"
+
+# Security hardening
+NoNewPrivileges=true
+PrivateTmp=true
+
+# Resource limits
+LimitNOFILE=65536
+LimitNPROC=512
+
+[Install]
+WantedBy=multi-user.target
+
+=== SYSTEMCTL STATUS ===
+● deep-agg.service - Deep Components Aggregator - Electronics Parts Search & Price Aggregation
+     Loaded: loaded (/etc/systemd/system/deep-agg.service; enabled; preset: enabled)
+     Active: active (running) since Mon 2025-10-06 21:13:39 MSK; 13s ago
+       Docs: https://github.com/offflinerpsy/deep-components-aggregator
+   Main PID: 25936 (node)
+      Tasks: 11 (limit: 5837)
+     Memory: 30.2M (peak: 45.1M)
+        CPU: 902ms
+     CGroup: /system.slice/deep-agg.service
+             └─25936 /usr/bin/node /opt/deep-agg/server.js
+
+Oct 06 21:13:40 5739319-zw86058 deep-agg[25936]:    DigiKey: ✅ Configured
+Oct 06 21:13:40 5739319-zw86058 deep-agg[25936]: ✅ Server Started
+Oct 06 21:13:40 5739319-zw86058 deep-agg[25936]: 🌐 http://localhost:9201
+Oct 06 21:13:40 5739319-zw86058 deep-agg[25936]: 📡 API: http://localhost:9201/api/health
+Oct 06 21:13:40 5739319-zw86058 deep-agg[25936]: 📊 Metrics: http://localhost:9201/api/metrics
+Oct 06 21:13:40 5739319-zw86058 deep-agg[25936]: 🔐 Auth: POST http://localhost:9201/auth/register|login
+Oct 06 21:13:40 5739319-zw86058 deep-agg[25936]: 👤 User Orders: GET http://localhost:9201/api/user/orders
+Oct 06 21:13:40 5739319-zw86058 deep-agg[25936]: 📦 Create Order: POST http://localhost:9201/api/order (auth required)
+Oct 06 21:13:40 5739319-zw86058 deep-agg[25936]: 🔧 Admin: http://localhost:9201/api/admin/orders (Nginx Basic Auth)
+Oct 06 21:13:40 5739319-zw86058 deep-agg[25936]: ==================================================
+
+=== JOURNALCTL (last 50 lines) ===
+Oct 06 21:13:17 5739319-zw86058 systemd[1]: deep-agg.service: Main process exited, code=exited, status=1/FAILURE
+Oct 06 21:13:17 5739319-zw86058 systemd[1]: deep-agg.service: Failed with result 'exit-code'.
+Oct 06 21:13:27 5739319-zw86058 systemd[1]: deep-agg.service: Scheduled restart job, restart counter is at 1.
+Oct 06 21:13:27 5739319-zw86058 systemd[1]: Started deep-agg.service - Deep Components Aggregator - Electronics Parts Search & Price Aggregation.
+Oct 06 21:13:27 5739319-zw86058 deep-agg[25870]: 🔒 Global HTTP proxy enabled via Undici: http://127.0.0.1:25345
+Oct 06 21:13:27 5739319-zw86058 deep-agg[25870]: 🚀 Deep Components Aggregator v3.2
+Oct 06 21:13:27 5739319-zw86058 deep-agg[25870]: ==================================================
+Oct 06 21:13:27 5739319-zw86058 deep-agg[25870]: [WARN] Google OAuth not configured (missing CLIENT_ID or CLIENT_SECRET)
+Oct 06 21:13:27 5739319-zw86058 deep-agg[25870]: [WARN] Yandex OAuth not configured (missing CLIENT_ID or CLIENT_SECRET)
+Oct 06 21:13:27 5739319-zw86058 deep-agg[25870]: [WARN] VK OAuth not configured (missing CLIENT_ID or CLIENT_SECRET)
+Oct 06 21:13:27 5739319-zw86058 deep-agg[25870]: [INFO] [object Object] Passport strategies configured
+Oct 06 21:13:27 5739319-zw86058 deep-agg[25870]: 📋 API Configuration:
+Oct 06 21:13:27 5739319-zw86058 deep-agg[25870]:    Mouser: ❌ Missing
+Oct 06 21:13:27 5739319-zw86058 deep-agg[25870]:    TME: ❌ Missing
+Oct 06 21:13:27 5739319-zw86058 deep-agg[25870]:    Farnell: ❌ Missing
+Oct 06 21:13:27 5739319-zw86058 deep-agg[25870]:    DigiKey: ✅ Configured
+Oct 06 21:13:27 5739319-zw86058 deep-agg[25870]: ✅ Server Started
+Oct 06 21:13:27 5739319-zw86058 deep-agg[25870]: 🌐 http://localhost:9201
+Oct 06 21:13:27 5739319-zw86058 deep-agg[25870]: 📡 API: http://localhost:9201/api/health
+Oct 06 21:13:27 5739319-zw86058 deep-agg[25870]: 📊 Metrics: http://localhost:9201/api/metrics
+Oct 06 21:13:27 5739319-zw86058 deep-agg[25870]: 🔐 Auth: POST http://localhost:9201/auth/register|login
+Oct 06 21:13:27 5739319-zw86058 deep-agg[25870]: 👤 User Orders: GET http://localhost:9201/api/user/orders
+Oct 06 21:13:27 5739319-zw86058 deep-agg[25870]: 📦 Create Order: POST http://localhost:9201/api/order (auth required)
+Oct 06 21:13:27 5739319-zw86058 deep-agg[25870]: 🔧 Admin: http://localhost:9201/api/admin/orders (Nginx Basic Auth)
+Oct 06 21:13:27 5739319-zw86058 deep-agg[25870]: ==================================================
+Oct 06 21:13:39 5739319-zw86058 systemd[1]: Stopping deep-agg.service - Deep Components Aggregator - Electronics Parts Search & Price Aggregation...
+Oct 06 21:13:39 5739319-zw86058 systemd[1]: deep-agg.service: Deactivated successfully.
+Oct 06 21:13:39 5739319-zw86058 systemd[1]: Stopped deep-agg.service - Deep Components Aggregator - Electronics Parts Search & Price Aggregation.
+Oct 06 21:13:39 5739319-zw86058 systemd[1]: Started deep-agg.service - Deep Components Aggregator - Electronics Parts Search & Price Aggregation.
+Oct 06 21:13:39 5739319-zw86058 deep-agg[25936]: 🔒 Global HTTP proxy enabled via Undici: http://127.0.0.1:25345
+Oct 06 21:13:40 5739319-zw86058 deep-agg[25936]: 🚀 Deep Components Aggregator v3.2
+Oct 06 21:13:40 5739319-zw86058 deep-agg[25936]: ==================================================
+Oct 06 21:13:40 5739319-zw86058 deep-agg[25936]: [WARN] Google OAuth not configured (missing CLIENT_ID or CLIENT_SECRET)
+Oct 06 21:13:40 5739319-zw86058 deep-agg[25936]: [WARN] Yandex OAuth not configured (missing CLIENT_ID or CLIENT_SECRET)
+Oct 06 21:13:40 5739319-zw86058 deep-agg[25936]: [WARN] VK OAuth not configured (missing CLIENT_ID or CLIENT_SECRET)
+Oct 06 21:13:40 5739319-zw86058 deep-agg[25936]: [INFO] [object Object] Passport strategies configured
+Oct 06 21:13:40 5739319-zw86058 deep-agg[25936]: 📋 API Configuration:
+Oct 06 21:13:40 5739319-zw86058 deep-agg[25936]:    Mouser: ❌ Missing
+Oct 06 21:13:40 5739319-zw86058 deep-agg[25936]:    TME: ❌ Missing
+Oct 06 21:13:40 5739319-zw86058 deep-agg[25936]:    Farnell: ❌ Missing
+Oct 06 21:13:40 5739319-zw86058 deep-agg[25936]:    DigiKey: ✅ Configured
+Oct 06 21:13:40 5739319-zw86058 deep-agg[25936]: ✅ Server Started
+Oct 06 21:13:40 5739319-zw86058 deep-agg[25936]: 🌐 http://localhost:9201
+Oct 06 21:13:40 5739319-zw86058 deep-agg[25936]: 📡 API: http://localhost:9201/api/health
+Oct 06 21:13:40 5739319-zw86058 deep-agg[25936]: 📊 Metrics: http://localhost:9201/api/metrics
+Oct 06 21:13:40 5739319-zw86058 deep-agg[25936]: 🔐 Auth: POST http://localhost:9201/auth/register|login
+Oct 06 21:13:40 5739319-zw86058 deep-agg[25936]: 👤 User Orders: GET http://localhost:9201/api/user/orders
+Oct 06 21:13:40 5739319-zw86058 deep-agg[25936]: 📦 Create Order: POST http://localhost:9201/api/order (auth required)
+Oct 06 21:13:40 5739319-zw86058 deep-agg[25936]: 🔧 Admin: http://localhost:9201/api/admin/orders (Nginx Basic Auth)
+Oct 06 21:13:40 5739319-zw86058 deep-agg[25936]: ==================================================

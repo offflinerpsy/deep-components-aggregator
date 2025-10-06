@@ -1,0 +1,33 @@
+{
+    "status": "ok",
+    "version": "3.2",
+    "ts": 1759776390718,
+    "latency_ms": 0,
+    "sources": {
+        "digikey": {
+            "status": "configured",
+            "note": "OAuth credentials present"
+        },
+        "mouser": {
+            "status": "disabled"
+        },
+        "tme": {
+            "status": "disabled"
+        },
+        "farnell": {
+            "status": "disabled"
+        }
+    },
+    "currency": {
+        "status": "ok",
+        "age_hours": 0,
+        "rates": {
+            "USD": 83,
+            "EUR": 96.8345
+        }
+    },
+    "cache": {
+        "db_path": "./data/db/deep-agg.db",
+        "status": "ok"
+    }
+}

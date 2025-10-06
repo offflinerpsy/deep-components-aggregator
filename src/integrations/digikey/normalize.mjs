@@ -3,6 +3,9 @@
  * Converts DigiKey API response to unified format
  */
 
+import { writeFileSync } from 'fs';
+import { toRub } from '../../currency/cbr.mjs';
+
 /**
  * Normalize DigiKey product to unified format
  * @param {Object} product - DigiKey product object
@@ -10,6 +13,17 @@
  */
 export function normDigiKey(product) {
   if (!product) return null;
+
+  // DEBUG: Save raw product structure to file (always save first product)
+  try {
+    writeFileSync(
+      '/opt/deep-agg/docs/_artifacts/2025-10-06/providers/dk-raw-product.json',
+      JSON.stringify(product, null, 2)
+    );
+    console.log('[DEBUG] Saved raw product to dk-raw-product.json');
+  } catch (e) {
+    console.error('[DEBUG] Failed to write debug file:', e.message);
+  }
 
   const clean = (s) => {
     if (!s || typeof s !== 'string') return null;
@@ -35,17 +49,17 @@ export function normDigiKey(product) {
   const mainFields = {
     'Manufacturer': product.Manufacturer?.Name,
     'Product Category': product.Category?.Name,
-    'Description': product.Description,
-    'Detailed Description': product.DetailedDescription,
-    'DigiKey Part Number': product.DigiKeyPartNumber,
-    'Manufacturer Part Number': product.ManufacturerPartNumber,
-    'Packaging': product.Packaging?.Name,
+    'Description': product.Description?.ProductDescription || product.Description,
+    'Detailed Description': product.Description?.DetailedDescription || product.DetailedDescription,
+    'DigiKey Part Number': product.DigiKeyPartNumber || product.ProductVariations?.[0]?.DigiKeyProductNumber,
+    'Manufacturer Part Number': product.ManufacturerProductNumber,
+    'Packaging': product.Packaging?.Name || product.ProductVariations?.[0]?.PackageType?.Name,
     'Series': product.Series?.Name,
     'Lead Status': product.LeadStatus,
-    'RoHS Status': product.RoHSStatus,
-    'Part Status': product.PartStatus,
-    'Minimum Order Quantity': product.MinimumOrderQuantity,
-    'Standard Packaging': product.StandardPackage,
+    'RoHS Status': product.RoHSStatus || product.Classifications?.RohsStatus,
+    'Part Status': product.ProductStatus?.Status,
+    'Minimum Order Quantity': product.MinimumOrderQuantity || product.ProductVariations?.[0]?.MinimumOrderQuantity,
+    'Standard Packaging': product.StandardPackage || product.ProductVariations?.[0]?.StandardPackage,
     'Product URL': product.ProductUrl
   };
 
@@ -58,8 +72,8 @@ export function normDigiKey(product) {
 
   // Extract images
   const images = [];
-  if (product.PrimaryPhoto) {
-    images.push(product.PrimaryPhoto);
+  if (product.PrimaryPhoto || product.PhotoUrl) {
+    images.push(product.PrimaryPhoto || product.PhotoUrl);
   }
   if (product.MediaLinks && Array.isArray(product.MediaLinks)) {
     product.MediaLinks.forEach(media => {
@@ -71,8 +85,8 @@ export function normDigiKey(product) {
 
   // Extract datasheets
   const datasheets = [];
-  if (product.PrimaryDatasheet) {
-    datasheets.push(product.PrimaryDatasheet);
+  if (product.PrimaryDatasheet || product.DatasheetUrl) {
+    datasheets.push(product.PrimaryDatasheet || product.DatasheetUrl);
   }
   if (product.MediaLinks && Array.isArray(product.MediaLinks)) {
     product.MediaLinks.forEach(media => {
@@ -82,27 +96,48 @@ export function normDigiKey(product) {
     });
   }
 
-  // Extract pricing
+  // Extract pricing - DigiKey API v4 has pricing in ProductVariations[].StandardPricing
   const pricing = [];
-  if (product.StandardPricing && Array.isArray(product.StandardPricing)) {
+  
+  // Try ProductVariations first (Product Information V4 search response)
+  if (product.ProductVariations && Array.isArray(product.ProductVariations)) {
+    const firstVariation = product.ProductVariations[0];
+    if (firstVariation && firstVariation.StandardPricing && Array.isArray(firstVariation.StandardPricing)) {
+      firstVariation.StandardPricing.forEach(price => {
+        const currency = price.Currency || 'USD';
+        const unitPrice = price.UnitPrice;
+        pricing.push({
+          qty: price.BreakQuantity || 1,
+          price: unitPrice,
+          currency: currency,
+          price_rub: toRub(unitPrice, currency)
+        });
+      });
+    }
+  }
+  
+  // Fallback: try root-level StandardPricing (older API or different endpoint)
+  if (pricing.length === 0 && product.StandardPricing && Array.isArray(product.StandardPricing)) {
     product.StandardPricing.forEach(price => {
+      const currency = price.Currency || 'USD';
+      const unitPrice = price.UnitPrice;
       pricing.push({
         qty: price.BreakQuantity || 1,
-        price: price.UnitPrice,
-        currency: price.Currency || 'USD',
-        price_rub: null // Will be calculated later
+        price: unitPrice,
+        currency: currency,
+        price_rub: toRub(unitPrice, currency)
       });
     });
   }
 
   return {
-    mpn: clean(product.ManufacturerPartNumber),
+    mpn: clean(product.ManufacturerProductNumber),
     manufacturer: clean(product.Manufacturer?.Name),
-    title: clean(product.Description),
-    description: clean(product.DetailedDescription) || clean(product.Description),
+    title: clean(product.Description?.ProductDescription || product.Description),
+    description: clean(product.Description?.DetailedDescription || product.DetailedDescription || product.Description?.ProductDescription),
     photo: images[0] || null,
     images: images.filter(Boolean),
-    datasheets: [...new Set(datasheets)],
+    datasheets: [...new Set(datasheets.filter(Boolean))],
     technical_specs,
     pricing,
     availability: {
@@ -110,8 +145,8 @@ export function normDigiKey(product) {
       leadTime: clean(product.ManufacturerLeadWeeks)
     },
     regions: ['US', 'Global'],
-    package: clean(product.Packaging?.Name),
-    packaging: clean(product.StandardPackage),
+    package: clean(product.Packaging?.Name || product.ProductVariations?.[0]?.PackageType?.Name),
+    packaging: clean(product.StandardPackage || product.ProductVariations?.[0]?.StandardPackage),
     vendorUrl: clean(product.ProductUrl),
     source: 'digikey'
   };

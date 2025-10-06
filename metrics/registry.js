@@ -107,6 +107,52 @@ export const cacheOperations = new Counter({
   registers: [register]
 });
 
+// ==================== SEARCH METRICS ====================
+
+/**
+ * Counter: Total search requests
+ * Labels: status (success|error)
+ */
+export const searchRequestsTotal = new Counter({
+  name: 'search_requests_total',
+  help: 'Total number of search requests',
+  labelNames: ['status'],
+  registers: [register]
+});
+
+/**
+ * Counter: Search errors
+ * Labels: error_type
+ */
+export const searchErrorsTotal = new Counter({
+  name: 'search_errors_total',
+  help: 'Total number of search errors',
+  labelNames: ['error_type'],
+  registers: [register]
+});
+
+/**
+ * Histogram: Search latency in seconds
+ * Buckets: 0.01s, 0.05s, 0.1s, 0.5s, 1s, 2s, 5s, 10s
+ */
+export const searchLatencySeconds = new Histogram({
+  name: 'search_latency_seconds',
+  help: 'Search request latency in seconds',
+  buckets: [0.01, 0.05, 0.1, 0.5, 1, 2, 5, 10],
+  registers: [register]
+});
+
+/**
+ * Counter: Search results by source
+ * Labels: source (digikey|mouser|tme|farnell)
+ */
+export const searchResultsBySource = new Counter({
+  name: 'search_results_by_source_total',
+  help: 'Total number of search results by source',
+  labelNames: ['source'],
+  registers: [register]
+});
+
 // ==================== RATE LIMIT METRICS ====================
 
 /**
@@ -195,6 +241,10 @@ export default {
   apiCallsTotal,
   apiCallDuration,
   cacheOperations,
+  searchRequestsTotal,
+  searchErrorsTotal,
+  searchLatencySeconds,
+  searchResultsBySource,
   rateLimitHits,
   settingsReadsTotal,
   settingsUpdatesTotal,

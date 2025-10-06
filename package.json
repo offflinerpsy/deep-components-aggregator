@@ -35,7 +35,7 @@
     "glob": "^10.3.10",
     "nanoid": "^5.0.3",
     "natural": "^8.1.0",
-    "p-queue": "^7.4.1",
+    "p-queue": "^9.0.0",
     "passport": "^0.7.0",
     "passport-google-oidc": "^0.1.0",
     "passport-local": "^1.0.0",

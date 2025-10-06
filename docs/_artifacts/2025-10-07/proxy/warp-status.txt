@@ -1,0 +1,15 @@
+2025-10-07T00:00Z status snapshot
+
+Command: printf 'y' | /usr/bin/warp-cli status
+Output:
+Status update: Disconnected
+Reason: Manual Disconnection
+
+Command: printf 'y' | /usr/bin/warp-cli connect
+Output:
+Success
+
+Command: printf 'y' | /usr/bin/warp-cli status
+Output:
+Status update: Disconnected
+Reason: Manual Disconnection

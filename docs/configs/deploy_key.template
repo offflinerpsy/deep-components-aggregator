@@ -1,0 +1,4 @@
+-----BEGIN OPENSSH PRIVATE KEY-----
+# PLACEHOLDER — store the actual deploy key securely (e.g., /etc/ssh/deploy_key)
+# Do not commit secrets to the repository.
+-----END OPENSSH PRIVATE KEY-----

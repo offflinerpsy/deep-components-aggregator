@@ -1,0 +1,18 @@
+{
+  "scraperapi_key": "present:32chars",
+  "scrapingbee_keys": [
+    {
+      "index": 0,
+      "length": 80,
+      "preview": "ZINO"
+    },
+    {
+      "index": 1,
+      "length": 14,
+      "preview": "1KYS"
+    }
+  ],
+  "provider_timeout_ms": 10000,
+  "http_proxy": "empty",
+  "https_proxy": "empty"
+}

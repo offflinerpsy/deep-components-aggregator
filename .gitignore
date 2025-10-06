@@ -5,16 +5,31 @@ package-lock.json
 # Секреты
 secrets/
 .env
+.env.*
+!.env.example
 *.pem
 *.key
+deploy_key
+deploy_key.pub
 
-# Данные
+# Данные и кэши
 data/cache/
 data/state/
 data/rates.json
+data/db/*.sqlite
+data/db/*.sqlite-*
 data/db/products/
-data/_diag/
-logs/
+logs/**
+*.log
+
+# Временные файлы
+.cleanup/
+*.tmp
+*.bak
+*.swp
+*.swo
+cache.json
+cookies.txt
 
 # Отчеты и артефакты
 test-results/
@@ -30,25 +45,25 @@ deploy*.tar.gz
 deploy*.tgz
 deploy*.zip
 ui-*.tar.gz
-ops/**/*.zip
-reports/**
 
-# Local DB & logs
-var/db/*.sqlite
-var/db/*.sqlite-*
-logs/**
-*.log
-
-# Raw dumps and scraps
-_scout/**
+# Отладочные файлы
+*.html
+!frontend/**/*.html
+!public/**/*.html
+!ui/**/*.html
+*.debug.*
+*_debug.*
 
 # IDE
 .vscode/
 .idea/
 *.iml
-*.swp
-*.swo
 
 # OS
 .DS_Store
 Thumbs.db
+
+# Windows scripts на Linux сервере
+*.bat
+*.ps1
+*.exe

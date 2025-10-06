@@ -1,0 +1,70 @@
+# WARP Proxy Status - Production Server
+# Date: 2025-10-05
+# Server: 5.129.228.88
+
+## Current Configuration
+Environment: NO_PROXY=1 (direct connections enabled)
+WARP Daemon Status: HUNG - IPC timeout, not responding
+WARP Process: PID 613846 (94.8% CPU usage, 100MB RAM)
+Proxy URL (configured): http://127.0.0.1:40000
+
+## Issue
+WARP daemon (warp-svc) is in hung state:
+- Watchdog reports: "hung daemon" (hang_count=1)
+- IPC calls timing out
+- CLI commands fail with "Error communicating with daemon"
+- Restart attempts unsuccessful (systemd restart, kill -9)
+
+## Evidence
+```
+$ ssh root@5.129.228.88 "warp-cli status"
+Error communicating with daemon: The IPC call hit a timeout and could not be processed
+
+$ ssh root@5.129.228.88 "journalctl -u warp-svc -n 5"
+2025-10-05T14:29:15.987Z WARN watchdog: warp::watchdog: Watchdog reports hung daemon
+```
+
+## Code Readiness (Bootstrap Layer)
+File: src/bootstrap/proxy.mjs
+Status: ✅ READY for WARP proxy-mode
+
+Configuration:
+- Uses Undici ProxyAgent with setGlobalDispatcher (official Node.js method)
+- Proxy URL: process.env.WARP_PROXY_URL || 'http://127.0.0.1:40000'
+- Fallback: NO_PROXY=1 disables proxy, uses direct connections
+- Graceful degradation on proxy bootstrap failure
+
+Current Mode: DIRECT CONNECTIONS (NO_PROXY=1)
+Reason: WARP daemon unstable, hangs after extended uptime
+
+## External IP Verification
+With NO_PROXY=1 (current):
+```
+$ ssh root@5.129.228.88 "curl -s ifconfig.me"
+5.129.228.88  # Server's own IP - direct connection confirmed
+```
+
+With WARP enabled (when daemon works):
+Expected: Different IP (Cloudflare WARP endpoint)
+
+## Recommendation
+🔴 BLOCKER: WARP daemon requires investigation/reinstall
+- Option 1: Reinstall cloudflare-warp package (apt reinstall cloudflare-warp)
+- Option 2: Use alternative proxy (squid/tinyproxy on localhost)
+- Option 3: Keep NO_PROXY=1 with direct connections (current stable state)
+
+## Cloudflare WARP Documentation Reference
+Source: https://developers.cloudflare.com/cloudflare-one/connections/connect-devices/warp/configure-warp/warp-modes/
+
+Proxy Mode Requirements:
+- WARP daemon must be running and responsive
+- Port 40000 (default) must accept HTTP CONNECT requests
+- Request timeout limit: ~10 seconds (per official docs)
+
+## Timeout Policy Compliance
+⚠️ Code currently NOT compliant with ≤9.5s requirement:
+- fetchWithRetry.mjs: 7s timeout (GOOD - under limit)
+- currencyConverter.js: 10s timeout (BAD - exceeds WARP limit)
+- net.js: 10s timeout (BAD - exceeds WARP limit)
+
+Next Action: Update all HTTP timeouts to 9.5s max (Block 2 remediation)

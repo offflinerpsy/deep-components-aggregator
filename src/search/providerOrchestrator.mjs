@@ -3,7 +3,7 @@ import { mouserSearchByKeyword } from '../integrations/mouser/client.mjs';
 import { normMouser } from '../integrations/mouser/normalize.mjs';
 import { digikeySearch } from '../integrations/digikey/client.mjs';
 import { normDigiKey } from '../integrations/digikey/normalize.mjs';
-import { tmeSearchProducts } from '../integrations/tme/client.mjs';
+import { tmeSearchProducts, tmeGetProduct } from '../integrations/tme/client.mjs';
 import { normTME } from '../integrations/tme/normalize.mjs';
 import { farnellByKeyword } from '../integrations/farnell/client.mjs';
 import { normFarnell } from '../integrations/farnell/normalize.mjs';
@@ -162,20 +162,83 @@ const runTME = async (query, token, secret) => {
     return tmeSearchProducts({ token, secret, query: searchQuery });
   });
   // TME returns { data: { Data: { ProductList } } } - capital D!
-  const list = enhanced?.result?.data?.Data?.ProductList || enhanced?.result?.data?.ProductList;
+  const searchList = enhanced?.result?.data?.Data?.ProductList || enhanced?.result?.data?.ProductList;
 
-  const rows = Array.isArray(list) ? list.map(normTME).filter(Boolean) : [];
-  return {
-    rows,
-    meta: {
-      total: rows.length,
-      usedQuery: enhanced?.metadata?.usedQuery || query,
-      strategy: enhanced?.metadata?.strategy || 'direct',
-      attempts: enhanced?.metadata?.attempts || 0,
-      elapsed: enhanced?.metadata?.elapsed || 0,
-      variants: enhanced?.metadata?.processed?.queries?.length || 1
-    }
-  };
+  if (!Array.isArray(searchList) || searchList.length === 0) {
+    return {
+      rows: [],
+      meta: {
+        total: 0,
+        usedQuery: enhanced?.metadata?.usedQuery || query,
+        strategy: enhanced?.metadata?.strategy || 'direct',
+        attempts: enhanced?.metadata?.attempts || 0,
+        elapsed: enhanced?.metadata?.elapsed || 0,
+        variants: enhanced?.metadata?.processed?.queries?.length || 1
+      }
+    };
+  }
+
+  // TME Search API returns basic info only (no PriceList/InStock)
+  // Need to call GetProducts for full details
+  console.log('[TME] Search returned', searchList.length, 'products');
+  const symbols = searchList.slice(0, 10).map(p => p.Symbol).filter(Boolean);
+  console.log('[TME] Extracted symbols:', symbols);
+  
+  if (symbols.length === 0) {
+    console.log('[TME] No symbols found - returning empty');
+    return {
+      rows: [],
+      meta: { total: 0, usedQuery: enhanced?.metadata?.usedQuery || query, strategy: 'no_symbols', attempts: 0, elapsed: 0, variants: 0 }
+    };
+  }
+
+  try {
+    console.log('[TME] Calling GetProduct for symbol:', symbols[0]);
+    const detailsResponse = await tmeGetProduct({
+      token,
+      secret,
+      symbol: symbols[0], // TME GetProducts accepts single symbol or array
+      country: 'PL',
+      language: 'EN'
+    });
+
+    console.log('[TME] GetProduct response status:', detailsResponse?.status);
+    const detailsList = detailsResponse?.data?.Data?.ProductList || [];
+    console.log('[TME] Details list length:', detailsList.length);
+    const rows = Array.isArray(detailsList) ? detailsList.map(normTME).filter(Boolean) : [];
+    console.log('[TME] Normalized rows:', rows.length);
+
+    return {
+      rows,
+      meta: {
+        total: rows.length,
+        usedQuery: enhanced?.metadata?.usedQuery || query,
+        strategy: enhanced?.metadata?.strategy || 'direct',
+        attempts: enhanced?.metadata?.attempts || 0,
+        elapsed: enhanced?.metadata?.elapsed || 0,
+        variants: enhanced?.metadata?.processed?.queries?.length || 1,
+        tme_symbols: symbols.length,
+        tme_details: rows.length
+      }
+    };
+  } catch (err) {
+    console.error('[TME] GetProduct failed:', err.message, err.stack);
+    // Fallback to search results (basic info only)
+    const rows = searchList.map(normTME).filter(Boolean);
+    console.log('[TME] Fallback to search results:', rows.length, 'rows');
+    return {
+      rows,
+      meta: {
+        total: rows.length,
+        usedQuery: enhanced?.metadata?.usedQuery || query,
+        strategy: 'search_fallback',
+        attempts: enhanced?.metadata?.attempts || 0,
+        elapsed: enhanced?.metadata?.elapsed || 0,
+        variants: enhanced?.metadata?.processed?.queries?.length || 1,
+        error: 'getproduct_failed'
+      }
+    };
+  }
 };
 
 const runFarnell = async (query, apiKey, region) => {

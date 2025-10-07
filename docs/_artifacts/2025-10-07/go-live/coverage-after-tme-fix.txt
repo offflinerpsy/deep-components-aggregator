@@ -1,0 +1,21 @@
+
+=== 2N3904 ===
+Total: 45 rows
+  mouser  : 16 rows | price: ✓ | stock: ✓ | breaks: ✓ | rub: 1
+  digikey : 9 rows | price: ✓ | stock: ✓ | breaks: ✓ | rub: 2
+  tme     : 8 rows | price: ✗ | stock: ✗ | breaks: ✗ | rub: —
+  farnell : 12 rows | price: ✓ | stock: ✓ | breaks: ✓ | rub: 2
+
+=== STM32F103C8T6 ===
+Total: 13 rows
+  mouser  : 3 rows | price: ✓ | stock: ✓ | breaks: ✓ | rub: 274
+  digikey : 2 rows | price: ✓ | stock: ✓ | breaks: ✓ | rub: 285
+  tme     : 6 rows | price: ✗ | stock: ✗ | breaks: ✗ | rub: —
+  farnell : 2 rows | price: ✓ | stock: ✓ | breaks: ✓ | rub: 287
+
+=== LM358 ===
+Total: 58 rows
+  mouser  : 48 rows | price: ✗ | stock: ✗ | breaks: ✗ | rub: —
+  digikey : 10 rows | price: ✓ | stock: ✓ | breaks: ✓ | rub: 5
+  tme     : 0 rows | price: ✗ | stock: ✗ | breaks: ✗ | rub: —
+  farnell : 0 rows | price: ✗ | stock: ✗ | breaks: ✗ | rub: —

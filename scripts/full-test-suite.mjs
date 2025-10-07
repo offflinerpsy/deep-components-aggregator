@@ -25,13 +25,16 @@ async function testAPI(mpn) {
     const response = await fetch(`${SERVER_URL}/api/search?q=${encodeURIComponent(mpn)}`);
     const data = await response.json();
 
+    const rows = Array.isArray(data.rows) ? data.rows : [];
+    const total = data.meta && typeof data.meta.total === 'number' ? data.meta.total : rows.length;
+
     return {
       mpn: mpn,
       api_success: response.ok,
       status_code: response.status,
-      results_count: data.count || 0,
-      has_results: data.items && data.items.length > 0,
-      first_item: data.items ? data.items[0] : null,
+      results_count: total,
+      has_results: rows.length > 0,
+      first_item: rows[0] || null,
       response_time: Date.now() // Simplified timing
     };
   } catch (error) {

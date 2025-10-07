@@ -1,0 +1,313 @@
+{
+  "base": "http://127.0.0.1:9201",
+  "ts": 1759189719615,
+  "health": {
+    "status": "ok",
+    "ts": 1759189719028
+  },
+  "results": [
+    {
+      "q": "2N2222",
+      "dt": 6,
+      "meta": {
+        "source": "farnell",
+        "total": 10,
+        "cached": true
+      },
+      "total": 10,
+      "head": {
+        "_src": "farnell",
+        "_id": "2N2222A",
+        "photo": "https://uk.farnell.com/GE3TO18-40.jpg",
+        "title": "2N2222A",
+        "mpn": "2N2222A",
+        "manufacturer": "MULTICOMP PRO",
+        "description": "MULTICOMP PRO - 2N2222A - Single Bipolar Transistor (BJT), High Speed Switching, NPN, 40 V, 1.2 W, 800 mA, TO-18",
+        "package": "1",
+        "packaging": "",
+        "regions": [
+          "EU"
+        ],
+        "stock": 0,
+        "minRub": 30,
+        "openUrl": "/product.html?src=farnell&id=2N2222A",
+        "_raw": {
+          "sku": "9207120",
+          "displayName": "MULTICOMP PRO - 2N2222A - Single Bipolar Transistor (BJT), High Speed Switching, NPN, 40 V, 1.2 W, 800 mA, TO-18",
+          "productStatus": "STOCKED",
+          "rohsStatusCode": "YES",
+          "packSize": 1,
+          "unitOfMeasure": "EACH",
+          "id": "pf_UK1_9207120_0",
+          "image": {
+            "baseName": "/GE3TO18-40.jpg",
+            "vrntPath": "farnell/"
+          },
+          "datasheets": [
+            {
+              "type": "T",
+              "description": "Technical Data Sheet (247.05KB) EN",
+              "url": "http://www.farnell.com/datasheets/2861172.pdf"
+            }
+          ],
+          "prices": [
+            {
+              "to": 9,
+              "from": 1,
+              "cost": 1.08
+            },
+            {
+              "to": 99,
+              "from": 10,
+              "cost": 0.865
+            },
+            {
+              "to": 499,
+              "from": 100,
+              "cost": 0.618
+            },
+            {
+              "to": 999,
+              "from": 500,
+              "cost": 0.433
+            },
+            {
+              "to": 4999,
+              "from": 1000,
+              "cost": 0.309
+            },
+            {
+              "to": 999999999,
+              "from": 5000,
+              "cost": 0.27
+            }
+          ],
+          "inv": 0,
+          "vendorId": "1099656",
+          "vendorName": "MULTICOMP PRO",
+          "brandName": "MULTICOMP PRO",
+          "translatedManufacturerPartNumber": "2N2222A",
+          "translatedMinimumOrderQuality": 1,
+          "attributes": [
+            {
+              "attributeLabel": "tariffCode",
+              "attributeValue": "85412900"
+            },
+            {
+              "attributeLabel": "Transition Frequency",
+              "attributeUnit": "MHz",
+              "attributeValue": "300"
+            },
+            {
+              "attributeLabel": "Transistor Polarity",
+              "attributeValue": "NPN"
+            },
+            {
+              "attributeLabel": "rohsCompliant",
+              "attributeValue": "YES"
+            },
+            {
+              "attributeLabel": "Product Range",
+              "attributeValue": "-"
+            },
+            {
+              "attributeLabel": "hazardous",
+              "attributeValue": "false"
+            },
+            {
+              "attributeLabel": "rohsPhthalatesCompliant",
+              "attributeValue": "YES"
+            },
+            {
+              "attributeLabel": "Operating Temperature Max",
+              "attributeUnit": "°C",
+              "attributeValue": "200"
+            },
+            {
+              "attributeLabel": "Transistor Mounting",
+              "attributeValue": "Through Hole"
+            },
+            {
+              "attributeLabel": "MSL",
+              "attributeValue": "-"
+            },
+            {
+              "attributeLabel": "Power Dissipation",
+              "attributeUnit": "W",
+              "attributeValue": "1.2"
+            },
+            {
+              "attributeLabel": "usEccn",
+              "attributeValue": "EAR99"
+            },
+            {
+              "attributeLabel": "Collector Emitter Voltage Max",
+              "attributeUnit": "V",
+              "attributeValue": "40"
+            },
+            {
+              "attributeLabel": "euEccn",
+              "attributeValue": "NLR"
+            },
+            {
+              "attributeLabel": "Qualification",
+              "attributeValue": "-"
+            },
+            {
+              "attributeLabel": "DC Current Gain hFE Min",
+              "attributeUnit": "hFE",
+              "attributeValue": "100"
+            },
+            {
+              "attributeLabel": "Transistor Case Style",
+              "attributeValue": "TO-18"
+            },
+            {
+              "attributeLabel": "productTraceability",
+              "attributeValue": "No"
+            },
+            {
+              "attributeLabel": "No. of Pins",
+              "attributeUnit": "Pins",
+              "attributeValue": "3"
+            },
+            {
+              "attributeLabel": "Continuous Collector Current",
+              "attributeUnit": "mA",
+              "attributeValue": "800"
+            },
+            {
+              "attributeLabel": "SVHC",
+              "attributeValue": "No SVHC (25-Jun-2025)"
+            }
+          ],
+          "related": {
+            "containAlternatives": false,
+            "containcontainRoHSAlternatives": false,
+            "containAccessories": false,
+            "containcontainRoHSAccessories": false
+          },
+          "stock": {
+            "level": 0,
+            "leastLeadTime": 127,
+            "status": 0
+          },
+          "countryOfOrigin": "IN",
+          "comingSoon": false,
+          "inventoryCode": 5,
+          "nationalClassCode": null,
+          "publishingModule": null,
+          "vatHandlingCode": "SLST",
+          "releaseStatusCode": 4,
+          "isSpecialOrder": false,
+          "isAwaitingRelease": false,
+          "reeling": false,
+          "discountReason": 30,
+          "brandId": "1099656",
+          "commodityClassCode": "090001000"
+        }
+      }
+    },
+    {
+      "q": "1N4148",
+      "dt": 7,
+      "meta": {
+        "source": "farnell",
+        "total": 0,
+        "cached": true
+      },
+      "total": 0,
+      "head": null
+    },
+    {
+      "q": "transistor",
+      "dt": 7,
+      "meta": {
+        "source": "farnell",
+        "total": 0,
+        "cached": true
+      },
+      "total": 0,
+      "head": null
+    },
+    {
+      "q": "op amp",
+      "dt": 7,
+      "meta": {
+        "source": "farnell",
+        "total": 0,
+        "cached": true
+      },
+      "total": 0,
+      "head": null
+    },
+    {
+      "q": "резистор",
+      "dt": 8,
+      "meta": {
+        "source": "farnell",
+        "total": 0,
+        "cached": true
+      },
+      "total": 0,
+      "head": null
+    },
+    {
+      "q": "транзистор",
+      "dt": 8,
+      "meta": {
+        "source": "farnell",
+        "total": 0,
+        "cached": true
+      },
+      "total": 0,
+      "head": null
+    },
+    {
+      "q": "микросхема",
+      "dt": 7,
+      "meta": {
+        "source": "farnell",
+        "total": 0,
+        "cached": true
+      },
+      "total": 0,
+      "head": null
+    }
+  ],
+  "prods": [
+    {
+      "q": "2N2222",
+      "src": "farnell",
+      "id": "2N2222A",
+      "minRub": 30,
+      "photo": "https://uk.farnell.com/GE3TO18-40.jpg",
+      "photoCode": 404,
+      "vendorUrl": "https://uk.farnell.com/9207120"
+    },
+    {
+      "q": "1N4148",
+      "note": "no-head-row"
+    },
+    {
+      "q": "transistor",
+      "note": "no-head-row"
+    },
+    {
+      "q": "op amp",
+      "note": "no-head-row"
+    },
+    {
+      "q": "резистор",
+      "note": "no-head-row"
+    },
+    {
+      "q": "транзистор",
+      "note": "no-head-row"
+    },
+    {
+      "q": "микросхема",
+      "note": "no-head-row"
+    }
+  ]
+}

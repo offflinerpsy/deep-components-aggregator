@@ -1,0 +1,23 @@
+{
+  "customer": {
+    "name": "Иван Петров",
+    "contact": {
+      "email": "ivan@example.com",
+      "phone": "+79991234567"
+    }
+  },
+  "item": {
+    "mpn": "ATMEGA328P-PU",
+    "manufacturer": "Microchip",
+    "qty": 10
+  },
+  "pricing_snapshot": {
+    "base_price_rub": 250,
+    "markup_percent": 0.3,
+    "markup_fixed_rub": 500,
+    "final_price_rub": 825
+  },
+  "meta": {
+    "comment": "Тестовый заказ для проверки API"
+  }
+}

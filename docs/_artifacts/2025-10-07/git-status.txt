@@ -1,0 +1,57 @@
+## prod-sync-2025-10-07
+ M config/session.mjs
+ M docs/_artifacts/2025-10-07/health.json
+ M docs/_artifacts/2025-10-07/proxy/ip-direct.txt
+ M docs/_artifacts/2025-10-07/proxy/warp-status.txt
+ M package.json
+ M public/js/results.js
+ M schemas/canon.search.json
+ M scripts/full-test-suite.mjs
+ M server.js
+ M src/bootstrap/proxy.mjs
+ M src/integrations/digikey/normalize.mjs
+ M src/integrations/farnell/normalize.mjs
+ M src/integrations/mouser/normalize.mjs
+ M src/integrations/tme/normalize.mjs
+ M src/schemas/product-canon.schema.json
+ M src/schemas/search-row.schema.json
+ M src/types/canon.ts
+ M tests/api/ajv.spec.ts
+ M tests/api/api-ajv.spec.ts
+?? docs/_artifacts/2025-10-07/SRX-DOCS-PROVIDERS-COMPLETION-REPORT.md
+?? docs/_artifacts/2025-10-07/SUMMARY.md
+?? docs/_artifacts/2025-10-07/git-head.txt
+?? docs/_artifacts/2025-10-07/git-status.txt
+?? docs/_artifacts/2025-10-07/health-20251007T073234Z.json
+?? docs/_artifacts/2025-10-07/metrics-20251007T073424Z.txt
+?? docs/_artifacts/2025-10-07/providers/coverage-matrix-detailed.json
+?? docs/_artifacts/2025-10-07/providers/coverage-matrix.csv
+?? docs/_artifacts/2025-10-07/providers/coverage-matrix.json
+?? docs/_artifacts/2025-10-07/providers/credential-plan.md
+?? docs/_artifacts/2025-10-07/providers/providers-2025-10-07T07-32-59-029Z.json
+?? docs/_artifacts/2025-10-07/providers/raw/
+?? docs/_artifacts/2025-10-07/proxy/ip-direct-20251006T232524Z.txt
+?? docs/_artifacts/2025-10-07/proxy/ip-proxy-20251006T233112Z.txt
+?? docs/_artifacts/2025-10-07/proxy/ip-via-proxy.txt
+?? docs/_artifacts/2025-10-07/proxy/summary-20251006T2332.md
+?? docs/_artifacts/2025-10-07/proxy/warp-svc-status-20251006T233122Z.txt
+?? docs/_artifacts/2025-10-07/proxy/wireproxy-status-20251006T233129Z.txt
+?? docs/_artifacts/2025-10-07/rates-20251006T233545Z.json
+?? docs/_artifacts/2025-10-07/rates-summary.json
+?? docs/_artifacts/2025-10-07/session-cookie-config.txt
+?? docs/_artifacts/2025-10-07/srx-03-prices/
+?? docs/_artifacts/2025-10-07/systemd-service.txt
+?? docs/_artifacts/2025-10-07/tree.txt
+?? docs/_artifacts/2025-10-07/trust-proxy-grep.txt
+?? docs/architecture/
+?? docs/index.md
+?? docs/operations/
+?? docs/providers/
+?? mkdocs.yml
+?? scripts/generate-coverage-matrix.mjs
+?? scripts/normalize-digikey-artifacts.mjs
+?? scripts/setup-provider-env.sh
+?? site/
+?? src/search/providerOrchestrator.mjs
+?? tall
+?? var/

@@ -1,0 +1,211 @@
+{
+  "timestamp": "2025-10-05T15:07:59.240Z",
+  "stats": {
+    "total": 20,
+    "passed": 15,
+    "failed": 5,
+    "passRate": 75,
+    "avgCoverage": null
+  },
+  "results": [
+    {
+      "id": 1,
+      "input": "транзистор 2N3904 SOT-23",
+      "translated": "transistor 2N3904 SOT-23",
+      "expected": "transistor 2N3904 SOT-23",
+      "match": true,
+      "coverage": 100,
+      "missingWords": [],
+      "latency": 4
+    },
+    {
+      "id": 2,
+      "input": "биполярный транзистор 2N2222 SMD",
+      "translated": "bipolar transistor SMD 2N2222",
+      "expected": "bipolar transistor 2N2222 SMD",
+      "match": false,
+      "coverage": 67,
+      "missingWords": [],
+      "latency": 2
+    },
+    {
+      "id": 3,
+      "input": "конденсатор 1000мкФ 25В low esr",
+      "translated": "capacitor 1000uF 25V low esr",
+      "expected": "capacitor 1000uF 25V low ESR",
+      "match": true,
+      "coverage": 20,
+      "missingWords": [],
+      "latency": 1
+    },
+    {
+      "id": 4,
+      "input": "резистор 10к 1% 0603",
+      "translated": "resistor 10k 1% 0603",
+      "expected": "resistor 10k 1% 0603",
+      "match": true,
+      "coverage": 25,
+      "missingWords": [],
+      "latency": 0
+    },
+    {
+      "id": 5,
+      "input": "диод шоттки 3А 40В",
+      "translated": "diode Schottky 3A 40V",
+      "expected": "Schottky diode 3A 40V",
+      "match": false,
+      "coverage": 50,
+      "missingWords": [],
+      "latency": 0
+    },
+    {
+      "id": 6,
+      "input": "стабилитрон 5.1В SOD-123",
+      "translated": "Zener diode 5.1V SOD-123",
+      "expected": "Zener diode 5.1V SOD-123",
+      "match": true,
+      "coverage": 50,
+      "missingWords": [],
+      "latency": 1
+    },
+    {
+      "id": 7,
+      "input": "ОУ rail-to-rail 5В",
+      "translated": "op-amp 5V rail-to-rail",
+      "expected": "operational amplifier rail-to-rail 5V",
+      "match": false,
+      "coverage": 50,
+      "missingWords": [],
+      "latency": 0
+    },
+    {
+      "id": 8,
+      "input": "NTC термистор 10к",
+      "translated": "NTC thermistor 10k",
+      "expected": "NTC thermistor 10k",
+      "match": true,
+      "coverage": 33,
+      "missingWords": [],
+      "latency": 0
+    },
+    {
+      "id": 9,
+      "input": "дроссель 47мкГн 2А",
+      "translated": "inductor 47uH 2A",
+      "expected": "inductor 47uH 2A",
+      "match": true,
+      "coverage": 33,
+      "missingWords": [],
+      "latency": 1
+    },
+    {
+      "id": 10,
+      "input": "разъём JST XH 2.54",
+      "translated": "connector JST XH 2.54",
+      "expected": "connector JST XH 2.54",
+      "match": true,
+      "coverage": 25,
+      "missingWords": [],
+      "latency": 0
+    },
+    {
+      "id": 11,
+      "input": "светодиод красный 3мм",
+      "translated": "LED red 3mm",
+      "expected": "LED red 3mm",
+      "match": true,
+      "coverage": 67,
+      "missingWords": [],
+      "latency": 0
+    },
+    {
+      "id": 12,
+      "input": "микроконтроллер ATmega328P TQFP",
+      "translated": "microcontroller ATmega328P TQFP",
+      "expected": "microcontroller ATmega328P TQFP",
+      "match": true,
+      "coverage": 100,
+      "missingWords": [],
+      "latency": 0
+    },
+    {
+      "id": 13,
+      "input": "линейный стабилизатор 3.3В SOT-89",
+      "translated": "linear regulator 3.3V SOT-89",
+      "expected": "linear regulator 3.3V SOT-89",
+      "match": true,
+      "coverage": 67,
+      "missingWords": [],
+      "latency": 1
+    },
+    {
+      "id": 14,
+      "input": "кварц 16МГц HC-49",
+      "translated": "quartz crystal 16MHz HC-49",
+      "expected": "quartz crystal 16MHz HC-49",
+      "match": true,
+      "coverage": 50,
+      "missingWords": [],
+      "latency": 0
+    },
+    {
+      "id": 15,
+      "input": "предохранитель 2А стеклянный",
+      "translated": "fuse 2A glass",
+      "expected": "fuse 2A glass",
+      "match": true,
+      "coverage": 67,
+      "missingWords": [],
+      "latency": 1
+    },
+    {
+      "id": 16,
+      "input": "реле 5В SPDT",
+      "translated": "relay 5V SPDT",
+      "expected": "relay 5V SPDT",
+      "match": true,
+      "coverage": 50,
+      "missingWords": [],
+      "latency": 0
+    },
+    {
+      "id": 17,
+      "input": "кнопка тактовая 6x6мм",
+      "translated": "pushbutton tactile 6x6mm",
+      "expected": "pushbutton tactile 6x6mm",
+      "match": true,
+      "coverage": 67,
+      "missingWords": [],
+      "latency": 0
+    },
+    {
+      "id": 18,
+      "input": "датчик температуры DS18B20 TO-92",
+      "translated": "sensor temperature DS18B20 TO-92",
+      "expected": "temperature sensor DS18B20 TO-92",
+      "match": false,
+      "coverage": 100,
+      "missingWords": [],
+      "latency": 0
+    },
+    {
+      "id": 19,
+      "input": "драйвер двигателя L298N",
+      "translated": "driver motor L298N",
+      "expected": "motor driver L298N",
+      "match": false,
+      "coverage": 100,
+      "missingWords": [],
+      "latency": 0
+    },
+    {
+      "id": 20,
+      "input": "MOSFET IRFZ44N TO-220",
+      "translated": "MOSFET IRFZ44N TO-220",
+      "expected": "MOSFET IRFZ44N TO-220",
+      "match": true,
+      "missingWords": [],
+      "latency": 0
+    }
+  ]
+}

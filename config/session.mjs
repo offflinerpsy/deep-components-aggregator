@@ -37,11 +37,11 @@ const SESSION_CONFIG = {
     // HttpOnly - prevents XSS attacks
     httpOnly: true,
     
-    // Secure - HTTPS only; auto when behind proxy in prod
-    secure: isProd ? (behindProxy ? 'auto' : true) : false,
+  // Secure - HTTPS only; enforce when работаем за прокси
+  secure: behindProxy ? true : isProd,
     
-    // SameSite - allow cross-site when behind proxy/CDN with HTTPS
-    sameSite: isProd && behindProxy ? 'none' : 'lax',
+  // SameSite - всегда None при работе через прокси/туннели
+  sameSite: behindProxy ? 'none' : 'lax',
     
     // Max age - 7 days (configurable)
     maxAge: parseInt(process.env.SESSION_TTL_MS) || 7 * 24 * 60 * 60 * 1000

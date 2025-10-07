@@ -2,7 +2,18 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "ProductCanon",
   "type": "object",
-  "required": ["mpn", "title", "manufacturer", "gallery", "meta", "order", "description_html", "docs", "specs", "sources"],
+  "required": [
+    "mpn",
+    "title",
+    "manufacturer",
+    "gallery",
+    "meta",
+    "order",
+    "description_html",
+    "docs",
+    "specs",
+    "sources"
+  ],
   "properties": {
     "mpn": {
       "type": "string",
@@ -22,7 +33,9 @@
       "type": "array",
       "items": {
         "type": "object",
-        "required": ["image_url"],
+        "required": [
+          "image_url"
+        ],
         "properties": {
           "image_url": {
             "type": "string"
@@ -33,7 +46,10 @@
     },
     "meta": {
       "type": "object",
-      "required": ["package", "packaging"],
+      "required": [
+        "package",
+        "packaging"
+      ],
       "properties": {
         "package": {
           "type": "string",
@@ -47,26 +63,50 @@
     },
     "order": {
       "type": "object",
-      "required": ["regions", "stock", "min_price_rub", "min_currency"],
+      "required": [
+        "regions",
+        "stock",
+        "min_price_rub",
+        "min_currency"
+      ],
       "properties": {
         "regions": {
           "type": "array",
           "items": {
             "type": "string",
-            "enum": ["RU", "EU", "US", "ASIA"]
+            "enum": [
+              "RU",
+              "EU",
+              "US",
+              "ASIA"
+            ]
           }
         },
         "stock": {
-          "type": ["number", "null"],
+          "type": [
+            "number",
+            "null"
+          ],
           "minimum": 0
         },
         "min_price_rub": {
-          "type": ["number", "null"],
+          "type": [
+            "number",
+            "null"
+          ],
           "minimum": 0
         },
         "min_currency": {
-          "type": ["string", "null"],
-          "enum": ["RUB", "USD", "EUR", null]
+          "type": [
+            "string",
+            "null"
+          ],
+          "enum": [
+            "RUB",
+            "USD",
+            "EUR",
+            null
+          ]
         }
       }
     },
@@ -77,7 +117,10 @@
       "type": "array",
       "items": {
         "type": "object",
-        "required": ["label", "url"],
+        "required": [
+          "label",
+          "url"
+        ],
         "properties": {
           "label": {
             "type": "string",
@@ -94,7 +137,10 @@
       "type": "array",
       "items": {
         "type": "object",
-        "required": ["name", "value"],
+        "required": [
+          "name",
+          "value"
+        ],
         "properties": {
           "name": {
             "type": "string",
@@ -111,11 +157,25 @@
       "type": "array",
       "items": {
         "type": "object",
-        "required": ["source", "product_url"],
+        "required": [
+          "source",
+          "product_url"
+        ],
         "properties": {
           "source": {
             "type": "string",
-            "enum": ["chipdip", "promelec", "compel", "electronshik", "elitan", "oemstrade"]
+            "enum": [
+              "mouser",
+              "digikey",
+              "tme",
+              "farnell",
+              "chipdip",
+              "promelec",
+              "compel",
+              "electronshik",
+              "elitan",
+              "oemstrade"
+            ]
           },
           "product_url": {
             "type": "string"

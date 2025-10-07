@@ -49,6 +49,7 @@
     "undici": "^6.21.3"
   },
   "devDependencies": {
-    "@playwright/test": "^1.44.1"
+    "@playwright/test": "^1.44.1",
+    "@types/node": "^22.8.3"
   }
 }

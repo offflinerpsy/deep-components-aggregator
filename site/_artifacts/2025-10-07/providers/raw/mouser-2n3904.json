@@ -1,0 +1,7 @@
+{
+  "provider": "mouser",
+  "mpn": "2N3904",
+  "fetchedAt": "2025-10-06T23:16:13.365Z",
+  "ok": false,
+  "error": "Missing Mouser API key"
+}

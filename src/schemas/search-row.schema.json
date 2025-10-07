@@ -2,7 +2,14 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "SearchRow",
   "type": "object",
-  "required": ["mpn", "title", "manufacturer", "description", "package", "packaging", "regions", "product_url", "source"],
+  "required": [
+    "mpn",
+    "title",
+    "manufacturer",
+    "regions",
+    "product_url",
+    "source"
+  ],
   "properties": {
     "mpn": {
       "type": "string",
@@ -18,40 +25,81 @@
       "type": "string",
       "maxLength": 128
     },
-    "description": {
-      "type": "string",
+    "description_short": {
+      "type": [
+        "string",
+        "null"
+      ],
       "maxLength": 200
     },
     "package": {
-      "type": "string",
-      "maxLength": 32
+      "type": [
+        "string",
+        "null"
+      ],
+      "maxLength": 64
     },
     "packaging": {
-      "type": "string",
-      "maxLength": 32
+      "type": [
+        "string",
+        "null"
+      ],
+      "maxLength": 64
     },
     "regions": {
       "type": "array",
       "items": {
         "type": "string",
-        "enum": ["RU", "EU", "US", "ASIA"]
+        "enum": [
+          "RU",
+          "EU",
+          "US",
+          "ASIA",
+          "GLOBAL"
+        ]
       },
       "minItems": 0
     },
     "stock": {
-      "type": ["number", "null"],
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "min_price": {
+      "type": [
+        "number",
+        "null"
+      ],
       "minimum": 0
     },
     "min_price_rub": {
-      "type": ["number", "null"],
+      "type": [
+        "number",
+        "null"
+      ],
       "minimum": 0
     },
     "min_currency": {
-      "type": ["string", "null"],
-      "enum": ["RUB", "USD", "EUR", null]
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "RUB",
+        "USD",
+        "EUR",
+        "GBP",
+        "PLN",
+        null
+      ]
     },
     "image_url": {
-      "type": ["string", "null"],
+      "type": [
+        "string",
+        "null"
+      ],
       "format": "uri"
     },
     "product_url": {
@@ -59,7 +107,60 @@
     },
     "source": {
       "type": "string",
-      "enum": ["chipdip", "promelec", "compel", "electronshik", "elitan", "oemstrade"]
+      "enum": [
+        "mouser",
+        "digikey",
+        "tme",
+        "farnell",
+        "chipdip",
+        "promelec",
+        "compel",
+        "electronshik",
+        "elitan",
+        "oemstrade"
+      ]
+    },
+    "price_breaks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "qty",
+          "price",
+          "currency"
+        ],
+        "properties": {
+          "qty": {
+            "type": [
+              "number",
+              "integer"
+            ],
+            "minimum": 1
+          },
+          "price": {
+            "type": "number",
+            "minimum": 0
+          },
+          "currency": {
+            "type": "string",
+            "enum": [
+              "USD",
+              "EUR",
+              "GBP",
+              "PLN",
+              "RUB"
+            ]
+          },
+          "price_rub": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0
+          }
+        },
+        "additionalProperties": false
+      }
     }
   },
   "additionalProperties": false

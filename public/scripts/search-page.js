@@ -89,7 +89,18 @@ function renderResults(data) {
   if (searchMeta) {
     const count = data.rows.length;
     const query = getQueryParam('q');
-    searchMeta.textContent = `Найдено ${count} ${count === 1 ? 'компонент' : count < 5 ? 'компонента' : 'компонентов'} по запросу "${query}"`;
+    let metaText = `Найдено ${count} ${count === 1 ? 'компонент' : count < 5 ? 'компонента' : 'компонентов'} по запросу "${query}"`;
+    
+    // Add currency info if available
+    if (data.meta && data.meta.currency) {
+      const currencyDate = data.meta.currency.date || '';
+      const usdRate = data.meta.currency.rates?.USD || '';
+      if (currencyDate && usdRate) {
+        metaText += ` • Курс ЦБ РФ от ${currencyDate}: 1$ = ${usdRate}₽`;
+      }
+    }
+    
+    searchMeta.textContent = metaText;
   }
   
   // Render rows

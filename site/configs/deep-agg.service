@@ -1,0 +1,16 @@
+[Unit]
+Description=DeepAgg API
+After=network.target
+
+[Service]
+WorkingDirectory=/opt/deep-agg
+EnvironmentFile=/etc/deep-agg.env
+ExecStart=/usr/bin/node server.js
+Restart=always
+RestartSec=2
+
+[Install]
+WantedBy=multi-user.target
+
+
+

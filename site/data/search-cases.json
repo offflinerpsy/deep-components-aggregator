@@ -1,0 +1,122 @@
+[
+  {
+    "id": 1,
+    "input_ru": "транзистор 2N3904 SOT-23",
+    "expected_en": "transistor 2N3904 SOT-23",
+    "expect_results": true
+  },
+  {
+    "id": 2,
+    "input_ru": "биполярный транзистор 2N2222 SMD",
+    "expected_en": "bipolar transistor 2N2222 SMD",
+    "expect_results": true
+  },
+  {
+    "id": 3,
+    "input_ru": "конденсатор 1000мкФ 25В low esr",
+    "expected_en": "capacitor 1000uF 25V low ESR",
+    "expect_results": true
+  },
+  {
+    "id": 4,
+    "input_ru": "резистор 10к 1% 0603",
+    "expected_en": "resistor 10k 1% 0603",
+    "expect_results": true
+  },
+  {
+    "id": 5,
+    "input_ru": "диод шоттки 3А 40В",
+    "expected_en": "Schottky diode 3A 40V",
+    "expect_results": true
+  },
+  {
+    "id": 6,
+    "input_ru": "стабилитрон 5.1В SOD-123",
+    "expected_en": "Zener diode 5.1V SOD-123",
+    "expect_results": true
+  },
+  {
+    "id": 7,
+    "input_ru": "ОУ rail-to-rail 5В",
+    "expected_en": "operational amplifier rail-to-rail 5V",
+    "expect_results": true
+  },
+  {
+    "id": 8,
+    "input_ru": "NTC термистор 10к",
+    "expected_en": "NTC thermistor 10k",
+    "expect_results": true
+  },
+  {
+    "id": 9,
+    "input_ru": "дроссель 47мкГн 2А",
+    "expected_en": "inductor 47uH 2A",
+    "expect_results": true
+  },
+  {
+    "id": 10,
+    "input_ru": "разъём JST XH 2.54",
+    "expected_en": "connector JST XH 2.54",
+    "expect_results": true
+  },
+  {
+    "id": 11,
+    "input_ru": "светодиод красный 3мм",
+    "expected_en": "LED red 3mm",
+    "expect_results": true
+  },
+  {
+    "id": 12,
+    "input_ru": "микроконтроллер ATmega328P TQFP",
+    "expected_en": "microcontroller ATmega328P TQFP",
+    "expect_results": true
+  },
+  {
+    "id": 13,
+    "input_ru": "линейный стабилизатор 3.3В SOT-89",
+    "expected_en": "linear regulator 3.3V SOT-89",
+    "expect_results": true
+  },
+  {
+    "id": 14,
+    "input_ru": "кварц 16МГц HC-49",
+    "expected_en": "quartz crystal 16MHz HC-49",
+    "expect_results": true
+  },
+  {
+    "id": 15,
+    "input_ru": "предохранитель 2А стеклянный",
+    "expected_en": "fuse 2A glass",
+    "expect_results": true
+  },
+  {
+    "id": 16,
+    "input_ru": "реле 5В SPDT",
+    "expected_en": "relay 5V SPDT",
+    "expect_results": true
+  },
+  {
+    "id": 17,
+    "input_ru": "кнопка тактовая 6x6мм",
+    "expected_en": "pushbutton tactile 6x6mm",
+    "expect_results": true
+  },
+  {
+    "id": 18,
+    "input_ru": "датчик температуры DS18B20 TO-92",
+    "expected_en": "temperature sensor DS18B20 TO-92",
+    "expect_results": true
+  },
+  {
+    "id": 19,
+    "input_ru": "драйвер двигателя L298N",
+    "expected_en": "motor driver L298N",
+    "expect_results": true
+  },
+  {
+    "id": 20,
+    "input_ru": "MOSFET IRFZ44N TO-220",
+    "expected_en": "MOSFET IRFZ44N TO-220",
+    "expect_results": true
+  }
+]

@@ -1,0 +1,108 @@
+{
+  "generatedAt": "2025-10-06T23:17:02.278Z",
+  "providers": [
+    "digikey",
+    "farnell",
+    "mouser",
+    "tme"
+  ],
+  "mpns": [
+    "2N3904",
+    "DS12C887+",
+    "STM32F103C8T6"
+  ],
+  "coverage": {
+    "digikey": {
+      "2N3904": {
+        "ok": false,
+        "status": null,
+        "error": "Missing Digi-Key credentials",
+        "hasPriceBreaks": false,
+        "priceBreaksCount": 0
+      },
+      "DS12C887+": {
+        "ok": false,
+        "status": null,
+        "error": "Missing Digi-Key credentials",
+        "hasPriceBreaks": false,
+        "priceBreaksCount": 0
+      },
+      "STM32F103C8T6": {
+        "ok": false,
+        "status": null,
+        "error": "Missing Digi-Key credentials",
+        "hasPriceBreaks": false,
+        "priceBreaksCount": 0
+      }
+    },
+    "farnell": {
+      "2N3904": {
+        "ok": false,
+        "status": null,
+        "error": "Missing Farnell API key",
+        "hasPriceBreaks": false,
+        "priceBreaksCount": 0
+      },
+      "DS12C887+": {
+        "ok": false,
+        "status": null,
+        "error": "Missing Farnell API key",
+        "hasPriceBreaks": false,
+        "priceBreaksCount": 0
+      },
+      "STM32F103C8T6": {
+        "ok": false,
+        "status": null,
+        "error": "Missing Farnell API key",
+        "hasPriceBreaks": false,
+        "priceBreaksCount": 0
+      }
+    },
+    "mouser": {
+      "2N3904": {
+        "ok": false,
+        "status": null,
+        "error": "Missing Mouser API key",
+        "hasPriceBreaks": false,
+        "priceBreaksCount": 0
+      },
+      "DS12C887+": {
+        "ok": false,
+        "status": null,
+        "error": "Missing Mouser API key",
+        "hasPriceBreaks": false,
+        "priceBreaksCount": 0
+      },
+      "STM32F103C8T6": {
+        "ok": false,
+        "status": null,
+        "error": "Missing Mouser API key",
+        "hasPriceBreaks": false,
+        "priceBreaksCount": 0
+      }
+    },
+    "tme": {
+      "2N3904": {
+        "ok": false,
+        "status": null,
+        "error": "Missing TME credentials",
+        "hasPriceBreaks": false,
+        "priceBreaksCount": 0
+      },
+      "DS12C887+": {
+        "ok": false,
+        "status": null,
+        "error": "Missing TME credentials",
+        "hasPriceBreaks": false,
+        "priceBreaksCount": 0
+      },
+      "STM32F103C8T6": {
+        "ok": false,
+        "status": null,
+        "error": "Missing TME credentials",
+        "hasPriceBreaks": false,
+        "priceBreaksCount": 0
+      }
+    }
+  }
+}

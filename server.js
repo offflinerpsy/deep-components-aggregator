@@ -14,22 +14,18 @@ import { openDb, readCachedSearch, cacheSearch, readCachedProduct, cacheProduct 
 
 // Mouser
 import { mouserSearchByKeyword, mouserSearchByPartNumber } from './src/integrations/mouser/client.mjs';
-import { normMouser } from './src/integrations/mouser/normalize.mjs';
 
 // Farnell
-import { farnellByMPN, farnellByKeyword } from './src/integrations/farnell/client.mjs';
-import { normFarnell } from './src/integrations/farnell/normalize.mjs';
+import { farnellByMPN } from './src/integrations/farnell/client.mjs';
 
 // TME
 import { tmeSearchProducts, tmeGetProduct } from './src/integrations/tme/client.mjs';
-import { normTME } from './src/integrations/tme/normalize.mjs';
 
 // DigiKey
 import { digikeyGetProduct, digikeySearch } from './src/integrations/digikey/client.mjs';
-import { normDigiKey } from './src/integrations/digikey/normalize.mjs';
 
-// Search integration
-import { executeEnhancedSearch } from './src/search/searchIntegration.mjs';
+// Search orchestration
+import { orchestrateProviderSearch } from './src/search/providerOrchestrator.mjs';
 
 // Currency
 import { toRUB } from './src/currency/toRUB.mjs';
@@ -47,9 +43,9 @@ import { mountUserOrderRoutes } from './api/user.orders.js';
 
 // Metrics & Rate Limiting
 import { createOrderRateLimiter, createAuthRateLimiter, createGeneralRateLimiter } from './middleware/rateLimiter.js';
-import { 
-  searchRequestsTotal, 
-  searchErrorsTotal, 
+import {
+  searchRequestsTotal,
+  searchErrorsTotal,
   searchLatencySeconds,
   searchResultsBySource,
   cacheOperations
@@ -146,59 +142,121 @@ app.get('/', (req, res) => {
 app.get('/api/health', async (req, res) => {
   const startTime = Date.now();
   const sources = {};
-  
+  const trustProxy = app.get('trust proxy');
+  const behindProxy = Boolean(trustProxy);
+  const probe = req.query.probe === 'true'; // ?probe=true for deep health check
+
   // DigiKey health check
   if (keys.digikeyClientId && keys.digikeyClientSecret) {
-    sources.digikey = {
-      status: 'configured',
-      note: 'OAuth credentials present'
-    };
+    if (probe) {
+      try {
+        const probeStart = Date.now();
+        // Quick probe - just check OAuth token endpoint
+        const tokenCheck = await Promise.race([
+          fetch(`${process.env.DIGIKEY_API_BASE || 'https://api.digikey.com'}/v1/oauth2/token`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: `client_id=${keys.digikeyClientId}&client_secret=${keys.digikeyClientSecret}&grant_type=client_credentials`
+          }).then(r => ({ ok: r.ok, status: r.status })),
+          new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 5000))
+        ]);
+        const probeLatency = Date.now() - probeStart;
+        sources.digikey = {
+          status: tokenCheck.ok ? 'ready' : 'degraded',
+          note: tokenCheck.ok ? 'OAuth working' : `HTTP ${tokenCheck.status}`,
+          latency_ms: probeLatency
+        };
+      } catch (err) {
+        sources.digikey = {
+          status: 'down',
+          note: err.message === 'timeout' ? 'Timeout >5s' : err.message,
+          latency_ms: 5000
+        };
+      }
+    } else {
+      sources.digikey = {
+        status: 'configured',
+        note: 'OAuth credentials present'
+      };
+    }
   } else {
-    sources.digikey = { status: 'disabled' };
+    sources.digikey = { status: 'disabled', note: 'No credentials' };
   }
-  
+
   // Mouser health check
   if (keys.mouser) {
-    sources.mouser = { 
-      status: 'configured',
-      note: 'API key present'
-    };
+    if (probe) {
+      try {
+        const probeStart = Date.now();
+        const testUrl = `https://api.mouser.com/api/v1/search/partnumber?apiKey=${keys.mouser}`;
+        const probeCheck = await Promise.race([
+          fetch(testUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ SearchByPartnumberRequest: { MouserPartNumber: 'TEST' } })
+          }).then(r => ({ ok: r.status < 500, status: r.status })),
+          new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 5000))
+        ]);
+        const probeLatency = Date.now() - probeStart;
+        sources.mouser = {
+          status: probeCheck.ok ? 'ready' : 'degraded',
+          note: probeCheck.ok ? 'API working' : `HTTP ${probeCheck.status}`,
+          latency_ms: probeLatency
+        };
+      } catch (err) {
+        sources.mouser = {
+          status: 'down',
+          note: err.message === 'timeout' ? 'Timeout >5s' : err.message,
+          latency_ms: 5000
+        };
+      }
+    } else {
+      sources.mouser = {
+        status: 'configured',
+        note: 'API key present'
+      };
+    }
   } else {
-    sources.mouser = { status: 'disabled' };
+    sources.mouser = { status: 'disabled', note: 'No API key' };
   }
-  
+
   // TME health check
   if (keys.tmeToken && keys.tmeSecret) {
-    sources.tme = { 
-      status: 'configured',
-      note: 'Token/secret present'
+    sources.tme = {
+      status: probe ? 'configured' : 'configured',
+      note: probe ? 'Token present (probe not impl)' : 'Token/secret present'
     };
   } else {
-    sources.tme = { status: 'disabled' };
+    sources.tme = { status: 'disabled', note: 'No credentials' };
   }
-  
+
   // Farnell health check
   if (keys.farnell) {
-    sources.farnell = { 
-      status: 'configured',
-      note: 'API key present'
+    sources.farnell = {
+      status: probe ? 'configured' : 'configured',
+      note: probe ? 'API key present (probe not impl)' : 'API key present'
     };
   } else {
-    sources.farnell = { status: 'disabled' };
+    sources.farnell = { status: 'disabled', note: 'No API key' };
   }
-  
+
   // Currency health
   const currencyAge = getRatesAge();
   const currencyAgeHours = Math.floor(currencyAge / (1000 * 60 * 60));
   const currencyStatus = currencyAgeHours < 24 ? 'ok' : 'stale';
-  
+
   const totalLatency = Date.now() - startTime;
-  
+
   res.json({
     status: 'ok',
     version: '3.2',
     ts: Date.now(),
     latency_ms: totalLatency,
+    probe: probe,
+    proxy: {
+      trust: behindProxy,
+      value: trustProxy
+    },
     sources,
     currency: {
       status: currencyStatus,
@@ -222,7 +280,7 @@ app.get('/api/currency/rates', (req, res) => {
     const age = getRatesAge();
     const ageHours = Math.floor(age / (1000 * 60 * 60));
     const date = new Date(rates.timestamp);
-    
+
     res.json({
       ok: true,
       timestamp: rates.timestamp,
@@ -320,11 +378,13 @@ app.get('/api/digikey/selftest', async (req, res) => {
       limit: 1
     });
     const products = result?.data?.Products || result?.data?.Items || [];
-    res.json({ ok: true, status: result.status, count: products.length, sample: products[0] ? {
-      ManufacturerPartNumber: products[0].ManufacturerPartNumber,
-      Description: products[0].Description,
-      ParametersCount: Array.isArray(products[0].Parameters) ? products[0].Parameters.length : undefined
-    } : null });
+    res.json({
+      ok: true, status: result.status, count: products.length, sample: products[0] ? {
+        ManufacturerPartNumber: products[0].ManufacturerPartNumber,
+        Description: products[0].Description,
+        ParametersCount: Array.isArray(products[0].Parameters) ? products[0].Parameters.length : undefined
+      } : null
+    });
   } catch (e) {
     res.status(500).json({ ok: false, error: e.message });
   }
@@ -333,13 +393,13 @@ app.get('/api/digikey/selftest', async (req, res) => {
 // Search endpoint with Russian normalization
 app.get('/api/search', async (req, res) => {
   const searchTimer = searchLatencySeconds.startTimer();
-  
+
   try {
     const q = String(req.query.q || '').trim();
     const startTime = Date.now();
-    
+
     console.log(`\n🔍 Search: "${q}"`);
-    
+
     if (!q) {
       searchRequestsTotal.inc({ status: 'success' });
       searchTimer();
@@ -351,24 +411,25 @@ app.get('/api/search', async (req, res) => {
     const cached = readCachedSearch(db, q.toLowerCase(), TTL);
     if (cached && req.query.fresh !== '1') {
       console.log(`📦 Cache HIT: ${cached.rows.length} rows from ${cached.meta.source}`);
-      
+
       // Metrics
       cacheOperations.inc({ operation: 'hit', type: 'search' });
       searchRequestsTotal.inc({ status: 'success' });
       searchResultsBySource.inc({ source: cached.meta.source }, cached.rows.length);
       searchTimer();
-      
+
       // Add currency info to cached response
       const ratesData = loadRates();
       const ratesDate = new Date(ratesData.timestamp).toISOString().split('T')[0];
-      
-      return res.json({ 
-        ok: true, 
-        q, 
-        rows: cached.rows, 
-        meta: { 
-          ...cached.meta, 
+
+      return res.json({
+        ok: true,
+        q,
+        rows: cached.rows,
+        meta: {
+          ...cached.meta,
           cached: true,
+          providers: cached.meta.providers || [],
           currency: {
             rates: {
               USD: ratesData.rates.USD,
@@ -377,118 +438,30 @@ app.get('/api/search', async (req, res) => {
             date: ratesDate,
             source: 'ЦБ РФ'
           }
-        } 
-      });
-    }
-
-    let rows = [];
-    let source = 'none';
-    let searchMetadata = {};
-
-    // STEP 1: Try Mouser with Russian enhancement
-    if (keys.mouser) {
-      const enhancedResult = await executeEnhancedSearch(q, async (query) => {
-        return await mouserSearchByKeyword({ apiKey: keys.mouser, q: query });
-      });
-      
-      if (enhancedResult.result) {
-        const parts = enhancedResult.result?.data?.SearchResults?.Parts || [];
-        if (parts.length > 0) {
-          rows = parts.map(normMouser);
-          source = 'mouser';
-          searchMetadata = enhancedResult.metadata;
-          console.log(`   ✅ Mouser: ${parts.length} results (used: "${enhancedResult.metadata.usedQuery}")`);
         }
-      }
-    }
-
-    // STEP 2: Try Digi-Key with Russian enhancement if Mouser failed
-    if (rows.length === 0 && keys.digikeyClientId && keys.digikeyClientSecret) {
-      const enhancedResult = await executeEnhancedSearch(q, async (query) => {
-        return await digikeySearch({
-          clientId: keys.digikeyClientId,
-          clientSecret: keys.digikeyClientSecret,
-          keyword: query,
-          limit: 25
-        });
       });
-      
-      if (enhancedResult.result) {
-        const products = enhancedResult.result?.data?.Products || enhancedResult.result?.data?.Items || [];
-        if (products.length > 0) {
-          rows = products.map(normDigiKey).filter(Boolean);
-          source = 'digikey';
-          searchMetadata = enhancedResult.metadata;
-          console.log(`   ✅ Digi-Key: ${products.length} results (used: "${enhancedResult.metadata.usedQuery}")`);
-        }
-      }
     }
 
-    // STEP 3: Try TME with Russian enhancement if still nothing
-    if (rows.length === 0 && keys.tmeToken && keys.tmeSecret) {
-      const enhancedResult = await executeEnhancedSearch(q, async (query) => {
-        return await tmeSearchProducts({
-          token: keys.tmeToken,
-          secret: keys.tmeSecret,
-          q: query
-        });
-      });
-      
-      if (enhancedResult.result) {
-        const products = enhancedResult.result?.data?.ProductList || [];
-        if (products.length > 0) {
-          rows = products.map(normTME);
-          source = 'tme';
-          searchMetadata = enhancedResult.metadata;
-          console.log(`   ✅ TME: ${products.length} results (used: "${enhancedResult.metadata.usedQuery}")`);
-        }
-      }
-    }
+    const aggregated = await orchestrateProviderSearch(q, keys);
+    const rows = aggregated.rows;
+    const providerSummary = aggregated.providers;
 
-    // STEP 4: Try Farnell with Russian enhancement as last resort
-    if (rows.length === 0 && keys.farnell) {
-      const enhancedResult = await executeEnhancedSearch(q, async (query) => {
-        return await farnellByKeyword({
-          apiKey: keys.farnell,
-          region: keys.farnellRegion,
-          q: query,
-          limit: 25
-        });
-      });
-      
-      if (enhancedResult.result) {
-        const products = enhancedResult.result?.data?.products || [];
-        if (products.length > 0) {
-          rows = products.map(p => normFarnell(p, keys.farnellRegion));
-          source = 'farnell';
-          searchMetadata = enhancedResult.metadata;
-          console.log(`   ✅ Farnell: ${products.length} results (used: "${enhancedResult.metadata.usedQuery}")`);
-        }
-      }
-    }
-
-    // Cache results (use original query for cache key)
+    cacheOperations.inc({ operation: 'miss', type: 'search' });
     if (rows.length > 0) {
-      cacheSearch(db, q.toLowerCase(), rows, { source });
-      cacheOperations.inc({ operation: 'miss', type: 'search' });
+      cacheSearch(db, q.toLowerCase(), rows, { source: 'providers' });
     }
 
     const elapsed = Date.now() - startTime;
-    
-    // Get currency rates info
+
     const ratesData = loadRates();
     const ratesDate = new Date(ratesData.timestamp).toISOString().split('T')[0];
-    
-    // Enhanced metadata including Russian search info
+
     const responseMeta = {
-      source,
+      source: 'providers',
       total: rows.length,
       cached: false,
       elapsed,
-      searchStrategy: searchMetadata.strategy || 'direct',
-      usedQuery: searchMetadata.usedQuery || q,
-      hasCyrillic: searchMetadata.processed?.metadata?.hasCyrillic || false,
-      attempts: searchMetadata.attempts || 1,
+      providers: providerSummary,
       currency: {
         rates: {
           USD: ratesData.rates.USD,
@@ -498,29 +471,44 @@ app.get('/api/search', async (req, res) => {
         source: 'ЦБ РФ'
       }
     };
-    
-    console.log(`⏱️  Completed in ${elapsed}ms: ${rows.length} results from ${source}`);
-    if (searchMetadata.usedQuery && searchMetadata.usedQuery !== q) {
-      console.log(`   📝 Enhanced: "${q}" → "${searchMetadata.usedQuery}"`);
+
+    const usedQueries = new Set();
+    providerSummary.forEach((item) => {
+      if (item.status === 'ok' && item.usedQuery) {
+        usedQueries.add(item.usedQuery);
+      }
+    });
+
+    if (usedQueries.size > 0) {
+      responseMeta.usedQueries = Array.from(usedQueries);
     }
+
+    console.log(`⏱️  Completed in ${elapsed}ms: ${rows.length} results aggregated from ${providerSummary.length} providers`);
+    providerSummary.forEach((item) => {
+      if (item.status === 'ok') {
+        console.log(`   ✅ ${item.provider}: ${item.total} rows (used: "${item.usedQuery}", strategy: ${item.strategy}, attempts: ${item.attempts})`);
+      } else {
+        console.log(`   ❌ ${item.provider}: ${item.message}`);
+      }
+    });
     console.log('');
 
     // Metrics for successful search
     searchRequestsTotal.inc({ status: 'success' });
     if (rows.length > 0) {
-      searchResultsBySource.inc({ source }, rows.length);
+      searchResultsBySource.inc({ source: 'providers' }, rows.length);
     }
     searchTimer();
 
     res.json({ ok: true, q, rows, meta: responseMeta });
   } catch (error) {
     console.error('❌ Search error:', error);
-    
+
     // Metrics for failed search
     searchRequestsTotal.inc({ status: 'error' });
     searchErrorsTotal.inc({ error_type: error.code || error.name || 'unknown' });
     searchTimer();
-    
+
     res.status(500).json({ ok: false, error: error.message });
   }
 });
@@ -561,7 +549,7 @@ app.get('/api/product', async (req, res) => {
 
           // Parse Mouser data - GET ALL FIELDS!
           const technical_specs = {};
-          
+
           // 1. ProductAttributes (primary specs)
           (p.ProductAttributes || []).forEach(a => {
             const k = clean(a.AttributeName);
@@ -608,17 +596,17 @@ app.get('/api/product', async (req, res) => {
             const v = clean(c.ComplianceValue);
             if (k && v) technical_specs[k] = v;
           });
-          
+
           // 4. AlternatePackaging info
           if (p.AlternatePackagings && p.AlternatePackagings.length > 0) {
             technical_specs['Alternate Packaging Available'] = 'Yes';
           }
-          
+
           // 5. SuggestedReplacement if exists
           if (p.SuggestedReplacement) {
             technical_specs['Suggested Replacement'] = clean(p.SuggestedReplacement);
           }
-          
+
           // 6. UnitWeightKg if exists
           if (p.UnitWeightKg) {
             technical_specs['Unit Weight'] = `${p.UnitWeightKg} kg`;
@@ -654,9 +642,9 @@ app.get('/api/product', async (req, res) => {
             datasheets: [...new Set(datasheets)],
             technical_specs,
             pricing,
-            availability: { 
-              inStock: Number(clean(p.AvailabilityInStock)) || Number((clean(p.Availability) || '').match(/\d+/)?.[0]) || 0, 
-              leadTime: clean(p.LeadTime) 
+            availability: {
+              inStock: Number(clean(p.AvailabilityInStock)) || Number((clean(p.Availability) || '').match(/\d+/)?.[0]) || 0,
+              leadTime: clean(p.LeadTime)
             },
             regions: ['US'],
             package: clean(p.Package),
@@ -674,42 +662,42 @@ app.get('/api/product', async (req, res) => {
       (keys.tmeToken && keys.tmeSecret) ? (async () => {
         try {
           console.log('   → TME: Searching for', mpn);
-          const result = await tmeSearchProducts({ 
-            token: keys.tmeToken, 
-            secret: keys.tmeSecret, 
+          const result = await tmeSearchProducts({
+            token: keys.tmeToken,
+            secret: keys.tmeSecret,
             query: mpn,
             country: 'PL',
             language: 'EN'
           });
-          
+
           // TME returns { Status: 'OK', Data: { ProductList: [...] } }
           const tmeData = result?.data?.Data || result?.data;  // Handle both cases
           const products = tmeData?.ProductList || [];
-          
+
           console.log('   🔍 TME response:', JSON.stringify({
             status: result?.status,
             hasData: !!result?.data,
             productCount: products.length,
             firstProduct: products[0]?.Symbol || 'none'
           }));
-          
+
           if (products.length === 0) {
             console.log('   ⚠️  TME: No products in ProductList');
             return null;
           }
 
           // Find exact match by OriginalSymbol (manufacturer part number)
-          let p = products.find(prod => 
+          let p = products.find(prod =>
             prod.OriginalSymbol && prod.OriginalSymbol.toUpperCase() === mpn.toUpperCase()
           );
-          
+
           // Fallback: try Symbol field
           if (!p) {
-            p = products.find(prod => 
+            p = products.find(prod =>
               prod.Symbol && prod.Symbol.toUpperCase() === mpn.toUpperCase()
             );
           }
-          
+
           // If no exact match found, skip TME result
           if (!p) {
             console.log('   ⚠️  TME: No exact match for', mpn, '(found', products.length, 'related products)');
@@ -764,20 +752,20 @@ app.get('/api/product', async (req, res) => {
         try {
           console.log('   → Farnell: Searching for', mpn);
           const result = await farnellByMPN({ apiKey: keys.farnell, region: keys.farnellRegion, q: mpn, limit: 1 });
-          
+
           console.log('   🔍 Farnell raw response status:', result?.status);
-          
+
           // Farnell API returns: { premierFarnellPartNumberReturn: { numberOfResults, products: [...] } }
           const returnData = result?.data?.premierFarnellPartNumberReturn || result?.data;
           const products = returnData?.products || [];
-          
-          console.log('   🔍 Farnell result:', JSON.stringify({ 
+
+          console.log('   🔍 Farnell result:', JSON.stringify({
             hasData: !!result?.data,
             hasReturn: !!returnData,
             numberOfResults: returnData?.numberOfResults || 0,
             productCount: products.length
           }));
-          
+
           const p = products[0];
           if (!p) {
             console.log('   ⚠️  Farnell: No product found');
@@ -835,12 +823,12 @@ app.get('/api/product', async (req, res) => {
       (keys.digikeyClientId && keys.digikeyClientSecret) ? (async () => {
         console.log('   🔍 DigiKey: Starting search...');
         try {
-          const result = await digikeyGetProduct({ 
-            clientId: keys.digikeyClientId, 
-            clientSecret: keys.digikeyClientSecret, 
-            partNumber: mpn 
+          const result = await digikeyGetProduct({
+            clientId: keys.digikeyClientId,
+            clientSecret: keys.digikeyClientSecret,
+            partNumber: mpn
           });
-          
+
           console.log(`   🔍 DigiKey: Got response, status=${result?.status}`);
           const p = result?.data?.Product || result?.data?.Products?.[0];
           if (!p) {
@@ -945,8 +933,8 @@ app.get('/api/product', async (req, res) => {
             datasheets: [...new Set(datasheets)],
             technical_specs,
             pricing,
-            availability: { 
-              inStock, 
+            availability: {
+              inStock,
               leadTime: clean(p.ManufacturerLeadWeeks),
               minQty
             },
@@ -964,7 +952,7 @@ app.get('/api/product', async (req, res) => {
     ]);
 
     // Extract successful results
-    const [mouserResult, tmeResult, farnellResult, digikeyResult] = results.map(r => 
+    const [mouserResult, tmeResult, farnellResult, digikeyResult] = results.map(r =>
       r.status === 'fulfilled' ? r.value : null
     );
 
@@ -974,10 +962,10 @@ app.get('/api/product', async (req, res) => {
     const product = mergeProductData(mouserResult, tmeResult, farnellResult, digikeyResult);
 
     if (!product) {
-      return res.status(404).json({ 
-        ok: false, 
+      return res.status(404).json({
+        ok: false,
         code: 'not_found',
-        message: 'Product not found in any source' 
+        message: 'Product not found in any source'
       });
     }
 
@@ -986,13 +974,13 @@ app.get('/api/product', async (req, res) => {
     // Cache merged result
     cacheProduct(db, 'merged', mpn, product);
 
-    res.json({ 
-      ok: true, 
+    res.json({
+      ok: true,
       product,
-      meta: { 
+      meta: {
         cached: false,
-        sources: product.sources 
-      } 
+        sources: product.sources
+      }
     });
   } catch (error) {
     console.error('❌ Product endpoint error:', error);
@@ -1004,13 +992,13 @@ app.get('/api/product', async (req, res) => {
 app.get('/api/image', async (req, res) => {
   try {
     const url = String(req.query.url || '').trim();
-    
+
     if (!url || !url.startsWith('http')) {
       return res.status(400).json({ ok: false, code: 'bad_url' });
     }
-    
+
     console.log(`🖼️  Image Proxy: ${url}`);
-    
+
     const response = await fetch(url, {
       headers: {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
@@ -1018,24 +1006,24 @@ app.get('/api/image', async (req, res) => {
         'Accept': 'image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8'
       }
     });
-    
+
     if (!response.ok) {
       console.log(`   ❌ Image fetch failed: ${response.status}`);
       // Return placeholder instead of error
       res.status(404).send('Image not found');
       return;
     }
-    
+
     const contentType = response.headers.get('content-type') || 'image/jpeg';
     const buffer = await response.arrayBuffer();
-    
+
     console.log(`   ✅ Image served: ${buffer.byteLength} bytes`);
-    
+
     // Set headers for image
     res.setHeader('Content-Type', contentType);
     res.setHeader('Cache-Control', 'public, max-age=86400'); // Cache for 1 day
     res.send(Buffer.from(buffer));
-    
+
   } catch (error) {
     console.error('❌ Image proxy error:', error);
     res.status(500).send('Image proxy error');
@@ -1046,33 +1034,33 @@ app.get('/api/image', async (req, res) => {
 app.get('/api/pdf', async (req, res) => {
   try {
     const url = String(req.query.url || '').trim();
-    
+
     if (!url || !url.startsWith('http')) {
       return res.status(400).json({ ok: false, code: 'bad_url' });
     }
-    
+
     console.log(`📄 PDF Proxy: ${url}`);
-    
+
     const response = await fetch(url, {
       headers: {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
       }
     });
-    
+
     if (!response.ok) {
       throw new Error(`HTTP ${response.status}`);
     }
-    
+
     const contentType = response.headers.get('content-type') || 'application/pdf';
     const buffer = await response.arrayBuffer();
-    
+
     // Set headers for PDF display/download
     res.setHeader('Content-Type', contentType);
     res.setHeader('Content-Disposition', 'inline');
     res.send(Buffer.from(buffer));
-    
+
     console.log(`   ✅ PDF served: ${buffer.byteLength} bytes`);
-    
+
   } catch (error) {
     console.error('❌ PDF proxy error:', error);
     res.status(500).json({ ok: false, error: error.message });

@@ -188,10 +188,13 @@ export async function executeEnhancedSearch(originalQuery, searchFunction) {
     usedQuery = strategy.primaryQuery;
     
     // Check if result has data
-    const hasResults = result?.data?.SearchResults?.Parts?.length > 0 ||
-                      result?.data?.Products?.length > 0 ||
-                      result?.data?.ProductList?.length > 0 ||
-                      result?.data?.products?.length > 0;
+    const hasResults = result?.data?.SearchResults?.Parts?.length > 0 ||  // Mouser
+                      result?.data?.Products?.length > 0 ||                // DigiKey
+                      result?.data?.Data?.ProductList?.length > 0 ||       // TME (capital D!)
+                      result?.data?.ProductList?.length > 0 ||             // TME (fallback)
+                      result?.data?.keywordSearchReturn?.products?.length > 0 ||  // Farnell keyword
+                      result?.data?.premierFarnellProductSearchReturn?.products?.length > 0 ||  // Farnell MPN
+                      result?.data?.products?.length > 0;                  // Farnell fallback
     
     if (hasResults) {
       console.log(`   ✅ Primary query successful`);
@@ -211,10 +214,13 @@ export async function executeEnhancedSearch(originalQuery, searchFunction) {
       
       const altResult = await searchFunction(altQuery);
       
-      const hasResults = altResult?.data?.SearchResults?.Parts?.length > 0 ||
-                        altResult?.data?.Products?.length > 0 ||
-                        altResult?.data?.ProductList?.length > 0 ||
-                        altResult?.data?.products?.length > 0;
+      const hasResults = altResult?.data?.SearchResults?.Parts?.length > 0 ||  // Mouser
+                        altResult?.data?.Products?.length > 0 ||                // DigiKey
+                        altResult?.data?.Data?.ProductList?.length > 0 ||       // TME (capital D!)
+                        altResult?.data?.ProductList?.length > 0 ||             // TME (fallback)
+                        altResult?.data?.keywordSearchReturn?.products?.length > 0 ||  // Farnell keyword
+                        altResult?.data?.premierFarnellProductSearchReturn?.products?.length > 0 ||  // Farnell MPN
+                        altResult?.data?.products?.length > 0;                  // Farnell fallback
       
       if (hasResults) {
         result = altResult;

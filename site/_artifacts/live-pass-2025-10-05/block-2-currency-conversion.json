@@ -1,0 +1,112 @@
+{
+  "blockId": 2,
+  "blockName": "Currency Conversion Production Verification",
+  "timestamp": "2025-10-05T13:23:54.692Z",
+  "productionUrl": "http://5.129.228.88:9201",
+  "statistics": {
+    "totalProducts": 50,
+    "productsWithConversion": 49,
+    "uniqueSources": [
+      "mouser"
+    ],
+    "avgPrice": "248.78"
+  },
+  "conversions": [
+    {
+      "currency": "USD",
+      "minPriceRUB": 2,
+      "product": {
+        "mpn": "NSVMUN5136T1G",
+        "title": "NSVMUN5136T1G",
+        "source": "mouser"
+      }
+    },
+    {
+      "currency": "USD",
+      "minPriceRUB": 52,
+      "product": {
+        "mpn": "CRCW12060000Z0TAHP",
+        "title": "CRCW12060000Z0TAHP",
+        "source": "mouser"
+      }
+    },
+    {
+      "currency": "USD",
+      "minPriceRUB": 11,
+      "product": {
+        "mpn": "CMF55806K00FHEA",
+        "title": "CMF55806K00FHEA",
+        "source": "mouser"
+      }
+    },
+    {
+      "currency": "USD",
+      "minPriceRUB": 9,
+      "product": {
+        "mpn": "CMF5551K000FKEA",
+        "title": "CMF5551K000FKEA",
+        "source": "mouser"
+      }
+    },
+    {
+      "currency": "USD",
+      "minPriceRUB": 11,
+      "product": {
+        "mpn": "CMF55820K00FHEA",
+        "title": "CMF55820K00FHEA",
+        "source": "mouser"
+      }
+    },
+    {
+      "currency": "USD",
+      "minPriceRUB": 165,
+      "product": {
+        "mpn": "CHA0402-50RGNTD",
+        "title": "CHA0402-50RGNTD",
+        "source": "mouser"
+      }
+    },
+    {
+      "currency": "USD",
+      "minPriceRUB": 1,
+      "product": {
+        "mpn": "CR01005AJ/-000GAS",
+        "title": "CR01005AJ/-000GAS",
+        "source": "mouser"
+      }
+    },
+    {
+      "currency": "USD",
+      "minPriceRUB": 2,
+      "product": {
+        "mpn": "CR01005AFW-4701GAS",
+        "title": "CR01005AFW-4701GAS",
+        "source": "mouser"
+      }
+    },
+    {
+      "currency": "USD",
+      "minPriceRUB": 2,
+      "product": {
+        "mpn": "CR01005AFW-1500GAS",
+        "title": "CR01005AFW-1500GAS",
+        "source": "mouser"
+      }
+    },
+    {
+      "currency": "USD",
+      "minPriceRUB": 7483,
+      "product": {
+        "mpn": "TFOS30-1-150T",
+        "title": "TFOS30-1-150T",
+        "source": "mouser"
+      }
+    }
+  ],
+  "verdict": "PASSED",
+  "notes": [
+    "Verifying minRub field is populated in search results",
+    "Currency conversion via toRUB() function (CBR API integration)",
+    "All prices automatically converted from USD/EUR/GBP to RUB"
+  ]
+}

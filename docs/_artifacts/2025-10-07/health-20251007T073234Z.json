@@ -1,0 +1,1 @@
+{"status":"ok","version":"3.2","ts":1759822354762,"latency_ms":0,"proxy":{"trust":true,"value":1},"sources":{"digikey":{"status":"disabled"},"mouser":{"status":"disabled"},"tme":{"status":"disabled"},"farnell":{"status":"disabled"}},"currency":{"status":"ok","age_hours":7,"rates":{"USD":83,"EUR":96.8345}},"cache":{"db_path":"./data/db/deep-agg.db","status":"ok"}}

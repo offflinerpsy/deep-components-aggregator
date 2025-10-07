@@ -1,0 +1,202 @@
+{
+    "ok": true,
+    "product": {
+        "mpn": "STM32F407VGT6",
+        "manufacturer": "STMicroelectronics",
+        "title": "ARM Microcontrollers - MCU ARM M4 1024 FLASH 168 Mhz 192kB SRAM",
+        "description": "ARM Microcontrollers - MCU ARM M4 1024 FLASH 168 Mhz 192kB SRAM",
+        "photo": "https://mm.digikey.com/Volume0/opasdata/d220001/medias/images/6295/497%7E100LQFP-1.6-14X14%7E%7E100.jpg",
+        "images": [
+            "https://www.mouser.com/images/mouserelectronics/images/LQFP_100_t.jpg",
+            "https://mm.digikey.com/Volume0/opasdata/d220001/medias/images/6295/497%7E100LQFP-1.6-14X14%7E%7E100.jpg"
+        ],
+        "datasheets": [
+            "https://www.st.com/content/ccc/resource/technical/document/datasheet/ef/92/76/6d/bb/c2/4f/f7/DM00037051.pdf/files/DM00037051.pdf/jcr:content/translations/en.DM00037051.pdf"
+        ],
+        "technical_specs": {
+            "Packaging": "Tray",
+            "Standard Pack Qty": "540",
+            "Manufacturer": "STMicroelectronics",
+            "Product Category": "Integrated Circuits (ICs)",
+            "Description": "ARM Microcontrollers - MCU ARM M4 1024 FLASH 168 Mhz 192kB SRAM",
+            "Mouser Part Number": "511-STM32F407VGT6",
+            "Manufacturer Part Number": "STM32F407VGT6",
+            "RoHS Status": "RoHS Compliant",
+            "Availability": "2730 In Stock",
+            "In Stock": "2730",
+            "Lead Time": "105 Days",
+            "Minimum Order Quantity": "1",
+            "Order Multiple": "1",
+            "Product URL": "https://www.mouser.com/ProductDetail/STMicroelectronics/STM32F407VGT6?qs=Z8%252BeY1k3TIKAEQqwbO%2FOzA%3D%3D",
+            "USHTS": "8542310025",
+            "CNHTS": "8542319092",
+            "CAHTS": "8542310000",
+            "JPHTS": "854231039",
+            "KRHTS": "8542311000",
+            "TARIC": "8542319000",
+            "MXHTS": "8542310302",
+            "ECCN": "3A991.a.2",
+            "Alternate Packaging Available": "Yes",
+            "Unit Weight": "[object Object] kg",
+            "DigiKey Programmable": "Not Verified",
+            "Core Processor": "ARM\u0412\u00ae Cortex\u0412\u00ae-M4",
+            "Core Size": "32-Bit",
+            "Speed": "168MHz",
+            "Connectivity": "CANbus, DCMI, EBI/EMI, Ethernet, I2C, IrDA, LINbus, SPI, UART/USART, USB OTG",
+            "Peripherals": "Brown-out Detect/Reset, DMA, I2S, LCD, POR, PWM, WDT",
+            "Number of I/O": "82",
+            "Program Memory Size": "1MB (1M x 8)",
+            "Program Memory Type": "FLASH",
+            "EEPROM Size": "-",
+            "RAM Size": "192K x 8",
+            "Voltage - Supply (Vcc/Vdd)": "1.8V ~ 3.6V",
+            "Data Converters": "A/D 16x12b; D/A 2x12b",
+            "Oscillator Type": "Internal",
+            "Operating Temperature": "-40\u0412\u00b0C ~ 85\u0412\u00b0C (TA)",
+            "Mounting Type": "Surface Mount",
+            "Supplier Device Package": "100-LQFP (14x14)",
+            "Package / Case": "100-LQFP",
+            "Series": "[object Object]",
+            "Product Status": "[object Object]",
+            "Base Product Number": "[object Object]",
+            "Manufacturer Lead Weeks": "19",
+            "Normally Stocking": "Yes"
+        },
+        "pricing": [
+            {
+                "qty": 1,
+                "price": "$11.87",
+                "currency": "USD",
+                "price_rub": 984,
+                "source": "mouser"
+            },
+            {
+                "qty": 10,
+                "price": "$8.70",
+                "currency": "USD",
+                "price_rub": 721,
+                "source": "mouser"
+            },
+            {
+                "qty": 25,
+                "price": "$8.02",
+                "currency": "USD",
+                "price_rub": 665,
+                "source": "mouser"
+            },
+            {
+                "qty": 250,
+                "price": "$7.47",
+                "currency": "USD",
+                "price_rub": 619,
+                "source": "mouser"
+            },
+            {
+                "qty": 540,
+                "price": "$7.26",
+                "currency": "USD",
+                "price_rub": 602,
+                "source": "mouser"
+            },
+            {
+                "qty": 1080,
+                "price": "$7.19",
+                "currency": "USD",
+                "price_rub": 596,
+                "source": "mouser"
+            },
+            {
+                "qty": 1,
+                "price": 11.87,
+                "currency": "USD",
+                "price_rub": 984,
+                "source": "digikey"
+            },
+            {
+                "qty": 10,
+                "price": 9.311,
+                "currency": "USD",
+                "price_rub": 772,
+                "source": "digikey"
+            },
+            {
+                "qty": 24,
+                "price": 8.69708,
+                "currency": "USD",
+                "price_rub": 721,
+                "source": "digikey"
+            },
+            {
+                "qty": 90,
+                "price": 8.01433,
+                "currency": "USD",
+                "price_rub": 664,
+                "source": "digikey"
+            },
+            {
+                "qty": 270,
+                "price": 7.61096,
+                "currency": "USD",
+                "price_rub": 631,
+                "source": "digikey"
+            },
+            {
+                "qty": 450,
+                "price": 7.46187,
+                "currency": "USD",
+                "price_rub": 618,
+                "source": "digikey"
+            },
+            {
+                "qty": 990,
+                "price": 7.2699,
+                "currency": "USD",
+                "price_rub": 602,
+                "source": "digikey"
+            }
+        ],
+        "price_rub": 596,
+        "availability": {
+            "inStock": 5812,
+            "sources": {
+                "mouser": 2730,
+                "tme": 0,
+                "farnell": 0,
+                "digikey": 5812
+            },
+            "leadTimes": {
+                "mouser": "105 Days",
+                "tme": null,
+                "farnell": null,
+                "digikey": "19"
+            }
+        },
+        "regions": [
+            "US",
+            "Global"
+        ],
+        "package": "",
+        "packaging": "",
+        "vendorUrls": {
+            "mouser": "https://www.mouser.com/ProductDetail/STMicroelectronics/STM32F407VGT6?qs=Z8%252BeY1k3TIKAEQqwbO%2FOzA%3D%3D",
+            "tme": null,
+            "farnell": null,
+            "digikey": "https://www.digikey.com/en/products/detail/stmicroelectronics/STM32F407VGT6/2747117"
+        },
+        "sources": {
+            "mouser": true,
+            "tme": false,
+            "farnell": false,
+            "digikey": true
+        }
+    },
+    "meta": {
+        "cached": false,
+        "sources": {
+            "mouser": true,
+            "tme": false,
+            "farnell": false,
+            "digikey": true
+        }
+    }
+}

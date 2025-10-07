@@ -1,0 +1,20 @@
+● wireproxy.service - WireProxy (WireGuard userspace SOCKS5)
+     Loaded: loaded (/etc/systemd/system/wireproxy.service; enabled; preset: enabled)
+     Active: active (running) since Mon 2025-10-06 17:38:04 MSK; 8h ago
+   Main PID: 734 (wireproxy)
+      Tasks: 10 (limit: 5837)
+     Memory: 17.0M (peak: 18.3M)
+        CPU: 4.833s
+     CGroup: /system.slice/wireproxy.service
+             └─734 /usr/local/bin/wireproxy -c /etc/wireproxy/wireproxy.conf
+
+Oct 07 02:03:08 5739319-zw86058 wireproxy[734]: DEBUG: 2025/10/07 02:03:08 peer(bmXO…fgyo) - Sending handshake initiation
+Oct 07 02:03:08 5739319-zw86058 wireproxy[734]: DEBUG: 2025/10/07 02:03:08 peer(bmXO…fgyo) - Received handshake response
+Oct 07 02:03:18 5739319-zw86058 wireproxy[734]: DEBUG: 2025/10/07 02:03:18 peer(bmXO…fgyo) - Sending keepalive packet
+Oct 07 02:12:08 5739319-zw86058 wireproxy[734]: DEBUG: 2025/10/07 02:12:08 peer(bmXO…fgyo) - Removing all keys, since we haven't received a new one in 540 seconds
+Oct 07 02:30:50 5739319-zw86058 wireproxy[734]: DEBUG: 2025/10/07 02:30:50 peer(bmXO…fgyo) - Sending handshake initiation
+Oct 07 02:30:50 5739319-zw86058 wireproxy[734]: DEBUG: 2025/10/07 02:30:50 peer(bmXO…fgyo) - Received handshake response
+Oct 07 02:31:27 5739319-zw86058 wireproxy[734]: DEBUG: 2025/10/07 02:31:27 peer(bmXO…fgyo) - Retrying handshake because we stopped hearing back after 15 seconds
+Oct 07 02:31:27 5739319-zw86058 wireproxy[734]: DEBUG: 2025/10/07 02:31:27 peer(bmXO…fgyo) - Sending handshake initiation
+Oct 07 02:31:27 5739319-zw86058 wireproxy[734]: DEBUG: 2025/10/07 02:31:27 peer(bmXO…fgyo) - Received handshake response
+Oct 07 02:31:27 5739319-zw86058 wireproxy[734]: DEBUG: 2025/10/07 02:31:27 peer(bmXO…fgyo) - Sending keepalive packet

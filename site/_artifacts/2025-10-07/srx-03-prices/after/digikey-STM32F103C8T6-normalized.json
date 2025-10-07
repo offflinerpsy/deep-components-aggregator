@@ -1,0 +1,144 @@
+[
+  {
+    "_src": "digikey",
+    "_id": "497-6063-ND",
+    "mpn": "STM32F103C8T6",
+    "manufacturer": "STMicroelectronics",
+    "title": "IC MCU 32BIT 64KB FLASH 48LQFP",
+    "description": "ARM® Cortex®-M3 STM32F1 Microcontroller IC 32-Bit 72MHz 64KB (64K x 8) FLASH",
+    "photo": "https://mm.digikey.com/Volume0/opasdata/d220001/medias/images/389/48-LQFP.jpg",
+    "images": [
+      "https://mm.digikey.com/Volume0/opasdata/d220001/medias/images/389/48-LQFP.jpg"
+    ],
+    "datasheets": [
+      "https://www.st.com/resource/en/datasheet/stm32f103cb.pdf"
+    ],
+    "technical_specs": {
+      "Manufacturer": "STMicroelectronics",
+      "Product Category": "Integrated Circuits (ICs)",
+      "Description": "IC MCU 32BIT 64KB FLASH 48LQFP",
+      "Detailed Description": "ARM® Cortex®-M3 STM32F1 Microcontroller IC 32-Bit 72MHz 64KB (64K x 8) FLASH",
+      "DigiKey Part Number": "497-6063-ND",
+      "Manufacturer Part Number": "STM32F103C8T6",
+      "Packaging": "Tray",
+      "Series": "STM32F1",
+      "RoHS Status": "ROHS3 Compliant",
+      "Part Status": "Active",
+      "Product URL": "https://www.digikey.com/en/products/detail/stmicroelectronics/STM32F103C8T6/1646338"
+    },
+    "pricing": [
+      {
+        "qty": 1,
+        "price": 6.08,
+        "currency": "USD",
+        "price_rub": 505
+      },
+      {
+        "qty": 10,
+        "price": 4.662,
+        "currency": "USD",
+        "price_rub": 387
+      },
+      {
+        "qty": 25,
+        "price": 4.3084,
+        "currency": "USD",
+        "price_rub": 358
+      },
+      {
+        "qty": 100,
+        "price": 3.9192,
+        "currency": "USD",
+        "price_rub": 325
+      },
+      {
+        "qty": 250,
+        "price": 3.73372,
+        "currency": "USD",
+        "price_rub": 310
+      },
+      {
+        "qty": 500,
+        "price": 3.6219,
+        "currency": "USD",
+        "price_rub": 301
+      },
+      {
+        "qty": 1000,
+        "price": 3.5299,
+        "currency": "USD",
+        "price_rub": 293
+      },
+      {
+        "qty": 2500,
+        "price": 3.43276,
+        "currency": "USD",
+        "price_rub": 285
+      }
+    ],
+    "availability": {
+      "inStock": 4784,
+      "leadTime": "17"
+    },
+    "regions": [
+      "US",
+      "Global"
+    ],
+    "package": "Tray",
+    "packaging": null,
+    "vendorUrl": "https://www.digikey.com/en/products/detail/stmicroelectronics/STM32F103C8T6/1646338",
+    "source": "digikey",
+    "stock": 4784,
+    "minRub": 285
+  },
+  {
+    "_src": "digikey",
+    "_id": "497-17666-2-ND",
+    "mpn": "STM32F103C8T6TR",
+    "manufacturer": "STMicroelectronics",
+    "title": "IC MCU 32BIT 64KB FLASH 48LQFP",
+    "description": "ARM® Cortex®-M3 STM32F1 Microcontroller IC 32-Bit 72MHz 64KB (64K x 8) FLASH 48-LQFP (7x7)",
+    "photo": "https://mm.digikey.com/Volume0/opasdata/d220001/medias/images/389/48-LQFP.jpg",
+    "images": [
+      "https://mm.digikey.com/Volume0/opasdata/d220001/medias/images/389/48-LQFP.jpg"
+    ],
+    "datasheets": [
+      "https://www.st.com/resource/en/datasheet/stm32f103cb.pdf"
+    ],
+    "technical_specs": {
+      "Manufacturer": "STMicroelectronics",
+      "Product Category": "Integrated Circuits (ICs)",
+      "Description": "IC MCU 32BIT 64KB FLASH 48LQFP",
+      "Detailed Description": "ARM® Cortex®-M3 STM32F1 Microcontroller IC 32-Bit 72MHz 64KB (64K x 8) FLASH 48-LQFP (7x7)",
+      "DigiKey Part Number": "497-17666-2-ND",
+      "Manufacturer Part Number": "STM32F103C8T6TR",
+      "Packaging": "Tape & Reel (TR)",
+      "Series": "STM32F1",
+      "RoHS Status": "ROHS3 Compliant",
+      "Part Status": "Active",
+      "Product URL": "https://www.digikey.com/en/products/detail/stmicroelectronics/STM32F103C8T6TR/2122442"
+    },
+    "pricing": [
+      {
+        "qty": 2400,
+        "price": 3.43658,
+        "currency": "USD",
+        "price_rub": 285
+      }
+    ],
+    "availability": {
+      "inStock": 4317,
+      "leadTime": "17"
+    },
+    "regions": [
+      "US",
+      "Global"
+    ],
+    "package": "Tape & Reel (TR)",
+    "packaging": null,
+    "vendorUrl": "https://www.digikey.com/en/products/detail/stmicroelectronics/STM32F103C8T6TR/2122442",
+    "source": "digikey",
+    "stock": 4317,
+    "minRub": 285
+  }
+]

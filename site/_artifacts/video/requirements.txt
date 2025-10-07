@@ -1,0 +1,19 @@
+[Extracted requirements will appear here after running video_ingest.sh]
+
+To populate:
+  bash scripts/video_ingest.sh <video-file>
+
+This file will contain grep results of action keywords:
+  - сделай (make/do)
+  - нужно (need to)
+  - обязательно (must)
+  - починить (fix)
+  - проблема (problem)
+  - задача (task)
+  - исправить (correct)
+  - требуется (required)
+  - добавить (add)
+  - реализовать (implement)
+  - важно (important)
+
+Format: <line-number>:<matched-text>

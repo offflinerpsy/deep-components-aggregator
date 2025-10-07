@@ -1,0 +1,131 @@
+● deep-agg.service - Deep Components Aggregator service
+     Loaded: loaded (/etc/systemd/system/deep-agg.service; enabled; preset: enabled)
+     Active: active (running) since Mon 2025-10-06 21:49:18 MSK; 4h 12min ago
+   Main PID: 31868 (node)
+      Tasks: 11 (limit: 5837)
+     Memory: 34.5M (peak: 43.1M)
+        CPU: 2.763s
+     CGroup: /system.slice/deep-agg.service
+             └─31868 /usr/bin/node /opt/deep-agg/server.js
+
+Oct 07 01:38:01 5739319-zw86058 deep-agg[31868]:    🔍 DigiKey: Starting search...
+Oct 07 01:38:01 5739319-zw86058 deep-agg[31868]: [DigiKey] Requesting new access token...
+Oct 07 01:38:01 5739319-zw86058 deep-agg[31868]: [DigiKey] ✅ Access token obtained
+Oct 07 01:38:03 5739319-zw86058 deep-agg[31868]:    🔍 DigiKey: Got response, status=200
+Oct 07 01:38:03 5739319-zw86058 deep-agg[31868]:    ✅ DigiKey: Found ULN2803A
+Oct 07 01:38:03 5739319-zw86058 deep-agg[31868]:    📊 DigiKey specs extracted: 21
+Oct 07 01:38:03 5739319-zw86058 deep-agg[31868]:    📊 Results: Mouser=false, TME=false, Farnell=false, DigiKey=true
+Oct 07 01:38:03 5739319-zw86058 deep-agg[31868]:    ✅ Merged product with 21 specs
+Oct 07 01:38:03 5739319-zw86058 deep-agg[31868]: 🖼️  Image Proxy: https://mm.digikey.com/Volume0/opasdata/d220001/medias/images/376/18-Dip.jpg
+Oct 07 01:38:03 5739319-zw86058 deep-agg[31868]:    ✅ Image served: 17312 bytes
+Oct 07 01:33:00 5739319-zw86058 deep-agg[31868]: [DigiKey] Requesting new access token...
+Oct 07 01:33:01 5739319-zw86058 deep-agg[31868]: [DigiKey] ✅ Access token obtained
+Oct 07 01:33:03 5739319-zw86058 deep-agg[31868]:    ✅ Primary query successful
+Oct 07 01:33:03 5739319-zw86058 deep-agg[31868]: [DEBUG] Saved raw product to dk-raw-product.json
+Oct 07 01:33:03 5739319-zw86058 deep-agg[31868]: [DEBUG] Saved raw product to dk-raw-product.json
+Oct 07 01:33:03 5739319-zw86058 deep-agg[31868]: [DEBUG] Saved raw product to dk-raw-product.json
+Oct 07 01:33:03 5739319-zw86058 deep-agg[31868]: [DEBUG] Saved raw product to dk-raw-product.json
+Oct 07 01:33:03 5739319-zw86058 deep-agg[31868]:    ✅ Digi-Key: 4 results (used: "DS12C887")
+Oct 07 01:33:03 5739319-zw86058 deep-agg[31868]: ⏱️  Completed in 2847ms: 4 results from digikey
+Oct 07 01:33:03 5739319-zw86058 deep-agg[31868]:    📝 Enhanced: "DS12C887+" → "DS12C887"
+Oct 07 01:33:12 5739319-zw86058 deep-agg[31868]: 🔍 Search: "2N3904"
+Oct 07 01:33:12 5739319-zw86058 deep-agg[31868]: 🔍 Enhanced Search: "2N3904"
+Oct 07 01:33:12 5739319-zw86058 deep-agg[31868]:    Strategy: mpn-first - MPNs detected - searching by part number first
+Oct 07 01:33:12 5739319-zw86058 deep-agg[31868]:    Primary: "2N3904"
+Oct 07 01:33:12 5739319-zw86058 deep-agg[31868]:    Alternatives: 2
+Oct 07 01:33:12 5739319-zw86058 deep-agg[31868]:    → Attempt 1: "2N3904"
+Oct 07 01:33:15 5739319-zw86058 deep-agg[31868]:    ✅ Primary query successful
+Oct 07 01:33:15 5739319-zw86058 deep-agg[31868]: [DEBUG] Saved raw product to dk-raw-product.json
+Oct 07 01:33:15 5739319-zw86058 deep-agg[31868]: [DEBUG] Saved raw product to dk-raw-product.json
+Oct 07 01:33:15 5739319-zw86058 deep-agg[31868]: [DEBUG] Saved raw product to dk-raw-product.json
+Oct 07 01:33:15 5739319-zw86058 deep-agg[31868]: [DEBUG] Saved raw product to dk-raw-product.json
+Oct 07 01:33:15 5739319-zw86058 deep-agg[31868]: [DEBUG] Saved raw product to dk-raw-product.json
+Oct 07 01:33:15 5739319-zw86058 deep-agg[31868]: [DEBUG] Saved raw product to dk-raw-product.json
+Oct 07 01:33:15 5739319-zw86058 deep-agg[31868]: [DEBUG] Saved raw product to dk-raw-product.json
+Oct 07 01:33:15 5739319-zw86058 deep-agg[31868]: [DEBUG] Saved raw product to dk-raw-product.json
+Oct 07 01:33:15 5739319-zw86058 deep-agg[31868]: [DEBUG] Saved raw product to dk-raw-product.json
+Oct 07 01:33:15 5739319-zw86058 deep-agg[31868]: [DEBUG] Saved raw product to dk-raw-product.json
+Oct 07 01:33:15 5739319-zw86058 deep-agg[31868]:    ✅ Digi-Key: 10 results (used: "2N3904")
+Oct 07 01:33:15 5739319-zw86058 deep-agg[31868]: ⏱️  Completed in 3071ms: 10 results from digikey
+Oct 07 01:33:32 5739319-zw86058 deep-agg[31868]: 🔍 Search: "2N3904"
+Oct 07 01:33:32 5739319-zw86058 deep-agg[31868]: 🔍 Enhanced Search: "2N3904"
+Oct 07 01:33:32 5739319-zw86058 deep-agg[31868]:    Strategy: mpn-first - MPNs detected - searching by part number first
+Oct 07 01:33:32 5739319-zw86058 deep-agg[31868]:    Primary: "2N3904"
+Oct 07 01:33:32 5739319-zw86058 deep-agg[31868]:    Alternatives: 2
+Oct 07 01:33:32 5739319-zw86058 deep-agg[31868]:    → Attempt 1: "2N3904"
+Oct 07 01:33:34 5739319-zw86058 deep-agg[31868]:    ✅ Primary query successful
+Oct 07 01:33:34 5739319-zw86058 deep-agg[31868]: [DEBUG] Saved raw product to dk-raw-product.json
+Oct 07 01:33:34 5739319-zw86058 deep-agg[31868]: [DEBUG] Saved raw product to dk-raw-product.json
+Oct 07 01:33:34 5739319-zw86058 deep-agg[31868]: [DEBUG] Saved raw product to dk-raw-product.json
+Oct 07 01:33:34 5739319-zw86058 deep-agg[31868]: [DEBUG] Saved raw product to dk-raw-product.json
+Oct 07 01:33:34 5739319-zw86058 deep-agg[31868]: [DEBUG] Saved raw product to dk-raw-product.json
+Oct 07 01:33:34 5739319-zw86058 deep-agg[31868]: [DEBUG] Saved raw product to dk-raw-product.json
+Oct 07 01:33:34 5739319-zw86058 deep-agg[31868]: [DEBUG] Saved raw product to dk-raw-product.json
+Oct 07 01:33:34 5739319-zw86058 deep-agg[31868]: [DEBUG] Saved raw product to dk-raw-product.json
+Oct 07 01:33:34 5739319-zw86058 deep-agg[31868]: [DEBUG] Saved raw product to dk-raw-product.json
+Oct 07 01:33:34 5739319-zw86058 deep-agg[31868]: [DEBUG] Saved raw product to dk-raw-product.json
+Oct 07 01:33:34 5739319-zw86058 deep-agg[31868]:    ✅ Digi-Key: 10 results (used: "2N3904")
+Oct 07 01:33:34 5739319-zw86058 deep-agg[31868]: ⏱️  Completed in 2016ms: 10 results from digikey
+Oct 07 01:33:44 5739319-zw86058 deep-agg[31868]: 🔍 Search: "STM32F103C8T6"
+Oct 07 01:33:44 5739319-zw86058 deep-agg[31868]: 🔍 Enhanced Search: "STM32F103C8T6"
+Oct 07 01:33:44 5739319-zw86058 deep-agg[31868]:    Strategy: mpn-first - MPNs detected - searching by part number first
+Oct 07 01:33:44 5739319-zw86058 deep-agg[31868]:    Primary: "STM32F103C8T6"
+Oct 07 01:33:44 5739319-zw86058 deep-agg[31868]:    Alternatives: 2
+Oct 07 01:33:44 5739319-zw86058 deep-agg[31868]:    → Attempt 1: "STM32F103C8T6"
+Oct 07 01:33:45 5739319-zw86058 deep-agg[31868]:    ✅ Primary query successful
+Oct 07 01:33:45 5739319-zw86058 deep-agg[31868]: [DEBUG] Saved raw product to dk-raw-product.json
+Oct 07 01:33:45 5739319-zw86058 deep-agg[31868]: [DEBUG] Saved raw product to dk-raw-product.json
+Oct 07 01:33:45 5739319-zw86058 deep-agg[31868]:    ✅ Digi-Key: 2 results (used: "STM32F103C8T6")
+Oct 07 01:33:45 5739319-zw86058 deep-agg[31868]: ⏱️  Completed in 1110ms: 2 results from digikey
+Oct 07 01:37:35 5739319-zw86058 deep-agg[31868]: [STATIC] Serving file: /opt/deep-agg/public/index.html
+Oct 07 01:37:35 5739319-zw86058 deep-agg[31868]: [STATIC] Serving file: /opt/deep-agg/public/styles/v0-theme.css
+Oct 07 01:37:35 5739319-zw86058 deep-agg[31868]: [STATIC] Serving file: /opt/deep-agg/public/scripts/v0-main.js
+Oct 07 01:37:44 5739319-zw86058 deep-agg[31868]: [STATIC] Serving file: /opt/deep-agg/public/search.html
+Oct 07 01:37:44 5739319-zw86058 deep-agg[31868]: [STATIC] Serving file: /opt/deep-agg/public/styles/v0-theme.css
+Oct 07 01:37:45 5739319-zw86058 deep-agg[31868]: [STATIC] Serving file: /opt/deep-agg/public/scripts/search-page.js
+Oct 07 01:37:45 5739319-zw86058 deep-agg[31868]: 🔍 Search: "ULN2803A"
+Oct 07 01:37:45 5739319-zw86058 deep-agg[31868]: 🔍 Enhanced Search: "ULN2803A"
+Oct 07 01:37:45 5739319-zw86058 deep-agg[31868]:    Strategy: mpn-first - MPNs detected - searching by part number first
+Oct 07 01:37:45 5739319-zw86058 deep-agg[31868]:    Primary: "ULN2803A"
+Oct 07 01:37:45 5739319-zw86058 deep-agg[31868]:    Alternatives: 2
+Oct 07 01:37:45 5739319-zw86058 deep-agg[31868]:    → Attempt 1: "ULN2803A"
+Oct 07 01:37:46 5739319-zw86058 deep-agg[31868]:    ✅ Primary query successful
+Oct 07 01:37:46 5739319-zw86058 deep-agg[31868]: [DEBUG] Saved raw product to dk-raw-product.json
+Oct 07 01:37:46 5739319-zw86058 deep-agg[31868]: [DEBUG] Saved raw product to dk-raw-product.json
+Oct 07 01:37:46 5739319-zw86058 deep-agg[31868]: [DEBUG] Saved raw product to dk-raw-product.json
+Oct 07 01:37:46 5739319-zw86058 deep-agg[31868]: [DEBUG] Saved raw product to dk-raw-product.json
+Oct 07 01:37:46 5739319-zw86058 deep-agg[31868]: [DEBUG] Saved raw product to dk-raw-product.json
+Oct 07 01:37:46 5739319-zw86058 deep-agg[31868]: [DEBUG] Saved raw product to dk-raw-product.json
+Oct 07 01:37:46 5739319-zw86058 deep-agg[31868]: [DEBUG] Saved raw product to dk-raw-product.json
+Oct 07 01:37:46 5739319-zw86058 deep-agg[31868]: [DEBUG] Saved raw product to dk-raw-product.json
+Oct 07 01:37:46 5739319-zw86058 deep-agg[31868]: [DEBUG] Saved raw product to dk-raw-product.json
+Oct 07 01:37:46 5739319-zw86058 deep-agg[31868]: [DEBUG] Saved raw product to dk-raw-product.json
+Oct 07 01:37:46 5739319-zw86058 deep-agg[31868]:    ✅ Digi-Key: 10 results (used: "ULN2803A")
+Oct 07 01:37:46 5739319-zw86058 deep-agg[31868]: ⏱️  Completed in 1390ms: 10 results from digikey
+Oct 07 01:38:01 5739319-zw86058 deep-agg[31868]: [STATIC] Serving file: /opt/deep-agg/public/product.html
+Oct 07 01:38:01 5739319-zw86058 deep-agg[31868]: [STATIC] Serving file: /opt/deep-agg/public/styles/v0-theme.css
+Oct 07 01:38:01 5739319-zw86058 deep-agg[31868]: [STATIC] Serving file: /opt/deep-agg/public/scripts/product-page.js
+Oct 07 01:38:01 5739319-zw86058 deep-agg[31868]: [STATIC] Serving file: /opt/deep-agg/public/styles/product.css
+Oct 07 01:38:01 5739319-zw86058 deep-agg[31868]: 📦 Product Request: ULN2803A
+Oct 07 01:38:01 5739319-zw86058 deep-agg[31868]:    🔄 Fetching from ALL sources in parallel...
+Oct 07 01:38:01 5739319-zw86058 deep-agg[31868]:    🔍 DigiKey: Starting search...
+Oct 07 01:38:01 5739319-zw86058 deep-agg[31868]: [DigiKey] Requesting new access token...
+Oct 07 01:38:01 5739319-zw86058 deep-agg[31868]: [DigiKey] ✅ Access token obtained
+Oct 07 01:38:03 5739319-zw86058 deep-agg[31868]:    🔍 DigiKey: Got response, status=200
+Oct 07 01:38:03 5739319-zw86058 deep-agg[31868]:    ✅ DigiKey: Found ULN2803A
+Oct 07 01:38:03 5739319-zw86058 deep-agg[31868]:    📊 DigiKey specs extracted: 21
+Oct 07 01:38:03 5739319-zw86058 deep-agg[31868]:    📊 Results: Mouser=false, TME=false, Farnell=false, DigiKey=true
+Oct 07 01:38:03 5739319-zw86058 deep-agg[31868]:    ✅ Merged product with 21 specs
+Oct 07 01:38:03 5739319-zw86058 deep-agg[31868]: 🖼️  Image Proxy: https://mm.digikey.com/Volume0/opasdata/d220001/medias/images/376/18-Dip.jpg
+Oct 07 01:38:03 5739319-zw86058 deep-agg[31868]:    ✅ Image served: 17312 bytes
+● deep-agg.service - Deep Components Aggregator service
+     Loaded: loaded (/etc/systemd/system/deep-agg.service; enabled; preset: enabled)
+     Active: active (running) since Tue 2025-10-07 02:09:39 MSK; 12ms ago
+   Main PID: 63808 (node)
+      Tasks: 1 (limit: 5837)
+     Memory: 328.0K (peak: 468.0K)
+        CPU: 9ms
+     CGroup: /system.slice/deep-agg.service
+             └─63808 /usr/bin/node /opt/deep-agg/server.js
+
+Oct 07 02:09:39 5739319-zw86058 systemd[1]: Started deep-agg.service - Deep Components Aggregator service.

@@ -1,0 +1,38 @@
+# Deep Components Aggregator — Amsterdam VPS
+# SSH Config для VS Code Remote-SSH
+# 
+# Копируй этот блок в ~/.ssh/config на MacBook
+
+Host amsterdam
+    HostName 5.129.228.88
+    User root
+    Port 22
+    IdentityFile ~/.ssh/id_rsa
+    ServerAliveInterval 60
+    ServerAliveCountMax 3
+    ForwardAgent yes
+    Compression yes
+    StrictHostKeyChecking accept-new
+
+# Алиасы для удобства
+Host deep-agg
+    HostName 5.129.228.88
+    User root
+    Port 22
+    IdentityFile ~/.ssh/id_rsa
+    ServerAliveInterval 60
+    ServerAliveCountMax 3
+    ForwardAgent yes
+    Compression yes
+    StrictHostKeyChecking accept-new
+
+Host amsterdam-vscode
+    HostName 5.129.228.88
+    User root
+    Port 22
+    IdentityFile ~/.ssh/id_rsa
+    ServerAliveInterval 60
+    ServerAliveCountMax 3
+    ForwardAgent yes
+    Compression yes
+    StrictHostKeyChecking accept-new

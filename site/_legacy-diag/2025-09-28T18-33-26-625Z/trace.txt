@@ -1,0 +1,10 @@
+QUERY: LDB-500L
+START_TIME: 2025-09-28T18:33:26.625Z
+TOTAL_TIME: 514ms
+
+=== EVENTS ===
+[0ms] [start] Starting live search for "LDB-500L"
+[0ms] [test] Using test data for "LDB-500L"
+[514ms] [item] Found item 1: LDB-500L
+
+=== PROVIDERS ===

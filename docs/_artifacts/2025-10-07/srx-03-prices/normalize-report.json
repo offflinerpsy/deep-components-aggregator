@@ -1,0 +1,24 @@
+{
+  "generatedAt": "2025-10-06T23:34:42.418Z",
+  "date": "2025-10-07",
+  "files": [
+    {
+      "input": "docs/_artifacts/2025-10-07/srx-03-prices/raw/digikey-2N3904.json",
+      "products": 10,
+      "normalized": 10,
+      "output": "docs/_artifacts/2025-10-07/srx-03-prices/after/digikey-2N3904-normalized.json"
+    },
+    {
+      "input": "docs/_artifacts/2025-10-07/srx-03-prices/raw/digikey-DS12C887.json",
+      "products": 1,
+      "normalized": 1,
+      "output": "docs/_artifacts/2025-10-07/srx-03-prices/after/digikey-DS12C887-normalized.json"
+    },
+    {
+      "input": "docs/_artifacts/2025-10-07/srx-03-prices/raw/digikey-STM32F103C8T6.json",
+      "products": 2,
+      "normalized": 2,
+      "output": "docs/_artifacts/2025-10-07/srx-03-prices/after/digikey-STM32F103C8T6-normalized.json"
+    }
+  ]
+}

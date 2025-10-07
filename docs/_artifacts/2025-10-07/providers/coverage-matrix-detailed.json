@@ -1,0 +1,108 @@
+{
+  "generatedAt": "2025-10-07T07:44:17.189Z",
+  "providers": [
+    "digikey",
+    "mouser",
+    "farnell",
+    "tme"
+  ],
+  "mpns": [
+    "DS12C887+",
+    "2N3904",
+    "STM32F103C8T6"
+  ],
+  "coverage": {
+    "digikey": {
+      "DS12C887+": {
+        "hasResponse": true,
+        "hasProducts": false,
+        "hasPricing": false,
+        "hasStock": false,
+        "error": "Missing Digi-Key credentials"
+      },
+      "2N3904": {
+        "hasResponse": true,
+        "hasProducts": false,
+        "hasPricing": false,
+        "hasStock": false,
+        "error": "Missing Digi-Key credentials"
+      },
+      "STM32F103C8T6": {
+        "hasResponse": true,
+        "hasProducts": false,
+        "hasPricing": false,
+        "hasStock": false,
+        "error": "Missing Digi-Key credentials"
+      }
+    },
+    "mouser": {
+      "DS12C887+": {
+        "hasResponse": true,
+        "hasProducts": false,
+        "hasPricing": false,
+        "hasStock": false,
+        "error": "Missing Mouser API key"
+      },
+      "2N3904": {
+        "hasResponse": true,
+        "hasProducts": false,
+        "hasPricing": false,
+        "hasStock": false,
+        "error": "Missing Mouser API key"
+      },
+      "STM32F103C8T6": {
+        "hasResponse": true,
+        "hasProducts": false,
+        "hasPricing": false,
+        "hasStock": false,
+        "error": "Missing Mouser API key"
+      }
+    },
+    "farnell": {
+      "DS12C887+": {
+        "hasResponse": true,
+        "hasProducts": false,
+        "hasPricing": false,
+        "hasStock": false,
+        "error": "Missing Farnell API key"
+      },
+      "2N3904": {
+        "hasResponse": true,
+        "hasProducts": false,
+        "hasPricing": false,
+        "hasStock": false,
+        "error": "Missing Farnell API key"
+      },
+      "STM32F103C8T6": {
+        "hasResponse": true,
+        "hasProducts": false,
+        "hasPricing": false,
+        "hasStock": false,
+        "error": "Missing Farnell API key"
+      }
+    },
+    "tme": {
+      "DS12C887+": {
+        "hasResponse": true,
+        "hasProducts": false,
+        "hasPricing": false,
+        "hasStock": false,
+        "error": "Missing TME credentials"
+      },
+      "2N3904": {
+        "hasResponse": true,
+        "hasProducts": false,
+        "hasPricing": false,
+        "hasStock": false,
+        "error": "Missing TME credentials"
+      },
+      "STM32F103C8T6": {
+        "hasResponse": true,
+        "hasProducts": false,
+        "hasPricing": false,
+        "hasStock": false,
+        "error": "Missing TME credentials"
+      }
+    }
+  }
+}

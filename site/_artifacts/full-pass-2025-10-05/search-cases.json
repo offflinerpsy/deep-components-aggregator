@@ -1,0 +1,81 @@
+{
+  "timestamp": "2025-10-04T22:43:42.082Z",
+  "testCases": [
+    {
+      "query": "транзистор 2N3904",
+      "success": true,
+      "normalized": "tranzistor 2n3904",
+      "mpns": [
+        "2N3904"
+      ],
+      "tokens": [
+        "transistor",
+        "2n3904"
+      ],
+      "hasCyrillic": true
+    },
+    {
+      "query": "конденсатор 1000мкф 25в",
+      "success": true,
+      "normalized": "kondensator 1000mkf 25v",
+      "mpns": [
+        "1000"
+      ],
+      "tokens": [
+        "capacitor",
+        "1000мкф",
+        "25в"
+      ],
+      "hasCyrillic": true
+    },
+    {
+      "query": "диод шоттки 3А",
+      "success": true,
+      "normalized": "diod shottki 3a",
+      "mpns": [],
+      "tokens": [
+        "diode",
+        "шоттки",
+        "3а"
+      ],
+      "hasCyrillic": true
+    },
+    {
+      "query": "NE555",
+      "success": true,
+      "normalized": "ne555",
+      "mpns": [
+        "NE555"
+      ],
+      "tokens": [
+        "ne555"
+      ],
+      "hasCyrillic": false
+    },
+    {
+      "query": "транзисторы",
+      "success": true,
+      "normalized": "tranzistory",
+      "mpns": [],
+      "tokens": [
+        "transistor"
+      ],
+      "hasCyrillic": true
+    },
+    {
+      "query": "resistor 10k 1%",
+      "success": true,
+      "normalized": "resistor 10k 1%",
+      "mpns": [],
+      "tokens": [
+        "resistor",
+        "10k"
+      ],
+      "hasCyrillic": false
+    }
+  ],
+  "meta": {
+    "total": 6,
+    "successful": 6
+  }
+}

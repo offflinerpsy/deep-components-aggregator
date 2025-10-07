@@ -1,29 +1,141 @@
 {
-  "$schema":"https://json-schema.org/draft/2020-12/schema",
-  "type":"object",
-  "properties":{
-    "results":{
-      "type":"array",
-      "items":{
-        "type":"object",
-        "required":["mpn","title","manufacturer","regions","price_min_rub"],
-        "properties":{
-          "mpn":{"type":"string","minLength":1},
-          "title":{"type":"string"},
-          "description":{"type":"string"},
-          "manufacturer":{"type":"string"},
-          "package":{"type":"string"},
-          "packaging":{"type":"string","enum":["Tube","Reel","Tape","Cut Tape","Tray"]},
-          "regions":{"type":"array","items":{"enum":["EU","US","ASIA"]}},
-          "stock_total":{"type":"integer","minimum":0},
-          "price_min":{"type":"number","minimum":0},
-          "price_min_currency":{"type":"string","enum":["USD","EUR"]},
-          "price_min_rub":{"type":"number","exclusiveMinimum":0},
-          "image":{"type":"string","format":"uri"}
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "results": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "mpn",
+          "title",
+          "manufacturer",
+          "regions",
+          "min_price_rub",
+          "source"
+        ],
+        "properties": {
+          "mpn": {
+            "type": "string",
+            "minLength": 1
+          },
+          "title": {
+            "type": "string"
+          },
+          "description_short": {
+            "type": "string"
+          },
+          "manufacturer": {
+            "type": "string"
+          },
+          "package": {
+            "type": "string"
+          },
+          "packaging": {
+            "type": "string"
+          },
+          "regions": {
+            "type": "array",
+            "items": {
+              "enum": [
+                "RU",
+                "EU",
+                "US",
+                "ASIA",
+                "GLOBAL"
+              ]
+            }
+          },
+          "stock": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "min_price": {
+            "type": "number",
+            "minimum": 0
+          },
+          "min_currency": {
+            "type": "string",
+            "enum": [
+              "USD",
+              "EUR",
+              "GBP",
+              "PLN",
+              "RUB"
+            ]
+          },
+          "min_price_rub": {
+            "type": "number",
+            "minimum": 0
+          },
+          "image_url": {
+            "type": "string",
+            "format": "uri"
+          },
+          "product_url": {
+            "type": "string",
+            "format": "uri"
+          },
+          "source": {
+            "type": "string",
+            "enum": [
+              "mouser",
+              "digikey",
+              "tme",
+              "farnell",
+              "chipdip",
+              "promelec",
+              "compel",
+              "electronshik",
+              "elitan",
+              "oemstrade"
+            ]
+          },
+          "price_breaks": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "qty",
+                "price",
+                "currency"
+              ],
+              "properties": {
+                "qty": {
+                  "type": "number",
+                  "minimum": 1
+                },
+                "price": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "currency": {
+                  "type": "string",
+                  "enum": [
+                    "USD",
+                    "EUR",
+                    "GBP",
+                    "PLN",
+                    "RUB"
+                  ]
+                },
+                "price_rub": {
+                  "type": [
+                    "number",
+                    "null"
+                  ],
+                  "minimum": 0
+                }
+              },
+              "additionalProperties": false
+            }
+          }
         }
       }
     }
   },
-  "required":["results"],
-  "additionalProperties":false
+  "required": [
+    "results"
+  ],
+  "additionalProperties": false
 }

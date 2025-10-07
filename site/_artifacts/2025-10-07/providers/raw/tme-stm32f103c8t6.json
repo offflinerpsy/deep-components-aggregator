@@ -1,0 +1,7 @@
+{
+  "provider": "tme",
+  "mpn": "STM32F103C8T6",
+  "fetchedAt": "2025-10-06T23:16:13.367Z",
+  "ok": false,
+  "error": "Missing TME credentials"
+}

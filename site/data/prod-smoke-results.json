@@ -1,0 +1,48 @@
+{
+  "timestamp": 1759436672.6096053,
+  "host": "5.129.228.88",
+  "results": {
+    "health": {
+      "status": 200,
+      "ok": true,
+      "data": {
+        "status": "ok",
+        "version": "3.0",
+        "ts": 1759436668349,
+        "sources": {
+          "mouser": "ready",
+          "tme": "ready",
+          "farnell": "ready",
+          "digikey": "ready"
+        }
+      }
+    },
+    "search": {
+      "status": 200,
+      "ok": true,
+      "count": 50
+    },
+    "product": {
+      "status": 200,
+      "ok": true,
+      "found": true
+    },
+    "register": {
+      "status": 404,
+      "ok": false,
+      "data": null
+    },
+    "auth_me": {
+      "status": "skipped",
+      "ok": false
+    },
+    "user_orders": {
+      "status": "skipped",
+      "ok": false
+    }
+  },
+  "summary": {
+    "passed": 3,
+    "total": 6
+  }
+}

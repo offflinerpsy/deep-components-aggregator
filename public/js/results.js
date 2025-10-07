@@ -131,7 +131,7 @@ async function performSearch(query) {
     const data = await response.json();
 
     // Сохраняем результаты
-    searchResults = data.items || [];
+    searchResults = Array.isArray(data.rows) ? data.rows : [];
 
     // Обновляем интерфейс
     updateResults();
@@ -164,9 +164,11 @@ function updateResults() {
   // Фильтр по типу корпуса
   const pkgTypeFilter = filterPkgTypeEl.value;
   if (pkgTypeFilter) {
-    filteredResults = filteredResults.filter(item =>
-      item.pkg_type === pkgTypeFilter
-    );
+    const requested = pkgTypeFilter.toLowerCase();
+    filteredResults = filteredResults.filter(item => {
+      const packaging = (item.packaging || '').toLowerCase();
+      return packaging.includes(requested);
+    });
   }
 
   // Применяем сортировку
@@ -174,22 +176,22 @@ function updateResults() {
   switch (sortBy) {
     case 'price-asc':
       filteredResults.sort((a, b) => {
-        const priceA = a.price_rub || Number.MAX_SAFE_INTEGER;
-        const priceB = b.price_rub || Number.MAX_SAFE_INTEGER;
+        const priceA = a.min_price_rub || Number.MAX_SAFE_INTEGER;
+        const priceB = b.min_price_rub || Number.MAX_SAFE_INTEGER;
         return priceA - priceB;
       });
       break;
     case 'price-desc':
       filteredResults.sort((a, b) => {
-        const priceA = a.price_rub || 0;
-        const priceB = b.price_rub || 0;
+        const priceA = a.min_price_rub || 0;
+        const priceB = b.min_price_rub || 0;
         return priceB - priceA;
       });
       break;
     case 'brand':
       filteredResults.sort((a, b) => {
-        const brandA = (a.brand || '').toLowerCase();
-        const brandB = (b.brand || '').toLowerCase();
+        const brandA = (a.manufacturer || '').toLowerCase();
+        const brandB = (b.manufacturer || '').toLowerCase();
         return brandA.localeCompare(brandB);
       });
       break;
@@ -246,7 +248,7 @@ function renderResults(results) {
     const imageCell = document.createElement('td');
     const image = document.createElement('img');
     image.className = 'thumb';
-    image.src = item.image || '/img/no-image.png';
+    image.src = item.image_url || '/img/no-image.png';
     image.alt = item.title || item.mpn || '';
     imageCell.appendChild(image);
 
@@ -255,7 +257,7 @@ function renderResults(results) {
     const mpnEl = document.createElement('div');
     mpnEl.className = 'mpn';
     mpnEl.textContent = item.mpn || '';
-    
+
     // Source badge
     if (item.source) {
       const badge = document.createElement('span');
@@ -265,29 +267,29 @@ function renderResults(results) {
       badge.style.fontWeight = '600';
       badge.style.borderRadius = '3px';
       badge.style.textTransform = 'uppercase';
-      
+
       const sourceColors = {
         'digikey': { bg: '#cc0000', text: '#fff' },
         'mouser': { bg: '#0066b2', text: '#fff' },
         'tme': { bg: '#009fe3', text: '#fff' },
         'farnell': { bg: '#ff6600', text: '#fff' }
       };
-      
+
       const sourceLabels = {
         'digikey': 'DK',
         'mouser': 'MO',
         'tme': 'TME',
         'farnell': 'FN'
       };
-      
+
       const colors = sourceColors[item.source.toLowerCase()] || { bg: '#666', text: '#fff' };
       badge.style.backgroundColor = colors.bg;
       badge.style.color = colors.text;
       badge.textContent = sourceLabels[item.source.toLowerCase()] || item.source.toUpperCase();
-      
+
       mpnEl.appendChild(badge);
     }
-    
+
     const titleEl = document.createElement('div');
     titleEl.className = 'title';
     titleEl.textContent = item.title || '';
@@ -296,20 +298,24 @@ function renderResults(results) {
 
     // Производитель
     const brandCell = document.createElement('td');
-    brandCell.textContent = item.brand || '';
+    brandCell.textContent = item.manufacturer || '';
 
     // Описание
     const descCell = document.createElement('td');
-    descCell.textContent = item.desc || '';
+    descCell.textContent = item.description_short || '';
 
     // Корпус
     const pkgCell = document.createElement('td');
-    if (item.pkg) {
-      pkgCell.textContent = item.pkg;
-      if (item.pkg_type) {
+    if (item.package || item.packaging) {
+      if (item.package) {
+        const pkgName = document.createElement('div');
+        pkgName.textContent = item.package;
+        pkgCell.appendChild(pkgName);
+      }
+      if (item.packaging) {
         const pkgTypeEl = document.createElement('div');
         pkgTypeEl.className = 'badge';
-        pkgTypeEl.textContent = item.pkg_type;
+        pkgTypeEl.textContent = item.packaging;
         pkgCell.appendChild(pkgTypeEl);
       }
     }
@@ -334,16 +340,21 @@ function renderResults(results) {
 
     // Наличие
     const stockCell = document.createElement('td');
-    if (item.stock_total !== null && item.stock_total !== undefined) {
-      stockCell.textContent = item.stock_total;
+    if (item.stock !== null && item.stock !== undefined) {
+      stockCell.textContent = item.stock;
     } else {
       stockCell.textContent = 'По запросу';
     }
 
     // Цена
     const priceCell = document.createElement('td');
-    if (item.price_rub) {
-      priceCell.textContent = `${item.price_rub.toLocaleString('ru-RU')} ₽`;
+    if (item.min_price_rub) {
+      const parts = [`${item.min_price_rub.toLocaleString('ru-RU')} ₽`];
+      if (item.min_price && item.min_currency) {
+        const formatted = Number(item.min_price).toLocaleString('en-US', { maximumFractionDigits: 4 });
+        parts.push(`(${formatted} ${item.min_currency})`);
+      }
+      priceCell.textContent = parts.join(' ');
     } else {
       priceCell.textContent = 'По запросу';
     }
@@ -461,25 +472,24 @@ async function openProductModal(mpn) {
       throw new Error(`Error loading product: ${response.status}`);
     }
 
-    const product = await response.json();
+    const payload = await response.json();
+    const product = payload.product || {};
     currentProduct = product;
 
     // Заполняем модальное окно данными о товаре
     modalTitle.textContent = product.title || product.mpn || '';
     modalMpn.textContent = `MPN: ${product.mpn || ''}`;
-    modalBrand.textContent = `Производитель: ${product.brand || ''}`;
-    modalPkg.textContent = `Корпус: ${product.pkg || ''}${product.pkg_type ? ` (${product.pkg_type})` : ''}`;
-    modalDescription.textContent = product.desc_short || '';
+    modalBrand.textContent = `Производитель: ${product.manufacturer || ''}`;
+    const pkgLabel = product.package || '';
+    const packaging = product.packaging ? ` (${product.packaging})` : '';
+    modalPkg.textContent = `Корпус: ${pkgLabel}${packaging}`;
+    modalDescription.textContent = product.description || '';
 
     // Изображения
-    if (product.image) {
-      modalMainImage.src = product.image;
-    } else {
-      modalMainImage.src = '/img/no-image.png';
-    }
+    const mainImage = product.photo || (Array.isArray(product.images) ? product.images[0] : '') || '';
+    modalMainImage.src = mainImage || '/img/no-image.png';
 
-    // Миниатюры
-    if (product.images && product.images.length > 0) {
+    if (Array.isArray(product.images) && product.images.length > 0) {
       product.images.forEach((imgUrl, index) => {
         const thumbnail = document.createElement('div');
         thumbnail.className = 'thumbnail';
@@ -493,10 +503,7 @@ async function openProductModal(mpn) {
 
         thumbnail.appendChild(img);
         thumbnail.addEventListener('click', () => {
-          // Обновляем главное изображение
           modalMainImage.src = imgUrl;
-
-          // Обновляем активную миниатюру
           document.querySelectorAll('.thumbnail').forEach(el => {
             el.classList.remove('active');
           });
@@ -508,8 +515,10 @@ async function openProductModal(mpn) {
     }
 
     // Технические характеристики
-    if (product.specs && Object.keys(product.specs).length > 0) {
-      for (const [key, value] of Object.entries(product.specs)) {
+    const specs = product.technical_specs || {};
+    const specEntries = Object.entries(specs);
+    if (specEntries.length > 0) {
+      specEntries.forEach(([key, value]) => {
         const row = document.createElement('tr');
 
         const keyCell = document.createElement('td');
@@ -522,7 +531,7 @@ async function openProductModal(mpn) {
         row.appendChild(valueCell);
 
         modalSpecs.appendChild(row);
-      }
+      });
     } else {
       const row = document.createElement('tr');
       const cell = document.createElement('td');
@@ -533,15 +542,22 @@ async function openProductModal(mpn) {
     }
 
     // Документы
-    if (product.docs && product.docs.length > 0) {
-      product.docs.forEach(doc => {
+    const datasheets = Array.isArray(product.datasheets) ? product.datasheets : [];
+    if (datasheets.length > 0) {
+      datasheets.forEach((entry, index) => {
         const li = document.createElement('li');
-        const a = document.createElement('a');
-        a.href = doc.url;
-        a.target = '_blank';
-        a.rel = 'noopener noreferrer';
-        a.textContent = doc.title || 'PDF';
-        li.appendChild(a);
+        const href = typeof entry === 'string' ? entry : entry?.url;
+        const label = typeof entry === 'object' && entry && entry.title ? entry.title : `Datasheet ${index + 1}`;
+        if (href) {
+          const a = document.createElement('a');
+          a.href = href;
+          a.target = '_blank';
+          a.rel = 'noopener noreferrer';
+          a.textContent = label;
+          li.appendChild(a);
+        } else {
+          li.textContent = label;
+        }
         modalDocs.appendChild(li);
       });
     } else {
@@ -551,26 +567,27 @@ async function openProductModal(mpn) {
     }
 
     // Цена
-    if (product.price_min_rub) {
-      modalPrice.textContent = `${product.price_min_rub.toLocaleString('ru-RU')} ₽`;
+    if (product.price_rub) {
+      modalPrice.textContent = `${Number(product.price_rub).toLocaleString('ru-RU')} ₽`;
     } else {
       modalPrice.textContent = 'По запросу';
     }
 
     // Наличие
-    if (product.offers && product.offers.length > 0) {
-      product.offers.forEach(offer => {
+    const availability = product.availability || {};
+    const availabilitySources = availability.sources || {};
+    const leadTimes = availability.leadTimes || {};
+    const availabilityEntries = Object.entries(availabilitySources).filter(([, value]) => Number(value) > 0);
+    if (availabilityEntries.length > 0) {
+      availabilityEntries.forEach(([provider, stock]) => {
         const row = document.createElement('tr');
 
         const regionCell = document.createElement('td');
-        regionCell.textContent = offer.region || '';
+        regionCell.textContent = provider.toUpperCase();
 
         const stockCell = document.createElement('td');
-        if (offer.stock !== null && offer.stock !== undefined) {
-          stockCell.textContent = offer.stock;
-        } else {
-          stockCell.textContent = 'По запросу';
-        }
+        const lead = leadTimes[provider];
+        stockCell.textContent = lead ? `${stock} (LT: ${lead})` : stock;
 
         row.appendChild(regionCell);
         row.appendChild(stockCell);

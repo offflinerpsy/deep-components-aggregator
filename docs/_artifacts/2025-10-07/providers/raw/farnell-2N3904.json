@@ -1,0 +1,993 @@
+{
+  "ok": true,
+  "status": 200,
+  "data": {
+    "keywordSearchReturn": {
+      "numberOfResults": 16,
+      "products": [
+        {
+          "sku": "1574370",
+          "displayName": "MULTICOMP PRO - 2N3904 - Bipolar (BJT) Single Transistor, NPN, 40 V, 200 mA, 1.5 W, TO-92, Through Hole",
+          "productStatus": "STOCKED",
+          "rohsStatusCode": "YES",
+          "packSize": 1,
+          "unitOfMeasure": "EACH",
+          "id": "pf_UK1_1574370_0",
+          "image": {
+            "baseName": "/GE3TO92-40.jpg",
+            "vrntPath": "farnell/"
+          },
+          "datasheets": [
+            {
+              "type": "T",
+              "description": "Technical Data Sheet (225.63KB) EN",
+              "url": "http://www.farnell.com/datasheets/2861475.pdf"
+            }
+          ],
+          "prices": [
+            {
+              "to": 9,
+              "from": 5,
+              "cost": 0.12
+            },
+            {
+              "to": 99,
+              "from": 10,
+              "cost": 0.0961
+            },
+            {
+              "to": 499,
+              "from": 100,
+              "cost": 0.0687
+            },
+            {
+              "to": 999,
+              "from": 500,
+              "cost": 0.0481
+            },
+            {
+              "to": 4999,
+              "from": 1000,
+              "cost": 0.0343
+            },
+            {
+              "to": 999999999,
+              "from": 5000,
+              "cost": 0.03
+            }
+          ],
+          "inv": 191112,
+          "vendorId": "1099656",
+          "vendorName": "MULTICOMP PRO",
+          "brandName": "MULTICOMP PRO",
+          "translatedManufacturerPartNumber": "2N3904",
+          "translatedMinimumOrderQuality": 5,
+          "attributes": [
+            {
+              "attributeLabel": "tariffCode",
+              "attributeValue": "85412900"
+            },
+            {
+              "attributeLabel": "Transition Frequency",
+              "attributeUnit": "MHz",
+              "attributeValue": "300"
+            },
+            {
+              "attributeLabel": "Transistor Polarity",
+              "attributeValue": "NPN"
+            },
+            {
+              "attributeLabel": "rohsCompliant",
+              "attributeValue": "YES"
+            },
+            {
+              "attributeLabel": "Product Range",
+              "attributeValue": "-"
+            },
+            {
+              "attributeLabel": "hazardous",
+              "attributeValue": "false"
+            },
+            {
+              "attributeLabel": "rohsPhthalatesCompliant",
+              "attributeValue": "YES"
+            },
+            {
+              "attributeLabel": "Operating Temperature Max",
+              "attributeUnit": "°C",
+              "attributeValue": "150"
+            },
+            {
+              "attributeLabel": "Transistor Mounting",
+              "attributeValue": "Through Hole"
+            },
+            {
+              "attributeLabel": "MSL",
+              "attributeValue": "-"
+            },
+            {
+              "attributeLabel": "Power Dissipation",
+              "attributeUnit": "W",
+              "attributeValue": "1.5"
+            },
+            {
+              "attributeLabel": "usEccn",
+              "attributeValue": "EAR99"
+            },
+            {
+              "attributeLabel": "Collector Emitter Voltage Max",
+              "attributeUnit": "V",
+              "attributeValue": "40"
+            },
+            {
+              "attributeLabel": "euEccn",
+              "attributeValue": "NLR"
+            },
+            {
+              "attributeLabel": "Qualification",
+              "attributeValue": "-"
+            },
+            {
+              "attributeLabel": "DC Current Gain hFE Min",
+              "attributeUnit": "hFE",
+              "attributeValue": "100"
+            },
+            {
+              "attributeLabel": "Transistor Case Style",
+              "attributeValue": "TO-92"
+            },
+            {
+              "attributeLabel": "productTraceability",
+              "attributeValue": "No"
+            },
+            {
+              "attributeLabel": "No. of Pins",
+              "attributeUnit": "Pins",
+              "attributeValue": "3"
+            },
+            {
+              "attributeLabel": "Continuous Collector Current",
+              "attributeUnit": "mA",
+              "attributeValue": "200"
+            },
+            {
+              "attributeLabel": "SVHC",
+              "attributeValue": "No SVHC (25-Jun-2025)"
+            }
+          ],
+          "related": {
+            "containAlternatives": false,
+            "containcontainRoHSAlternatives": false,
+            "containAccessories": false,
+            "containcontainRoHSAccessories": false
+          },
+          "stock": {
+            "level": 191112,
+            "leastLeadTime": 127,
+            "status": 1,
+            "shipsFromMultipleWarehouses": false,
+            "breakdown": [
+              {
+                "inv": 191112,
+                "region": "UK",
+                "lead": 127,
+                "warehouse": "UK1"
+              },
+              {
+                "inv": 0,
+                "region": "UK",
+                "lead": 127,
+                "warehouse": "GB1"
+              },
+              {
+                "inv": 0,
+                "region": "-",
+                "lead": 127,
+                "warehouse": "PE1"
+              }
+            ],
+            "regionalBreakdown": [
+              {
+                "level": 191112,
+                "leastLeadTime": 127,
+                "status": 1,
+                "warehouse": "UK",
+                "shipsFromMultipleWarehouses": true
+              },
+              {
+                "level": 0,
+                "leastLeadTime": 127,
+                "status": 1,
+                "warehouse": "-",
+                "shipsFromMultipleWarehouses": false
+              }
+            ]
+          },
+          "countryOfOrigin": "IN",
+          "comingSoon": false,
+          "inventoryCode": 5,
+          "nationalClassCode": null,
+          "publishingModule": null,
+          "vatHandlingCode": "SLST",
+          "releaseStatusCode": 4,
+          "isSpecialOrder": false,
+          "isAwaitingRelease": false,
+          "reeling": false,
+          "discountReason": 30,
+          "brandId": "1099656",
+          "commodityClassCode": "090001000"
+        },
+        {
+          "sku": "4574466",
+          "displayName": "DIOTEC - 2N3904 - Bipolar (BJT) Single Transistor, NPN, 40 V, 200 mA, 625 mW, TO-226AA, Through Hole",
+          "productStatus": "STOCKED",
+          "rohsStatusCode": "YES",
+          "packSize": 1,
+          "unitOfMeasure": "PACK OF",
+          "id": "pf_UK1_4574466_0",
+          "image": {
+            "baseName": "/4574476-40.jpg",
+            "vrntPath": "farnell/"
+          },
+          "datasheets": [
+            {
+              "type": "T",
+              "description": "Technical Data Sheet (809.50KB) EN",
+              "url": "http://www.farnell.com/datasheets/4421932.pdf"
+            }
+          ],
+          "prices": [
+            {
+              "to": 11999,
+              "from": 4000,
+              "cost": 0.0207
+            },
+            {
+              "to": 999999999,
+              "from": 12000,
+              "cost": 0.0158
+            }
+          ],
+          "inv": 4000,
+          "vendorId": "1001745",
+          "vendorName": "DIOTEC",
+          "brandName": "DIOTEC",
+          "translatedManufacturerPartNumber": "2N3904",
+          "translatedMinimumOrderQuality": 4000,
+          "attributes": [
+            {
+              "attributeLabel": "tariffCode",
+              "attributeValue": "85412900"
+            },
+            {
+              "attributeLabel": "Transition Frequency",
+              "attributeUnit": "MHz",
+              "attributeValue": "300"
+            },
+            {
+              "attributeLabel": "Transistor Polarity",
+              "attributeValue": "NPN"
+            },
+            {
+              "attributeLabel": "rohsCompliant",
+              "attributeValue": "YES"
+            },
+            {
+              "attributeLabel": "Product Range",
+              "attributeValue": "-"
+            },
+            {
+              "attributeLabel": "hazardous",
+              "attributeValue": "false"
+            },
+            {
+              "attributeLabel": "rohsPhthalatesCompliant",
+              "attributeValue": "YES"
+            },
+            {
+              "attributeLabel": "Operating Temperature Max",
+              "attributeUnit": "°C",
+              "attributeValue": "175"
+            },
+            {
+              "attributeLabel": "Transistor Mounting",
+              "attributeValue": "Through Hole"
+            },
+            {
+              "attributeLabel": "Power Dissipation",
+              "attributeUnit": "mW",
+              "attributeValue": "625"
+            },
+            {
+              "attributeLabel": "usEccn",
+              "attributeValue": "EAR99"
+            },
+            {
+              "attributeLabel": "Collector Emitter Voltage Max",
+              "attributeUnit": "V",
+              "attributeValue": "40"
+            },
+            {
+              "attributeLabel": "euEccn",
+              "attributeValue": "NLR"
+            },
+            {
+              "attributeLabel": "Qualification",
+              "attributeValue": "-"
+            },
+            {
+              "attributeLabel": "DC Current Gain hFE Min",
+              "attributeUnit": "hFE",
+              "attributeValue": "100"
+            },
+            {
+              "attributeLabel": "Transistor Case Style",
+              "attributeValue": "TO-226AA"
+            },
+            {
+              "attributeLabel": "productTraceability",
+              "attributeValue": "No"
+            },
+            {
+              "attributeLabel": "No. of Pins",
+              "attributeUnit": "Pins",
+              "attributeValue": "3"
+            },
+            {
+              "attributeLabel": "Continuous Collector Current",
+              "attributeUnit": "mA",
+              "attributeValue": "200"
+            },
+            {
+              "attributeLabel": "SVHC",
+              "attributeValue": "No SVHC (27-Jun-2024)"
+            }
+          ],
+          "related": {
+            "containAlternatives": false,
+            "containcontainRoHSAlternatives": false,
+            "containAccessories": false,
+            "containcontainRoHSAccessories": false
+          },
+          "stock": {
+            "level": 4000,
+            "leastLeadTime": 43,
+            "status": 1,
+            "shipsFromMultipleWarehouses": false,
+            "breakdown": [
+              {
+                "inv": 4000,
+                "region": "UK",
+                "lead": 43,
+                "warehouse": "UK1"
+              },
+              {
+                "inv": 0,
+                "region": "UK",
+                "lead": 43,
+                "warehouse": "GB1"
+              },
+              {
+                "inv": 0,
+                "region": "-",
+                "lead": 43,
+                "warehouse": "PE1"
+              }
+            ],
+            "regionalBreakdown": [
+              {
+                "level": 4000,
+                "leastLeadTime": 43,
+                "status": 1,
+                "warehouse": "UK",
+                "shipsFromMultipleWarehouses": true
+              },
+              {
+                "level": 0,
+                "leastLeadTime": 43,
+                "status": 1,
+                "warehouse": "-",
+                "shipsFromMultipleWarehouses": false
+              }
+            ]
+          },
+          "countryOfOrigin": "CN",
+          "comingSoon": false,
+          "inventoryCode": 5,
+          "nationalClassCode": null,
+          "publishingModule": null,
+          "vatHandlingCode": "SLST",
+          "releaseStatusCode": 4,
+          "isSpecialOrder": false,
+          "isAwaitingRelease": false,
+          "reeling": false,
+          "discountReason": 30,
+          "brandId": "1001745",
+          "commodityClassCode": "090001000"
+        },
+        {
+          "sku": "4574476",
+          "displayName": "DIOTEC - 2N3904 - Bipolar (BJT) Single Transistor, NPN, 40 V, 200 mA, 625 mW, TO-226AA, Through Hole",
+          "productStatus": "STOCKED",
+          "rohsStatusCode": "YES",
+          "packSize": 1,
+          "unitOfMeasure": "EACH (CUT FROM AMMO PACK)",
+          "id": "pf_UK1_4574476_0",
+          "image": {
+            "baseName": "/4574476-40.jpg",
+            "vrntPath": "farnell/"
+          },
+          "datasheets": [
+            {
+              "type": "T",
+              "description": "Technical Data Sheet (809.50KB) EN",
+              "url": "http://www.farnell.com/datasheets/4421932.pdf"
+            }
+          ],
+          "prices": [
+            {
+              "to": 9,
+              "from": 5,
+              "cost": 0.112
+            },
+            {
+              "to": 99,
+              "from": 10,
+              "cost": 0.0717
+            },
+            {
+              "to": 499,
+              "from": 100,
+              "cost": 0.0449
+            },
+            {
+              "to": 999,
+              "from": 500,
+              "cost": 0.0319
+            },
+            {
+              "to": 4999,
+              "from": 1000,
+              "cost": 0.0251
+            },
+            {
+              "to": 999999999,
+              "from": 5000,
+              "cost": 0.0215
+            }
+          ],
+          "inv": 5510,
+          "vendorId": "1001745",
+          "vendorName": "DIOTEC",
+          "brandName": "DIOTEC",
+          "translatedManufacturerPartNumber": "2N3904",
+          "translatedMinimumOrderQuality": 5,
+          "attributes": [
+            {
+              "attributeLabel": "tariffCode",
+              "attributeValue": "85412900"
+            },
+            {
+              "attributeLabel": "Transition Frequency",
+              "attributeUnit": "MHz",
+              "attributeValue": "300"
+            },
+            {
+              "attributeLabel": "Transistor Polarity",
+              "attributeValue": "NPN"
+            },
+            {
+              "attributeLabel": "rohsCompliant",
+              "attributeValue": "YES"
+            },
+            {
+              "attributeLabel": "Product Range",
+              "attributeValue": "-"
+            },
+            {
+              "attributeLabel": "hazardous",
+              "attributeValue": "false"
+            },
+            {
+              "attributeLabel": "rohsPhthalatesCompliant",
+              "attributeValue": "YES"
+            },
+            {
+              "attributeLabel": "Operating Temperature Max",
+              "attributeUnit": "°C",
+              "attributeValue": "175"
+            },
+            {
+              "attributeLabel": "Transistor Mounting",
+              "attributeValue": "Through Hole"
+            },
+            {
+              "attributeLabel": "Power Dissipation",
+              "attributeUnit": "mW",
+              "attributeValue": "625"
+            },
+            {
+              "attributeLabel": "usEccn",
+              "attributeValue": "EAR99"
+            },
+            {
+              "attributeLabel": "Collector Emitter Voltage Max",
+              "attributeUnit": "V",
+              "attributeValue": "40"
+            },
+            {
+              "attributeLabel": "euEccn",
+              "attributeValue": "NLR"
+            },
+            {
+              "attributeLabel": "Qualification",
+              "attributeValue": "-"
+            },
+            {
+              "attributeLabel": "DC Current Gain hFE Min",
+              "attributeUnit": "hFE",
+              "attributeValue": "100"
+            },
+            {
+              "attributeLabel": "Transistor Case Style",
+              "attributeValue": "TO-226AA"
+            },
+            {
+              "attributeLabel": "productTraceability",
+              "attributeValue": "No"
+            },
+            {
+              "attributeLabel": "No. of Pins",
+              "attributeUnit": "Pins",
+              "attributeValue": "3"
+            },
+            {
+              "attributeLabel": "Continuous Collector Current",
+              "attributeUnit": "mA",
+              "attributeValue": "200"
+            },
+            {
+              "attributeLabel": "SVHC",
+              "attributeValue": "No SVHC (27-Jun-2024)"
+            }
+          ],
+          "related": {
+            "containAlternatives": false,
+            "containcontainRoHSAlternatives": false,
+            "containAccessories": false,
+            "containcontainRoHSAccessories": false
+          },
+          "stock": {
+            "level": 5510,
+            "leastLeadTime": 48,
+            "status": 1,
+            "shipsFromMultipleWarehouses": false,
+            "breakdown": [
+              {
+                "inv": 5510,
+                "region": "UK",
+                "lead": 48,
+                "warehouse": "UK1"
+              },
+              {
+                "inv": 0,
+                "region": "UK",
+                "lead": 48,
+                "warehouse": "GB1"
+              },
+              {
+                "inv": 0,
+                "region": "-",
+                "lead": 48,
+                "warehouse": "PE1"
+              }
+            ],
+            "regionalBreakdown": [
+              {
+                "level": 5510,
+                "leastLeadTime": 48,
+                "status": 1,
+                "warehouse": "UK",
+                "shipsFromMultipleWarehouses": true
+              },
+              {
+                "level": 0,
+                "leastLeadTime": 48,
+                "status": 1,
+                "warehouse": "-",
+                "shipsFromMultipleWarehouses": false
+              }
+            ]
+          },
+          "countryOfOrigin": "CN",
+          "comingSoon": false,
+          "inventoryCode": 5,
+          "nationalClassCode": null,
+          "publishingModule": null,
+          "vatHandlingCode": "SLST",
+          "releaseStatusCode": 4,
+          "isSpecialOrder": false,
+          "isAwaitingRelease": false,
+          "reeling": false,
+          "discountReason": 30,
+          "brandId": "1001745",
+          "commodityClassCode": "090001000"
+        },
+        {
+          "sku": "1208607",
+          "displayName": "MAGNATEC - 2N3904 - Bipolar (BJT) Single Transistor, NPN, 40 V, 200 mA, 625 mW, TO-226AA, Through Hole",
+          "productStatus": "NO_LONGER_MANUFACTURED",
+          "rohsStatusCode": "YES",
+          "packSize": 1,
+          "unitOfMeasure": "EACH",
+          "id": "pf_UK1_1208607_0",
+          "image": {
+            "baseName": "/GE3TO92-40.jpg",
+            "vrntPath": "farnell/"
+          },
+          "datasheets": [
+            {
+              "type": "T",
+              "description": "Technical Data Sheet (22.80KB) EN",
+              "url": "http://www.farnell.com/datasheets/1686115.pdf"
+            }
+          ],
+          "prices": [
+            {
+              "to": 24,
+              "from": 5,
+              "cost": 0.252
+            },
+            {
+              "to": 99,
+              "from": 25,
+              "cost": 0.175
+            },
+            {
+              "to": 999,
+              "from": 100,
+              "cost": 0.122
+            },
+            {
+              "to": 2999,
+              "from": 1000,
+              "cost": 0.0954
+            },
+            {
+              "to": 999999999,
+              "from": 3000,
+              "cost": 0.0693
+            }
+          ],
+          "inv": 0,
+          "vendorId": "1000464",
+          "vendorName": "MAGNATEC",
+          "brandName": "MAGNATEC",
+          "translatedManufacturerPartNumber": "2N3904",
+          "translatedMinimumOrderQuality": 5,
+          "attributes": [
+            {
+              "attributeLabel": "tariffCode",
+              "attributeValue": "85412900"
+            },
+            {
+              "attributeLabel": "Transition Frequency",
+              "attributeUnit": "MHz",
+              "attributeValue": "300"
+            },
+            {
+              "attributeLabel": "Transistor Polarity",
+              "attributeValue": "NPN"
+            },
+            {
+              "attributeLabel": "rohsCompliant",
+              "attributeValue": "YES"
+            },
+            {
+              "attributeLabel": "Product Range",
+              "attributeValue": "-"
+            },
+            {
+              "attributeLabel": "hazardous",
+              "attributeValue": "false"
+            },
+            {
+              "attributeLabel": "rohsPhthalatesCompliant",
+              "attributeValue": "TBA"
+            },
+            {
+              "attributeLabel": "Operating Temperature Max",
+              "attributeUnit": "°C",
+              "attributeValue": "175"
+            },
+            {
+              "attributeLabel": "Transistor Mounting",
+              "attributeValue": "Through Hole"
+            },
+            {
+              "attributeLabel": "Power Dissipation",
+              "attributeUnit": "mW",
+              "attributeValue": "625"
+            },
+            {
+              "attributeLabel": "usEccn",
+              "attributeValue": "EAR99"
+            },
+            {
+              "attributeLabel": "Collector Emitter Voltage Max",
+              "attributeUnit": "V",
+              "attributeValue": "40"
+            },
+            {
+              "attributeLabel": "euEccn",
+              "attributeValue": "NLR"
+            },
+            {
+              "attributeLabel": "Qualification",
+              "attributeValue": "-"
+            },
+            {
+              "attributeLabel": "DC Current Gain hFE Min",
+              "attributeUnit": "hFE",
+              "attributeValue": "100"
+            },
+            {
+              "attributeLabel": "Transistor Case Style",
+              "attributeValue": "TO-226AA"
+            },
+            {
+              "attributeLabel": "productTraceability",
+              "attributeValue": "No"
+            },
+            {
+              "attributeLabel": "No. of Pins",
+              "attributeUnit": "Pins",
+              "attributeValue": "3"
+            },
+            {
+              "attributeLabel": "Continuous Collector Current",
+              "attributeUnit": "mA",
+              "attributeValue": "200"
+            }
+          ],
+          "related": {
+            "containAlternatives": false,
+            "containcontainRoHSAlternatives": false,
+            "containAccessories": false,
+            "containcontainRoHSAccessories": false
+          },
+          "stock": {
+            "level": 0,
+            "leastLeadTime": 64,
+            "status": -3
+          },
+          "countryOfOrigin": "MY",
+          "comingSoon": false,
+          "inventoryCode": 9,
+          "nationalClassCode": null,
+          "publishingModule": null,
+          "vatHandlingCode": "SLST",
+          "releaseStatusCode": 7,
+          "isSpecialOrder": false,
+          "isAwaitingRelease": false,
+          "reeling": false,
+          "discountReason": 30,
+          "brandId": "1000464",
+          "commodityClassCode": "090001000"
+        },
+        {
+          "sku": "1700648",
+          "displayName": "ONSEMI - 2N3904BU - Bipolar (BJT) Single Transistor, NPN, 40 V, 200 mA, 625 mW, TO-92, Through Hole",
+          "productStatus": "STOCKED",
+          "rohsStatusCode": "YES",
+          "packSize": 1,
+          "unitOfMeasure": "EACH",
+          "id": "pf_UK1_1700648_0",
+          "image": {
+            "baseName": "/GE3TO92-40.jpg",
+            "vrntPath": "farnell/"
+          },
+          "datasheets": [
+            {
+              "type": "T",
+              "description": "Technical Data Sheet (324.42KB) EN",
+              "url": "http://www.farnell.com/datasheets/3770732.pdf"
+            }
+          ],
+          "prices": [
+            {
+              "to": 9,
+              "from": 5,
+              "cost": 0.24
+            },
+            {
+              "to": 99,
+              "from": 10,
+              "cost": 0.144
+            },
+            {
+              "to": 499,
+              "from": 100,
+              "cost": 0.09
+            },
+            {
+              "to": 999,
+              "from": 500,
+              "cost": 0.0669
+            },
+            {
+              "to": 4999,
+              "from": 1000,
+              "cost": 0.0523
+            },
+            {
+              "to": 999999999,
+              "from": 5000,
+              "cost": 0.0454
+            }
+          ],
+          "inv": 78808,
+          "vendorId": "1001931",
+          "vendorName": "ONSEMI",
+          "brandName": "ONSEMI",
+          "translatedManufacturerPartNumber": "2N3904BU",
+          "translatedMinimumOrderQuality": 5,
+          "attributes": [
+            {
+              "attributeLabel": "tariffCode",
+              "attributeValue": "85412100"
+            },
+            {
+              "attributeLabel": "Transition Frequency",
+              "attributeUnit": "MHz",
+              "attributeValue": "300"
+            },
+            {
+              "attributeLabel": "Transistor Polarity",
+              "attributeValue": "NPN"
+            },
+            {
+              "attributeLabel": "rohsCompliant",
+              "attributeValue": "YES"
+            },
+            {
+              "attributeLabel": "Product Range",
+              "attributeValue": "-"
+            },
+            {
+              "attributeLabel": "hazardous",
+              "attributeValue": "false"
+            },
+            {
+              "attributeLabel": "rohsPhthalatesCompliant",
+              "attributeValue": "YES"
+            },
+            {
+              "attributeLabel": "Operating Temperature Max",
+              "attributeUnit": "°C",
+              "attributeValue": "150"
+            },
+            {
+              "attributeLabel": "Transistor Mounting",
+              "attributeValue": "Through Hole"
+            },
+            {
+              "attributeLabel": "MSL",
+              "attributeValue": "-"
+            },
+            {
+              "attributeLabel": "Power Dissipation",
+              "attributeUnit": "mW",
+              "attributeValue": "625"
+            },
+            {
+              "attributeLabel": "usEccn",
+              "attributeValue": "EAR99"
+            },
+            {
+              "attributeLabel": "Collector Emitter Voltage Max",
+              "attributeUnit": "V",
+              "attributeValue": "40"
+            },
+            {
+              "attributeLabel": "euEccn",
+              "attributeValue": "NLR"
+            },
+            {
+              "attributeLabel": "Qualification",
+              "attributeValue": "-"
+            },
+            {
+              "attributeLabel": "DC Current Gain hFE Min",
+              "attributeUnit": "hFE",
+              "attributeValue": "100"
+            },
+            {
+              "attributeLabel": "Transistor Case Style",
+              "attributeValue": "TO-92"
+            },
+            {
+              "attributeLabel": "productTraceability",
+              "attributeValue": "Yes-Date/Lot Code"
+            },
+            {
+              "attributeLabel": "No. of Pins",
+              "attributeUnit": "Pins",
+              "attributeValue": "3"
+            },
+            {
+              "attributeLabel": "Continuous Collector Current",
+              "attributeUnit": "mA",
+              "attributeValue": "200"
+            },
+            {
+              "attributeLabel": "SVHC",
+              "attributeValue": "No SVHC (27-Jun-2024)"
+            }
+          ],
+          "related": {
+            "containAlternatives": false,
+            "containcontainRoHSAlternatives": false,
+            "containAccessories": false,
+            "containcontainRoHSAccessories": false
+          },
+          "stock": {
+            "level": 78808,
+            "leastLeadTime": 113,
+            "status": 1,
+            "shipsFromMultipleWarehouses": false,
+            "breakdown": [
+              {
+                "inv": 78808,
+                "region": "UK",
+                "lead": 113,
+                "warehouse": "UK1"
+              },
+              {
+                "inv": 0,
+                "region": "UK",
+                "lead": 113,
+                "warehouse": "GB1"
+              },
+              {
+                "inv": 0,
+                "region": "-",
+                "lead": 113,
+                "warehouse": "PE1"
+              }
+            ],
+            "regionalBreakdown": [
+              {
+                "level": 78808,
+                "leastLeadTime": 113,
+                "status": 1,
+                "warehouse": "UK",
+                "shipsFromMultipleWarehouses": true
+              },
+              {
+                "level": 0,
+                "leastLeadTime": 113,
+                "status": 1,
+                "warehouse": "-",
+                "shipsFromMultipleWarehouses": false
+              }
+            ]
+          },
+          "countryOfOrigin": "CN",
+          "comingSoon": false,
+          "inventoryCode": 5,
+          "nationalClassCode": null,
+          "publishingModule": null,
+          "vatHandlingCode": "SLST",
+          "releaseStatusCode": 4,
+          "isSpecialOrder": false,
+          "isAwaitingRelease": false,
+          "reeling": false,
+          "discountReason": 30,
+          "brandId": "1001931",
+          "commodityClassCode": "090001000"
+        }
+      ]
+    }
+  }
+}

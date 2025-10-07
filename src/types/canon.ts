@@ -1,7 +1,24 @@
 // canon.ts - типы канонов для выдачи и карточки товара
-export type Region = 'RU' | 'EU' | 'US' | 'ASIA';
-export type Currency = 'RUB' | 'USD' | 'EUR';
-export type Source = 'chipdip' | 'promelec' | 'compel' | 'electronshik' | 'elitan' | 'oemstrade';
+export type Region = 'RU' | 'EU' | 'US' | 'ASIA' | 'GLOBAL';
+export type Currency = 'RUB' | 'USD' | 'EUR' | 'GBP' | 'PLN';
+export type Source =
+  | 'chipdip'
+  | 'promelec'
+  | 'compel'
+  | 'electronshik'
+  | 'elitan'
+  | 'oemstrade'
+  | 'mouser'
+  | 'digikey'
+  | 'tme'
+  | 'farnell';
+
+export interface PriceBreak {
+  qty: number;
+  price: number;
+  currency: Currency;
+  price_rub: number | null;
+}
 
 // Канон строки выдачи
 export interface SearchRow {
@@ -13,11 +30,13 @@ export interface SearchRow {
   packaging: string;                    // Tube/Reel/Tape/Cut/Tray/—
   regions: Region[];                    // из источника
   stock: number | null;                 // ≥0 или null (не знаем)
+  min_price: number | null;             // исходная цена в валюте источника
   min_price_rub: number | null;         // сконвертированная ₽
   min_currency: Currency | null;        // валюта источника
   image_url: string | null;             // абсолютная
   product_url: string;                  // ссылка на карточку источника
   source: Source;                       // источник данных
+  price_breaks?: PriceBreak[];          // список прайс-брейков
 }
 
 // Типы для карточки

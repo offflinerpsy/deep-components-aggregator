@@ -1,0 +1,185 @@
+{
+  "blockId": 1,
+  "blockName": "Russian Search Production Verification",
+  "timestamp": "2025-10-05T13:19:38.009Z",
+  "productionUrl": "http://5.129.228.88:9201",
+  "statistics": {
+    "total": 5,
+    "passed": 4,
+    "partial": 1,
+    "failed": 0,
+    "avgDuration": 2346,
+    "totalResults": 201
+  },
+  "queries": [
+    {
+      "query": "резистор",
+      "transliterated": "rezistor",
+      "status": "PASSED",
+      "resultsCount": 50,
+      "duration": 3114,
+      "results": [
+        {
+          "source": "mouser",
+          "title": "NSVMUN5136T1G",
+          "mpn": "NSVMUN5136T1G",
+          "manufacturer": "onsemi"
+        },
+        {
+          "source": "mouser",
+          "title": "CRCW12060000Z0TAHP",
+          "mpn": "CRCW12060000Z0TAHP",
+          "manufacturer": "Vishay"
+        },
+        {
+          "source": "mouser",
+          "title": "CMF55806K00FHEA",
+          "mpn": "CMF55806K00FHEA",
+          "manufacturer": "Vishay / Dale"
+        }
+      ],
+      "normalizedQuery": "rezistor",
+      "relevanceMatch": true,
+      "searchMeta": {
+        "source": "mouser",
+        "strategy": "russian-enhanced",
+        "hasCyrillic": true,
+        "attempts": 1
+      }
+    },
+    {
+      "query": "конденсатор",
+      "transliterated": "kondensator",
+      "status": "PARTIAL",
+      "resultsCount": 1,
+      "duration": 953,
+      "results": [
+        {
+          "source": "mouser",
+          "title": "744012",
+          "mpn": "744012",
+          "manufacturer": "Wurth Elektronik"
+        }
+      ],
+      "normalizedQuery": "kondensator",
+      "relevanceMatch": false,
+      "searchMeta": {
+        "source": "mouser",
+        "strategy": "russian-enhanced",
+        "hasCyrillic": true,
+        "attempts": 1
+      }
+    },
+    {
+      "query": "микросхема",
+      "transliterated": "mikroskhema",
+      "status": "PASSED",
+      "resultsCount": 50,
+      "duration": 3148,
+      "results": [
+        {
+          "source": "mouser",
+          "title": "CHIPI-X10",
+          "mpn": "CHIPI-X10",
+          "manufacturer": "FTDI"
+        },
+        {
+          "source": "mouser",
+          "title": "Chip Heat sink",
+          "mpn": "Chip Heat sink",
+          "manufacturer": "ADLINK Technology"
+        },
+        {
+          "source": "mouser",
+          "title": "ADPA7004CHIP-SX",
+          "mpn": "ADPA7004CHIP-SX",
+          "manufacturer": "Analog Devices"
+        }
+      ],
+      "normalizedQuery": "chip",
+      "relevanceMatch": true,
+      "searchMeta": {
+        "source": "mouser",
+        "strategy": "russian-enhanced",
+        "hasCyrillic": true,
+        "attempts": 3
+      }
+    },
+    {
+      "query": "транзистор",
+      "transliterated": "tranzistor",
+      "status": "PASSED",
+      "resultsCount": 50,
+      "duration": 2475,
+      "results": [
+        {
+          "source": "mouser",
+          "title": "IGLT65R055D2ATMA1",
+          "mpn": "IGLT65R055D2ATMA1",
+          "manufacturer": "Infineon Technologies"
+        },
+        {
+          "source": "mouser",
+          "title": "IGOT65R025D2AUMA1",
+          "mpn": "IGOT65R025D2AUMA1",
+          "manufacturer": "Infineon Technologies"
+        },
+        {
+          "source": "mouser",
+          "title": "SCT019HU120G3AG",
+          "mpn": "SCT019HU120G3AG",
+          "manufacturer": "STMicroelectronics"
+        }
+      ],
+      "normalizedQuery": "transistor",
+      "relevanceMatch": true,
+      "searchMeta": {
+        "source": "mouser",
+        "strategy": "russian-enhanced",
+        "hasCyrillic": true,
+        "attempts": 3
+      }
+    },
+    {
+      "query": "диод",
+      "transliterated": "diod",
+      "status": "PASSED",
+      "resultsCount": 50,
+      "duration": 2038,
+      "results": [
+        {
+          "source": "mouser",
+          "title": "INDIOD21G",
+          "mpn": "INDIOD21G",
+          "manufacturer": "Industruino"
+        },
+        {
+          "source": "mouser",
+          "title": "GDM 3009 J W/IN4007 DIODE ME",
+          "mpn": "GDM 3009 J W/IN4007 DIODE ME",
+          "manufacturer": "Lumberg Automation"
+        },
+        {
+          "source": "mouser",
+          "title": "G 4 W 1 F 1N4004 DIODE ME",
+          "mpn": "G 4 W 1 F 1N4004 DIODE ME",
+          "manufacturer": "Lumberg Automation"
+        }
+      ],
+      "normalizedQuery": "diod",
+      "relevanceMatch": true,
+      "searchMeta": {
+        "source": "mouser",
+        "strategy": "russian-enhanced",
+        "hasCyrillic": true,
+        "attempts": 1
+      }
+    }
+  ],
+  "verdict": "PASSED",
+  "notes": [
+    "Testing Cyrillic-to-Latin transliteration in production",
+    "Validating search relevance and response times",
+    "Verifying all Russian electronics terms work correctly"
+  ]
+}

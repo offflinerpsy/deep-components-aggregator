@@ -1,0 +1,13 @@
+Provider,MPN,HasResponse,HasProducts,HasPricing,HasStock,Error
+digikey,DS12C887+,true,false,false,false,Missing Digi-Key credentials
+digikey,2N3904,true,false,false,false,Missing Digi-Key credentials
+digikey,STM32F103C8T6,true,false,false,false,Missing Digi-Key credentials
+mouser,DS12C887+,true,false,false,false,Missing Mouser API key
+mouser,2N3904,true,false,false,false,Missing Mouser API key
+mouser,STM32F103C8T6,true,false,false,false,Missing Mouser API key
+farnell,DS12C887+,true,false,false,false,Missing Farnell API key
+farnell,2N3904,true,false,false,false,Missing Farnell API key
+farnell,STM32F103C8T6,true,false,false,false,Missing Farnell API key
+tme,DS12C887+,true,false,false,false,Missing TME credentials
+tme,2N3904,true,false,false,false,Missing TME credentials
+tme,STM32F103C8T6,true,false,false,false,Missing TME credentials

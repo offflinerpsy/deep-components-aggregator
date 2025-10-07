@@ -8,7 +8,7 @@ const disabled = ['NO_PROXY', 'DIRECT_CONNECTIONS', 'WARP_DISABLE'].some(
   (k) => String(process.env[k] || '') === '1'
 );
 
-const proxyUrl = process.env.WARP_PROXY_URL || 'http://127.0.0.1:40000';
+const proxyUrl = process.env.WARP_PROXY_URL || 'http://127.0.0.1:25345';
 
 try {
   if (disabled) {

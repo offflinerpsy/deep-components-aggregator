@@ -1,0 +1,20 @@
+● warp-svc.service - Cloudflare Zero Trust Client Daemon
+     Loaded: loaded (/usr/lib/systemd/system/warp-svc.service; enabled; preset: enabled)
+     Active: active (running) since Tue 2025-10-07 02:29:02 MSK; 2min 19s ago
+   Main PID: 66942 (warp-svc)
+      Tasks: 30 (limit: 5837)
+     Memory: 59.2M (peak: 60.1M)
+        CPU: 2.106s
+     CGroup: /system.slice/warp-svc.service
+             └─66942 /bin/warp-svc
+
+Oct 07 02:31:21 5739319-zw86058 warp-svc[66942]: 2025-10-06T23:31:21.933Z  INFO firewall::engine: Firewall unloaded
+Oct 07 02:31:21 5739319-zw86058 warp-svc[66942]: 2025-10-06T23:31:21.933Z  INFO main_loop:align_base_firewall_state: warp::warp_service: close time.busy=60.2µs time.idle=11.4µs
+Oct 07 02:31:21 5739319-zw86058 warp-svc[66942]: 2025-10-06T23:31:21.933Z DEBUG utilities::tokio::select_watcher: Exiting: [main loop] arm="tunnel_taskset_errors_fut" elapsed=967.394µs
+Oct 07 02:31:21 5739319-zw86058 warp-svc[66942]: 2025-10-06T23:31:21.933Z  INFO main_loop: warp::warp_service: WARP status: Disconnected(Manual)
+Oct 07 02:31:21 5739319-zw86058 warp-svc[66942]: 2025-10-06T23:31:21.933Z DEBUG main_loop: warp_ipc_helpers: Sending IPC status update: Disconnected(Manual)
+Oct 07 02:31:21 5739319-zw86058 warp-svc[66942]: 2025-10-06T23:31:21.933Z DEBUG main_loop: warp_ipc_helpers: Ipc Broadcast ResponseStatus: Disconnected(Manual)
+Oct 07 02:31:21 5739319-zw86058 warp-svc[66942]: 2025-10-06T23:31:21.933Z DEBUG utilities::tokio::select_watcher: Entering: [main loop] arm="status_change"
+Oct 07 02:31:21 5739319-zw86058 warp-svc[66942]: 2025-10-06T23:31:21.933Z DEBUG utilities::tokio::select_watcher: Exiting: [main loop] arm="status_change" elapsed=69.061µs
+Oct 07 02:31:21 5739319-zw86058 warp-svc[66942]: 2025-10-06T23:31:21.945Z  INFO slog: H3Driver work loop finished without error slog.target="tokio_quiche::http3::driver" slog.module_path="tokio_quiche::http3::driver" slog.file="/home/vsts_azpcontainer/.cargo/git/checkouts/quiche-4103ffa15137cf39/d1cf3ad/tokio-quiche/src/http3/driver/mod.rs" slog.line=1068 slog.column=13
+Oct 07 02:31:21 5739319-zw86058 warp-svc[66942]: 2025-10-06T23:31:21.945Z DEBUG slog: incoming packet router finished slog.target="tokio_quiche::quic" slog.module_path="tokio_quiche::quic" slog.file="/home/vsts_azpcontainer/.cargo/git/checkouts/quiche-4103ffa15137cf39/d1cf3ad/tokio-quiche/src/quic/mod.rs" slog.line=275 slog.column=23

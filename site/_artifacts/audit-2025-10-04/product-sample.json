@@ -1,0 +1,80 @@
+{
+  "error": "SERVER_NOT_RUNNING",
+  "note": "Product card data requires running server",
+  "test_mpn": "2N3904",
+  "expected_structure": {
+    "ok": true,
+    "product": {
+      "mpn": "2N3904",
+      "manufacturer": "ON Semiconductor",
+      "title": "Bipolar (BJT) Transistor NPN 40V 200mA",
+      "description": "General Purpose Transistor NPN 40V 200mA 625mW",
+      "photo": "https://media.digikey.com/...",
+      "images": [
+        "https://media.digikey.com/...",
+        "https://www.mouser.com/images/..."
+      ],
+      "datasheets": [
+        "https://www.onsemi.com/pdf/datasheet/2n3904-d.pdf"
+      ],
+      "technical_specs": {
+        "Transistor Type": "NPN",
+        "Voltage - Collector Emitter Breakdown (Max)": "40V",
+        "Current - Collector (Ic) (Max)": "200mA",
+        "Power - Max": "625mW",
+        "DC Current Gain (hFE) (Min) @ Ic, Vce": "100 @ 10mA, 1V",
+        "Operating Temperature": "-55°C ~ 150°C (TJ)"
+      },
+      "pricing": [
+        {
+          "qty": 1,
+          "price": "$0.12",
+          "currency": "USD",
+          "price_rub": 10.62,
+          "source": "mouser"
+        },
+        {
+          "qty": 10,
+          "price": "$0.095",
+          "currency": "USD",
+          "price_rub": 8.41,
+          "source": "mouser"
+        }
+      ],
+      "price_rub": 8.41,
+      "availability": {
+        "inStock": 15000,
+        "sources": {
+          "mouser": 15000,
+          "tme": 0,
+          "farnell": 0,
+          "digikey": 8000
+        }
+      },
+      "vendorUrls": {
+        "mouser": "https://www.mouser.com/...",
+        "digikey": "https://www.digikey.com/..."
+      },
+      "sources": {
+        "mouser": true,
+        "tme": false,
+        "farnell": false,
+        "digikey": true
+      }
+    },
+    "meta": {
+      "cached": false,
+      "sources": {
+        "mouser": true,
+        "digikey": true
+      }
+    }
+  },
+  "ui_elements_to_test": {
+    "sticky_sidebar": "Should stick to top when scrolling product details",
+    "image_gallery": "Should show thumbnails + main image with zoom",
+    "price_modal": "Button 'All Prices' should open modal with quantity breaks",
+    "specifications": "Table with 5-30 parameters, sortable/filterable",
+    "footer": "Should be visible at bottom, not overlapping content"
+  }
+}

@@ -3,8 +3,39 @@
  * Converts DigiKey API response to unified format
  */
 
-import { writeFileSync } from 'fs';
 import { toRub } from '../../currency/cbr.mjs';
+
+const clean = (value) => {
+  if (value === null || value === undefined) {
+    return '';
+  }
+  const text = String(value).trim();
+  if (!text || text === '-' || text === 'N/A') {
+    return '';
+  }
+  return text;
+};
+
+const truncate = (value, limit = 200) => {
+  const text = clean(value);
+  if (!text) {
+    return '';
+  }
+  return text.length > limit ? `${text.slice(0, limit - 1)}…` : text;
+};
+
+const pickBestPricing = (priceTiers) => {
+  const tiers = priceTiers.filter((tier) => Number.isFinite(tier.price));
+  if (tiers.length === 0) {
+    return null;
+  }
+  const sorted = tiers.slice().sort((a, b) => {
+    const priceA = Number.isFinite(a.price_rub) ? a.price_rub : a.price;
+    const priceB = Number.isFinite(b.price_rub) ? b.price_rub : b.price;
+    return priceA - priceB;
+  });
+  return sorted[0];
+};
 
 /**
  * Normalize DigiKey product to unified format
@@ -14,27 +45,9 @@ import { toRub } from '../../currency/cbr.mjs';
 export function normDigiKey(product) {
   if (!product) return null;
 
-  // DEBUG: Save raw product structure to file (always save first product)
-  try {
-    writeFileSync(
-      '/opt/deep-agg/docs/_artifacts/2025-10-06/providers/dk-raw-product.json',
-      JSON.stringify(product, null, 2)
-    );
-    console.log('[DEBUG] Saved raw product to dk-raw-product.json');
-  } catch (e) {
-    console.error('[DEBUG] Failed to write debug file:', e.message);
-  }
-
-  const clean = (s) => {
-    if (!s || typeof s !== 'string') return null;
-    s = s.trim();
-    if (!s || s === '-' || s === 'N/A') return null;
-    return s;
-  };
-
   // Extract technical specifications from Parameters
   const technical_specs = {};
-  
+
   if (product.Parameters && Array.isArray(product.Parameters)) {
     product.Parameters.forEach(param => {
       const name = clean(param.Parameter);
@@ -98,7 +111,7 @@ export function normDigiKey(product) {
 
   // Extract pricing - DigiKey API v4 has pricing in ProductVariations[].StandardPricing
   const pricing = [];
-  
+
   // Try ProductVariations first (Product Information V4 search response)
   if (product.ProductVariations && Array.isArray(product.ProductVariations)) {
     const firstVariation = product.ProductVariations[0];
@@ -115,7 +128,7 @@ export function normDigiKey(product) {
       });
     }
   }
-  
+
   // Fallback: try root-level StandardPricing (older API or different endpoint)
   if (pricing.length === 0 && product.StandardPricing && Array.isArray(product.StandardPricing)) {
     product.StandardPricing.forEach(price => {
@@ -130,24 +143,44 @@ export function normDigiKey(product) {
     });
   }
 
+  const resolvedId = product.DigiKeyProductNumber
+    || product.DigiKeyPartNumber
+    || product.ProductVariations?.[0]?.DigiKeyProductNumber
+    || product.ProductVariations?.[0]?.DigiKeyPartNumber
+    || product.ProductVariations?.[0]?.ProductNumber
+    || null;
+
+  const resolvedStock = Number(product.QuantityAvailable ??
+    product.ProductVariations?.[0]?.QuantityAvailable ??
+    product.QuantityOnOrder ??
+    0);
+
+  const bestPrice = pickBestPricing(pricing);
+
   return {
+    source: 'digikey',
     mpn: clean(product.ManufacturerProductNumber),
     manufacturer: clean(product.Manufacturer?.Name),
-    title: clean(product.Description?.ProductDescription || product.Description),
-    description: clean(product.Description?.DetailedDescription || product.DetailedDescription || product.Description?.ProductDescription),
-    photo: images[0] || null,
+    title: clean(product.Description?.ProductDescription || product.Description) || clean(product.ProductDescription) || clean(product.Description?.DetailedDescription) || clean(product.DetailedDescription) || clean(product.ManufacturerProductNumber),
+    description_short: truncate(product.Description?.DetailedDescription || product.DetailedDescription || product.Description?.ProductDescription || product.ProductDescription),
+    package: clean(product.Packaging?.Name || product.ProductVariations?.[0]?.PackageType?.Name),
+    packaging: clean(product.StandardPackage || product.ProductVariations?.[0]?.StandardPackage),
+    regions: ['US', 'GLOBAL'],
+    stock: Number.isFinite(resolvedStock) ? resolvedStock : null,
+    min_price: bestPrice ? bestPrice.price : null,
+    min_currency: bestPrice ? bestPrice.currency : null,
+    min_price_rub: bestPrice && Number.isFinite(bestPrice.price_rub) ? bestPrice.price_rub : null,
+    image_url: clean(images[0]) || null,
+    product_url: clean(product.ProductUrl || product.ProductVariations?.[0]?.ProductUrl || ''),
+    price_breaks: pricing,
+    raw_id: resolvedId || null,
     images: images.filter(Boolean),
     datasheets: [...new Set(datasheets.filter(Boolean))],
     technical_specs,
     pricing,
     availability: {
-      inStock: product.QuantityAvailable || 0,
+      inStock: Number.isFinite(resolvedStock) && resolvedStock > 0 ? resolvedStock : 0,
       leadTime: clean(product.ManufacturerLeadWeeks)
-    },
-    regions: ['US', 'Global'],
-    package: clean(product.Packaging?.Name || product.ProductVariations?.[0]?.PackageType?.Name),
-    packaging: clean(product.StandardPackage || product.ProductVariations?.[0]?.StandardPackage),
-    vendorUrl: clean(product.ProductUrl),
-    source: 'digikey'
+    }
   };
 }

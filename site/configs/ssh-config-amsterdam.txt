@@ -1,0 +1,33 @@
+# SSH Config for Amsterdam VPS (Vultr)
+# Location: ~/.ssh/config on your local machine (MacBook)
+
+Host amsterdam
+    HostName 5.129.228.88
+    User root
+    Port 22
+    IdentityFile ~/.ssh/id_rsa
+    ServerAliveInterval 60
+    ServerAliveCountMax 3
+    
+Host amsterdam-vscode
+    HostName 5.129.228.88
+    User root
+    Port 22
+    IdentityFile ~/.ssh/id_rsa
+    ForwardAgent yes
+    ServerAliveInterval 60
+    ServerAliveCountMax 3
+
+# Alternative with SSH key path (if you have specific key)
+Host deep-agg
+    HostName 5.129.228.88
+    User root
+    Port 22
+    IdentityFile ~/.ssh/vultr_amsterdam
+    ServerAliveInterval 60
+    ServerAliveCountMax 3
+    
+# Usage:
+# ssh amsterdam
+# ssh amsterdam-vscode
+# Or in VS Code: Remote-SSH: Connect to Host... → amsterdam

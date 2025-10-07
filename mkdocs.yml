@@ -57,6 +57,7 @@ nav:
     - Overview: architecture/overview.md
     - Search Flow: architecture/search-flow.md
     - Data Flow: architecture/data-flow.md
+    - Provider Orchestrator: architecture/orchestrator.md
   - Providers:
     - Overview: providers/overview.md
     - Digi-Key: providers/digikey.md
@@ -67,3 +68,7 @@ nav:
     - Currency: operations/currency.md
     - Metrics: operations/metrics.md
     - Health Checks: operations/health.md
+  - Reports:
+    - SRX-02 Fix & Verify: SRX-02-FIX-AND-VERIFY-REPORT.md
+    - Forensic Summary: _artifacts/2025-10-07/FORENSIC-SUMMARY.md
+    - Phase 6 UI Updates: _artifacts/2025-10-07/PHASE-6-UI-UPDATES.md

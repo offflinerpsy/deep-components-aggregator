@@ -201,6 +201,26 @@
          <lastmod>2025-10-07</lastmod>
     </url>
     <url>
+         <loc>https://deep-agg.github.io/docs/_artifacts/2025-10-07/API-KEYS-VERIFICATION/</loc>
+         <lastmod>2025-10-07</lastmod>
+    </url>
+    <url>
+         <loc>https://deep-agg.github.io/docs/_artifacts/2025-10-07/FORENSIC-SUMMARY/</loc>
+         <lastmod>2025-10-07</lastmod>
+    </url>
+    <url>
+         <loc>https://deep-agg.github.io/docs/_artifacts/2025-10-07/PHASE-3-4-SUMMARY/</loc>
+         <lastmod>2025-10-07</lastmod>
+    </url>
+    <url>
+         <loc>https://deep-agg.github.io/docs/_artifacts/2025-10-07/PHASE-5-HEALTH-METRICS/</loc>
+         <lastmod>2025-10-07</lastmod>
+    </url>
+    <url>
+         <loc>https://deep-agg.github.io/docs/_artifacts/2025-10-07/PHASE-6-UI-UPDATES/</loc>
+         <lastmod>2025-10-07</lastmod>
+    </url>
+    <url>
          <loc>https://deep-agg.github.io/docs/_artifacts/2025-10-07/PR-CHECKLIST/</loc>
          <lastmod>2025-10-07</lastmod>
     </url>
@@ -209,11 +229,31 @@
          <lastmod>2025-10-07</lastmod>
     </url>
     <url>
+         <loc>https://deep-agg.github.io/docs/_artifacts/2025-10-07/PROVIDER-RESTORE-REPORT/</loc>
+         <lastmod>2025-10-07</lastmod>
+    </url>
+    <url>
+         <loc>https://deep-agg.github.io/docs/_artifacts/2025-10-07/SRX-DOCS-PROVIDERS-COMPLETION-REPORT/</loc>
+         <lastmod>2025-10-07</lastmod>
+    </url>
+    <url>
+         <loc>https://deep-agg.github.io/docs/_artifacts/2025-10-07/SRX-FULL-BOOT-PROGRESS-OLD/</loc>
+         <lastmod>2025-10-07</lastmod>
+    </url>
+    <url>
+         <loc>https://deep-agg.github.io/docs/_artifacts/2025-10-07/SRX-FULL-BOOT-PROGRESS/</loc>
+         <lastmod>2025-10-07</lastmod>
+    </url>
+    <url>
          <loc>https://deep-agg.github.io/docs/_artifacts/2025-10-07/SUMMARY/</loc>
          <lastmod>2025-10-07</lastmod>
     </url>
     <url>
          <loc>https://deep-agg.github.io/docs/_artifacts/2025-10-07/runtime-status/</loc>
+         <lastmod>2025-10-07</lastmod>
+    </url>
+    <url>
+         <loc>https://deep-agg.github.io/docs/_artifacts/2025-10-07/providers/ROOT-CAUSE-ANALYSIS/</loc>
          <lastmod>2025-10-07</lastmod>
     </url>
     <url>
@@ -294,6 +334,10 @@
     </url>
     <url>
          <loc>https://deep-agg.github.io/docs/architecture/data-flow/</loc>
+         <lastmod>2025-10-07</lastmod>
+    </url>
+    <url>
+         <loc>https://deep-agg.github.io/docs/architecture/orchestrator/</loc>
          <lastmod>2025-10-07</lastmod>
     </url>
     <url>

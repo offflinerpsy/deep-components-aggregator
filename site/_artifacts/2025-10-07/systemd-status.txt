@@ -1,0 +1,13 @@
+● deep-agg.service - Deep Components Aggregator service
+     Loaded: loaded (/etc/systemd/system/deep-agg.service; enabled; preset: enabled)
+    Drop-In: /etc/systemd/system/deep-agg.service.d
+             └─environment.conf
+     Active: active (running) since Tue 2025-10-07 10:31:29 MSK; 1h 37min ago
+   Main PID: 115460 (node)
+      Tasks: 11 (limit: 5837)
+     Memory: 27.9M (peak: 42.7M)
+        CPU: 1.465s
+     CGroup: /system.slice/deep-agg.service
+             └─115460 /usr/bin/node /opt/deep-agg/server.js
+
+Oct 07 10:31:29 5739319-zw86058 systemd[1]: Started deep-agg.service - Deep Components Aggregator service.

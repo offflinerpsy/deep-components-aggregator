@@ -1,108 +1,212 @@
-{
-  "generatedAt": "2025-10-06T23:17:02.278Z",
-  "providers": [
-    "digikey",
-    "farnell",
-    "mouser",
-    "tme"
-  ],
-  "mpns": [
-    "2N3904",
-    "DS12C887+",
-    "STM32F103C8T6"
-  ],
-  "coverage": {
-    "digikey": {
-      "2N3904": {
-        "ok": false,
-        "status": null,
-        "error": "Missing Digi-Key credentials",
-        "hasPriceBreaks": false,
-        "priceBreaksCount": 0
-      },
-      "DS12C887+": {
-        "ok": false,
-        "status": null,
-        "error": "Missing Digi-Key credentials",
-        "hasPriceBreaks": false,
-        "priceBreaksCount": 0
-      },
-      "STM32F103C8T6": {
-        "ok": false,
-        "status": null,
-        "error": "Missing Digi-Key credentials",
-        "hasPriceBreaks": false,
-        "priceBreaksCount": 0
-      }
-    },
-    "farnell": {
-      "2N3904": {
-        "ok": false,
-        "status": null,
-        "error": "Missing Farnell API key",
-        "hasPriceBreaks": false,
-        "priceBreaksCount": 0
-      },
-      "DS12C887+": {
-        "ok": false,
-        "status": null,
-        "error": "Missing Farnell API key",
-        "hasPriceBreaks": false,
-        "priceBreaksCount": 0
-      },
-      "STM32F103C8T6": {
-        "ok": false,
-        "status": null,
-        "error": "Missing Farnell API key",
-        "hasPriceBreaks": false,
-        "priceBreaksCount": 0
-      }
-    },
-    "mouser": {
-      "2N3904": {
-        "ok": false,
-        "status": null,
-        "error": "Missing Mouser API key",
-        "hasPriceBreaks": false,
-        "priceBreaksCount": 0
-      },
-      "DS12C887+": {
-        "ok": false,
-        "status": null,
-        "error": "Missing Mouser API key",
-        "hasPriceBreaks": false,
-        "priceBreaksCount": 0
-      },
-      "STM32F103C8T6": {
-        "ok": false,
-        "status": null,
-        "error": "Missing Mouser API key",
-        "hasPriceBreaks": false,
-        "priceBreaksCount": 0
-      }
-    },
-    "tme": {
-      "2N3904": {
-        "ok": false,
-        "status": null,
-        "error": "Missing TME credentials",
-        "hasPriceBreaks": false,
-        "priceBreaksCount": 0
-      },
-      "DS12C887+": {
-        "ok": false,
-        "status": null,
-        "error": "Missing TME credentials",
-        "hasPriceBreaks": false,
-        "priceBreaksCount": 0
-      },
-      "STM32F103C8T6": {
-        "ok": false,
-        "status": null,
-        "error": "Missing TME credentials",
-        "hasPriceBreaks": false,
-        "priceBreaksCount": 0
-      }
-    }
+[
+  {
+    "provider": "digikey",
+    "mpn": "2N3904",
+    "priceBreaks": "5 tiers",
+    "currency": "USD",
+    "stockQty": 50706,
+    "manufacturer": "onsemi",
+    "description": "TRANS NPN 40V 0.2A TO-92-3",
+    "package": "",
+    "packaging": "Cut Tape (CT)",
+    "regions": "US,GLOBAL",
+    "leadTime": "13",
+    "url": "https://www.digikey.com/en/products/detail/onsemi/2N3904TA/973944"
+  },
+  {
+    "provider": "digikey",
+    "mpn": "2n3904",
+    "priceBreaks": "N/A",
+    "currency": "",
+    "stockQty": "",
+    "manufacturer": "",
+    "description": "",
+    "package": "",
+    "packaging": "",
+    "regions": "",
+    "leadTime": "",
+    "url": ""
+  },
+  {
+    "provider": "digikey",
+    "mpn": "DS12C887+",
+    "priceBreaks": "7 tiers",
+    "currency": "USD",
+    "stockQty": 782,
+    "manufacturer": "Analog Devices Inc./Maxim Integrated",
+    "description": "IC RTC CLK/CALENDAR PAR 24EDIP",
+    "package": "",
+    "packaging": "Tube",
+    "regions": "US,GLOBAL",
+    "leadTime": "10",
+    "url": "https://www.digikey.com/en/products/detail/analog-devices-inc-maxim-integrated/DS12C887/956875"
+  },
+  {
+    "provider": "digikey",
+    "mpn": "STM32F103C8T6",
+    "priceBreaks": "8 tiers",
+    "currency": "USD",
+    "stockQty": 4781,
+    "manufacturer": "STMicroelectronics",
+    "description": "IC MCU 32BIT 64KB FLASH 48LQFP",
+    "package": "",
+    "packaging": "Tray",
+    "regions": "US,GLOBAL",
+    "leadTime": "17",
+    "url": "https://www.digikey.com/en/products/detail/stmicroelectronics/STM32F103C8T6/1646338"
+  },
+  {
+    "provider": "digikey",
+    "mpn": "ds12c887",
+    "priceBreaks": "N/A",
+    "currency": "",
+    "stockQty": "",
+    "manufacturer": "",
+    "description": "",
+    "package": "",
+    "packaging": "",
+    "regions": "",
+    "leadTime": "",
+    "url": ""
+  },
+  {
+    "provider": "digikey",
+    "mpn": "stm32f103c8t6",
+    "priceBreaks": "N/A",
+    "currency": "",
+    "stockQty": "",
+    "manufacturer": "",
+    "description": "",
+    "package": "",
+    "packaging": "",
+    "regions": "",
+    "leadTime": "",
+    "url": ""
+  },
+  {
+    "provider": "farnell",
+    "mpn": "2n3904",
+    "priceBreaks": "N/A",
+    "currency": "",
+    "stockQty": "",
+    "manufacturer": "",
+    "description": "",
+    "package": "",
+    "packaging": "",
+    "regions": "",
+    "leadTime": "",
+    "url": ""
+  },
+  {
+    "provider": "farnell",
+    "mpn": "ds12c887",
+    "priceBreaks": "N/A",
+    "currency": "",
+    "stockQty": "",
+    "manufacturer": "",
+    "description": "",
+    "package": "",
+    "packaging": "",
+    "regions": "",
+    "leadTime": "",
+    "url": ""
+  },
+  {
+    "provider": "farnell",
+    "mpn": "stm32f103c8t6",
+    "priceBreaks": "N/A",
+    "currency": "",
+    "stockQty": "",
+    "manufacturer": "",
+    "description": "",
+    "package": "",
+    "packaging": "",
+    "regions": "",
+    "leadTime": "",
+    "url": ""
+  },
+  {
+    "provider": "mouser",
+    "mpn": "2n3904",
+    "priceBreaks": "N/A",
+    "currency": "",
+    "stockQty": "",
+    "manufacturer": "",
+    "description": "",
+    "package": "",
+    "packaging": "",
+    "regions": "",
+    "leadTime": "",
+    "url": ""
+  },
+  {
+    "provider": "mouser",
+    "mpn": "ds12c887",
+    "priceBreaks": "N/A",
+    "currency": "",
+    "stockQty": "",
+    "manufacturer": "",
+    "description": "",
+    "package": "",
+    "packaging": "",
+    "regions": "",
+    "leadTime": "",
+    "url": ""
+  },
+  {
+    "provider": "mouser",
+    "mpn": "stm32f103c8t6",
+    "priceBreaks": "N/A",
+    "currency": "",
+    "stockQty": "",
+    "manufacturer": "",
+    "description": "",
+    "package": "",
+    "packaging": "",
+    "regions": "",
+    "leadTime": "",
+    "url": ""
+  },
+  {
+    "provider": "tme",
+    "mpn": "2n3904",
+    "priceBreaks": "N/A",
+    "currency": "",
+    "stockQty": "",
+    "manufacturer": "",
+    "description": "",
+    "package": "",
+    "packaging": "",
+    "regions": "",
+    "leadTime": "",
+    "url": ""
+  },
+  {
+    "provider": "tme",
+    "mpn": "ds12c887",
+    "priceBreaks": "N/A",
+    "currency": "",
+    "stockQty": "",
+    "manufacturer": "",
+    "description": "",
+    "package": "",
+    "packaging": "",
+    "regions": "",
+    "leadTime": "",
+    "url": ""
+  },
+  {
+    "provider": "tme",
+    "mpn": "stm32f103c8t6",
+    "priceBreaks": "N/A",
+    "currency": "",
+    "stockQty": "",
+    "manufacturer": "",
+    "description": "",
+    "package": "",
+    "packaging": "",
+    "regions": "",
+    "leadTime": "",
+    "url": ""
   }
-}
+]

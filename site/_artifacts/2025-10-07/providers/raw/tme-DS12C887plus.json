@@ -1,0 +1,12 @@
+{
+  "data": {
+    "Status": "OK",
+    "Data": {
+      "ProductList": [],
+      "Amount": 0,
+      "PageNumber": 1,
+      "CategoryList": []
+    }
+  },
+  "status": 200
+}

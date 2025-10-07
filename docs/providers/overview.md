@@ -6,10 +6,12 @@ The platform integrates with multiple electronic component suppliers to provide 
 
 | Provider | Auth Method | Coverage | API Version | Status |
 |----------|------------|----------|-------------|--------|
-| **Digi-Key** | OAuth 2.0 | Global | Product Info v4 | ✅ Active |
-| **Mouser** | API Key | US/Global | Search API v1 | ⚠️ Needs Key |
-| **Farnell** | API Key | UK/EU | Partner API | ⚠️ Needs Key |
-| **TME** | Token/Secret | EU | Developer API | ⚠️ Needs Key |
+| **Digi-Key** | OAuth 2.0 | Global | Product Info v4 | ✅ Active (1331ms avg) |
+| **Mouser** | API Key | US/Global | Search API v1 | ✅ Active (722ms avg) |
+| **Farnell** | API Key | UK/EU | Partner API | ✅ Active (938ms avg) |
+| **TME** | Token/Secret | EU | Developer API | ✅ Active (285ms avg) |
+
+> **Updated**: October 7, 2025 — All 4 providers operational after fixing searchIntegration.mjs response validation (commit 0f5362a)
 
 ## Provider Selection Logic
 

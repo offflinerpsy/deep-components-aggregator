@@ -1,0 +1,19 @@
+🔒 Global HTTP proxy enabled via Undici: http://127.0.0.1:25345
+
+📦 Capturing raw responses to: /opt/deep-agg/docs/_artifacts/2025-10-07/providers/raw
+
+✅ DigiKey configured
+  → DigiKey search: DS12C887+
+[DigiKey] Requesting new access token...
+[DigiKey] ✅ Access token obtained
+    ✓ Saved: digikey-DS12C887plus.json
+  → DigiKey search: 2N3904
+    ✓ Saved: digikey-2N3904.json
+  → DigiKey search: STM32F103C8T6
+    ✓ Saved: digikey-STM32F103C8T6.json
+❌ Mouser: No API key
+❌ TME: No credentials
+❌ Farnell: No API key
+
+✓ Raw responses captured to /opt/deep-agg/docs/_artifacts/2025-10-07/providers/raw
+

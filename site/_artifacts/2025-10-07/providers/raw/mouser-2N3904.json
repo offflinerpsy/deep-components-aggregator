@@ -1,0 +1,496 @@
+{
+  "ok": true,
+  "status": 200,
+  "data": {
+    "Errors": [],
+    "SearchResults": {
+      "NumberOfResult": 19,
+      "Parts": [
+        {
+          "Availability": "36728 In Stock",
+          "DataSheetUrl": "",
+          "Description": "Bipolar Transistors - BJT BJT, TO-92, 40V, 200mA, NPN",
+          "FactoryStock": "0",
+          "ImagePath": "https://www.mouser.com/images/diotecsemiconductor/images/to-92_SPL.jpg",
+          "Category": "Bipolar Transistors - BJT",
+          "LeadTime": "24 Days",
+          "LifecycleStatus": null,
+          "Manufacturer": "Diotec Semiconductor",
+          "ManufacturerPartNumber": "2N3904",
+          "Min": "1",
+          "Mult": "1",
+          "MouserPartNumber": "637-2N3904",
+          "ProductAttributes": [
+            {
+              "AttributeName": "Packaging",
+              "AttributeValue": "Ammo Pack"
+            },
+            {
+              "AttributeName": "Standard Pack Qty",
+              "AttributeValue": "4000"
+            }
+          ],
+          "PriceBreaks": [
+            {
+              "Quantity": 1,
+              "Price": "$0.13",
+              "Currency": "USD"
+            },
+            {
+              "Quantity": 10,
+              "Price": "$0.083",
+              "Currency": "USD"
+            },
+            {
+              "Quantity": 100,
+              "Price": "$0.052",
+              "Currency": "USD"
+            },
+            {
+              "Quantity": 500,
+              "Price": "$0.037",
+              "Currency": "USD"
+            },
+            {
+              "Quantity": 1000,
+              "Price": "$0.029",
+              "Currency": "USD"
+            },
+            {
+              "Quantity": 4000,
+              "Price": "$0.025",
+              "Currency": "USD"
+            },
+            {
+              "Quantity": 8000,
+              "Price": "$0.019",
+              "Currency": "USD"
+            },
+            {
+              "Quantity": 24000,
+              "Price": "$0.018",
+              "Currency": "USD"
+            }
+          ],
+          "AlternatePackagings": null,
+          "ProductDetailUrl": "https://www.mouser.com/ProductDetail/Diotec-Semiconductor/2N3904?qs=OlC7AqGiEDlYMySw5i2rlg%3D%3D",
+          "Reeling": false,
+          "ROHSStatus": "RoHS Compliant",
+          "SuggestedReplacement": "",
+          "MultiSimBlue": 0,
+          "UnitWeightKg": {
+            "UnitWeight": 0.00033600000001
+          },
+          "AvailabilityInStock": "36728",
+          "AvailabilityOnOrder": [],
+          "InfoMessages": [],
+          "SurchargeMessages": [
+            {
+              "code": "TARIFF_US",
+              "message": "A tariff of 56 % may be applied."
+            }
+          ],
+          "ProductCompliance": [
+            {
+              "ComplianceName": "USHTS",
+              "ComplianceValue": "8541210095"
+            },
+            {
+              "ComplianceName": "CNHTS",
+              "ComplianceValue": "8541210000"
+            },
+            {
+              "ComplianceName": "CAHTS",
+              "ComplianceValue": "8541210000"
+            },
+            {
+              "ComplianceName": "JPHTS",
+              "ComplianceValue": "854121000"
+            },
+            {
+              "ComplianceName": "TARIC",
+              "ComplianceValue": "8541210000"
+            },
+            {
+              "ComplianceName": "MXHTS",
+              "ComplianceValue": "8541210100"
+            },
+            {
+              "ComplianceName": "ECCN",
+              "ComplianceValue": "EAR99"
+            }
+          ]
+        },
+        {
+          "Availability": "12239 In Stock",
+          "DataSheetUrl": "",
+          "Description": "Bipolar Transistors - BJT TO-92,NPN,0.2A,60V,GenPur",
+          "FactoryStock": "0",
+          "ImagePath": "https://www.mouser.com/images/rectron/images/OS-TO-92_2N3904_SPL.jpg",
+          "Category": "Bipolar Transistors - BJT",
+          "LeadTime": "54 Days",
+          "LifecycleStatus": null,
+          "Manufacturer": "Rectron",
+          "ManufacturerPartNumber": "2N3904",
+          "Min": "1",
+          "Mult": "1",
+          "MouserPartNumber": "583-2N3904",
+          "ProductAttributes": [
+            {
+              "AttributeName": "Packaging",
+              "AttributeValue": "Ammo Pack"
+            },
+            {
+              "AttributeName": "Standard Pack Qty",
+              "AttributeValue": "10000"
+            }
+          ],
+          "PriceBreaks": [
+            {
+              "Quantity": 1,
+              "Price": "$0.36",
+              "Currency": "USD"
+            },
+            {
+              "Quantity": 10,
+              "Price": "$0.267",
+              "Currency": "USD"
+            },
+            {
+              "Quantity": 100,
+              "Price": "$0.151",
+              "Currency": "USD"
+            },
+            {
+              "Quantity": 500,
+              "Price": "$0.069",
+              "Currency": "USD"
+            },
+            {
+              "Quantity": 1000,
+              "Price": "$0.063",
+              "Currency": "USD"
+            },
+            {
+              "Quantity": 2500,
+              "Price": "$0.052",
+              "Currency": "USD"
+            },
+            {
+              "Quantity": 5000,
+              "Price": "$0.051",
+              "Currency": "USD"
+            },
+            {
+              "Quantity": 10000,
+              "Price": "$0.042",
+              "Currency": "USD"
+            }
+          ],
+          "AlternatePackagings": null,
+          "ProductDetailUrl": "https://www.mouser.com/ProductDetail/Rectron/2N3904?qs=rrS6PyfT74dTuLo4YQnGYA%3D%3D",
+          "Reeling": false,
+          "ROHSStatus": "RoHS Compliant",
+          "REACH-SVHC": [
+            "Lead (7439-92-1)"
+          ],
+          "SuggestedReplacement": "",
+          "MultiSimBlue": 0,
+          "AvailabilityInStock": "12239",
+          "AvailabilityOnOrder": [],
+          "InfoMessages": [],
+          "SurchargeMessages": [
+            {
+              "code": "TARIFF_US",
+              "message": "A tariff of 56 % may be applied."
+            }
+          ],
+          "ProductCompliance": [
+            {
+              "ComplianceName": "USHTS",
+              "ComplianceValue": "8541210075"
+            },
+            {
+              "ComplianceName": "CNHTS",
+              "ComplianceValue": "8541210000"
+            },
+            {
+              "ComplianceName": "TARIC",
+              "ComplianceValue": "8541210000"
+            },
+            {
+              "ComplianceName": "ECCN",
+              "ComplianceValue": "EAR99"
+            }
+          ]
+        },
+        {
+          "DataSheetUrl": "https://www.mouser.com/datasheet/3/101/1/2N3903-D.PDF",
+          "Description": "Bipolar Transistors - BJT NPN Bipolar Transistor, TO-92 40 V, 0.2 A",
+          "FactoryStock": null,
+          "ImagePath": "https://www.mouser.com/images/mouserelectronics/images/A_TO_92_3_t.jpg",
+          "Category": "Bipolar Transistors - BJT",
+          "LeadTime": "0 Days",
+          "LifecycleStatus": "Obsolete",
+          "Manufacturer": "onsemi",
+          "ManufacturerPartNumber": "2N3904",
+          "Min": "1",
+          "Mult": "1",
+          "MouserPartNumber": "863-2N3904",
+          "ProductAttributes": [
+            {
+              "AttributeName": "Packaging",
+              "AttributeValue": "Bulk"
+            },
+            {
+              "AttributeName": "Standard Pack Qty",
+              "AttributeValue": "5000"
+            }
+          ],
+          "PriceBreaks": [],
+          "AlternatePackagings": null,
+          "ProductDetailUrl": "https://www.mouser.com/ProductDetail/onsemi/2N3904?qs=vLkC5FC1VN%252Be9CkZwHKMwg%3D%3D",
+          "Reeling": false,
+          "ROHSStatus": "RoHS Compliant",
+          "SuggestedReplacement": "",
+          "MultiSimBlue": 0,
+          "AvailabilityInStock": null,
+          "AvailabilityOnOrder": [],
+          "InfoMessages": [
+            "Mouser does not presently sell this product in your region."
+          ],
+          "SurchargeMessages": null,
+          "RestrictionMessage": "Mouser does not presently sell this product in your region.",
+          "ProductCompliance": [
+            {
+              "ComplianceName": "USHTS",
+              "ComplianceValue": "8541210075"
+            },
+            {
+              "ComplianceName": "CNHTS",
+              "ComplianceValue": "8541210000"
+            },
+            {
+              "ComplianceName": "CAHTS",
+              "ComplianceValue": "8541210000"
+            },
+            {
+              "ComplianceName": "TARIC",
+              "ComplianceValue": "8541210000"
+            },
+            {
+              "ComplianceName": "ECCN",
+              "ComplianceValue": "EAR99"
+            }
+          ]
+        },
+        {
+          "DataSheetUrl": "https://www.mouser.com/catalog/specsheets/stmicroelectronics_cd00002987.pdf",
+          "Description": "Bipolar Transistors - BJT NPN General Purpose",
+          "FactoryStock": null,
+          "ImagePath": "https://www.mouser.com/images/mouserelectronics/images/A_TO_92_3_t.jpg",
+          "Category": "Bipolar Transistors - BJT",
+          "LeadTime": "0 Days",
+          "LifecycleStatus": "Obsolete",
+          "Manufacturer": "STMicroelectronics",
+          "ManufacturerPartNumber": "2N3904",
+          "Min": "1",
+          "Mult": "1",
+          "MouserPartNumber": "511-2N3904",
+          "ProductAttributes": [
+            {
+              "AttributeName": "Packaging",
+              "AttributeValue": "Bulk"
+            },
+            {
+              "AttributeName": "Standard Pack Qty",
+              "AttributeValue": "2500"
+            }
+          ],
+          "PriceBreaks": [],
+          "AlternatePackagings": null,
+          "ProductDetailUrl": "https://www.mouser.com/ProductDetail/STMicroelectronics/2N3904?qs=ljbEvF4DwOMFlSOlAhVGRg%3D%3D",
+          "Reeling": false,
+          "ROHSStatus": "RoHS Compliant",
+          "SuggestedReplacement": "",
+          "MultiSimBlue": 0,
+          "UnitWeightKg": {
+            "UnitWeight": 0.0004536
+          },
+          "AvailabilityInStock": null,
+          "AvailabilityOnOrder": [],
+          "InfoMessages": [
+            "Mouser does not presently sell this product in your region."
+          ],
+          "SurchargeMessages": null,
+          "RestrictionMessage": "Mouser does not presently sell this product in your region.",
+          "ProductCompliance": [
+            {
+              "ComplianceName": "USHTS",
+              "ComplianceValue": "8541210075"
+            },
+            {
+              "ComplianceName": "CNHTS",
+              "ComplianceValue": "8541210000"
+            },
+            {
+              "ComplianceName": "CAHTS",
+              "ComplianceValue": "8541210000"
+            },
+            {
+              "ComplianceName": "JPHTS",
+              "ComplianceValue": "854121000"
+            },
+            {
+              "ComplianceName": "KRHTS",
+              "ComplianceValue": "8541219000"
+            },
+            {
+              "ComplianceName": "TARIC",
+              "ComplianceValue": "8541210000"
+            },
+            {
+              "ComplianceName": "MXHTS",
+              "ComplianceValue": "8541210100"
+            },
+            {
+              "ComplianceName": "ECCN",
+              "ComplianceValue": "EAR99"
+            }
+          ]
+        },
+        {
+          "Availability": "130225 In Stock",
+          "DataSheetUrl": "https://www.mouser.com/datasheet/3/101/1/2N3904-D.pdf",
+          "Description": "Bipolar Transistors - BJT NPN Transistor General Purpose",
+          "FactoryStock": "0",
+          "ImagePath": "https://www.mouser.com/images/mouserelectronics/images/C_TO_92_3_formed_DSL.jpg",
+          "Category": "Bipolar Transistors - BJT",
+          "LeadTime": "91 Days",
+          "LifecycleStatus": null,
+          "Manufacturer": "onsemi / Fairchild",
+          "ManufacturerPartNumber": "2N3904TFR",
+          "Min": "1",
+          "Mult": "1",
+          "MouserPartNumber": "512-2N3904TFR",
+          "ProductAttributes": [
+            {
+              "AttributeName": "Packaging",
+              "AttributeValue": "Reel"
+            },
+            {
+              "AttributeName": "Packaging",
+              "AttributeValue": "Cut Tape"
+            },
+            {
+              "AttributeName": "Standard Pack Qty",
+              "AttributeValue": "2000"
+            }
+          ],
+          "PriceBreaks": [
+            {
+              "Quantity": 1,
+              "Price": "$0.16",
+              "Currency": "USD"
+            },
+            {
+              "Quantity": 10,
+              "Price": "$0.079",
+              "Currency": "USD"
+            },
+            {
+              "Quantity": 100,
+              "Price": "$0.064",
+              "Currency": "USD"
+            },
+            {
+              "Quantity": 500,
+              "Price": "$0.061",
+              "Currency": "USD"
+            },
+            {
+              "Quantity": 1000,
+              "Price": "$0.059",
+              "Currency": "USD"
+            },
+            {
+              "Quantity": 2000,
+              "Price": "$0.042",
+              "Currency": "USD"
+            },
+            {
+              "Quantity": 4000,
+              "Price": "$0.038",
+              "Currency": "USD"
+            }
+          ],
+          "AlternatePackagings": [
+            {
+              "APMfrPN": "2N3904BU"
+            },
+            {
+              "APMfrPN": " 2N3904TA"
+            },
+            {
+              "APMfrPN": " 2N3904TAR"
+            },
+            {
+              "APMfrPN": " 2N3904TF"
+            }
+          ],
+          "ProductDetailUrl": "https://www.mouser.com/ProductDetail/onsemi-Fairchild/2N3904TFR?qs=vLO1xFsx9THvDBmrPVYz9Q%3D%3D",
+          "Reeling": true,
+          "ROHSStatus": "RoHS Compliant",
+          "SuggestedReplacement": "",
+          "MultiSimBlue": 0,
+          "UnitWeightKg": {
+            "UnitWeight": 0.00024
+          },
+          "AvailabilityInStock": "130225",
+          "AvailabilityOnOrder": [],
+          "InfoMessages": [],
+          "SurchargeMessages": [
+            {
+              "code": "TARIFF_US",
+              "message": "A tariff of 17 % may be applied."
+            }
+          ],
+          "ProductCompliance": [
+            {
+              "ComplianceName": "USHTS",
+              "ComplianceValue": "8541210075"
+            },
+            {
+              "ComplianceName": "CNHTS",
+              "ComplianceValue": "8541210000"
+            },
+            {
+              "ComplianceName": "CAHTS",
+              "ComplianceValue": "8541210000"
+            },
+            {
+              "ComplianceName": "JPHTS",
+              "ComplianceValue": "854121000"
+            },
+            {
+              "ComplianceName": "KRHTS",
+              "ComplianceValue": "8541219000"
+            },
+            {
+              "ComplianceName": "TARIC",
+              "ComplianceValue": "8541210000"
+            },
+            {
+              "ComplianceName": "MXHTS",
+              "ComplianceValue": "8541210100"
+            },
+            {
+              "ComplianceName": "ECCN",
+              "ComplianceValue": "EAR99"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

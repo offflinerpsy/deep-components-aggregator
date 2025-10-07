@@ -115,8 +115,21 @@ function renderResults(data) {
       regions,
       stock,
       minPrice,
-      currency = '₽'
+      currency = '₽',
+      _src
     } = row;
+    
+    // Provider badge mapping
+    const providerBadges = {
+      'mouser': { label: 'MO', color: '#0066B2', title: 'Mouser Electronics' },
+      'digikey': { label: 'DK', color: '#CC0000', title: 'Digi-Key Electronics' },
+      'tme': { label: 'TME', color: '#E30613', title: 'TME (Transfer Multisort Elektronik)' },
+      'farnell': { label: 'FN', color: '#FF6600', title: 'Farnell / element14' }
+    };
+    
+    const provider = _src || 'unknown';
+    const badge = providerBadges[provider] || { label: '?', color: '#666', title: provider };
+    const providerBadgeHtml = `<span class="provider-badge" style="background: ${badge.color};" title="${badge.title}">${badge.label}</span>`;
     
     // Image handling - fallback if broken
     const imageHtml = imageUrl && imageUrl !== 'N/A' && imageUrl !== '' 
@@ -148,7 +161,10 @@ function renderResults(data) {
         </td>
         <td class="titleCell">
           <div>
-            <div class="product-mpn">${mpn}</div>
+            <div class="product-mpn">
+              ${providerBadgeHtml}
+              ${mpn}
+            </div>
             <div class="product-title">${description || 'Electronic Component'}</div>
           </div>
         </td>

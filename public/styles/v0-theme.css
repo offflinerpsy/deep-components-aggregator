@@ -672,10 +672,26 @@ tbody tr:hover {
 }
 
 .product-mpn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   font-weight: 700;
   font-size: 16px;
   color: var(--foreground);
   margin-bottom: 2px;
+}
+
+.provider-badge {
+  display: inline-block;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 700;
+  color: white;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  cursor: help;
+  flex-shrink: 0;
 }
 
 .product-title {

@@ -20,9 +20,9 @@ const rows = [];
 for (const file of files) {
   const [provider, mpnPart] = file.replace('.json', '').split('-');
   const mpn = mpnPart.replace(/plus/g, '+');
-  
+
   const content = JSON.parse(fs.readFileSync(path.join(rawDir, file), 'utf8'));
-  
+
   let row = {
     provider,
     mpn,
@@ -37,7 +37,7 @@ for (const file of files) {
     leadTime: '',
     url: ''
   };
-  
+
   // DigiKey
   if (provider === 'digikey' && content.data?.Products) {
     const product = content.data.Products[0];
@@ -46,7 +46,7 @@ for (const file of files) {
       row.description = product.Description?.ProductDescription || product.Description?.DetailedDescription || '';
       row.package = product.Packaging?.Name || '';
       row.url = product.ProductUrl || '';
-      
+
       const variation = product.ProductVariations?.[0];
       if (variation) {
         row.packaging = variation.PackageType?.Name || '';
@@ -54,13 +54,13 @@ for (const file of files) {
         row.priceBreaks = pricing.length > 0 ? `${pricing.length} tiers` : 'N/A';
         row.currency = 'USD';
       }
-      
+
       row.stockQty = product.QuantityAvailable || variation?.QuantityAvailable || '';
       row.leadTime = product.ManufacturerLeadWeeks || '';
       row.regions = 'US,GLOBAL';
     }
   }
-  
+
   // Mouser
   if (provider === 'mouser' && content.data?.SearchResults?.Parts) {
     const part = content.data.SearchResults.Parts[0];
@@ -77,7 +77,7 @@ for (const file of files) {
       row.regions = 'US';
     }
   }
-  
+
   // TME
   if (provider === 'tme' && content.data?.Data?.ProductList) {
     const product = content.data.Data.ProductList[0];
@@ -91,7 +91,7 @@ for (const file of files) {
       row.regions = 'EU';
     }
   }
-  
+
   // Farnell
   if (provider === 'farnell' && content.data?.products) {
     const product = content.data.products[0];
@@ -106,13 +106,13 @@ for (const file of files) {
       row.regions = 'EU,UK';
     }
   }
-  
+
   rows.push(row);
 }
 
 // CSV
 const csvHeader = 'provider,mpn,priceBreaks,currency,stockQty,manufacturer,description,package,packaging,regions,leadTime,url\n';
-const csvRows = rows.map(r => 
+const csvRows = rows.map(r =>
   `${r.provider},${r.mpn},"${r.priceBreaks}",${r.currency},${r.stockQty},"${r.manufacturer}","${r.description}",${r.package},${r.packaging},${r.regions},${r.leadTime},"${r.url}"`
 ).join('\n');
 

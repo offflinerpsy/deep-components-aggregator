@@ -163,7 +163,7 @@ const runTME = async (query, token, secret) => {
   });
   // TME returns { data: { Data: { ProductList } } } - capital D!
   const list = enhanced?.result?.data?.Data?.ProductList || enhanced?.result?.data?.ProductList;
-  
+
   const rows = Array.isArray(list) ? list.map(normTME).filter(Boolean) : [];
   return {
     rows,
@@ -183,10 +183,10 @@ const runFarnell = async (query, apiKey, region) => {
     return farnellByKeyword({ apiKey, region, q: searchQuery, limit: 25 });
   });
   // Farnell uses keywordSearchReturn wrapper
-  const products = enhanced?.result?.data?.keywordSearchReturn?.products 
+  const products = enhanced?.result?.data?.keywordSearchReturn?.products
     || enhanced?.result?.data?.premierFarnellProductSearchReturn?.products
     || enhanced?.result?.data?.products;
-  
+
   const rows = Array.isArray(products) ? products.map((item) => normFarnell(item, region)).filter(Boolean) : [];
   return {
     rows,

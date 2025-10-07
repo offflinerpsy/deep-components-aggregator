@@ -24,7 +24,7 @@ console.log(`\n📦 Capturing raw responses to: ${outputDir}\n`);
 if (process.env.DIGIKEY_CLIENT_ID && process.env.DIGIKEY_CLIENT_SECRET) {
   console.log('✅ DigiKey configured');
   const { digikeySearch } = await import('../src/integrations/digikey/client.mjs');
-  
+
   for (const mpn of testMPNs) {
     try {
       console.log(`  → DigiKey search: ${mpn}`);
@@ -34,7 +34,7 @@ if (process.env.DIGIKEY_CLIENT_ID && process.env.DIGIKEY_CLIENT_SECRET) {
         keyword: mpn,
         limit: 5
       });
-      
+
       const outFile = path.join(outputDir, `digikey-${mpn.replace(/\+/g, 'plus')}.json`);
       fs.writeFileSync(outFile, JSON.stringify(result, null, 2));
       console.log(`    ✓ Saved: ${path.basename(outFile)}`);
@@ -50,7 +50,7 @@ if (process.env.DIGIKEY_CLIENT_ID && process.env.DIGIKEY_CLIENT_SECRET) {
 if (process.env.MOUSER_API_KEY) {
   console.log('✅ Mouser configured');
   const { mouserSearchByKeyword } = await import('../src/integrations/mouser/client.mjs');
-  
+
   for (const mpn of testMPNs) {
     try {
       console.log(`  → Mouser search: ${mpn}`);
@@ -59,7 +59,7 @@ if (process.env.MOUSER_API_KEY) {
         q: mpn,
         records: 5
       });
-      
+
       const outFile = path.join(outputDir, `mouser-${mpn.replace(/\+/g, 'plus')}.json`);
       fs.writeFileSync(outFile, JSON.stringify(result, null, 2));
       console.log(`    ✓ Saved: ${path.basename(outFile)}`);
@@ -75,7 +75,7 @@ if (process.env.MOUSER_API_KEY) {
 if (process.env.TME_TOKEN && process.env.TME_SECRET) {
   console.log('✅ TME configured');
   const { tmeSearchProducts } = await import('../src/integrations/tme/client.mjs');
-  
+
   for (const mpn of testMPNs) {
     try {
       console.log(`  → TME search: ${mpn}`);
@@ -86,7 +86,7 @@ if (process.env.TME_TOKEN && process.env.TME_SECRET) {
         country: 'PL',
         language: 'EN'
       });
-      
+
       const outFile = path.join(outputDir, `tme-${mpn.replace(/\+/g, 'plus')}.json`);
       fs.writeFileSync(outFile, JSON.stringify(result, null, 2));
       console.log(`    ✓ Saved: ${path.basename(outFile)}`);
@@ -102,7 +102,7 @@ if (process.env.TME_TOKEN && process.env.TME_SECRET) {
 if (process.env.FARNELL_API_KEY) {
   console.log('✅ Farnell configured');
   const { farnellByKeyword } = await import('../src/integrations/farnell/client.mjs');
-  
+
   for (const mpn of testMPNs) {
     try {
       console.log(`  → Farnell search: ${mpn}`);
@@ -112,7 +112,7 @@ if (process.env.FARNELL_API_KEY) {
         q: mpn,
         limit: 5
       });
-      
+
       const outFile = path.join(outputDir, `farnell-${mpn.replace(/\+/g, 'plus')}.json`);
       fs.writeFileSync(outFile, JSON.stringify(result, null, 2));
       console.log(`    ✓ Saved: ${path.basename(outFile)}`);

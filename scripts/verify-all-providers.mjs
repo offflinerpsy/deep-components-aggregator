@@ -20,18 +20,18 @@ async function verifyProvider(name, testFn) {
     const startTime = Date.now();
     const result = await testFn();
     const duration = Date.now() - startTime;
-    
+
     if (result.error) {
       console.log(`  ❌ FAILED: ${result.error}`);
       return { name, status: 'FAILED', error: result.error, duration };
     }
-    
-    const count = result.data?.Products?.length 
-      || result.data?.ProductList?.length 
-      || result.data?.Products?.length 
-      || result.data?.results?.length 
+
+    const count = result.data?.Products?.length
+      || result.data?.ProductList?.length
+      || result.data?.Products?.length
+      || result.data?.results?.length
       || 0;
-    
+
     if (count > 0) {
       console.log(`  ✅ OK: ${count} results in ${duration}ms`);
       return { name, status: 'OK', count, duration };
@@ -93,24 +93,24 @@ async function main() {
   console.log('\n' + '═'.repeat(55));
   console.log('📊 SUMMARY');
   console.log('═'.repeat(55));
-  
+
   const ok = results.filter(r => r.status === 'OK').length;
   const failed = results.filter(r => r.status === 'FAILED' || r.status === 'ERROR').length;
   const noResults = results.filter(r => r.status === 'NO_RESULTS').length;
-  
+
   console.log(`✅ Working: ${ok}/4`);
   console.log(`❌ Failed:  ${failed}/4`);
   console.log(`⚠️  No Results: ${noResults}/4`);
-  
+
   if (failed > 0) {
     console.log('\n❌ FAILED PROVIDERS:');
     results.filter(r => r.status === 'FAILED' || r.status === 'ERROR').forEach(r => {
       console.log(`   - ${r.name}: ${r.error}`);
     });
   }
-  
+
   console.log('\n' + '═'.repeat(55));
-  
+
   // Exit code
   process.exit(failed > 0 ? 1 : 0);
 }

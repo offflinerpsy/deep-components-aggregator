@@ -1,6 +1,6 @@
 /**
  * Search Integration with Russian Normalization
- * 
+ *
  * Integrates Russian search normalization into the main search pipeline
  * Enhances existing search with transliteration and morphological analysis
  */
@@ -10,7 +10,7 @@ import { normalizeRussianQuery } from './russianNormalization.mjs';
 /**
  * Enhanced search query processor
  * Processes queries with Russian normalization before provider searches
- * 
+ *
  * @param {string} originalQuery - Raw user query
  * @returns {Object} Enhanced search parameters
  */
@@ -25,7 +25,7 @@ export function processSearchQuery(originalQuery) {
       metadata: {}
     };
   }
-  
+
   const trimmed = originalQuery.trim();
   if (trimmed.length === 0) {
     return {
@@ -36,10 +36,10 @@ export function processSearchQuery(originalQuery) {
       metadata: {}
     };
   }
-  
+
   // Apply Russian normalization
   const normalized = normalizeRussianQuery(trimmed);
-  
+
   if (!normalized.success) {
     return {
       success: false,
@@ -49,18 +49,18 @@ export function processSearchQuery(originalQuery) {
       metadata: { fallback: true }
     };
   }
-  
+
   // Build search query variants
   const queries = [];
-  
+
   // 1. Original query (always include)
   queries.push(trimmed);
-  
+
   // 2. Normalized/transliterated query (if different)
   if (normalized.normalized !== trimmed.toLowerCase()) {
     queries.push(normalized.normalized);
   }
-  
+
   // 3. Token-based query (semantic search)
   if (normalized.tokens.length > 0) {
     const tokenQuery = normalized.tokens.join(' ');
@@ -68,13 +68,13 @@ export function processSearchQuery(originalQuery) {
       queries.push(tokenQuery);
     }
   }
-  
+
   // 4. MPN-focused queries (if MPNs detected)
-  const mpnQueries = normalized.mpns.filter(mpn => 
+  const mpnQueries = normalized.mpns.filter(mpn =>
     !queries.some(q => q.includes(mpn))
   );
   queries.push(...mpnQueries);
-  
+
   return {
     success: true,
     originalQuery: trimmed,
@@ -92,7 +92,7 @@ export function processSearchQuery(originalQuery) {
 /**
  * Search strategy selector
  * Determines optimal search strategy based on query analysis
- * 
+ *
  * @param {Object} processedQuery - Result from processSearchQuery
  * @returns {Object} Search strategy configuration
  */
@@ -105,11 +105,11 @@ export function selectSearchStrategy(processedQuery) {
       mpnFirst: false
     };
   }
-  
+
   const hasMultipleQueries = processedQuery.queries.length > 1;
   const hasMPNs = processedQuery.mpns.length > 0;
   const hasCyrillic = processedQuery.metadata.hasCyrillic;
-  
+
   // Strategy 1: MPN-first (when MPNs detected)
   if (hasMPNs) {
     return {
@@ -120,7 +120,7 @@ export function selectSearchStrategy(processedQuery) {
       reasoning: 'MPNs detected - searching by part number first'
     };
   }
-  
+
   // Strategy 2: Russian-enhanced (Cyrillic detected)
   if (hasCyrillic && hasMultipleQueries) {
     return {
@@ -131,7 +131,7 @@ export function selectSearchStrategy(processedQuery) {
       reasoning: 'Cyrillic detected - using transliterated query'
     };
   }
-  
+
   // Strategy 3: Multi-variant (multiple query variants)
   if (hasMultipleQueries) {
     return {
@@ -142,7 +142,7 @@ export function selectSearchStrategy(processedQuery) {
       reasoning: 'Multiple variants available - trying all'
     };
   }
-  
+
   // Strategy 4: Direct (single query, no enhancements)
   return {
     strategy: 'direct',
@@ -156,46 +156,46 @@ export function selectSearchStrategy(processedQuery) {
 /**
  * Enhanced search execution wrapper
  * Wraps provider searches with Russian normalization support
- * 
+ *
  * @param {string} originalQuery - User query
  * @param {Function} searchFunction - Provider search function
  * @returns {Promise<Object>} Enhanced search result
  */
 export async function executeEnhancedSearch(originalQuery, searchFunction) {
   const startTime = Date.now();
-  
+
   // Process query with Russian normalization
   const processed = processSearchQuery(originalQuery);
   const strategy = selectSearchStrategy(processed);
-  
+
   console.log(`🔍 Enhanced Search: "${originalQuery}"`);
   console.log(`   Strategy: ${strategy.strategy} - ${strategy.reasoning}`);
   console.log(`   Primary: "${strategy.primaryQuery}"`);
   if (strategy.alternativeQueries.length > 0) {
     console.log(`   Alternatives: ${strategy.alternativeQueries.length}`);
   }
-  
+
   let result = null;
   let usedQuery = '';
   let attempts = 0;
-  
+
   // Try primary query first
   if (strategy.primaryQuery) {
     attempts++;
     console.log(`   → Attempt ${attempts}: "${strategy.primaryQuery}"`);
-    
+
     result = await searchFunction(strategy.primaryQuery);
     usedQuery = strategy.primaryQuery;
-    
+
     // Check if result has data
     const hasResults = result?.data?.SearchResults?.Parts?.length > 0 ||  // Mouser
-                      result?.data?.Products?.length > 0 ||                // DigiKey
-                      result?.data?.Data?.ProductList?.length > 0 ||       // TME (capital D!)
-                      result?.data?.ProductList?.length > 0 ||             // TME (fallback)
-                      result?.data?.keywordSearchReturn?.products?.length > 0 ||  // Farnell keyword
-                      result?.data?.premierFarnellProductSearchReturn?.products?.length > 0 ||  // Farnell MPN
-                      result?.data?.products?.length > 0;                  // Farnell fallback
-    
+      result?.data?.Products?.length > 0 ||                // DigiKey
+      result?.data?.Data?.ProductList?.length > 0 ||       // TME (capital D!)
+      result?.data?.ProductList?.length > 0 ||             // TME (fallback)
+      result?.data?.keywordSearchReturn?.products?.length > 0 ||  // Farnell keyword
+      result?.data?.premierFarnellProductSearchReturn?.products?.length > 0 ||  // Farnell MPN
+      result?.data?.products?.length > 0;                  // Farnell fallback
+
     if (hasResults) {
       console.log(`   ✅ Primary query successful`);
     } else {
@@ -203,25 +203,25 @@ export async function executeEnhancedSearch(originalQuery, searchFunction) {
       result = null;
     }
   }
-  
+
   // Try alternatives if primary failed
   if (!result && strategy.alternativeQueries.length > 0) {
     for (const altQuery of strategy.alternativeQueries) {
       if (altQuery === strategy.primaryQuery) continue;  // Skip duplicate
-      
+
       attempts++;
       console.log(`   → Attempt ${attempts}: "${altQuery}"`);
-      
+
       const altResult = await searchFunction(altQuery);
-      
+
       const hasResults = altResult?.data?.SearchResults?.Parts?.length > 0 ||  // Mouser
-                        altResult?.data?.Products?.length > 0 ||                // DigiKey
-                        altResult?.data?.Data?.ProductList?.length > 0 ||       // TME (capital D!)
-                        altResult?.data?.ProductList?.length > 0 ||             // TME (fallback)
-                        altResult?.data?.keywordSearchReturn?.products?.length > 0 ||  // Farnell keyword
-                        altResult?.data?.premierFarnellProductSearchReturn?.products?.length > 0 ||  // Farnell MPN
-                        altResult?.data?.products?.length > 0;                  // Farnell fallback
-      
+        altResult?.data?.Products?.length > 0 ||                // DigiKey
+        altResult?.data?.Data?.ProductList?.length > 0 ||       // TME (capital D!)
+        altResult?.data?.ProductList?.length > 0 ||             // TME (fallback)
+        altResult?.data?.keywordSearchReturn?.products?.length > 0 ||  // Farnell keyword
+        altResult?.data?.premierFarnellProductSearchReturn?.products?.length > 0 ||  // Farnell MPN
+        altResult?.data?.products?.length > 0;                  // Farnell fallback
+
       if (hasResults) {
         result = altResult;
         usedQuery = altQuery;
@@ -232,9 +232,9 @@ export async function executeEnhancedSearch(originalQuery, searchFunction) {
       }
     }
   }
-  
+
   const elapsed = Date.now() - startTime;
-  
+
   return {
     result,
     metadata: {

@@ -24,17 +24,17 @@ try {
     keyword: 'DS12C887+',
     limit: 3
   });
-  
+
   console.log('\n✅ DigiKey search SUCCESS');
   console.log(`   Status: ${result.status}`);
   console.log(`   Products: ${result.data?.Products?.length || result.data?.Items?.length || 0}`);
-  
+
   const products = result.data?.Products || result.data?.Items || [];
   if (products.length > 0) {
     const first = products[0];
     console.log(`   First product: ${first.ManufacturerPartNumber || first.ProductDescription}`);
   }
-  
+
   process.exit(0);
 } catch (error) {
   console.error('\n❌ DigiKey search FAILED');

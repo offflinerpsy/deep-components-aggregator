@@ -1,0 +1,22 @@
+{
+  "meta": {
+    "source": "providers",
+    "total": 45,
+    "cached": true,
+    "providers": [],
+    "currency": {
+      "rates": {
+        "USD": 83,
+        "EUR": 96.8345
+      },
+      "date": "2025-10-06",
+      "source": "ЦБ РФ"
+    }
+  },
+  "sources": [
+    "digikey",
+    "farnell",
+    "mouser",
+    "tme"
+  ]
+}

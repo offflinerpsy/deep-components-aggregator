@@ -1,0 +1,100 @@
+{
+  "ok": true,
+  "q": "2N3904",
+  "rows": [
+    {
+      "source": "farnell",
+      "mpn": "2N3904",
+      "manufacturer": "DIOTEC",
+      "title": "DIOTEC - 2N3904 - Bipolar (BJT) Single Transistor, NPN, 40 V, 200 mA, 625 mW, TO-226AA, Through Hole",
+      "description_short": "DIOTEC - 2N3904 - Bipolar (BJT) Single Transistor, NPN, 40 V, 200 mA, 625 mW, TO-226AA, Through Hole",
+      "package": "1",
+      "packaging": "",
+      "regions": [
+        "EU"
+      ],
+      "stock": 5510,
+      "min_price": 0.0215,
+      "min_currency": "GBP",
+      "min_price_rub": 2,
+      "image_url": "https://uk.farnell.com/4574476-40.jpg",
+      "product_url": "",
+      "price_breaks": [
+        {
+          "qty": 5,
+          "price": 0.112,
+          "currency": "GBP",
+          "price_rub": 13
+        },
+        {
+          "qty": 10,
+          "price": 0.0717,
+          "currency": "GBP",
+          "price_rub": 8
+        },
+        {
+          "qty": 100,
+          "price": 0.0449,
+          "currency": "GBP",
+          "price_rub": 5
+        },
+        {
+          "qty": 500,
+          "price": 0.0319,
+          "currency": "GBP",
+          "price_rub": 4
+        },
+        {
+          "qty": 1000,
+          "price": 0.0251,
+          "currency": "GBP",
+          "price_rub": 3
+        },
+        {
+          "qty": 5000,
+          "price": 0.0215,
+          "currency": "GBP",
+          "price_rub": 2
+        }
+      ]
+    },
+    {
+      "source": "mouser",
+      "mpn": "2N3904",
+      "manufacturer": "Diotec Semiconductor",
+      "title": "Bipolar Transistors - BJT BJT, TO-92, 40V, 200mA, NPN",
+      "description_short": "Bipolar Transistors - BJT BJT, TO-92, 40V, 200mA, NPN",
+      "package": "",
+      "packaging": "",
+      "regions": [
+        "US"
+      ],
+      "stock": 36728,
+      "min_price": 0.018,
+      "min_currency": "USD",
+      "min_price_rub": 1,
+      "image_url": "https://www.mouser.com/images/diotecsemiconductor/images/to-92_SPL.jpg",
+      "product_url": "https://www.mouser.com/ProductDetail/Diotec-Semiconductor/2N3904?qs=OlC7AqGiEDlYMySw5i2rlg%3D%3D",
+      "price_breaks": [
+        {
+          "qty": 1,
+          "price": 0.13,
+          "currency": "USD",
+          "price_rub": 11
+        },
+        {
+          "qty": 10,
+          "price": 0.083,
+          "currency": "USD",
+          "price_rub": 7
+        },
+        {
+          "qty": 100,
+          "price": 0.052,
+          "currency": "USD",
+          "price_rub": 4
+        },
+        {
+          "qty": 500,
+          "price": 0.037,
+          "currency": "USD",

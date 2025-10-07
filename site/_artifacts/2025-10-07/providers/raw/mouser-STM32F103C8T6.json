@@ -7,7 +7,7 @@
       "NumberOfResult": 3,
       "Parts": [
         {
-          "Availability": "12856 In Stock",
+          "Availability": "12846 In Stock",
           "DataSheetUrl": "",
           "Description": "ARM Microcontrollers - MCU 32BIT Cortex M3 64KB 20KB RAM 2X12 ADC",
           "FactoryStock": "0",
@@ -85,7 +85,7 @@
           "UnitWeightKg": {
             "UnitWeight": 0.00018
           },
-          "AvailabilityInStock": "12856",
+          "AvailabilityInStock": "12846",
           "AvailabilityOnOrder": [],
           "InfoMessages": [],
           "SurchargeMessages": null,

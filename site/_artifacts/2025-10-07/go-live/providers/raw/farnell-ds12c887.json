@@ -1,0 +1,7 @@
+{
+  "provider": "farnell",
+  "mpn": "DS12C887+",
+  "fetchedAt": "2025-10-06T23:16:13.364Z",
+  "ok": false,
+  "error": "Missing Farnell API key"
+}

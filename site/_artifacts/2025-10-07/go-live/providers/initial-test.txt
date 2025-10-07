@@ -1,0 +1,20 @@
+=== PROVIDER COVERAGE TEST ===
+
+MPN: 2N3904
+✓ digikey  2N3904           → 0 results
+✓ mouser   2N3904           → 0 results
+✓ tme      2N3904           → 0 results
+✓ farnell  2N3904           → 0 results
+
+MPN: DS12C887+
+✓ digikey  DS12C887+        → 0 results
+✓ mouser   DS12C887+        → 0 results
+✓ tme      DS12C887+        → 0 results
+✓ farnell  DS12C887+        → 0 results
+
+MPN: STM32F103C8T6
+✓ digikey  STM32F103C8T6    → 0 results
+✓ mouser   STM32F103C8T6    → 0 results
+✓ tme      STM32F103C8T6    → 0 results
+✓ farnell  STM32F103C8T6    → 0 results
+

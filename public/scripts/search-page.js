@@ -115,6 +115,7 @@ function renderResults(data) {
       regions,
       stock,
       minPrice,
+      min_price_rub,
       currency = '₽',
       _src
     } = row;
@@ -149,10 +150,12 @@ function renderResults(data) {
     // Regions
     const regionsDisplay = regions && regions.length > 0 ? regions.join(' • ') : '—';
     
-    // Price
-    const priceDisplay = minPrice && minPrice > 0 
-      ? `<strong>${minPrice.toFixed(2)} ${currency}</strong>` 
-      : '—';
+    // Price - use RUB conversion if available, otherwise original price
+    const priceDisplay = min_price_rub !== undefined && min_price_rub !== null
+      ? `<strong>${min_price_rub}₽</strong>` 
+      : (minPrice && minPrice > 0 
+        ? `<strong>${minPrice.toFixed(2)} ${currency}</strong>` 
+        : '—');
     
     return `
       <tr style="animation: slideInUp 0.6s ease-out forwards; animation-delay: ${0.3 + index * 0.05}s; opacity: 0;">

@@ -1,0 +1,5 @@
+PORT: [32m9201[39m
+NODE_ENV: [32mproduction[39m
+HTTP_PROXY: [32mhttp://127.0.0.1:18080[39m
+HTTPS_PROXY: [32mhttp://127.0.0.1:18080[39m
+NO_PROXY: [32mlocalhost,127.0.0.1[39m

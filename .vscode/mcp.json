@@ -11,17 +11,6 @@
       "env": {
         "PATH": "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
       }
-    },
-    "fetch": {
-      "type": "stdio",
-      "command": "/usr/bin/npx",
-      "args": [
-        "-y",
-        "mcp-server-fetch"
-      ],
-      "env": {
-        "PATH": "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
-      }
     }
   },
   "inputs": []

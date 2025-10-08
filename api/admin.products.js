@@ -25,6 +25,17 @@ const getCurrentUser = (req) => {
 // GET /api/admin/products - List all products (with pagination)
 const listProductsHandler = (db) => {
   return (req, res) => {
+    // Guard clause: Check authentication BEFORE any DB access
+    // HTTP 401 Unauthorized per RFC 7235 - authentication required
+    if (!req.user || !req.user.email) {
+      res.setHeader('WWW-Authenticate', 'Basic realm="Admin Access"');
+      return res.status(401).json({
+        ok: false,
+        error: 'unauthorized',
+        message: 'Authentication required to access admin products'
+      });
+    }
+    
     const page = Number(req.query.page || 1);
     const limit = Math.min(Number(req.query.limit || 50), 100);
     const offset = (page - 1) * limit;
@@ -77,6 +88,16 @@ const listProductsHandler = (db) => {
 // GET /api/admin/products/:id - Get single product by ID
 const getProductHandler = (db) => {
   return (req, res) => {
+    // Guard clause: Check authentication
+    if (!req.user || !req.user.email) {
+      res.setHeader('WWW-Authenticate', 'Basic realm="Admin Access"');
+      return res.status(401).json({
+        ok: false,
+        error: 'unauthorized',
+        message: 'Authentication required to access admin products'
+      });
+    }
+    
     const id = Number(req.params.id);
     
     if (!Number.isInteger(id) || id <= 0) {
@@ -105,6 +126,16 @@ const getProductHandler = (db) => {
 // POST /api/admin/products - Create new product
 const createProductHandler = (db, logger) => {
   return (req, res) => {
+    // Guard clause: Check authentication
+    if (!req.user || !req.user.email) {
+      res.setHeader('WWW-Authenticate', 'Basic realm="Admin Access"');
+      return res.status(401).json({
+        ok: false,
+        error: 'unauthorized',
+        message: 'Authentication required to create products'
+      });
+    }
+    
     const valid = validateProduct(req.body);
     
     if (!valid) {
@@ -177,6 +208,16 @@ const createProductHandler = (db, logger) => {
 // PUT /api/admin/products/:id - Update existing product
 const updateProductHandler = (db, logger) => {
   return (req, res) => {
+    // Guard clause: Check authentication
+    if (!req.user || !req.user.email) {
+      res.setHeader('WWW-Authenticate', 'Basic realm="Admin Access"');
+      return res.status(401).json({
+        ok: false,
+        error: 'unauthorized',
+        message: 'Authentication required to update products'
+      });
+    }
+    
     const id = Number(req.params.id);
     
     if (!Number.isInteger(id) || id <= 0) {
@@ -272,6 +313,16 @@ const updateProductHandler = (db, logger) => {
 // DELETE /api/admin/products/:id - Delete product
 const deleteProductHandler = (db, logger) => {
   return (req, res) => {
+    // Guard clause: Check authentication
+    if (!req.user || !req.user.email) {
+      res.setHeader('WWW-Authenticate', 'Basic realm="Admin Access"');
+      return res.status(401).json({
+        ok: false,
+        error: 'unauthorized',
+        message: 'Authentication required to delete products'
+      });
+    }
+    
     const id = Number(req.params.id);
     
     if (!Number.isInteger(id) || id <= 0) {

@@ -19,7 +19,7 @@
     "deploy": "bash ./deploy-to-server.sh"
   },
   "dependencies": {
-    "@orama/orama": "^1.2.11",
+    "@orama/orama": "^3.1.14",
     "ajv": "^8.12.0",
     "ajv-formats": "^2.1.1",
     "argon2": "^0.44.0",

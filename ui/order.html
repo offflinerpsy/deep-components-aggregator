@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Order Status Tracker</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .container {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      padding: 40px;
+      max-width: 600px;
+      width: 100%;
+    }
+    h1 {
+      color: #333;
+      margin-bottom: 24px;
+      font-size: 28px;
+    }
+    .order-info {
+      background: #f7f9fc;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 32px;
+    }
+    .order-info h2 {
+      color: #667eea;
+      font-size: 18px;
+      margin-bottom: 12px;
+    }
+    .order-info p {
+      color: #555;
+      margin: 6px 0;
+      font-size: 14px;
+    }
+    .order-info strong {
+      color: #333;
+    }
+    .timeline {
+      position: relative;
+      padding-left: 40px;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 15px;
+      top: 10px;
+      bottom: 10px;
+      width: 2px;
+      background: #e0e0e0;
+    }
+    .timeline-step {
+      position: relative;
+      margin-bottom: 24px;
+      padding-left: 20px;
+    }
+    .timeline-step::before {
+      content: '';
+      position: absolute;
+      left: -29px;
+      top: 4px;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #e0e0e0;
+      border: 2px solid white;
+      box-shadow: 0 0 0 2px #e0e0e0;
+    }
+    .timeline-step.completed::before {
+      background: #4caf50;
+      box-shadow: 0 0 0 2px #4caf50;
+    }
+    .timeline-step.active::before {
+      background: #667eea;
+      box-shadow: 0 0 0 2px #667eea;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.2); opacity: 0.8; }
+    }
+    .timeline-step h3 {
+      color: #999;
+      font-size: 16px;
+      text-transform: capitalize;
+      font-weight: 600;
+    }
+    .timeline-step.completed h3,
+    .timeline-step.active h3 {
+      color: #333;
+    }
+    .error {
+      background: #fee;
+      color: #c33;
+      padding: 16px;
+      border-radius: 8px;
+      border-left: 4px solid #c33;
+    }
+    .connection-status {
+      font-size: 12px;
+      color: #999;
+      margin-top: 20px;
+      text-align: center;
+    }
+    .connection-status.connected {
+      color: #4caf50;
+    }
+    .loading {
+      text-align: center;
+      padding: 40px;
+      color: #999;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>📦 Order Status Tracker</h1>
+    
+    <div id="loading" class="loading">
+      <p>Loading order status...</p>
+    </div>
+
+    <div id="error" class="error" style="display:none;"></div>
+
+    <div id="order-info" class="order-info" style="display:none;">
+      <h2>Order Details</h2>
+      <p><strong>Order ID:</strong> <span id="order-id"></span></p>
+      <p><strong>Customer:</strong> <span id="customer-name"></span></p>
+      <p><strong>Part Number:</strong> <span id="mpn"></span></p>
+      <p><strong>Manufacturer:</strong> <span id="manufacturer"></span></p>
+      <p><strong>Quantity:</strong> <span id="qty"></span></p>
+      <p><strong>Status:</strong> <span id="status" style="color: #667eea; font-weight: 600;"></span></p>
+    </div>
+
+    <div id="timeline" class="timeline" style="display:none;"></div>
+
+    <div id="connection-status" class="connection-status">
+      Connecting...
+    </div>
+  </div>
+
+  <script>
+    // Parse order ID from URL: /ui/order.html?id=<orderId>
+    const urlParams = new URLSearchParams(window.location.search);
+    const orderId = urlParams.get('id');
+
+    if (!orderId) {
+      document.getElementById('loading').style.display = 'none';
+      document.getElementById('error').textContent = 'No order ID provided in URL';
+      document.getElementById('error').style.display = 'block';
+    } else {
+      startOrderTracking(orderId);
+    }
+
+    function startOrderTracking(orderId) {
+      const eventSource = new EventSource(`/api/order/${orderId}/stream`);
+      const statusEl = document.getElementById('connection-status');
+
+      eventSource.addEventListener('open', () => {
+        statusEl.textContent = '● Connected';
+        statusEl.classList.add('connected');
+      });
+
+      eventSource.addEventListener('status', (event) => {
+        const data = JSON.parse(event.data);
+        
+        // Hide loading, show order info
+        document.getElementById('loading').style.display = 'none';
+        document.getElementById('order-info').style.display = 'block';
+        
+        // Populate order details
+        document.getElementById('order-id').textContent = data.orderId;
+        document.getElementById('customer-name').textContent = data.customer || 'Guest';
+        document.getElementById('mpn').textContent = data.item.mpn;
+        document.getElementById('manufacturer').textContent = data.item.manufacturer;
+        document.getElementById('qty').textContent = data.item.qty;
+        document.getElementById('status').textContent = data.status.toUpperCase();
+      });
+
+      eventSource.addEventListener('timeline', (event) => {
+        const data = JSON.parse(event.data);
+        const timelineEl = document.getElementById('timeline');
+        timelineEl.style.display = 'block';
+        
+        timelineEl.innerHTML = data.steps.map(step => `
+          <div class="timeline-step ${step.completed ? 'completed' : ''} ${step.active ? 'active' : ''}">
+            <h3>${step.name}</h3>
+          </div>
+        `).join('');
+      });
+
+      eventSource.addEventListener('error', (event) => {
+        const data = event.data ? JSON.parse(event.data) : { message: 'Connection error' };
+        
+        document.getElementById('loading').style.display = 'none';
+        document.getElementById('error').textContent = data.message || 'Failed to connect to order stream';
+        document.getElementById('error').style.display = 'block';
+        
+        statusEl.textContent = '● Disconnected';
+        statusEl.classList.remove('connected');
+        
+        eventSource.close();
+      });
+
+      eventSource.addEventListener('done', () => {
+        statusEl.textContent = '● Stream Complete';
+        eventSource.close();
+      });
+
+      // Handle browser connection errors
+      eventSource.onerror = (err) => {
+        console.error('EventSource error:', err);
+        statusEl.textContent = '● Connection Failed';
+        statusEl.classList.remove('connected');
+        eventSource.close();
+      };
+    }
+  </script>
+</body>
+</html>

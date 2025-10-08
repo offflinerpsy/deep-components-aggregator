@@ -142,6 +142,10 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'ui', 'index.html'));
 });
 
+// Network diagnostics (admin only)
+import { diagnosticsHandler } from './api/diag.net.mjs';
+app.get('/api/diag/net', diagnosticsHandler);
+
 // Health check
 app.get('/api/health', async (req, res) => {
   const startTime = Date.now();
@@ -304,10 +308,17 @@ app.get('/api/currency/rates', (req, res) => {
 
 // Metrics endpoint
 app.get('/api/metrics', async (req, res) => {
-  const { getMetrics, getMetricsContentType } = await import('./metrics/registry.js');
-  res.setHeader('Content-Type', getMetricsContentType());
+  const { getMetrics } = await import('./metrics/registry.js');
   const metrics = await getMetrics();
-  res.send(metrics);
+  
+  // RFC: Prometheus text exposition format 0.0.4
+  // https://prometheus.io/docs/instrumenting/exposition_formats/
+  // Must use writeHead to preserve exact header order (Express normalizes setHeader)
+  res.writeHead(200, {
+    'Content-Type': 'text/plain; version=0.0.4; charset=utf-8',
+    'Content-Length': Buffer.byteLength(metrics)
+  });
+  res.end(metrics);
 });
 
 // Authentication routes (with rate limiting on register/login)
@@ -320,6 +331,10 @@ mountUserOrderRoutes(app, db, logger);
 // Orders API (with rate limiting + requires authentication)
 const orderRateLimiter = createOrderRateLimiter();
 app.post('/api/order', orderRateLimiter, createOrderHandler(db, logger));
+
+// Order Status SSE Stream (public, no auth required)
+import { streamOrderStatus } from './api/order.stream.mjs';
+app.get('/api/order/:id/stream', streamOrderStatus);
 
 // Admin API (protected by Nginx Basic Auth at proxy level)
 mountAdminRoutes(app, db, logger);

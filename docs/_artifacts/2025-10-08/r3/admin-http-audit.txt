@@ -1,0 +1,34 @@
+api/admin.orders.js:20: * GET /api/admin/orders - List orders with filters
+api/admin.orders.js:138: * GET /api/admin/orders/:id - Get order details
+api/admin.orders.js:186: * PATCH /api/admin/orders/:id - Update order status
+api/admin.orders.js:270:  app.get('/api/admin/orders', requireAdmin, listOrdersHandler(db, logger));
+api/admin.orders.js:271:  app.get('/api/admin/orders/:id', requireAdmin, getOrderHandler(db, logger));
+api/admin.orders.js:272:  app.patch('/api/admin/orders/:id', requireAdmin, updateOrderHandler(db, logger));
+api/user.orders.js:12:    return res.status(401).json({
+api/auth.js:189:        return res.status(401).json({
+api/auth.js:267:      return res.status(401).json({
+api/admin.products.js:25:// GET /api/admin/products - List all products (with pagination)
+api/admin.products.js:29:    // HTTP 401 Unauthorized per RFC 7235 - authentication required
+api/admin.products.js:31:      res.setHeader('WWW-Authenticate', 'Basic realm="Admin Access"');
+api/admin.products.js:32:      return res.status(401).json({
+api/admin.products.js:88:// GET /api/admin/products/:id - Get single product by ID
+api/admin.products.js:93:      res.setHeader('WWW-Authenticate', 'Basic realm="Admin Access"');
+api/admin.products.js:94:      return res.status(401).json({
+api/admin.products.js:126:// POST /api/admin/products - Create new product
+api/admin.products.js:131:      res.setHeader('WWW-Authenticate', 'Basic realm="Admin Access"');
+api/admin.products.js:132:      return res.status(401).json({
+api/admin.products.js:208:// PUT /api/admin/products/:id - Update existing product
+api/admin.products.js:213:      res.setHeader('WWW-Authenticate', 'Basic realm="Admin Access"');
+api/admin.products.js:214:      return res.status(401).json({
+api/admin.products.js:313:// DELETE /api/admin/products/:id - Delete product
+api/admin.products.js:318:      res.setHeader('WWW-Authenticate', 'Basic realm="Admin Access"');
+api/admin.products.js:319:      return res.status(401).json({
+api/admin.products.js:353:  app.get('/api/admin/products', listProductsHandler(db));
+api/admin.products.js:354:  app.get('/api/admin/products/:id', getProductHandler(db));
+api/admin.products.js:355:  app.post('/api/admin/products', createProductHandler(db, logger));
+api/admin.products.js:356:  app.put('/api/admin/products/:id', updateProductHandler(db, logger));
+api/admin.products.js:357:  app.delete('/api/admin/products/:id', deleteProductHandler(db, logger));
+api/admin.settings.js:19: * GET /api/admin/settings/pricing
+api/admin.settings.js:48: * PATCH /api/admin/settings/pricing
+api/admin.settings.js:94:  app.get('/api/admin/settings/pricing', requireAdmin, getPricingSettingsHandler(db, logger));
+api/admin.settings.js:95:  app.patch('/api/admin/settings/pricing', requireAdmin, patchPricingSettingsHandler(db, logger));

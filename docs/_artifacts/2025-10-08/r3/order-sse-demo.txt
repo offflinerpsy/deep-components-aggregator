@@ -1,0 +1,12 @@
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0event: status
+data: {"orderId":"25be00c9-7fe8-4e72-aff3-4bd490a0e5d5","status":"pending","customer":"QA Bot","item":{"mpn":"1N4148","manufacturer":"Generic","qty":50},"timeline":{"created":1759949290198,"updated":1759949290198}}
+
+event: timeline
+data: {"steps":[{"name":"pending","completed":true,"active":true},{"name":"processing","completed":false,"active":false},{"name":"completed","completed":false,"active":false}]}
+
+event: done
+data: 
+
+100   444    0   444    0     0    439      0 --:--:--  0:00:01 --:--:--   440100   444    0   444    0     0    220      0 --:--:--  0:00:02 --:--:--   220100   444    0   444    0     0    147      0 --:--:--  0:00:03 --:--:--   147100   444    0   444    0     0    110      0 --:--:--  0:00:04 --:--:--   110

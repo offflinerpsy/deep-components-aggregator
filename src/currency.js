@@ -58,10 +58,12 @@ export function getRates(){
   ensureDir(DATA_DIR);
   
   // Проверяем кеш
+  let cached = null;
   if (fs.existsSync(RATES_FP)) {
     const txt = fs.readFileSync(RATES_FP, "utf-8");
     if (txt && txt.trim().length > 2) {
-      const cached = JSON.parse(txt);
+      cached = JSON.parse(txt);
+      // Если кеш свежий (< TTL), возвращаем его
       if (cached && cached.ts && (now() - cached.ts) < TTL_MS) {
         return Promise.resolve({ 
           ok: true, 
@@ -76,7 +78,21 @@ export function getRates(){
   
   // Получаем свежие данные
   return fetchCbr().then(result => {
-    if (!result.ok) return { ok: false };
+    if (!result.ok) {
+      // LKG fallback: если новые данные не получены, используем устаревший кеш
+      if (cached && cached.USD > 0 && cached.EUR > 0) {
+        console.warn('[currency] CBR fetch failed, using Last-Known-Good (stale cache)');
+        return {
+          ok: true,
+          USD: cached.USD,
+          EUR: cached.EUR,
+          ts: cached.ts,
+          cached: true,
+          stale: true  // Флаг, что данные устарели
+        };
+      }
+      return { ok: false };
+    }
     
     const rates = { 
       ts: result.ts, 

@@ -1,0 +1,15 @@
+{
+  "total": 5,
+  "totalBeforeLimit": 445,
+  "cached": true,
+  "filters": {
+    "section": "",
+    "q": "",
+    "inStock": true,
+    "priceMin": 0,
+    "priceMax": null,
+    "region": "",
+    "sort": "relevance",
+    "limit": 5
+  }
+}

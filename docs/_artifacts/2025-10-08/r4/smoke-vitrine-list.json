@@ -1,0 +1,166 @@
+{
+  "ok": true,
+  "rows": [
+    {
+      "source": "farnell",
+      "mpn": "2N3904",
+      "manufacturer": "DIOTEC",
+      "title": "DIOTEC - 2N3904 - Bipolar (BJT) Single Transistor, NPN, 40 V, 200 mA, 625 mW, TO-226AA, Through Hole",
+      "description_short": "DIOTEC - 2N3904 - Bipolar (BJT) Single Transistor, NPN, 40 V, 200 mA, 625 mW, TO-226AA, Through Hole",
+      "package": "1",
+      "packaging": "",
+      "regions": [
+        "EU"
+      ],
+      "stock": 5510,
+      "min_price": 0.0215,
+      "min_currency": "GBP",
+      "min_price_rub": 2,
+      "image_url": "https://uk.farnell.com/4574476-40.jpg",
+      "datasheet_url": "http://www.farnell.com/datasheets/4421932.pdf",
+      "product_url": "",
+      "price_breaks": [
+        {
+          "qty": 5,
+          "price": 0.112,
+          "currency": "GBP",
+          "price_rub": 13
+        },
+        {
+          "qty": 10,
+          "price": 0.0717,
+          "currency": "GBP",
+          "price_rub": 8
+        },
+        {
+          "qty": 100,
+          "price": 0.0449,
+          "currency": "GBP",
+          "price_rub": 5
+        },
+        {
+          "qty": 500,
+          "price": 0.0319,
+          "currency": "GBP",
+          "price_rub": 4
+        },
+        {
+          "qty": 1000,
+          "price": 0.0251,
+          "currency": "GBP",
+          "price_rub": 3
+        },
+        {
+          "qty": 5000,
+          "price": 0.0215,
+          "currency": "GBP",
+          "price_rub": 2
+        }
+      ]
+    },
+    {
+      "source": "mouser",
+      "mpn": "2N3904",
+      "manufacturer": "Diotec Semiconductor",
+      "title": "Bipolar Transistors - BJT BJT, TO-92, 40V, 200mA, NPN",
+      "description_short": "Bipolar Transistors - BJT BJT, TO-92, 40V, 200mA, NPN",
+      "package": "",
+      "packaging": "",
+      "regions": [
+        "US"
+      ],
+      "stock": 36727,
+      "min_price": 0.018,
+      "min_currency": "USD",
+      "min_price_rub": 1,
+      "image_url": "https://www.mouser.com/images/diotecsemiconductor/images/to-92_SPL.jpg",
+      "datasheet_url": null,
+      "product_url": "https://www.mouser.com/ProductDetail/Diotec-Semiconductor/2N3904?qs=OlC7AqGiEDlYMySw5i2rlg%3D%3D",
+      "price_breaks": [
+        {
+          "qty": 1,
+          "price": 0.13,
+          "currency": "USD",
+          "price_rub": 11
+        },
+        {
+          "qty": 10,
+          "price": 0.083,
+          "currency": "USD",
+          "price_rub": 7
+        },
+        {
+          "qty": 100,
+          "price": 0.052,
+          "currency": "USD",
+          "price_rub": 4
+        },
+        {
+          "qty": 500,
+          "price": 0.037,
+          "currency": "USD",
+          "price_rub": 3
+        },
+        {
+          "qty": 1000,
+          "price": 0.029,
+          "currency": "USD",
+          "price_rub": 2
+        },
+        {
+          "qty": 4000,
+          "price": 0.025,
+          "currency": "USD",
+          "price_rub": 2
+        },
+        {
+          "qty": 8000,
+          "price": 0.019,
+          "currency": "USD",
+          "price_rub": 2
+        },
+        {
+          "qty": 24000,
+          "price": 0.018,
+          "currency": "USD",
+          "price_rub": 1
+        }
+      ]
+    },
+    {
+      "source": "tme",
+      "mpn": "2N3904",
+      "manufacturer": "DIOTEC SEMICONDUCTOR",
+      "title": "Transistor: NPN; bipolar; 40V; 0.2A; 625mW; TO92",
+      "description_short": "Transistor: NPN; bipolar; 40V; 0.2A; 625mW; TO92",
+      "package": "",
+      "packaging": "",
+      "regions": [
+        "EU"
+      ],
+      "stock": 0,
+      "min_price": null,
+      "min_currency": null,
+      "min_price_rub": null,
+      "image_url": "https://www.tme.eu//ce8dc832c.cloudimg.io/v7/_cdn_/C6/4A/D0/00/0/894060_1.jpg?width=640&height=480&wat=1&wat_url=_tme-wrk_%2Ftme_new.png&wat_scale=100p&ci_sign=9aaedbb06d2c18630d18cf2f1fd018aaea83a529",
+      "datasheet_url": null,
+      "product_url": "https://www.tme.eu/en/details/2N3904/",
+      "price_breaks": []
+    }
+  ],
+  "meta": {
+    "total": 3,
+    "totalBeforeLimit": 619,
+    "cached": true,
+    "filters": {
+      "section": "",
+      "q": "",
+      "inStock": false,
+      "priceMin": 0,
+      "priceMax": null,
+      "region": "",
+      "sort": "relevance",
+      "limit": 3
+    }
+  }
+}

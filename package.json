@@ -7,6 +7,9 @@
   "scripts": {
     "start": "node server.js",
     "dev": "node --watch server.js",
+    "lint": "eslint tests/ --max-warnings 10",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "rates:refresh": "node ./scripts/refresh-rates.mjs",
     "data:ingest:chipdip": "node ./scripts/ingest-chipdip-urls.mjs --glob 'loads/urls/*.txt' --concurrency 4 --batch 100",
     "data:index:build": "node ./scripts/build-index.mjs",
@@ -54,8 +57,16 @@
     "undici": "^7.16.0"
   },
   "devDependencies": {
+    "@eslint/js": "^9.17.0",
     "@playwright/test": "^1.44.1",
-    "@types/node": "^22.8.3"
+    "@types/node": "^22.8.3",
+    "eslint": "^9.17.0",
+    "globals": "^15.14.0",
+    "p-limit": "^6.1.0",
+    "supertest": "^7.0.0",
+    "tsx": "^4.19.2",
+    "vitest": "^1.6.0",
+    "zod": "^3.24.1"
   },
   "config": {
     "PROVIDER_TIMEOUT": "9500",

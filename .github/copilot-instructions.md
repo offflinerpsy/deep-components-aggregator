@@ -1,11 +1,25 @@
 # Workspace Instructions — No-Nonsense Engineering
 
+## 🎯 РЕЖИМ РАБОТЫ: Tech Lead Mode (ПОСТОЯННО)
+
+**Все задачи выполняются в Tech Lead режиме**:
+1. **PLAN** → точные шаги (без догадок)
+2. **CHANGES** → список файлов (created/modified/deleted)
+3. **RUN** → команды для выполнения
+4. **VERIFY** → критерии проверки + артефакты
+5. **ARTIFACTS** → сохранение доказательств в `docs/_artifacts/<date>/`
+6. **GIT** → conventional commit + PR описание
+
+**Запрещено**: переизобретения, placeholder-данные, try/catch в новом коде, работа без артефактов.
+
+---
+
 ## Источники истины
 
-1. **Текущий репозиторий и ветка**  
+1. **Текущий репозиторий и ветка**
    Запрещено ссылаться на несуществующие файлы/пути. Перед использованием — проверить существование через `read_file`, `list_dir` или `file_search`.
 
-2. **Официальные стандарты и документация**  
+2. **Официальные стандарты и документация**
    Любая догадка помечается как `ASSUMPTION:` с немедленной проверкой в коде/репозитории.
 
 ---
@@ -113,7 +127,7 @@ docs/_artifacts/2025-10-05/
 ### 6. **GIT** (ветка и PR)
 ```
 Branch: feature/russian-search-normalization
-Commits: 
+Commits:
   - feat(search): add Russian-to-English translation layer
   - test(search): verify 5 Russian queries work
 PR: #15 to main
@@ -133,10 +147,10 @@ function parseProduct(data) {
   if (!data.mpn) {
     return { error: 'Missing MPN', data: null };
   }
-  
-  return { 
-    error: null, 
-    data: { mpn: data.mpn, title: data.title || 'N/A' } 
+
+  return {
+    error: null,
+    data: { mpn: data.mpn, title: data.title || 'N/A' }
   };
 }
 ```
@@ -182,5 +196,18 @@ function parseProduct(data) {
 
 ---
 
-**Последнее обновление**: 5 октября 2025  
-**Версия**: 1.0.0
+## Режим работы агента
+
+**Tech Lead Mode — ПОСТОЯННО АКТИВЕН**:
+- Каждая задача документируется по структуре: PLAN → CHANGES → RUN → VERIFY → ARTIFACTS → GIT
+- Никаких догадок — только проверенные факты из репозитория
+- Артефакты (JSON/logs/screenshots) сохраняются в `docs/_artifacts/<date>/` **ВСЕГДА**
+- Conventional Commits обязательны для всех коммитов
+- PR описание генерируется по шаблону `.github/PULL_REQUEST_TEMPLATE.md`
+
+**Ссылка на полный workflow**: `.github/prompts/techlead.prompt.md`
+
+---
+
+**Последнее обновление**: 8 октября 2025
+**Версия**: 1.1.0 (добавлен Tech Lead mode как постоянный стандарт)

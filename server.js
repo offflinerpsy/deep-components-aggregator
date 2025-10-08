@@ -142,6 +142,14 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'ui', 'index.html'));
 });
 
+// Network diagnostics (admin only)
+import { diagnosticsHandler } from './api/diag.net.mjs';
+app.get('/api/diag/net', diagnosticsHandler);
+
+// Vitrine (cache-only browsing)
+import mountVitrine from './api/vitrine.mjs';
+mountVitrine(app);
+
 // Health check
 app.get('/api/health', async (req, res) => {
   const startTime = Date.now();
@@ -304,10 +312,17 @@ app.get('/api/currency/rates', (req, res) => {
 
 // Metrics endpoint
 app.get('/api/metrics', async (req, res) => {
-  const { getMetrics, getMetricsContentType } = await import('./metrics/registry.js');
-  res.setHeader('Content-Type', getMetricsContentType());
+  const { getMetrics } = await import('./metrics/registry.js');
   const metrics = await getMetrics();
-  res.send(metrics);
+  
+  // RFC: Prometheus text exposition format 0.0.4
+  // https://prometheus.io/docs/instrumenting/exposition_formats/
+  // Must use writeHead to preserve exact header order (Express normalizes setHeader)
+  res.writeHead(200, {
+    'Content-Type': 'text/plain; version=0.0.4; charset=utf-8',
+    'Content-Length': Buffer.byteLength(metrics)
+  });
+  res.end(metrics);
 });
 
 // Authentication routes (with rate limiting on register/login)
@@ -320,6 +335,10 @@ mountUserOrderRoutes(app, db, logger);
 // Orders API (with rate limiting + requires authentication)
 const orderRateLimiter = createOrderRateLimiter();
 app.post('/api/order', orderRateLimiter, createOrderHandler(db, logger));
+
+// Order Status SSE Stream (public, no auth required)
+import { streamOrderStatus } from './api/order.stream.mjs';
+app.get('/api/order/:id/stream', streamOrderStatus);
 
 // Admin API (protected by Nginx Basic Auth at proxy level)
 mountAdminRoutes(app, db, logger);
@@ -398,16 +417,16 @@ app.get('/api/digikey/selftest', async (req, res) => {
 // SSE Live Search endpoint (with heartbeat, AbortController, no-buffering)
 app.get('/api/live/search', async (req, res) => {
   const q = String(req.query.q || '').trim();
-  
+
   if (!q) {
     return res.status(400).json({ ok: false, error: 'Missing query parameter: q' });
   }
 
   sse.open(res);
-  
+
   const controller = new AbortController();
   let heartbeatTimer = null;
-  
+
   req.on('close', () => {
     if (heartbeatTimer) clearInterval(heartbeatTimer);
     controller.abort();
@@ -424,12 +443,12 @@ app.get('/api/live/search', async (req, res) => {
   sse.send(res, 'search:start', { query: q, timestamp: Date.now() });
 
   const aggregated = await orchestrateProviderSearch(q, keys);
-  
+
   // Stream provider summaries
   for (const provider of aggregated.providers || []) {
     if (provider.status === 'error') {
-      sse.send(res, 'provider:error', { 
-        provider: provider.provider, 
+      sse.send(res, 'provider:error', {
+        provider: provider.provider,
         error: provider.message,
         elapsed: provider.elapsed_ms || 0
       });
@@ -445,7 +464,7 @@ app.get('/api/live/search', async (req, res) => {
   // Send final results with currency
   const ratesData = loadRates();
   const ratesDate = new Date(ratesData.timestamp).toISOString().split('T')[0];
-  
+
   sse.send(res, 'result', {
     rows: aggregated.rows,
     meta: {

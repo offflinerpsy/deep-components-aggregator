@@ -1,0 +1,14 @@
+docs: enforce Tech Lead Mode as permanent project standard
+
+- Updated .github/copilot-instructions.md with Tech Lead Mode header
+- Created docs/TECH-LEAD-MODE.md (full workflow guide)
+- Updated README.md with Tech Lead Mode badge and link
+- Added lessons to docs/COPILOT_MEMORY.md (permanent mode, artifacts, guard clauses)
+- Added .vscode/extensions.json (Copilot + EditorConfig recommendations)
+
+All tasks now follow: PLAN → CHANGES → RUN → VERIFY → ARTIFACTS → GIT
+No переизобретений, no try/catch, artifacts always saved to docs/_artifacts/
+
+Refs: User request 'Tech Lead mode - never disable for this project'
+Version: 1.1.0
+

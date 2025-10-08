@@ -1,0 +1,13 @@
+=== Final Smoke Tests After R2 Fixes ===
+
+1. Testing /api/admin/products (should be 401)...
+   ✅ Returns 401 Unauthorized (correct)
+
+2. Testing POST /api/order (guest order)...
+   ✅ Order created: b5fb1c00-3cf5-4dab-8664-42f448fa9c1f
+
+3. Testing currency module...
+   USD: 81.5478₽, EUR: 94.9351₽
+✅ Currency conversion working
+
+=== Smoke Tests Complete ====

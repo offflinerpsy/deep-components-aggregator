@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Diagnostics</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Monaco', 'Courier New', monospace;
+      background: #0d1117;
+      color: #c9d1d9;
+      padding: 20px;
+      min-height: 100vh;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    h1 {
+      color: #58a6ff;
+      margin-bottom: 24px;
+      font-size: 32px;
+      border-bottom: 2px solid #21262d;
+      padding-bottom: 16px;
+    }
+    .card {
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 8px;
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+    .card h2 {
+      color: #f0883e;
+      font-size: 20px;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .status-good { color: #3fb950; }
+    .status-warn { color: #d29922; }
+    .status-bad { color: #f85149; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 16px;
+    }
+    .metric {
+      background: #0d1117;
+      border: 1px solid #21262d;
+      padding: 16px;
+      border-radius: 6px;
+    }
+    .metric-label {
+      color: #8b949e;
+      font-size: 12px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .metric-value {
+      font-size: 24px;
+      font-weight: 600;
+    }
+    .provider-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 12px;
+    }
+    .provider {
+      background: #0d1117;
+      border: 1px solid #21262d;
+      padding: 12px;
+      border-radius: 6px;
+    }
+    .provider-name {
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    .provider-status {
+      font-size: 12px;
+      color: #8b949e;
+    }
+    .loading {
+      text-align: center;
+      padding: 60px;
+      color: #8b949e;
+    }
+    .error {
+      background: #f8514933;
+      border: 1px solid #f85149;
+      padding: 16px;
+      border-radius: 6px;
+      color: #f85149;
+    }
+    button {
+      background: #238636;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 600;
+    }
+    button:hover {
+      background: #2ea043;
+    }
+    button:disabled {
+      background: #21262d;
+      color: #8b949e;
+      cursor: not-allowed;
+    }
+    .timestamp {
+      color: #8b949e;
+      font-size: 12px;
+      margin-top: 16px;
+    }
+    code {
+      background: #0d1117;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-size: 12px;
+      color: #79c0ff;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🔧 Admin Diagnostics</h1>
+    
+    <button id="refresh-btn" onclick="runDiagnostics()">🔄 Refresh Diagnostics</button>
+
+    <div id="loading" class="loading">
+      <p>Loading diagnostics...</p>
+    </div>
+
+    <div id="error" class="error" style="display:none;"></div>
+
+    <div id="results" style="display:none;">
+      <!-- Egress IP Section -->
+      <div class="card">
+        <h2>🌐 Egress IP & WARP Status</h2>
+        <div class="grid">
+          <div class="metric">
+            <div class="metric-label">Direct IP</div>
+            <div class="metric-value" id="direct-ip">-</div>
+          </div>
+          <div class="metric">
+            <div class="metric-label">WARP IP</div>
+            <div class="metric-value" id="warp-ip">-</div>
+          </div>
+          <div class="metric">
+            <div class="metric-label">WARP Status</div>
+            <div class="metric-value" id="warp-status">-</div>
+          </div>
+          <div class="metric">
+            <div class="metric-label">Proxy Config</div>
+            <div class="metric-value" id="proxy-config" style="font-size: 14px;">-</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Provider Connectivity Section -->
+      <div class="card">
+        <h2>📡 Provider Connectivity</h2>
+        <p style="font-size: 12px; color: #8b949e; margin-bottom: 16px;">
+          HEAD requests via WARP proxy. Timeout: 9.5s (within 10s WARP limit).
+        </p>
+        <div class="provider-grid" id="providers"></div>
+      </div>
+
+      <div class="timestamp" id="timestamp"></div>
+    </div>
+  </div>
+
+  <script>
+    async function runDiagnostics() {
+      const loadingEl = document.getElementById('loading');
+      const errorEl = document.getElementById('error');
+      const resultsEl = document.getElementById('results');
+      const refreshBtn = document.getElementById('refresh-btn');
+
+      // Show loading
+      loadingEl.style.display = 'block';
+      errorEl.style.display = 'none';
+      resultsEl.style.display = 'none';
+      refreshBtn.disabled = true;
+
+      try {
+        const response = await fetch('/api/diag/net');
+        
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        }
+
+        const data = await response.json();
+
+        // Hide loading
+        loadingEl.style.display = 'none';
+        resultsEl.style.display = 'block';
+
+        // Populate Egress IPs
+        const directIP = data.egress?.direct?.ip || 'N/A';
+        const warpIP = data.egress?.warp?.ip || 'N/A';
+        const warpOn = data.egress?.warp?.warp || false;
+
+        document.getElementById('direct-ip').textContent = directIP;
+        document.getElementById('direct-ip').className = 'metric-value';
+
+        document.getElementById('warp-ip').textContent = warpIP;
+        document.getElementById('warp-ip').className = 'metric-value';
+
+        const warpStatusEl = document.getElementById('warp-status');
+        warpStatusEl.textContent = warpOn ? '✅ ON' : '❌ OFF';
+        warpStatusEl.className = `metric-value ${warpOn ? 'status-good' : 'status-bad'}`;
+
+        const proxyConfig = data.proxy_config?.warp_proxy || 'N/A';
+        document.getElementById('proxy-config').innerHTML = `<code>${proxyConfig}</code>`;
+
+        // Populate Providers
+        const providersEl = document.getElementById('providers');
+        providersEl.innerHTML = data.providers.map(p => {
+          const statusClass = p.ok ? 'status-good' : 'status-bad';
+          const statusIcon = p.ok ? '✅' : '❌';
+          const latency = p.latency_ms ? `${p.latency_ms}ms` : '-';
+          const errorMsg = p.error ? `<br><span style="color:#f85149; font-size:10px;">${p.error}</span>` : '';
+
+          return `
+            <div class="provider">
+              <div class="provider-name ${statusClass}">${statusIcon} ${p.name}</div>
+              <div class="provider-status">
+                Status: ${p.status || 'N/A'}<br>
+                Latency: ${latency}${errorMsg}
+              </div>
+            </div>
+          `;
+        }).join('');
+
+        // Timestamp
+        document.getElementById('timestamp').textContent = 
+          `Last updated: ${new Date(data.timestamp).toLocaleString()} (${data.duration_ms}ms)`;
+
+      } catch (err) {
+        console.error('Diagnostics error:', err);
+        loadingEl.style.display = 'none';
+        errorEl.textContent = `Failed to fetch diagnostics: ${err.message}`;
+        errorEl.style.display = 'block';
+      } finally {
+        refreshBtn.disabled = false;
+      }
+    }
+
+    // Auto-run on page load
+    window.addEventListener('DOMContentLoaded', runDiagnostics);
+  </script>
+</body>
+</html>

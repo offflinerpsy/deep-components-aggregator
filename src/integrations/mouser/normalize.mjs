@@ -113,6 +113,7 @@ export function normMouser(part) {
     min_currency: best ? best.currency : null,
     min_price_rub: best && Number.isFinite(best.price_rub) ? best.price_rub : null,
     image_url: clean(part?.ImagePath || part?.ImageURL) || null,
+    datasheet_url: clean(part?.DataSheetUrl || part?.DatasheetUrl) || null,
     product_url: clean(part?.ProductDetailUrl || ''),
     price_breaks: entries
   };

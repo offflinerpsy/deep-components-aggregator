@@ -179,11 +179,11 @@ const runTME = async (query, token, secret) => {
   }
 
   // TME Search API returns basic info only (no PriceList/InStock)
-  // Need to call GetProducts for full details
+  // Need to call GetProducts for full details with ALL symbols
   console.log('[TME] Search returned', searchList.length, 'products');
   const symbols = searchList.slice(0, 10).map(p => p.Symbol).filter(Boolean);
   console.log('[TME] Extracted symbols:', symbols);
-  
+
   if (symbols.length === 0) {
     console.log('[TME] No symbols found - returning empty');
     return {
@@ -192,28 +192,41 @@ const runTME = async (query, token, secret) => {
     };
   }
 
+  // Call GetProducts with ALL symbols to get pricing
   try {
-    console.log('[TME] Calling GetProduct for symbol:', symbols[0]);
+    console.log('[TME] Calling GetProducts for', symbols.length, 'symbols');
     const detailsResponse = await tmeGetProduct({
       token,
       secret,
-      symbol: symbols[0], // TME GetProducts accepts single symbol or array
+      symbols: symbols, // Pass ALL symbols as array
       country: 'PL',
       language: 'EN'
     });
 
-    console.log('[TME] GetProduct response status:', detailsResponse?.status);
+    console.log('[TME] GetProducts response status:', detailsResponse?.status);
     const detailsList = detailsResponse?.data?.Data?.ProductList || [];
-    console.log('[TME] Details list length:', detailsList.length);
+    console.log('[TME] GetProducts returned', detailsList.length, 'products with pricing');
+
+    // Log first product structure for debugging
+    if (detailsList.length > 0) {
+      console.log('[TME] Sample product keys:', Object.keys(detailsList[0]));
+      console.log('[TME] Sample PriceList:', detailsList[0]?.PriceList);
+    }
+
     const rows = Array.isArray(detailsList) ? detailsList.map(normTME).filter(Boolean) : [];
-    console.log('[TME] Normalized rows:', rows.length);
+    console.log('[TME] Normalized', rows.length, 'rows');
+
+    // Log first normalized row for debugging
+    if (rows.length > 0) {
+      console.log('[TME] Sample normalized:', JSON.stringify(rows[0], null, 2));
+    }
 
     return {
       rows,
       meta: {
         total: rows.length,
         usedQuery: enhanced?.metadata?.usedQuery || query,
-        strategy: enhanced?.metadata?.strategy || 'direct',
+        strategy: enhanced?.metadata?.strategy || 'getproducts',
         attempts: enhanced?.metadata?.attempts || 0,
         elapsed: enhanced?.metadata?.elapsed || 0,
         variants: enhanced?.metadata?.processed?.queries?.length || 1,
@@ -222,10 +235,11 @@ const runTME = async (query, token, secret) => {
       }
     };
   } catch (err) {
-    console.error('[TME] GetProduct failed:', err.message, err.stack);
-    // Fallback to search results (basic info only)
+    console.error('[TME] GetProducts failed:', err.message);
+    console.error('[TME] Full error:', err);
+    // Fallback to search results (basic info only - NO PRICING)
     const rows = searchList.map(normTME).filter(Boolean);
-    console.log('[TME] Fallback to search results:', rows.length, 'rows');
+    console.log('[TME] Fallback to Search results (no pricing):', rows.length, 'rows');
     return {
       rows,
       meta: {
@@ -235,7 +249,7 @@ const runTME = async (query, token, secret) => {
         attempts: enhanced?.metadata?.attempts || 0,
         elapsed: enhanced?.metadata?.elapsed || 0,
         variants: enhanced?.metadata?.processed?.queries?.length || 1,
-        error: 'getproduct_failed'
+        error: 'getproducts_failed'
       }
     };
   }

@@ -20,19 +20,25 @@
       "id": 2,
       "title": "Fix TME CRLF issue",
       "status": "completed",
-      "files": [".env"]
+      "files": [
+        ".env"
+      ]
     },
     {
       "id": 3,
       "title": "Fix PORT configuration",
       "status": "completed",
-      "files": [".env"]
+      "files": [
+        ".env"
+      ]
     },
     {
       "id": 4,
       "title": "Fix ecosystem.config.cjs env variables",
       "status": "completed",
-      "files": ["ecosystem.config.cjs"]
+      "files": [
+        "ecosystem.config.cjs"
+      ]
     },
     {
       "id": 5,
@@ -74,22 +80,65 @@
   },
   "coverage_results": {
     "2N3904": {
-      "mouser": {"rows": 16, "pricing": true, "rub": 1},
-      "digikey": {"rows": 0, "pricing": false},
-      "tme": {"rows": 8, "pricing": false},
-      "farnell": {"rows": 12, "pricing": true, "rub": 2}
+      "mouser": {
+        "rows": 16,
+        "pricing": true,
+        "rub": 1
+      },
+      "digikey": {
+        "rows": 0,
+        "pricing": false
+      },
+      "tme": {
+        "rows": 8,
+        "pricing": false
+      },
+      "farnell": {
+        "rows": 12,
+        "pricing": true,
+        "rub": 2
+      }
     },
     "STM32F103C8T6": {
-      "mouser": {"rows": 3, "pricing": true, "rub": 274},
-      "digikey": {"rows": 2, "pricing": true, "rub": 285},
-      "tme": {"rows": 6, "pricing": false},
-      "farnell": {"rows": 2, "pricing": true, "rub": 287}
+      "mouser": {
+        "rows": 3,
+        "pricing": true,
+        "rub": 274
+      },
+      "digikey": {
+        "rows": 2,
+        "pricing": true,
+        "rub": 285
+      },
+      "tme": {
+        "rows": 6,
+        "pricing": false
+      },
+      "farnell": {
+        "rows": 2,
+        "pricing": true,
+        "rub": 287
+      }
     },
     "LM358": {
-      "mouser": {"rows": 48, "pricing": false, "note": "generic MPN"},
-      "digikey": {"rows": 10, "pricing": true, "rub": 5},
-      "tme": {"rows": 0, "pricing": false},
-      "farnell": {"rows": 0, "pricing": false}
+      "mouser": {
+        "rows": 48,
+        "pricing": false,
+        "note": "generic MPN"
+      },
+      "digikey": {
+        "rows": 10,
+        "pricing": true,
+        "rub": 5
+      },
+      "tme": {
+        "rows": 0,
+        "pricing": false
+      },
+      "farnell": {
+        "rows": 0,
+        "pricing": false
+      }
     }
   },
   "next_steps": [

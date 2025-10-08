@@ -120,6 +120,7 @@ export function normFarnell(product, region = 'uk.farnell.com') {
     min_currency: best ? best.currency : null,
     min_price_rub: best && Number.isFinite(best.price_rub) ? best.price_rub : null,
     image_url: imageUrl || null,
+    datasheet_url: product?.datasheets?.[0]?.url || product?.datasheet?.url || null,
     product_url: clean(product?.productUrl || product?.translatedProductUrl || ''),
     price_breaks: bands
   };

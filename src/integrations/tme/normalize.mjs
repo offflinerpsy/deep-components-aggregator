@@ -72,6 +72,7 @@ export function normTME(product) {
     min_currency: best ? best.currency : null,
     min_price_rub: best && Number.isFinite(best.price_rub) ? best.price_rub : null,
     image_url: product?.Photo ? `https://www.tme.eu${product.Photo}` : null,
+    datasheet_url: clean(product?.DocumentUrl || product?.DatasheetUrl) || null,
     product_url: baseUrl,
     price_breaks: priceBreaks
   };

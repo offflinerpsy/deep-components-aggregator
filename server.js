@@ -34,6 +34,9 @@ import { refreshRates, getRatesAge, loadRates } from './src/currency/cbr.mjs';
 // Product data merging
 import { mergeProductData } from './src/utils/mergeProductData.mjs';
 
+// SSE utilities
+import * as sse from './lib/sse.mjs';
+
 // Auth & Session
 import passport from 'passport';
 import { configurePassport } from './config/passport.mjs';
@@ -388,6 +391,75 @@ app.get('/api/digikey/selftest', async (req, res) => {
   } catch (e) {
     res.status(500).json({ ok: false, error: e.message });
   }
+});
+
+// SSE Live Search endpoint (with heartbeat, AbortController, no-buffering)
+app.get('/api/live/search', async (req, res) => {
+  const q = String(req.query.q || '').trim();
+  
+  if (!q) {
+    return res.status(400).json({ ok: false, error: 'Missing query parameter: q' });
+  }
+
+  sse.open(res);
+  
+  const controller = new AbortController();
+  let heartbeatTimer = null;
+  
+  req.on('close', () => {
+    if (heartbeatTimer) clearInterval(heartbeatTimer);
+    controller.abort();
+  });
+
+  // Heartbeat every 15s to prevent connection timeout
+  heartbeatTimer = setInterval(() => {
+    if (!res.writableEnded) {
+      sse.heartbeat(res);
+    }
+  }, 15_000);
+
+  // Send start event
+  sse.send(res, 'search:start', { query: q, timestamp: Date.now() });
+
+  const aggregated = await orchestrateProviderSearch(q, keys);
+  
+  // Stream provider summaries
+  for (const provider of aggregated.providers || []) {
+    if (provider.status === 'error') {
+      sse.send(res, 'provider:error', { 
+        provider: provider.provider, 
+        error: provider.message,
+        elapsed: provider.elapsed_ms || 0
+      });
+    } else {
+      sse.send(res, 'provider:partial', {
+        provider: provider.provider,
+        count: provider.total,
+        elapsed: provider.elapsed_ms
+      });
+    }
+  }
+
+  // Send final results with currency
+  const ratesData = loadRates();
+  const ratesDate = new Date(ratesData.timestamp).toISOString().split('T')[0];
+  
+  sse.send(res, 'result', {
+    rows: aggregated.rows,
+    meta: {
+      total: aggregated.rows.length,
+      providers: aggregated.providers,
+      currency: {
+        rates: { USD: ratesData.rates.USD, EUR: ratesData.rates.EUR },
+        date: ratesDate,
+        source: 'ЦБ РФ'
+      }
+    }
+  });
+
+  clearInterval(heartbeatTimer);
+  sse.done(res);
+  res.end();
 });
 
 // Search endpoint with Russian normalization

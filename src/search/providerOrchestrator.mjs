@@ -7,6 +7,12 @@ import { tmeSearchProducts, tmeGetProduct } from '../integrations/tme/client.mjs
 import { normTME } from '../integrations/tme/normalize.mjs';
 import { farnellByKeyword } from '../integrations/farnell/client.mjs';
 import { normFarnell } from '../integrations/farnell/normalize.mjs';
+import PQueue from 'p-queue';
+import { apiCallsTotal, apiCallDuration } from '../../metrics/registry.js';
+
+// Timeouts from package.json config or defaults
+const PROVIDER_TIMEOUT = Number(process.env.npm_package_config_PROVIDER_TIMEOUT || 9500);
+const CONCURRENCY = 4; // Max 4 providers in parallel
 
 const dedupeRows = (rows) => {
   const map = new Map();
@@ -114,6 +120,39 @@ const summarizeError = (provider, reason) => ({
   message: reason?.message || String(reason || 'Unknown error')
 });
 
+// Wrapper with AbortSignal.timeout for each provider call + metrics
+const withTimeout = async (providerName, fn, timeoutMs = PROVIDER_TIMEOUT) => {
+  const startTime = Date.now();
+  const timer = apiCallDuration.startTimer({ source: providerName });
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
+  
+  try {
+    const result = await fn(controller.signal);
+    clearTimeout(timeoutId);
+    
+    const elapsed = Date.now() - startTime;
+    timer();
+    apiCallsTotal.inc({ source: providerName, status: 'success' });
+    
+    console.log(`[${providerName}] ✅ Success (${elapsed}ms)`);
+    return result;
+  } catch (error) {
+    clearTimeout(timeoutId);
+    timer();
+    apiCallsTotal.inc({ source: providerName, status: 'error' });
+    
+    const elapsed = Date.now() - startTime;
+    if (error.name === 'AbortError' || error.name === 'TimeoutError') {
+      console.log(`[${providerName}] ⏱️  Timeout after ${elapsed}ms`);
+      throw new Error(`Provider timeout after ${timeoutMs}ms`);
+    }
+    
+    console.log(`[${providerName}] ❌ Error: ${error.message} (${elapsed}ms)`);
+    throw error;
+  }
+};
+
 const runMouser = async (query, key) => {
   const enhanced = await executeEnhancedSearch(query, (searchQuery) => {
     return mouserSearchByKeyword({ apiKey: key, q: searchQuery, records: 50 });
@@ -179,11 +218,11 @@ const runTME = async (query, token, secret) => {
   }
 
   // TME Search API returns basic info only (no PriceList/InStock)
-  // Need to call GetProducts for full details
+  // Need to call GetProducts for full details with ALL symbols
   console.log('[TME] Search returned', searchList.length, 'products');
   const symbols = searchList.slice(0, 10).map(p => p.Symbol).filter(Boolean);
   console.log('[TME] Extracted symbols:', symbols);
-  
+
   if (symbols.length === 0) {
     console.log('[TME] No symbols found - returning empty');
     return {
@@ -192,28 +231,41 @@ const runTME = async (query, token, secret) => {
     };
   }
 
+  // Call GetProducts with ALL symbols to get pricing
   try {
-    console.log('[TME] Calling GetProduct for symbol:', symbols[0]);
+    console.log('[TME] Calling GetProducts for', symbols.length, 'symbols');
     const detailsResponse = await tmeGetProduct({
       token,
       secret,
-      symbol: symbols[0], // TME GetProducts accepts single symbol or array
+      symbols: symbols, // Pass ALL symbols as array
       country: 'PL',
       language: 'EN'
     });
 
-    console.log('[TME] GetProduct response status:', detailsResponse?.status);
+    console.log('[TME] GetProducts response status:', detailsResponse?.status);
     const detailsList = detailsResponse?.data?.Data?.ProductList || [];
-    console.log('[TME] Details list length:', detailsList.length);
+    console.log('[TME] GetProducts returned', detailsList.length, 'products with pricing');
+
+    // Log first product structure for debugging
+    if (detailsList.length > 0) {
+      console.log('[TME] Sample product keys:', Object.keys(detailsList[0]));
+      console.log('[TME] Sample PriceList:', detailsList[0]?.PriceList);
+    }
+
     const rows = Array.isArray(detailsList) ? detailsList.map(normTME).filter(Boolean) : [];
-    console.log('[TME] Normalized rows:', rows.length);
+    console.log('[TME] Normalized', rows.length, 'rows');
+
+    // Log first normalized row for debugging
+    if (rows.length > 0) {
+      console.log('[TME] Sample normalized:', JSON.stringify(rows[0], null, 2));
+    }
 
     return {
       rows,
       meta: {
         total: rows.length,
         usedQuery: enhanced?.metadata?.usedQuery || query,
-        strategy: enhanced?.metadata?.strategy || 'direct',
+        strategy: enhanced?.metadata?.strategy || 'getproducts',
         attempts: enhanced?.metadata?.attempts || 0,
         elapsed: enhanced?.metadata?.elapsed || 0,
         variants: enhanced?.metadata?.processed?.queries?.length || 1,
@@ -222,10 +274,11 @@ const runTME = async (query, token, secret) => {
       }
     };
   } catch (err) {
-    console.error('[TME] GetProduct failed:', err.message, err.stack);
-    // Fallback to search results (basic info only)
+    console.error('[TME] GetProducts failed:', err.message);
+    console.error('[TME] Full error:', err);
+    // Fallback to search results (basic info only - NO PRICING)
     const rows = searchList.map(normTME).filter(Boolean);
-    console.log('[TME] Fallback to search results:', rows.length, 'rows');
+    console.log('[TME] Fallback to Search results (no pricing):', rows.length, 'rows');
     return {
       rows,
       meta: {
@@ -235,7 +288,7 @@ const runTME = async (query, token, secret) => {
         attempts: enhanced?.metadata?.attempts || 0,
         elapsed: enhanced?.metadata?.elapsed || 0,
         variants: enhanced?.metadata?.processed?.queries?.length || 1,
-        error: 'getproduct_failed'
+        error: 'getproducts_failed'
       }
     };
   }
@@ -270,47 +323,61 @@ export async function orchestrateProviderSearch(query, keys) {
     return { rows: [], providers: [] };
   }
 
-  // DEBUG: Log which providers are configured
-  console.log('[DEBUG] Provider keys:', {
-    mouser: !!keys?.mouser,
-    digikey: !!(keys?.digikeyClientId && keys?.digikeyClientSecret),
-    tme: !!(keys?.tmeToken && keys?.tmeSecret),
-    farnell: !!keys?.farnell
-  });
+  // Create queue with concurrency limit
+  const queue = new PQueue({ concurrency: CONCURRENCY });
 
-  const tasks = [];
-  const providers = [];
+  // Build provider tasks with timeout wrappers
+  const providerConfigs = [];
 
   if (keys?.mouser) {
-    providers.push('mouser');
-    tasks.push(runMouser(trimmed, keys.mouser));
+    providerConfigs.push({
+      name: 'mouser',
+      fn: () => withTimeout('mouser', () => runMouser(trimmed, keys.mouser))
+    });
   }
 
   if (keys?.digikeyClientId && keys?.digikeyClientSecret) {
-    providers.push('digikey');
-    tasks.push(runDigiKey(trimmed, keys.digikeyClientId, keys.digikeyClientSecret));
+    providerConfigs.push({
+      name: 'digikey',
+      fn: () => withTimeout('digikey', () => runDigiKey(trimmed, keys.digikeyClientId, keys.digikeyClientSecret))
+    });
   }
 
   if (keys?.tmeToken && keys?.tmeSecret) {
-    providers.push('tme');
-    tasks.push(runTME(trimmed, keys.tmeToken, keys.tmeSecret));
+    providerConfigs.push({
+      name: 'tme',
+      fn: () => withTimeout('tme', () => runTME(trimmed, keys.tmeToken, keys.tmeSecret))
+    });
   }
 
   if (keys?.farnell) {
-    providers.push('farnell');
-    tasks.push(runFarnell(trimmed, keys.farnell, keys.farnellRegion || 'uk.farnell.com'));
+    providerConfigs.push({
+      name: 'farnell',
+      fn: () => withTimeout('farnell', () => runFarnell(trimmed, keys.farnell, keys.farnellRegion || 'uk.farnell.com'))
+    });
   }
 
-  if (tasks.length === 0) {
+  if (providerConfigs.length === 0) {
     return { rows: [], providers: [] };
   }
 
-  const settled = await Promise.allSettled(tasks);
+  console.log(`[Orchestrator] Running ${providerConfigs.length} providers (concurrency=${CONCURRENCY}, timeout=${PROVIDER_TIMEOUT}ms)`);
+
+  // Queue all provider tasks
+  const tasks = providerConfigs.map(config => 
+    queue.add(() => config.fn()).then(
+      result => ({ status: 'fulfilled', value: result, provider: config.name }),
+      error => ({ status: 'rejected', reason: error, provider: config.name })
+    )
+  );
+
+  // Wait for all tasks to complete
+  const settled = await Promise.all(tasks);
   const providerSummaries = [];
   let aggregatedRows = [];
 
-  settled.forEach((result, index) => {
-    const provider = providers[index];
+  settled.forEach((result) => {
+    const provider = result.provider;
     if (result.status === 'fulfilled') {
       aggregatedRows = aggregatedRows.concat(result.value.rows);
       providerSummaries.push(summarizeResult(provider, result.value.meta));

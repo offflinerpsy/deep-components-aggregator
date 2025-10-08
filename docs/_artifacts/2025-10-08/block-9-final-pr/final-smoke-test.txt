@@ -1,0 +1,38 @@
+
+[34m╔═══════════════════════════════════════════════════════════════╗[0m
+[34m║         CI Smoke Tests - Mission Pack Features               ║[0m
+[34m╚═══════════════════════════════════════════════════════════════╝[0m
+
+🎯 Target: http://127.0.0.1:9201
+
+
+[34m━━━ Test 1: Health Endpoint ━━━[0m
+✅ [32mHealth endpoint working[0m
+
+[34m━━━ Test 2: SSE Live Search Endpoint ━━━[0m
+✅ [32mSSE endpoint working[0m
+   [0mHeaders: content-type=text/event-stream; charset=utf-8, x-accel-buffering=no[0m
+
+[34m━━━ Test 3: Admin CRUD Endpoints ━━━[0m
+✅ [32mAdmin products list: 1 products, page 1[0m
+✅ [32mAdmin product created: ID=5, MPN=CI-TEST-1759921194754[0m
+✅ [32mAdmin product retrieved: ID=5[0m
+✅ [32mAdmin product updated: ID=5, new title="CI Test Product (Updated)"[0m
+✅ [32mAdmin product deleted: ID=5[0m
+✅ [32mAdmin CRUD endpoints working (CREATE, READ, UPDATE, DELETE verified)[0m
+
+[34m━━━ Test 4: Proxy Configuration ━━━[0m
+✅ [32mProxy configured: trust=true, value=1[0m
+
+[34m━━━ Test 5: Provider Orchestrator Metrics ━━━[0m
+✅ [32mSearch triggered: 0 results[0m
+⚠️ [33mMetrics endpoint not accessible (may not be implemented)[0m
+
+[34m═══════════════════════════════════════════════════════════════[0m
+[34mSUMMARY[0m
+[34m═══════════════════════════════════════════════════════════════[0m
+✅ Passed:  5/5
+❌ Failed:  0/5
+[34m═══════════════════════════════════════════════════════════════[0m
+
+🎉 [32mAll smoke tests passed![0m

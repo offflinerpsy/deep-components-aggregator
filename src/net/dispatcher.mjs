@@ -6,43 +6,36 @@ import { ProxyAgent, Agent } from 'undici';
 
 /**
  * Configure global HTTP dispatcher with WARP Proxy support
- * 
- * WARP Proxy Mode has a 10-second timeout limit, so we configure
- * request timeouts to be ≤10s to stay within this constraint.
- * 
+ *
+ * Supports HTTP/HTTPS proxies (including http-to-socks bridge).
+ * NOTE: Undici doesn't support socks5:// directly - use http-to-socks bridge instead.
+ *
  * Environment variables:
- * - HTTP_PROXY: SOCKS5/HTTPS proxy URL (e.g., socks5://127.0.0.1:40000)
- * - HTTPS_PROXY: Same as HTTP_PROXY for HTTPS requests
+ * - HTTP_PROXY: Proxy URL (e.g., http://127.0.0.1:40000 for http-to-socks bridge)
+ * - HTTPS_PROXY: Proxy URL for HTTPS requests
  * - NO_PROXY: Comma-separated list of hostnames to bypass proxy
- * 
- * @returns {Agent|ProxyAgent} Configured dispatcher
+ *
+ * @returns {ProxyAgent|Agent} Configured dispatcher
  */
 export function createDispatcher() {
   const proxyUrl = process.env.HTTP_PROXY || process.env.HTTPS_PROXY;
-  
-  if (proxyUrl) {
-    console.log(`[Network] Using proxy: ${proxyUrl.replace(/\/\/.*@/, '//*****@')}`);
-    
+
+  if (proxyUrl && (proxyUrl.startsWith('http://') || proxyUrl.startsWith('https://'))) {
+    console.log(`[Network] Using HTTP proxy: ${proxyUrl}`);
+
     return new ProxyAgent({
       uri: proxyUrl,
-      
-      // WARP Proxy Mode timeout constraint: ≤10s
-      requestTimeout: 10000, // 10 seconds
-      
-      // Connection settings
-      keepAliveTimeout: 60000, // 60 seconds
-      keepAliveMaxTimeout: 600000, // 10 minutes
-      
-      // Retry logic for transient errors
-      maxRedirections: 3
+      requestTimeout: 30000,
+      keepAliveTimeout: 60000,
+      keepAliveMaxTimeout: 600000
     });
   }
-  
+
   console.log('[Network] Using direct connection (no proxy)');
-  
-  // Fallback to direct connection with same timeout settings
+
+  // Fallback to direct connection
   return new Agent({
-    requestTimeout: 10000,
+    requestTimeout: 30000,
     keepAliveTimeout: 60000,
     keepAliveMaxTimeout: 600000,
     maxRedirections: 3
@@ -52,13 +45,13 @@ export function createDispatcher() {
 /**
  * Get request options with dispatcher
  * Use this helper to ensure all external requests use the configured dispatcher
- * 
+ *
  * @param {Object} [options={}] - Additional fetch options
  * @returns {Object} Options object with dispatcher
- * 
+ *
  * @example
  * import { getRequestOptions } from './src/net/dispatcher.mjs';
- * 
+ *
  * const response = await fetch('https://example.com/api', {
  *   ...getRequestOptions(),
  *   method: 'GET',
@@ -75,14 +68,14 @@ export function getRequestOptions(options = {}) {
 /**
  * Make proxied fetch request
  * Convenience wrapper around fetch with automatic dispatcher injection
- * 
+ *
  * @param {string|URL} url - Request URL
  * @param {Object} [options={}] - Fetch options
  * @returns {Promise<Response>} Fetch response
- * 
+ *
  * @example
  * import { proxyFetch } from './src/net/dispatcher.mjs';
- * 
+ *
  * const response = await proxyFetch('https://www.oemstrade.com/search/ATMEGA328P');
  * const html = await response.text();
  */
@@ -96,12 +89,12 @@ export async function proxyFetch(url, options = {}) {
 /**
  * Check if proxy is configured and accessible
  * Useful for health checks and diagnostics
- * 
+ *
  * @returns {Promise<Object>} Proxy status
  */
 export async function checkProxyHealth() {
   const proxyUrl = process.env.HTTP_PROXY || process.env.HTTPS_PROXY;
-  
+
   if (!proxyUrl) {
     return {
       enabled: false,
@@ -109,14 +102,14 @@ export async function checkProxyHealth() {
       message: 'Proxy not configured'
     };
   }
-  
+
   try {
     // Test proxy with a simple HTTP request (httpbin echo)
     const response = await proxyFetch('https://httpbin.org/get', {
       method: 'GET',
       headers: { 'User-Agent': 'Deep-Aggregator-Health-Check/1.0' }
     });
-    
+
     if (response.ok) {
       const data = await response.json();
       return {
@@ -126,7 +119,7 @@ export async function checkProxyHealth() {
         origin: data.origin // Shows proxy's external IP
       };
     }
-    
+
     return {
       enabled: true,
       healthy: false,
@@ -147,7 +140,7 @@ export const globalDispatcher = createDispatcher();
 // Log dispatcher configuration
 console.log('[Network] Dispatcher configured:', {
   proxy: !!(process.env.HTTP_PROXY || process.env.HTTPS_PROXY),
-  timeout: '10s (WARP Proxy Mode constraint)'
+  timeout: '30s'
 });
 
 export default {

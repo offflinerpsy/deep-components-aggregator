@@ -1,0 +1,31 @@
+{
+  "session_id": "2025-10-07-network-tme-diagnostic",
+  "status": "in-progress",
+  "issues": [
+    "HTTP_PROXY not loaded in runtime env",
+    "Systemd unit corrupted",
+    "Proxy bridge not confirmed running",
+    "TME pricing unavailable (geo + network)"
+  ],
+  "dispatcher_mode": "direct",
+  "env_file_lines": [
+    "HTTP_PROXY=http://127.0.0.1:40000",
+    "HTTPS_PROXY=http://127.0.0.1:40000"
+  ],
+  "providers": {
+    "mouser": {"status": "ok", "rows_last": 0},
+    "farnell": {"status": "ok", "rows_last": 0},
+    "digikey": {"status": "error", "message": "fetch failed"},
+    "tme": {"status": "error", "message": "fetch failed"}
+  },
+  "next_steps": [
+    "Recreate systemd unit",
+    "Add bridge service",
+    "Verify HTTP_PROXY exported",
+    "Dump raw TME GetProducts",
+    "Implement TME pricing normalization"
+  ],
+  "artifacts": [
+    "docs/_artifacts/2025-10-07/NETWORK-TME-DIAGNOSTIC-REPORT.md"
+  ]
+}

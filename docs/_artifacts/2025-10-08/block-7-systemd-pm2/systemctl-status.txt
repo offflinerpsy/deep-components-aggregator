@@ -1,0 +1,23 @@
+● pm2-root.service - PM2 process manager
+     Loaded: loaded (/etc/systemd/system/pm2-root.service; enabled; preset: enabled)
+     Active: active (running) since Wed 2025-10-08 13:11:55 MSK; 1min 48s ago
+       Docs: https://pm2.keymetrics.io/
+    Process: 328516 ExecStart=/usr/local/lib/node_modules/pm2/bin/pm2 resurrect (code=exited, status=0/SUCCESS)
+   Main PID: 328523 (PM2 v6.0.13: Go)
+      Tasks: 22 (limit: 5837)
+     Memory: 50.4M (peak: 81.1M)
+        CPU: 2min 29.683s
+     CGroup: /system.slice/pm2-root.service
+             ├─328523 "PM2 v6.0.13: God Daemon (/root/.pm2)"
+             └─330701 "node /opt/deep-agg/server.js"
+
+Oct 08 13:11:55 5739319-zw86058 pm2[328516]: [PM2] PM2 Successfully daemonized
+Oct 08 13:11:55 5739319-zw86058 pm2[328516]: [PM2] Resurrecting
+Oct 08 13:11:55 5739319-zw86058 pm2[328516]: [PM2] Restoring processes located in /root/.pm2/dump.pm2
+Oct 08 13:11:55 5739319-zw86058 pm2[328516]: [PM2] Process /opt/deep-agg/server.js restored
+Oct 08 13:11:55 5739319-zw86058 pm2[328516]: ┌────┬─────────────┬─────────────┬─────────┬─────────┬──────────┬────────┬──────┬───────────┬──────────┬──────────┬──────────┬──────────┐
+Oct 08 13:11:55 5739319-zw86058 pm2[328516]: │ id │ name        │ namespace   │ version │ mode    │ pid      │ uptime │ ↺    │ status    │ cpu      │ mem      │ user     │ watching │
+Oct 08 13:11:55 5739319-zw86058 pm2[328516]: ├────┼─────────────┼─────────────┼─────────┼─────────┼──────────┼────────┼──────┼───────────┼──────────┼──────────┼──────────┼──────────┤
+Oct 08 13:11:55 5739319-zw86058 pm2[328516]: │ 0  │ deep-agg    │ default     │ 3.1.0   │ fork    │ 328534   │ 0s     │ 0    │ online    │ 0%       │ 31.4mb   │ root     │ disabled │
+Oct 08 13:11:55 5739319-zw86058 pm2[328516]: └────┴─────────────┴─────────────┴─────────┴─────────┴──────────┴────────┴──────┴───────────┴──────────┴──────────┴──────────┴──────────┘
+Oct 08 13:11:55 5739319-zw86058 systemd[1]: Started pm2-root.service - PM2 process manager.

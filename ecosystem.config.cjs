@@ -4,11 +4,8 @@ module.exports = {
     script: 'server.js',
     instances: 1,
     exec_mode: 'fork',
-    env: {
-      MOUSER_API_KEY: process.env.MOUSER_API_KEY || '',
-      FARNELL_API_KEY: process.env.FARNELL_API_KEY || '',
-      FARNELL_REGION: process.env.FARNELL_REGION || 'uk.farnell.com'
-    },
+    // env: delegated to dotenv (.env file) for secrets management
+    env: {},
     out_file: './logs/out.log',
     error_file: './logs/err.log',
     merge_logs: true,

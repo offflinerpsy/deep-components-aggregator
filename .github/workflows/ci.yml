@@ -288,6 +288,12 @@ jobs:
         curl -f "http://127.0.0.1:9201/api/product?mpn=LM317T" | jq '.product.mpn'
         echo "::endgroup::"
 
+    - name: Mission Pack smoke tests
+      run: |
+        echo "::group::Mission Pack Features"
+        node scripts/ci-smoke-tests.mjs --base-url=http://127.0.0.1:9201
+        echo "::endgroup::"
+
     - name: Stop server
       if: always()
       run: |

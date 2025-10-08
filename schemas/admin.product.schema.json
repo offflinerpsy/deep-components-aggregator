@@ -1,0 +1,118 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Product Create/Update Schema",
+  "description": "Schema for creating or updating products in admin panel",
+  "type": "object",
+  "required": ["mpn", "manufacturer", "title"],
+  "properties": {
+    "mpn": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 100,
+      "pattern": "^[A-Za-z0-9-_/\\.]+$",
+      "description": "Manufacturer Part Number"
+    },
+    "manufacturer": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 100,
+      "description": "Manufacturer name"
+    },
+    "category": {
+      "type": "string",
+      "maxLength": 50,
+      "description": "Product category (e.g., Resistors, Capacitors)"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200,
+      "description": "Product title"
+    },
+    "description_short": {
+      "type": "string",
+      "maxLength": 500,
+      "description": "Short description"
+    },
+    "description_long": {
+      "type": "string",
+      "maxLength": 5000,
+      "description": "Full description"
+    },
+    "price_rub": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Price in RUB"
+    },
+    "price_breaks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["qty", "price"],
+        "properties": {
+          "qty": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "price": {
+            "type": "number",
+            "minimum": 0
+          }
+        }
+      },
+      "description": "Volume pricing breaks"
+    },
+    "stock": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Available stock quantity"
+    },
+    "min_order_qty": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Minimum order quantity"
+    },
+    "packaging": {
+      "type": "string",
+      "maxLength": 50,
+      "description": "Packaging type (Tube, Reel, etc.)"
+    },
+    "image_url": {
+      "type": "string",
+      "format": "uri",
+      "maxLength": 500,
+      "description": "Product image URL"
+    },
+    "datasheet_url": {
+      "type": "string",
+      "format": "uri",
+      "maxLength": 500,
+      "description": "Datasheet PDF URL"
+    },
+    "provider": {
+      "type": "string",
+      "enum": ["mouser", "digikey", "tme", "farnell", "other"],
+      "description": "Provider name"
+    },
+    "provider_url": {
+      "type": "string",
+      "format": "uri",
+      "maxLength": 500,
+      "description": "Provider product page URL (ADMIN ONLY)"
+    },
+    "provider_sku": {
+      "type": "string",
+      "maxLength": 100,
+      "description": "Provider SKU/part number"
+    },
+    "is_featured": {
+      "type": "boolean",
+      "description": "Featured product flag"
+    },
+    "is_active": {
+      "type": "boolean",
+      "description": "Active in catalog flag"
+    }
+  },
+  "additionalProperties": false
+}

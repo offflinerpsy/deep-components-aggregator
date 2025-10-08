@@ -1,0 +1,37 @@
+[0;1;34m# ]8;;file://5739319-zw86058/etc/systemd/system/deep-agg.service/etc/systemd/system/deep-agg.service]8;;[0m
+[0;1;36m[Unit][0m
+Description=Deep Components Aggregator service
+After=network-online.target
+Wants=network-online.target
+[0;1;38;5;245m[0m
+[0;1;36m[Service][0m
+Type=simple
+WorkingDirectory=/opt/deep-agg
+EnvironmentFile=/etc/deep-agg.env
+ExecStart=/usr/bin/node /opt/deep-agg/server.js
+Restart=always
+RestartSec=5
+LimitNOFILE=65535
+LimitNPROC=4096
+AmbientCapabilities=
+NoNewPrivileges=true
+StandardOutput=append:/var/log/deep-agg.service.log
+StandardError=append:/var/log/deep-agg.service.err
+[0;1;38;5;245m[0m
+[0;1;36m[Install][0m
+WantedBy=multi-user.target
+
+[0;1;34m# ]8;;file://5739319-zw86058/etc/systemd/system/deep-agg.service.d/environment.conf/etc/systemd/system/deep-agg.service.d/environment.conf]8;;[0m
+[0;1;36m[Service][0m
+[0;1;38;5;245m# Provider API credentials[0m
+Environment="MOUSER_API_KEY=b1ade04e-2dd0-4bd9-b5b4-e51f252a0687"
+Environment="FARNELL_API_KEY=9bbb8z5zuutmrscx72fukhvr"
+Environment="FARNELL_REGION=uk.farnell.com"
+Environment="TME_TOKEN=18745f2b94e785406561ef9bd83e9a0d0b941bb7a9f4b26327"
+Environment="TME_SECRET=d94ba92af87285b24da6"
+Environment="DIGIKEY_CLIENT_ID=JaGDn87OXtjKuGJvIA6FOO75MYqj1z6UtAwLdlAeWc91m412"
+Environment="DIGIKEY_CLIENT_SECRET=5vlwGIui6h6HV4kkKptCqby2dLdbmUKX0jE2cWNaSmvN1C0QWyip5Ah5jhpbBBbe"
+Environment="DIGIKEY_API_BASE=https://api.digikey.com"
+Environment="DIGIKEY_USER_AGENT=Mozilla/5.0 (Windows NT 10.0; Win64; x64) DeepAgg/2025"
+Environment="WARP_PROXY_URL=http://127.0.0.1:25345"
+Environment="SESSION_SECRET=967d72b5302fd7bc882bea5c53c315c64c621dfddda4d73ae739a03afb498560"

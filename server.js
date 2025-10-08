@@ -150,6 +150,10 @@ app.get('/api/diag/net', diagnosticsHandler);
 import mountVitrine from './api/vitrine.mjs';
 mountVitrine(app);
 
+// Search diagnostics (why no results?)
+import mountSearchReasons from './api/search-reasons.mjs';
+mountSearchReasons(app, { keys });
+
 // Health check
 app.get('/api/health', async (req, res) => {
   const startTime = Date.now();
@@ -344,6 +348,10 @@ app.get('/api/order/:id/stream', streamOrderStatus);
 mountAdminRoutes(app, db, logger);
 mountAdminSettingsRoutes(app, db, logger);
 mountAdminProductRoutes(app, db, logger);
+
+// Admin vitrine controls (pin/unpin products)
+import mountAdminVitrine from './api/admin-vitrine.mjs';
+mountAdminVitrine(app);
 
 // Digi-Key server-only endpoints (to ensure calls go through server IP)
 app.get('/api/digikey/keyword', async (req, res) => {

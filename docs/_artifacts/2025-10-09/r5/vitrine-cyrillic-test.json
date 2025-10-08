@@ -1,0 +1,158 @@
+{
+  "ok": true,
+  "rows": [
+    {
+      "source": "mouser",
+      "mpn": "NSVMUN5136T1G",
+      "manufacturer": "onsemi",
+      "title": "Digital Transistors Bias Resistor Transistor",
+      "description_short": "Digital Transistors Bias Resistor Transistor",
+      "package": "",
+      "packaging": "",
+      "regions": [
+        "US"
+      ],
+      "stock": 17960,
+      "min_price": 0.029,
+      "min_currency": "USD",
+      "min_price_rub": 2,
+      "image_url": "https://www.mouser.com/images/mouserelectronics/images/SOT_323_3_new_SPL.jpg",
+      "product_url": "https://www.mouser.com/ProductDetail/onsemi/NSVMUN5136T1G?qs=3Rah4i%252BhyCHeCamDjT9ApA%3D%3D",
+      "price_breaks": [
+        {
+          "qty": 1,
+          "price": 0.17,
+          "currency": "USD",
+          "price_rub": 14
+        },
+        {
+          "qty": 10,
+          "price": 0.113,
+          "currency": "USD",
+          "price_rub": 9
+        },
+        {
+          "qty": 100,
+          "price": 0.072,
+          "currency": "USD",
+          "price_rub": 6
+        },
+        {
+          "qty": 500,
+          "price": 0.045,
+          "currency": "USD",
+          "price_rub": 4
+        },
+        {
+          "qty": 1000,
+          "price": 0.04,
+          "currency": "USD",
+          "price_rub": 3
+        },
+        {
+          "qty": 3000,
+          "price": 0.034,
+          "currency": "USD",
+          "price_rub": 3
+        },
+        {
+          "qty": 6000,
+          "price": 0.029,
+          "currency": "USD",
+          "price_rub": 2
+        },
+        {
+          "qty": 9000,
+          "price": 0.026,
+          "currency": "USD",
+          "price_rub": 2
+        },
+        {
+          "qty": 24000,
+          "price": 0.023,
+          "currency": "USD",
+          "price_rub": 2
+        }
+      ],
+      "_fts_rank": -3.4955374239985435
+    },
+    {
+      "source": "mouser",
+      "mpn": "COM-00521",
+      "manufacturer": "SparkFun",
+      "title": "SparkFun Accessories Transistor NPN (2N3904)",
+      "description_short": "SparkFun Accessories Transistor NPN (2N3904)",
+      "package": "",
+      "packaging": "",
+      "regions": [
+        "US"
+      ],
+      "stock": 1212,
+      "min_price": 0.55,
+      "min_currency": "USD",
+      "min_price_rub": 46,
+      "image_url": "https://www.mouser.com/images/sparkfun/images/com-00521_SPL.jpg",
+      "datasheet_url": null,
+      "product_url": "https://www.mouser.com/ProductDetail/SparkFun/COM-00521?qs=WyAARYrbSnadzAv7xKsFXg%3D%3D",
+      "price_breaks": [
+        {
+          "qty": 1,
+          "price": 0.55,
+          "currency": "USD",
+          "price_rub": 46
+        }
+      ],
+      "_fts_rank": -3.4955374239985435
+    },
+    {
+      "source": "tme",
+      "mpn": "TBC547",
+      "manufacturer": "CDIL",
+      "title": "Transistor: NPN; bipolar; 45V; 0.1A; 0.5W; TO92",
+      "description_short": "Transistor: NPN; bipolar; 45V; 0.1A; 0.5W; TO92",
+      "package": "",
+      "packaging": "",
+      "regions": [
+        "EU"
+      ],
+      "stock": 0,
+      "min_price": null,
+      "min_currency": null,
+      "min_price_rub": null,
+      "image_url": "https://www.tme.eu//ce8dc832c.cloudimg.io/v7/_cdn_/D5/B5/40/00/0/285533_1.jpg?width=640&height=480&wat=1&wat_url=_tme-wrk_%2Ftme_new.png&wat_scale=100p&ci_sign=04506b75cafe72654ab0ee9a23862979795303b5",
+      "datasheet_url": null,
+      "product_url": "https://www.tme.eu/en/details/TBC547/",
+      "price_breaks": [],
+      "_fts_rank": -3.3516001104808253
+    }
+  ],
+  "meta": {
+    "total": 3,
+    "totalBeforeLimit": 73,
+    "cached": true,
+    "usedFts": true,
+    "queryNorm": {
+      "original": "транзистор",
+      "hasCyrillic": true,
+      "transliterated": "tranzistor",
+      "normalized": "transistor",
+      "allQueries": [
+        "tranzistor",
+        "transistor"
+      ],
+      "tokens": [
+        "transistor"
+      ]
+    },
+    "filters": {
+      "section": "",
+      "q": "транзистор",
+      "inStock": false,
+      "priceMin": 0,
+      "priceMax": null,
+      "region": "",
+      "sort": "relevance",
+      "limit": 3
+    }
+  }
+}

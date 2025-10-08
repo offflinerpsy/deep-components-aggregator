@@ -7,9 +7,12 @@
  * **No external API calls** — all data from local cache (searches, search_rows tables)
  * **Filters**: section (by source), q (text search using FTS5), in_stock, price range, region, sort
  * **Sort options**: relevance (default, uses bm25 when q present), price_asc, price_desc, stock_desc
+ * **RU→EN**: Cyrillic queries automatically transliterated + synonym-mapped (транзистор → transistor)
  */
 
 import { openDb, searchCachedFts } from '../src/db/sql.mjs';
+import { normalizeQuery } from '../src/search/normalizeQuery.mjs';
+import { cacheHitsTotal, cacheMissesTotal, ftsQueriesTotal, ftsQueryDurationMs } from '../metrics/registry.js';
 
 /**
  * Get available sections (unique sources from cached searches)
@@ -58,11 +61,31 @@ function getList(req, res) {
   
   let allRows = [];
   let usedFts = false;
+  let queryMeta = null;
   
   // Step 1: If text search query present, use FTS5 for relevance ranking
   if (q) {
     usedFts = true;
-    const ftsResults = searchCachedFts(db, q, 5000); // Get up to 5000 FTS matches
+    
+    // RU→EN normalization: detect Cyrillic, transliterate, apply synonyms
+    queryMeta = normalizeQuery(q);
+    const ftsQuery = queryMeta.normalized; // Use synonym-mapped query for FTS5
+    
+    // Measure FTS5 query duration
+    const ftsStart = Date.now();
+    const ftsResults = searchCachedFts(db, ftsQuery, 5000); // Get up to 5000 FTS matches
+    const ftsDuration = Date.now() - ftsStart;
+    
+    // Record metrics
+    ftsQueriesTotal.inc();
+    ftsQueryDurationMs.observe(ftsDuration);
+    
+    if (ftsResults.length > 0) {
+      cacheHitsTotal.inc({ source: 'vitrine' });
+    } else {
+      cacheMissesTotal.inc({ source: 'vitrine' });
+    }
+    
     allRows = ftsResults.map(r => ({ ...r.row, _fts_rank: r.rank }));
   } else {
     // Step 1b: No text search — get all cached search queries
@@ -126,7 +149,7 @@ function getList(req, res) {
     });
   }
   
-  // Step 4: Sort
+    // Step 4: Sort results
   switch (sort) {
     case 'price_asc':
       filtered.sort((a, b) => {
@@ -159,6 +182,23 @@ function getList(req, res) {
       break;
   }
   
+  // Step 4.5: Fetch pinned products and prepend to results
+  const pinnedRows = db.prepare(`
+    SELECT sr.row, vp.pinned_at
+    FROM vitrine_pins vp
+    JOIN search_rows sr ON sr.rowid = vp.rowid
+    ORDER BY vp.pinned_at DESC
+  `).all();
+  
+  const pinnedProducts = pinnedRows.map(p => ({
+    ...JSON.parse(p.row),
+    _pinned: true,
+    _pinned_at: p.pinned_at
+  }));
+  
+  // Prepend pinned products (they appear at top)
+  filtered = [...pinnedProducts, ...filtered];
+  
   // Step 5: Limit results
   const rows = filtered.slice(0, limit);
   
@@ -170,6 +210,7 @@ function getList(req, res) {
       totalBeforeLimit: filtered.length,
       cached: true,
       usedFts,
+      queryNorm: queryMeta,  // Include RU→EN normalization metadata
       filters: { section, q, inStock, priceMin, priceMax, region, sort, limit }
     }
   });

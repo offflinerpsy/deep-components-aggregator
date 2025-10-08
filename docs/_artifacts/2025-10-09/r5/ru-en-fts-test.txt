@@ -1,0 +1,13 @@
+=== Test 1: tranzistor (from транзистор) ===
+
+=== Test 2: transistor (English) ===
+NSVMUN5136T1G||-3.496
+COM-00521||-3.496
+TBC547||-3.352
+BC547CBU||-3.352
+BC547BBU||-3.352
+
+=== Test 3: mikrokontroller (from микроконтроллер) ===
+
+=== Test 4: microcontroller (synonym) ===
+34

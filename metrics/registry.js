@@ -107,6 +107,48 @@ export const cacheOperations = new Counter({
   registers: [register]
 });
 
+/**
+ * Counter: Cache hits
+ * Labels: source (vitrine|search)
+ */
+export const cacheHitsTotal = new Counter({
+  name: 'cache_hits_total',
+  help: 'Total number of cache hits',
+  labelNames: ['source'],
+  registers: [register]
+});
+
+/**
+ * Counter: Cache misses
+ * Labels: source (vitrine|search)
+ */
+export const cacheMissesTotal = new Counter({
+  name: 'cache_misses_total',
+  help: 'Total number of cache misses',
+  labelNames: ['source'],
+  registers: [register]
+});
+
+/**
+ * Counter: FTS5 queries executed
+ */
+export const ftsQueriesTotal = new Counter({
+  name: 'fts_queries_total',
+  help: 'Total number of FTS5 queries executed',
+  registers: [register]
+});
+
+/**
+ * Histogram: FTS5 query duration in milliseconds
+ * Buckets: 1ms, 5ms, 10ms, 50ms, 100ms, 500ms, 1s, 5s
+ */
+export const ftsQueryDurationMs = new Histogram({
+  name: 'fts_query_duration_ms',
+  help: 'FTS5 query duration in milliseconds',
+  buckets: [1, 5, 10, 50, 100, 500, 1000, 5000],
+  registers: [register]
+});
+
 // ==================== SEARCH METRICS ====================
 
 /**
@@ -241,6 +283,10 @@ export default {
   apiCallsTotal,
   apiCallDuration,
   cacheOperations,
+  cacheHitsTotal,
+  cacheMissesTotal,
+  ftsQueriesTotal,
+  ftsQueryDurationMs,
   searchRequestsTotal,
   searchErrorsTotal,
   searchLatencySeconds,

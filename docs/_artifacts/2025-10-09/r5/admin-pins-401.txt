@@ -1,0 +1,13 @@
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  0    46    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+HTTP/1.1 401 Unauthorized
+X-Powered-By: Express
+WWW-Authenticate: Bearer realm="Admin API"
+Content-Type: application/json; charset=utf-8
+Content-Length: 46
+ETag: W/"2e-FapOopNxjpL2+qfIexg18iqIego"
+Date: Wed, 08 Oct 2025 22:44:53 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+

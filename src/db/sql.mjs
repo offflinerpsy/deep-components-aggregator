@@ -33,19 +33,8 @@ export function openDb(){
     );
     CREATE INDEX IF NOT EXISTS idx_search_ts ON searches(ts);
     
-    -- FTS5 virtual table for full-text search with bm25 ranking
-    -- Indexed columns: mpn, manufacturer, title, description (from search_rows.row JSON)
-    -- Note: FTS5 contentless mode not ideal for JSON extraction, using content= approach
-    CREATE VIRTUAL TABLE IF NOT EXISTS search_rows_fts USING fts5(
-      q UNINDEXED,
-      ord UNINDEXED,
-      mpn,
-      manufacturer,
-      title,
-      description,
-      content='',
-      tokenize='porter unicode61'
-    );
+    -- FTS5 table created by migration db/migrations/0002_fts5_content_table.sql
+    -- Triggers handle automatic sync with search_rows table
   `);
   return db;
 }
@@ -56,26 +45,15 @@ export function cacheSearch(db, q, rows, meta){
   const delR = db.prepare('DELETE FROM search_rows WHERE q=?');
   const insR = db.prepare('INSERT OR REPLACE INTO search_rows (q, ord, row) VALUES (?,?,?)');
   
-  // FTS5 sync
-  const delFts = db.prepare('DELETE FROM search_rows_fts WHERE q=?');
-  const insFts = db.prepare('INSERT INTO search_rows_fts (q, ord, mpn, manufacturer, title, description) VALUES (?,?,?,?,?,?)');
+  // FTS5 sync handled by triggers (see db/migrations/0002_fts5_content_table.sql)
   
   const tx = db.transaction((rows)=>{
     insS.run(q, ts, rows.length, (meta && meta.source) || '');
     delR.run(q);
-    delFts.run(q);
     for(let i=0;i<rows.length;i++){
       const rowStr = JSON.stringify(rows[i]);
       insR.run(q, i, rowStr);
-      
-      // Extract fields for FTS5
-      const row = rows[i];
-      const mpn = String(row.mpn || '');
-      const manufacturer = String(row.manufacturer || '');
-      const title = String(row.title || '');
-      const description = String(row.description || row.description_short || '');
-      
-      insFts.run(q, i, mpn, manufacturer, title, description);
+      // Triggers automatically sync to search_rows_fts
     }
   });
   tx(rows);
@@ -107,39 +85,41 @@ export function readCachedProduct(db, src, id, maxAgeMs){
  * Full-text search in cached products using FTS5 + bm25 ranking
  * @param {Database} db - SQLite database instance
  * @param {string} query - Search query (e.g., "transistor", "LM358")
- * @param {number} limit - Max results (default 100)
+ * @param {Object} options - Search options
+ * @param {number} options.limit - Max results (default 100)
+ * @param {Array<number>} options.weights - bm25 column weights [mpn, manufacturer, title, description] (default [10, 6, 2, 1])
  * @returns {Array<{row: object, rank: number}>} - Sorted by bm25 relevance (lower rank = better match)
  */
-export function searchCachedFts(db, query, limit = 100){
+export function searchCachedFts(db, query, options = {}){
   if (!query || !query.trim()) return [];
   
-  // FTS5 query with bm25 ranking
+  const limit = options.limit || 100;
+  const weights = options.weights || [10, 6, 2, 1]; // mpn > manufacturer > title > description
+  
+  // FTS5 query with bm25 ranking using content-table JOIN
   // bm25() returns negative scores — sort ASC for best matches first (closer to 0 = better)
   const sql = `
     SELECT 
-      q, ord, 
-      bm25(search_rows_fts) as rank
+      sr.rowid,
+      sr.q,
+      sr.ord,
+      sr.row,
+      bm25(search_rows_fts, ?, ?, ?, ?) as rank
     FROM search_rows_fts
+    JOIN search_rows sr ON sr.rowid = search_rows_fts.rowid
     WHERE search_rows_fts MATCH ?
     ORDER BY rank ASC
     LIMIT ?
   `;
   
-  const matches = db.prepare(sql).all(query, limit);
+  const matches = db.prepare(sql).all(...weights, query, limit);
   
-  // Join with search_rows to get full JSON data
-  const results = [];
-  for (const match of matches) {
-    const rowData = db.prepare('SELECT row FROM search_rows WHERE q=? AND ord=?').get(match.q, match.ord);
-    if (rowData) {
-      results.push({
-        row: JSON.parse(rowData.row),
-        rank: match.rank,
-        _meta: { q: match.q, ord: match.ord }
-      });
-    }
-  }
+  // Parse JSON and return results
+  const results = matches.map(match => ({
+    row: JSON.parse(match.row),
+    rank: match.rank,
+    _meta: { q: match.q, ord: match.ord, rowid: match.rowid }
+  }));
   
   return results;
 }
-

@@ -146,6 +146,10 @@ app.get('/', (req, res) => {
 import { diagnosticsHandler } from './api/diag.net.mjs';
 app.get('/api/diag/net', diagnosticsHandler);
 
+// Vitrine (cache-only browsing)
+import mountVitrine from './api/vitrine.mjs';
+mountVitrine(app);
+
 // Health check
 app.get('/api/health', async (req, res) => {
   const startTime = Date.now();

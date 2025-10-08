@@ -83,19 +83,8 @@ export function createOrderHandler(db, logger) {
     const startTime = process.hrtime.bigint();
     const requestId = req.id || randomUUID();
     
-    // Guard: Require authentication
-    if (!req.user || !req.user.id) {
-      ordersTotal.inc({ status: 'rejected' });
-      logger.warn({ requestId }, 'Order creation attempt without authentication');
-      
-      return res.status(401).json({
-        ok: false,
-        error: 'not_authenticated',
-        message: 'Authentication required to create orders'
-      });
-    }
-    
-    const userId = req.user.id;
+    // Optional: capture userId if authenticated (guest orders allowed)
+    const userId = req.user?.id || null;
     
     // Guard: Validate request body
     const valid = validateOrderRequest(req.body);
@@ -133,20 +122,18 @@ export function createOrderHandler(db, logger) {
     const orderId = randomUUID();
     const now = Date.now();
     
-    // Get pricing policy from settings
-    const pricingPolicy = db.prepare('SELECT value FROM settings WHERE key = ?').get('pricing_policy');
-    if (!pricingPolicy) {
-      logger.error({ requestId }, 'Pricing policy not found in database');
-      ordersTotal.inc({ status: 'rejected' });
-      
-      return res.status(500).json({
-        ok: false,
-        error: 'configuration_error',
-        message: 'Pricing policy not configured'
-      });
-    }
+    // Get pricing policy from settings (with fallback)
+    let policy = { markup_percent: 0.30, markup_fixed_rub: 0 }; // Default: 30% markup
     
-    const policy = JSON.parse(pricingPolicy.value);
+    try {
+      const pricingPolicy = db.prepare('SELECT value FROM settings WHERE key = ?').get('pricing_policy');
+      if (pricingPolicy) {
+        policy = JSON.parse(pricingPolicy.value);
+      }
+    } catch (error) {
+      // Table doesn't exist or query failed - use default policy
+      logger.warn({ requestId, error: error.message }, 'Failed to fetch pricing policy, using defaults');
+    }
     
     // Calculate pricing if not provided
     let finalPricing = pricing_snapshot;

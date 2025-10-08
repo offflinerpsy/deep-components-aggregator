@@ -1,6 +1,10 @@
 {
   "chat.agent.enabled": true,
   "github.copilot.chat.agent.runTasks": true,
+  "github.copilot.chat.codeGeneration.useInstructionFiles": true,
+  "chat.promptFiles": true,
+  "chat.mcp.access": "all",
+  "chat.mcp.autostart": "newAndOutdated",
   "chat.agent.maxRequests": 150,
   "chat.tools.global.autoApprove": true,
   "chat.tools.terminal.autoApprove": {
@@ -17,6 +21,8 @@
     "del": false,
     "/dangerous/": false
   },
+  "diffEditor.hideUnchangedRegions.enabled": true,
+  "workbench.editor.enablePreview": false,
   "chat.tools.edits.autoApprove": {
     "**/*": true,
     "**/.env": false,

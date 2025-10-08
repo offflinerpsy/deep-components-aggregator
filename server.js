@@ -398,16 +398,16 @@ app.get('/api/digikey/selftest', async (req, res) => {
 // SSE Live Search endpoint (with heartbeat, AbortController, no-buffering)
 app.get('/api/live/search', async (req, res) => {
   const q = String(req.query.q || '').trim();
-  
+
   if (!q) {
     return res.status(400).json({ ok: false, error: 'Missing query parameter: q' });
   }
 
   sse.open(res);
-  
+
   const controller = new AbortController();
   let heartbeatTimer = null;
-  
+
   req.on('close', () => {
     if (heartbeatTimer) clearInterval(heartbeatTimer);
     controller.abort();
@@ -424,12 +424,12 @@ app.get('/api/live/search', async (req, res) => {
   sse.send(res, 'search:start', { query: q, timestamp: Date.now() });
 
   const aggregated = await orchestrateProviderSearch(q, keys);
-  
+
   // Stream provider summaries
   for (const provider of aggregated.providers || []) {
     if (provider.status === 'error') {
-      sse.send(res, 'provider:error', { 
-        provider: provider.provider, 
+      sse.send(res, 'provider:error', {
+        provider: provider.provider,
         error: provider.message,
         elapsed: provider.elapsed_ms || 0
       });
@@ -445,7 +445,7 @@ app.get('/api/live/search', async (req, res) => {
   // Send final results with currency
   const ratesData = loadRates();
   const ratesDate = new Date(ratesData.timestamp).toISOString().split('T')[0];
-  
+
   sse.send(res, 'result', {
     rows: aggregated.rows,
     meta: {

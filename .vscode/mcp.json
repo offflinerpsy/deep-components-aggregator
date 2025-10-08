@@ -1,0 +1,17 @@
+{
+  "servers": {
+    "filesystem": {
+      "type": "stdio",
+      "command": "/usr/bin/npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "${workspaceFolder}"
+      ],
+      "env": {
+        "PATH": "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+      }
+    }
+  },
+  "inputs": []
+}

@@ -7,6 +7,12 @@ import { tmeSearchProducts, tmeGetProduct } from '../integrations/tme/client.mjs
 import { normTME } from '../integrations/tme/normalize.mjs';
 import { farnellByKeyword } from '../integrations/farnell/client.mjs';
 import { normFarnell } from '../integrations/farnell/normalize.mjs';
+import PQueue from 'p-queue';
+import { apiCallsTotal, apiCallDuration } from '../../metrics/registry.js';
+
+// Timeouts from package.json config or defaults
+const PROVIDER_TIMEOUT = Number(process.env.npm_package_config_PROVIDER_TIMEOUT || 9500);
+const CONCURRENCY = 4; // Max 4 providers in parallel
 
 const dedupeRows = (rows) => {
   const map = new Map();
@@ -113,6 +119,39 @@ const summarizeError = (provider, reason) => ({
   status: 'error',
   message: reason?.message || String(reason || 'Unknown error')
 });
+
+// Wrapper with AbortSignal.timeout for each provider call + metrics
+const withTimeout = async (providerName, fn, timeoutMs = PROVIDER_TIMEOUT) => {
+  const startTime = Date.now();
+  const timer = apiCallDuration.startTimer({ source: providerName });
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
+  
+  try {
+    const result = await fn(controller.signal);
+    clearTimeout(timeoutId);
+    
+    const elapsed = Date.now() - startTime;
+    timer();
+    apiCallsTotal.inc({ source: providerName, status: 'success' });
+    
+    console.log(`[${providerName}] ✅ Success (${elapsed}ms)`);
+    return result;
+  } catch (error) {
+    clearTimeout(timeoutId);
+    timer();
+    apiCallsTotal.inc({ source: providerName, status: 'error' });
+    
+    const elapsed = Date.now() - startTime;
+    if (error.name === 'AbortError' || error.name === 'TimeoutError') {
+      console.log(`[${providerName}] ⏱️  Timeout after ${elapsed}ms`);
+      throw new Error(`Provider timeout after ${timeoutMs}ms`);
+    }
+    
+    console.log(`[${providerName}] ❌ Error: ${error.message} (${elapsed}ms)`);
+    throw error;
+  }
+};
 
 const runMouser = async (query, key) => {
   const enhanced = await executeEnhancedSearch(query, (searchQuery) => {
@@ -284,47 +323,61 @@ export async function orchestrateProviderSearch(query, keys) {
     return { rows: [], providers: [] };
   }
 
-  // DEBUG: Log which providers are configured
-  console.log('[DEBUG] Provider keys:', {
-    mouser: !!keys?.mouser,
-    digikey: !!(keys?.digikeyClientId && keys?.digikeyClientSecret),
-    tme: !!(keys?.tmeToken && keys?.tmeSecret),
-    farnell: !!keys?.farnell
-  });
+  // Create queue with concurrency limit
+  const queue = new PQueue({ concurrency: CONCURRENCY });
 
-  const tasks = [];
-  const providers = [];
+  // Build provider tasks with timeout wrappers
+  const providerConfigs = [];
 
   if (keys?.mouser) {
-    providers.push('mouser');
-    tasks.push(runMouser(trimmed, keys.mouser));
+    providerConfigs.push({
+      name: 'mouser',
+      fn: () => withTimeout('mouser', () => runMouser(trimmed, keys.mouser))
+    });
   }
 
   if (keys?.digikeyClientId && keys?.digikeyClientSecret) {
-    providers.push('digikey');
-    tasks.push(runDigiKey(trimmed, keys.digikeyClientId, keys.digikeyClientSecret));
+    providerConfigs.push({
+      name: 'digikey',
+      fn: () => withTimeout('digikey', () => runDigiKey(trimmed, keys.digikeyClientId, keys.digikeyClientSecret))
+    });
   }
 
   if (keys?.tmeToken && keys?.tmeSecret) {
-    providers.push('tme');
-    tasks.push(runTME(trimmed, keys.tmeToken, keys.tmeSecret));
+    providerConfigs.push({
+      name: 'tme',
+      fn: () => withTimeout('tme', () => runTME(trimmed, keys.tmeToken, keys.tmeSecret))
+    });
   }
 
   if (keys?.farnell) {
-    providers.push('farnell');
-    tasks.push(runFarnell(trimmed, keys.farnell, keys.farnellRegion || 'uk.farnell.com'));
+    providerConfigs.push({
+      name: 'farnell',
+      fn: () => withTimeout('farnell', () => runFarnell(trimmed, keys.farnell, keys.farnellRegion || 'uk.farnell.com'))
+    });
   }
 
-  if (tasks.length === 0) {
+  if (providerConfigs.length === 0) {
     return { rows: [], providers: [] };
   }
 
-  const settled = await Promise.allSettled(tasks);
+  console.log(`[Orchestrator] Running ${providerConfigs.length} providers (concurrency=${CONCURRENCY}, timeout=${PROVIDER_TIMEOUT}ms)`);
+
+  // Queue all provider tasks
+  const tasks = providerConfigs.map(config => 
+    queue.add(() => config.fn()).then(
+      result => ({ status: 'fulfilled', value: result, provider: config.name }),
+      error => ({ status: 'rejected', reason: error, provider: config.name })
+    )
+  );
+
+  // Wait for all tasks to complete
+  const settled = await Promise.all(tasks);
   const providerSummaries = [];
   let aggregatedRows = [];
 
-  settled.forEach((result, index) => {
-    const provider = providers[index];
+  settled.forEach((result) => {
+    const provider = result.provider;
     if (result.status === 'fulfilled') {
       aggregatedRows = aggregatedRows.concat(result.value.rows);
       providerSummaries.push(summarizeResult(provider, result.value.meta));

@@ -24,7 +24,7 @@ export function openDb(){
       row TEXT NOT NULL,
       PRIMARY KEY(q,ord)
     );
-    CREATE TABLE IF NOT EXISTS products(
+    CREATE TABLE IF NOT EXISTS product_cache(
       src TEXT NOT NULL,
       id  TEXT NOT NULL,
       ts  INTEGER NOT NULL,
@@ -60,12 +60,12 @@ export function readCachedSearch(db, q, maxAgeMs){
 
 export function cacheProduct(db, src, id, product){
   const ts = Date.now();
-  db.prepare('INSERT OR REPLACE INTO products (src,id,ts,product) VALUES (?,?,?,?)')
+  db.prepare('INSERT OR REPLACE INTO product_cache (src,id,ts,product) VALUES (?,?,?,?)')
     .run(src, id, ts, JSON.stringify(product));
 }
 
 export function readCachedProduct(db, src, id, maxAgeMs){
-  const r = db.prepare('SELECT ts,product FROM products WHERE src=? AND id=?').get(src,id);
+  const r = db.prepare('SELECT ts,product FROM product_cache WHERE src=? AND id=?').get(src,id);
   if(!r) return null;
   if(maxAgeMs && (Date.now()-r.ts) > maxAgeMs) return null;
   return JSON.parse(r.product);

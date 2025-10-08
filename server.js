@@ -58,6 +58,7 @@ import {
 import { createOrderHandler } from './api/order.js';
 import { mountAdminRoutes } from './api/admin.orders.js';
 import { mountAdminSettingsRoutes } from './api/admin.settings.js';
+import { mountAdminProductRoutes } from './api/admin.products.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -323,6 +324,7 @@ app.post('/api/order', orderRateLimiter, createOrderHandler(db, logger));
 // Admin API (protected by Nginx Basic Auth at proxy level)
 mountAdminRoutes(app, db, logger);
 mountAdminSettingsRoutes(app, db, logger);
+mountAdminProductRoutes(app, db, logger);
 
 // Digi-Key server-only endpoints (to ensure calls go through server IP)
 app.get('/api/digikey/keyword', async (req, res) => {

@@ -1,0 +1,112 @@
+{
+  "session_id": "2025-10-07-tme-pricing-coverage",
+  "date": "2025-10-07T16:17:00Z",
+  "status": "major-progress",
+  "server": {
+    "host": "89.185.85.110",
+    "port": 3000,
+    "pm2_status": "online",
+    "node_version": "v22.20.0"
+  },
+  "tasks": [
+    {
+      "id": 1,
+      "title": "Coverage matrix: 3 MPN × 4 providers",
+      "status": "in-progress",
+      "progress": "50%",
+      "notes": "6/12 combinations have pricing"
+    },
+    {
+      "id": 2,
+      "title": "Fix TME CRLF issue",
+      "status": "completed",
+      "files": [".env"]
+    },
+    {
+      "id": 3,
+      "title": "Fix PORT configuration",
+      "status": "completed",
+      "files": [".env"]
+    },
+    {
+      "id": 4,
+      "title": "Fix ecosystem.config.cjs env variables",
+      "status": "completed",
+      "files": ["ecosystem.config.cjs"]
+    },
+    {
+      "id": 5,
+      "title": "TME GetProducts integration",
+      "status": "in-progress",
+      "notes": "API called but pricing not parsed"
+    }
+  ],
+  "files_modified": [
+    ".env",
+    "ecosystem.config.cjs",
+    "src/search/providerOrchestrator.mjs",
+    "src/integrations/tme/client.mjs",
+    "scripts/check-coverage.mjs"
+  ],
+  "providers_status": {
+    "mouser": {
+      "status": "ok",
+      "pricing": true,
+      "coverage": "100%"
+    },
+    "digikey": {
+      "status": "error",
+      "error": "OAuth invalid_client",
+      "pricing": false
+    },
+    "tme": {
+      "status": "partial",
+      "search": true,
+      "getProducts": "called",
+      "pricing": false,
+      "issue": "GetProducts response not parsed"
+    },
+    "farnell": {
+      "status": "ok",
+      "pricing": true,
+      "coverage": "67%"
+    }
+  },
+  "coverage_results": {
+    "2N3904": {
+      "mouser": {"rows": 16, "pricing": true, "rub": 1},
+      "digikey": {"rows": 0, "pricing": false},
+      "tme": {"rows": 8, "pricing": false},
+      "farnell": {"rows": 12, "pricing": true, "rub": 2}
+    },
+    "STM32F103C8T6": {
+      "mouser": {"rows": 3, "pricing": true, "rub": 274},
+      "digikey": {"rows": 2, "pricing": true, "rub": 285},
+      "tme": {"rows": 6, "pricing": false},
+      "farnell": {"rows": 2, "pricing": true, "rub": 287}
+    },
+    "LM358": {
+      "mouser": {"rows": 48, "pricing": false, "note": "generic MPN"},
+      "digikey": {"rows": 10, "pricing": true, "rub": 5},
+      "tme": {"rows": 0, "pricing": false},
+      "farnell": {"rows": 0, "pricing": false}
+    }
+  },
+  "next_steps": [
+    "Debug TME GetProducts response structure",
+    "Verify normTME() extracts PriceList correctly",
+    "Check providerOrchestrator merge logic",
+    "Add debug logging for GetProducts raw response",
+    "Target: 100% coverage (12/12 combinations)"
+  ],
+  "critical_fixes": [
+    "CRLF line endings in .env (sed -i 's/\\r$//' .env)",
+    "PORT=3000 instead of 9201",
+    "TME_TOKEN/TME_SECRET in ecosystem.config.cjs",
+    "Kill zombie processes on ports 3000/9201"
+  ],
+  "documentation": [
+    "docs/_artifacts/2025-10-07/go-live/PROVIDER-PRICING-COVERAGE-REPORT.md",
+    "scripts/check-coverage.mjs"
+  ]
+}

@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Настройки — Deep Aggregator</title>
+  <link rel="stylesheet" href="/styles/design-system.css">
+</head>
+<body>
+  <div class="container">
+    <!-- Page Header -->
+    <div style="margin-bottom: 32px;">
+      <h1 style="font-size: 32px; font-weight: 700; margin: 0 0 8px 0;">Настройки</h1>
+      <p style="color: hsl(var(--muted-foreground)); margin: 0;">Управление системой и поставщиками</p>
+    </div>
+
+    <!-- Settings Navigation -->
+    <div style="display: flex; gap: 24px; margin-bottom: 32px;">
+      <div style="flex-shrink: 0; width: 240px;">
+        <nav style="border: 1px solid hsl(var(--border)); border-radius: calc(var(--radius)); padding: 8px;">
+          <a href="#providers" class="nav-link active" data-section="providers">
+            <svg class="icon-sm" style="margin-right: 8px;" viewBox="0 0 24 24">
+              <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+            </svg>
+            Поставщики
+          </a>
+          <a href="#general" class="nav-link" data-section="general">
+            <svg class="icon-sm" style="margin-right: 8px;" viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1 1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+            </svg>
+            Общие настройки
+          </a>
+          <a href="#search" class="nav-link" data-section="search">
+            <svg class="icon-sm" style="margin-right: 8px;" viewBox="0 0 24 24">
+              <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+            </svg>
+            Настройки поиска
+          </a>
+          <a href="#notifications" class="nav-link" data-section="notifications">
+            <svg class="icon-sm" style="margin-right: 8px;" viewBox="0 0 24 24">
+              <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+            </svg>
+            Уведомления
+          </a>
+          <a href="#advanced" class="nav-link" data-section="advanced">
+            <svg class="icon-sm" style="margin-right: 8px;" viewBox="0 0 24 24">
+              <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/>
+            </svg>
+            Расширенные
+          </a>
+        </nav>
+      </div>
+
+      <!-- Settings Content -->
+      <div style="flex: 1;">
+        <!-- Providers Section -->
+        <div id="providers-section" class="settings-section">
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Настройки поставщиков</h3>
+              <p class="card-description">Управление API ключами и настройками подключения</p>
+            </div>
+            <div class="card-content" style="padding: 24px;">
+              <!-- DigiKey -->
+              <div class="provider-config" style="margin-bottom: 32px; padding: 20px; border: 1px solid hsl(var(--border)); border-radius: calc(var(--radius));">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                  <div style="display: flex; align-items: center; gap: 12px;">
+                    <img src="https://www.digikey.com/favicon.ico" style="width: 24px; height: 24px;">
+                    <h4 style="margin: 0; font-size: 18px; font-weight: 600;">DigiKey</h4>
+                    <span class="badge badge-green">Активен</span>
+                  </div>
+                  <label class="switch">
+                    <input type="checkbox" checked id="digikey-enabled">
+                    <span class="slider"></span>
+                  </label>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                  <div>
+                    <label for="digikey-client-id" style="display: block; font-weight: 500; margin-bottom: 8px;">Client ID</label>
+                    <input type="text" id="digikey-client-id" class="input" value="your-client-id" readonly>
+                  </div>
+                  <div>
+                    <label for="digikey-client-secret" style="display: block; font-weight: 500; margin-bottom: 8px;">Client Secret</label>
+                    <input type="password" id="digikey-client-secret" class="input" value="your-secret" readonly>
+                  </div>
+                </div>
+                
+                <div style="margin-top: 16px; display: flex; gap: 8px;">
+                  <button class="btn btn-ghost btn-sm" onclick="testConnection('digikey')">Тест соединения</button>
+                  <button class="btn btn-ghost btn-sm" onclick="editProvider('digikey')">Редактировать</button>
+                </div>
+              </div>
+
+              <!-- TME -->
+              <div class="provider-config" style="margin-bottom: 32px; padding: 20px; border: 1px solid hsl(var(--border)); border-radius: calc(var(--radius));">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                  <div style="display: flex; align-items: center; gap: 12px;">
+                    <img src="https://www.tme.eu/favicon.ico" style="width: 24px; height: 24px;">
+                    <h4 style="margin: 0; font-size: 18px; font-weight: 600;">TME</h4>
+                    <span class="badge badge-green">Активен</span>
+                  </div>
+                  <label class="switch">
+                    <input type="checkbox" checked id="tme-enabled">
+                    <span class="slider"></span>
+                  </label>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                  <div>
+                    <label for="tme-token" style="display: block; font-weight: 500; margin-bottom: 8px;">API Token</label>
+                    <input type="password" id="tme-token" class="input" value="299fd39bc..." readonly>
+                  </div>
+                  <div>
+                    <label for="tme-secret" style="display: block; font-weight: 500; margin-bottom: 8px;">API Secret</label>
+                    <input type="password" id="tme-secret" class="input" value="0f3b539c..." readonly>
+                  </div>
+                </div>
+                
+                <div style="margin-top: 16px; display: flex; gap: 8px;">
+                  <button class="btn btn-ghost btn-sm" onclick="testConnection('tme')">Тест соединения</button>
+                  <button class="btn btn-ghost btn-sm" onclick="editProvider('tme')">Редактировать</button>
+                </div>
+              </div>
+
+              <!-- Mouser -->
+              <div class="provider-config" style="margin-bottom: 32px; padding: 20px; border: 1px solid hsl(var(--border)); border-radius: calc(var(--radius));">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                  <div style="display: flex; align-items: center; gap: 12px;">
+                    <img src="https://www.mouser.com/favicon.ico" style="width: 24px; height: 24px;">
+                    <h4 style="margin: 0; font-size: 18px; font-weight: 600;">Mouser</h4>
+                    <span class="badge badge-yellow">Частичный</span>
+                  </div>
+                  <label class="switch">
+                    <input type="checkbox" checked id="mouser-enabled">
+                    <span class="slider"></span>
+                  </label>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: 1fr; gap: 16px;">
+                  <div>
+                    <label for="mouser-key" style="display: block; font-weight: 500; margin-bottom: 8px;">Search API Key</label>
+                    <input type="password" id="mouser-key" class="input" value="your-api-key" readonly>
+                  </div>
+                </div>
+                
+                <div style="margin-top: 16px; display: flex; gap: 8px;">
+                  <button class="btn btn-ghost btn-sm" onclick="testConnection('mouser')">Тест соединения</button>
+                  <button class="btn btn-ghost btn-sm" onclick="editProvider('mouser')">Редактировать</button>
+                </div>
+              </div>
+
+              <!-- Farnell -->
+              <div class="provider-config" style="margin-bottom: 24px; padding: 20px; border: 1px solid hsl(var(--border)); border-radius: calc(var(--radius));">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                  <div style="display: flex; align-items: center; gap: 12px;">
+                    <img src="https://www.farnell.com/favicon.ico" style="width: 24px; height: 24px;">
+                    <h4 style="margin: 0; font-size: 18px; font-weight: 600;">Farnell</h4>
+                    <span class="badge badge-red">Отключен</span>
+                  </div>
+                  <label class="switch">
+                    <input type="checkbox" id="farnell-enabled">
+                    <span class="slider"></span>
+                  </label>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: 1fr; gap: 16px;">
+                  <div>
+                    <label for="farnell-key" style="display: block; font-weight: 500; margin-bottom: 8px;">API Key</label>
+                    <input type="password" id="farnell-key" class="input" placeholder="Введите API ключ">
+                  </div>
+                </div>
+                
+                <div style="margin-top: 16px; display: flex; gap: 8px;">
+                  <button class="btn btn-ghost btn-sm" onclick="testConnection('farnell')" disabled>Тест соединения</button>
+                  <button class="btn btn-ghost btn-sm" onclick="editProvider('farnell')">Настроить</button>
+                </div>
+              </div>
+
+              <div style="padding: 16px; background-color: hsl(var(--muted) / 0.1); border-radius: calc(var(--radius)); margin-top: 24px;">
+                <button class="btn btn-primary btn-md" style="width: 100%;" onclick="saveProviderSettings()">Сохранить настройки</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- General Settings Section -->
+        <div id="general-section" class="settings-section" style="display: none;">
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Общие настройки</h3>
+              <p class="card-description">Основные параметры системы</p>
+            </div>
+            <div class="card-content" style="padding: 24px;">
+              <div style="display: grid; gap: 24px;">
+                <div>
+                  <label for="language" style="display: block; font-weight: 500; margin-bottom: 8px;">Язык интерфейса</label>
+                  <select id="language" class="input">
+                    <option value="ru">Русский</option>
+                    <option value="en">English</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label for="currency" style="display: block; font-weight: 500; margin-bottom: 8px;">Валюта по умолчанию</label>
+                  <select id="currency" class="input">
+                    <option value="RUB">Рубль (₽)</option>
+                    <option value="USD">Доллар ($)</option>
+                    <option value="EUR">Евро (€)</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label for="theme" style="display: block; font-weight: 500; margin-bottom: 8px;">Тема оформления</label>
+                  <select id="theme" class="input">
+                    <option value="system">Системная</option>
+                    <option value="light">Светлая</option>
+                    <option value="dark">Тёмная</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label for="results-per-page" style="display: block; font-weight: 500; margin-bottom: 8px;">Результатов на странице</label>
+                  <select id="results-per-page" class="input">
+                    <option value="10">10</option>
+                    <option value="20" selected>20</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                  </select>
+                </div>
+
+                <div style="display: flex; items-center; justify-content: space-between; padding: 16px; border: 1px solid hsl(var(--border)); border-radius: calc(var(--radius));">
+                  <div>
+                    <div style="font-weight: 500; margin-bottom: 4px;">Автосохранение поисковых запросов</div>
+                    <div style="font-size: 14px; color: hsl(var(--muted-foreground));">Сохранять историю поиска для быстрого доступа</div>
+                  </div>
+                  <label class="switch">
+                    <input type="checkbox" checked id="auto-save-searches">
+                    <span class="slider"></span>
+                  </label>
+                </div>
+
+                <div style="display: flex; items-center; justify-content: space-between; padding: 16px; border: 1px solid hsl(var(--border)); border-radius: calc(var(--radius));">
+                  <div>
+                    <div style="font-weight: 500; margin-bottom: 4px;">Показывать расширенные фильтры</div>
+                    <div style="font-size: 14px; color: hsl(var(--muted-foreground));">Отображать дополнительные опции фильтрации</div>
+                  </div>
+                  <label class="switch">
+                    <input type="checkbox" checked id="show-advanced-filters">
+                    <span class="slider"></span>
+                  </label>
+                </div>
+              </div>
+
+              <div style="padding: 16px; background-color: hsl(var(--muted) / 0.1); border-radius: calc(var(--radius)); margin-top: 24px;">
+                <button class="btn btn-primary btn-md" style="width: 100%;" onclick="saveGeneralSettings()">Сохранить настройки</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Search Settings Section -->
+        <div id="search-section" class="settings-section" style="display: none;">
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Настройки поиска</h3>
+              <p class="card-description">Параметры алгоритмов поиска и фильтрации</p>
+            </div>
+            <div class="card-content" style="padding: 24px;">
+              <div style="display: grid; gap: 24px;">
+                <div>
+                  <label for="search-timeout" style="display: block; font-weight: 500; margin-bottom: 8px;">Таймаут поиска (сек)</label>
+                  <input type="number" id="search-timeout" class="input" value="30" min="5" max="120">
+                </div>
+
+                <div>
+                  <label for="max-results" style="display: block; font-weight: 500; margin-bottom: 8px;">Максимум результатов</label>
+                  <input type="number" id="max-results" class="input" value="100" min="10" max="1000">
+                </div>
+
+                <div style="display: flex; items-center; justify-content: space-between; padding: 16px; border: 1px solid hsl(var(--border)); border-radius: calc(var(--radius));">
+                  <div>
+                    <div style="font-weight: 500; margin-bottom: 4px;">Нечеткий поиск</div>
+                    <div style="font-size: 14px; color: hsl(var(--muted-foreground));">Поиск с учетом опечаток и похожих терминов</div>
+                  </div>
+                  <label class="switch">
+                    <input type="checkbox" checked id="fuzzy-search">
+                    <span class="slider"></span>
+                  </label>
+                </div>
+
+                <div style="display: flex; items-center; justify-content: space-between; padding: 16px; border: 1px solid hsl(var(--border)); border-radius: calc(var(--radius));">
+                  <div>
+                    <div style="font-weight: 500; margin-bottom: 4px;">Поиск по описанию</div>
+                    <div style="font-size: 14px; color: hsl(var(--muted-foreground));">Включать описания товаров в поиск</div>
+                  </div>
+                  <label class="switch">
+                    <input type="checkbox" checked id="search-descriptions">
+                    <span class="slider"></span>
+                  </label>
+                </div>
+
+                <div style="display: flex; items-center; justify-content: space-between; padding: 16px; border: 1px solid hsl(var(--border)); border-radius: calc(var(--radius));">
+                  <div>
+                    <div style="font-weight: 500; margin-bottom: 4px;">Автодополнение</div>
+                    <div style="font-size: 14px; color: hsl(var(--muted-foreground));">Показывать предложения при вводе</div>
+                  </div>
+                  <label class="switch">
+                    <input type="checkbox" checked id="autocomplete">
+                    <span class="slider"></span>
+                  </label>
+                </div>
+
+                <div>
+                  <label style="display: block; font-weight: 500; margin-bottom: 12px;">Приоритет поставщиков</label>
+                  <div id="provider-priority" style="border: 1px solid hsl(var(--border)); border-radius: calc(var(--radius)); padding: 16px;">
+                    <!-- Sortable provider list will be here -->
+                  </div>
+                </div>
+              </div>
+
+              <div style="padding: 16px; background-color: hsl(var(--muted) / 0.1); border-radius: calc(var(--radius)); margin-top: 24px;">
+                <button class="btn btn-primary btn-md" style="width: 100%;" onclick="saveSearchSettings()">Сохранить настройки</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Other sections (notifications, advanced) would go here... -->
+      </div>
+    </div>
+  </div>
+
+  <style>
+    /* Navigation styling */
+    .nav-link {
+      display: flex;
+      align-items: center;
+      padding: 12px 16px;
+      border-radius: calc(var(--radius));
+      text-decoration: none;
+      color: hsl(var(--foreground));
+      transition: all 0.2s ease;
+      border: 1px solid transparent;
+    }
+
+    .nav-link:hover {
+      background-color: hsl(var(--muted) / 0.5);
+    }
+
+    .nav-link.active {
+      background-color: hsl(var(--primary));
+      color: hsl(var(--primary-foreground));
+      border-color: hsl(var(--primary));
+    }
+
+    /* Switch styling */
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 44px;
+      height: 24px;
+    }
+
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: hsl(var(--muted));
+      transition: 0.2s;
+      border-radius: 24px;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 18px;
+      width: 18px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: 0.2s;
+      border-radius: 50%;
+    }
+
+    input:checked + .slider {
+      background-color: hsl(var(--primary));
+    }
+
+    input:checked + .slider:before {
+      transform: translateX(20px);
+    }
+
+    /* Badge colors */
+    .badge-green { background-color: #16a34a; color: white; }
+    .badge-yellow { background-color: #f59e0b; color: white; }
+    .badge-red { background-color: #ef4444; color: white; }
+
+    /* Mobile responsiveness */
+    @media (max-width: 768px) {
+      .container > div:first-child {
+        flex-direction: column !important;
+      }
+      
+      .container > div:first-child > div:first-child {
+        width: 100% !important;
+        margin-bottom: 16px;
+      }
+      
+      nav {
+        display: flex;
+        overflow-x: auto;
+        gap: 8px;
+        padding: 8px !important;
+      }
+      
+      .nav-link {
+        white-space: nowrap;
+        flex-shrink: 0;
+        padding: 8px 12px !important;
+      }
+      
+      .provider-config div[style*="grid-template-columns"] {
+        grid-template-columns: 1fr !important;
+      }
+    }
+  </style>
+
+  <script src="/js/dashboard-layout.js"></script>
+  <script>
+    class SettingsController {
+      constructor() {
+        this.currentSection = 'providers';
+        this.init();
+      }
+
+      init() {
+        this.bindNavigation();
+        this.loadProviderPriority();
+        this.bindSwitches();
+      }
+
+      bindNavigation() {
+        const navLinks = document.querySelectorAll('.nav-link');
+        navLinks.forEach(link => {
+          link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const section = e.currentTarget.dataset.section;
+            this.showSection(section);
+          });
+        });
+      }
+
+      showSection(sectionName) {
+        // Hide all sections
+        document.querySelectorAll('.settings-section').forEach(section => {
+          section.style.display = 'none';
+        });
+
+        // Show target section
+        const targetSection = document.getElementById(`${sectionName}-section`);
+        if (targetSection) {
+          targetSection.style.display = 'block';
+        }
+
+        // Update navigation
+        document.querySelectorAll('.nav-link').forEach(link => {
+          link.classList.remove('active');
+        });
+        document.querySelector(`[data-section="${sectionName}"]`).classList.add('active');
+
+        this.currentSection = sectionName;
+      }
+
+      bindSwitches() {
+        // Provider enable/disable switches
+        const providerSwitches = document.querySelectorAll('input[id$="-enabled"]');
+        providerSwitches.forEach(switchEl => {
+          switchEl.addEventListener('change', (e) => {
+            const provider = e.target.id.replace('-enabled', '');
+            this.toggleProvider(provider, e.target.checked);
+          });
+        });
+      }
+
+      toggleProvider(provider, enabled) {
+        const badge = document.querySelector(`[id="${provider}-enabled"]`)
+          .closest('.provider-config')
+          .querySelector('.badge');
+        
+        if (enabled) {
+          badge.className = 'badge badge-green';
+          badge.textContent = 'Активен';
+        } else {
+          badge.className = 'badge badge-red';
+          badge.textContent = 'Отключен';
+        }
+
+        // Enable/disable test button
+        const testBtn = document.querySelector(`[onclick="testConnection('${provider}')"]`);
+        if (testBtn) {
+          testBtn.disabled = !enabled;
+        }
+      }
+
+      loadProviderPriority() {
+        const container = document.getElementById('provider-priority');
+        const providers = [
+          { id: 'digikey', name: 'DigiKey', priority: 1 },
+          { id: 'tme', name: 'TME', priority: 2 },
+          { id: 'mouser', name: 'Mouser', priority: 3 },
+          { id: 'farnell', name: 'Farnell', priority: 4 }
+        ];
+
+        container.innerHTML = providers.map((provider, index) => `
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px; border-bottom: 1px solid hsl(var(--border));">
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <span style="width: 24px; height: 24px; background-color: hsl(var(--muted)); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 12px;">
+                ${index + 1}
+              </span>
+              <span>${provider.name}</span>
+            </div>
+            <div style="display: flex; gap: 8px;">
+              <button class="btn btn-ghost btn-sm" onclick="movePriority('${provider.id}', 'up')" ${index === 0 ? 'disabled' : ''}>↑</button>
+              <button class="btn btn-ghost btn-sm" onclick="movePriority('${provider.id}', 'down')" ${index === providers.length - 1 ? 'disabled' : ''}>↓</button>
+            </div>
+          </div>
+        `).join('');
+      }
+    }
+
+    // Global functions for button handlers
+    window.testConnection = function(provider) {
+      alert(`Тестирование соединения с ${provider}...`);
+      // In real app, this would make an API call
+    };
+
+    window.editProvider = function(provider) {
+      alert(`Редактирование настроек ${provider}...`);
+      // In real app, this would open a modal or navigate to edit page
+    };
+
+    window.saveProviderSettings = function() {
+      alert('Настройки поставщиков сохранены!');
+      // In real app, this would save to backend
+    };
+
+    window.saveGeneralSettings = function() {
+      alert('Общие настройки сохранены!');
+      // In real app, this would save to backend
+    };
+
+    window.saveSearchSettings = function() {
+      alert('Настройки поиска сохранены!');
+      // In real app, this would save to backend
+    };
+
+    window.movePriority = function(providerId, direction) {
+      alert(`Изменение приоритета ${providerId} ${direction}`);
+      // In real app, this would reorder the list
+    };
+
+    // Initialize when page loads
+    window.addEventListener('load', () => {
+      new SettingsController();
+    });
+  </script>
+</body>
+</html>

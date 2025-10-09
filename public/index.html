@@ -1,101 +1,288 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ДИПОНИКА — Поиск для Инженеров и Разработчиков</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/styles/v0-theme.css?v=1">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Обзор — Deep Aggregator</title>
+  <link rel="stylesheet" href="/styles/design-system.css">
 </head>
 <body>
-  <!-- Header -->
-  <header class="header">
-    <div class="container">
-      <div class="header-content">
-        <div class="logo">
-          <div class="logo-chip"></div>
-          <div class="logo-text">ДИПОНИКА</div>
-        </div>
-
-        <div class="nav-wrapper">
-          <nav class="main-nav">
-            <button class="nav-link">Источники</button>
-            <button class="nav-link">О нас</button>
-          </nav>
-
-          <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
-            <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
-            </svg>
-            <svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
-            </svg>
-          </button>
-        </div>
-      </div>
+  <div class="container">
+    <!-- Page Header -->
+    <div style="margin-bottom: 32px;">
+      <h1 style="font-size: 32px; font-weight: 700; margin: 0 0 8px 0;">Обзор</h1>
+      <p style="color: hsl(var(--muted-foreground)); margin: 0;">Общая статистика и актуальная информация о системе</p>
     </div>
-  </header>
 
-  <!-- Hero Section -->
-  <main class="main-content">
-    <div class="container">
-      <div class="hero">
-        <h1 class="title-main fade-in">
-          Поиск для <span class="gradient-text">Инженеров и Разработчиков</span>
-        </h1>
-
-        <p class="hero-subtitle fade-in" style="animation-delay: 0.2s">
-          Найдите нужные компоненты быстро и эффективно среди миллионов позиций от ведущих поставщиков
-        </p>
-
-        <div class="search-wrapper fade-in" style="animation-delay: 0.4s">
-          <form class="search-box" id="searchForm">
-            <input type="text" id="searchInput" placeholder=" " autocomplete="off">
-            <button type="reset"></button>
-          </form>
-        </div>
-
-        <p class="search-hint">
-          Поддерживаем номер детали, часть названия, производителя
-        </p>
-      </div>
-
-      <!-- Popular Components Section -->
-      <div class="popular-section fade-in" style="animation-delay: 0.6s">
-        <h2 class="section-title">ЧТО ИЩУТ ЛЮДИ</h2>
-        <div class="components-grid" id="componentsGrid">
-          <!-- Components will be rendered by JavaScript -->
-        </div>
-      </div>
-    </div>
-  </main>
-
-  <!-- Footer -->
-  <footer class="footer">
-    <div class="container">
-      <div class="footer-content">
-        <div class="footer-left">
-          <p class="copyright">© 2025 Components Aggregator</p>
-          <span class="separator">•</span>
-          <p class="description">Агрегатор поиска электронных компонентов</p>
-        </div>
-
-        <div class="footer-right">
-          <div class="api-status">
-            <svg class="activity-icon online" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
-            </svg>
-            <span class="status-text online">API: онлайн</span>
+    <!-- Key Metrics Grid -->
+    <div class="grid grid-cols-4 gap-4" style="margin-bottom: 32px;">
+      <!-- Total Products -->
+      <div class="card">
+        <div class="card-content" style="padding: 24px;">
+          <div class="flex items-center justify-between">
+            <div>
+              <p style="font-size: 14px; font-weight: 500; color: hsl(var(--muted-foreground)); margin: 0 0 4px 0;">Всего товаров</p>
+              <p style="font-size: 32px; font-weight: 700; margin: 0;" id="total-products">—</p>
+            </div>
+            <div style="width: 48px; height: 48px; border-radius: 50%; background-color: hsl(var(--primary)); color: hsl(var(--primary-foreground)); display: flex; align-items: center; justify-content: center;">
+              <svg class="icon-lg" viewBox="0 0 24 24">
+                <path d="M16.5 9.4 7.55 4.24"/><path d="M7.45 4.26 2 6.26l5.5 2 5.5-2-5.5-2z"/><path d="m6.93 13.45-5.5-2v6.5l5.5 2v-6.5z"/><path d="m13.07 13.45 5.5-2v6.5l-5.5 2v-6.5z"/>
+              </svg>
+            </div>
           </div>
+          <p style="font-size: 12px; color: hsl(var(--muted-foreground)); margin: 16px 0 0 0;">
+            <span style="color: #16a34a;">↗ +12.5%</span> за последний месяц
+          </p>
+        </div>
+      </div>
 
-          <button class="policy-link">Политика</button>
+      <!-- Active Providers -->
+      <div class="card">
+        <div class="card-content" style="padding: 24px;">
+          <div class="flex items-center justify-between">
+            <div>
+              <p style="font-size: 14px; font-weight: 500; color: hsl(var(--muted-foreground)); margin: 0 0 4px 0;">Поставщики</p>
+              <p style="font-size: 32px; font-weight: 700; margin: 0;">4</p>
+            </div>
+            <div style="width: 48px; height: 48px; border-radius: 50%; background-color: hsl(var(--chart-2)); color: white; display: flex; align-items: center; justify-content: center;">
+              <svg class="icon-lg" viewBox="0 0 24 24">
+                <path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/><path d="M15 18H9"/><path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"/><circle cx="17" cy="18" r="2"/><circle cx="7" cy="18" r="2"/>
+              </svg>
+            </div>
+          </div>
+          <p style="font-size: 12px; color: hsl(var(--muted-foreground)); margin: 16px 0 0 0;">
+            DigiKey, TME, Mouser, Farnell
+          </p>
+        </div>
+      </div>
+
+      <!-- Today's Searches -->
+      <div class="card">
+        <div class="card-content" style="padding: 24px;">
+          <div class="flex items-center justify-between">
+            <div>
+              <p style="font-size: 14px; font-weight: 500; color: hsl(var(--muted-foreground)); margin: 0 0 4px 0;">Поиск сегодня</p>
+              <p style="font-size: 32px; font-weight: 700; margin: 0;" id="daily-searches">—</p>
+            </div>
+            <div style="width: 48px; height: 48px; border-radius: 50%; background-color: hsl(var(--chart-3)); color: white; display: flex; align-items: center; justify-content: center;">
+              <svg class="icon-lg" viewBox="0 0 24 24">
+                <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+              </svg>
+            </div>
+          </div>
+          <p style="font-size: 12px; color: hsl(var(--muted-foreground)); margin: 16px 0 0 0;">
+            <span style="color: #16a34a;">↗ +8.2%</span> по сравнению с вчера
+          </p>
+        </div>
+      </div>
+
+      <!-- System Status -->
+      <div class="card">
+        <div class="card-content" style="padding: 24px;">
+          <div class="flex items-center justify-between">
+            <div>
+              <p style="font-size: 14px; font-weight: 500; color: hsl(var(--muted-foreground)); margin: 0 0 4px 0;">Статус системы</p>
+              <p style="font-size: 20px; font-weight: 600; margin: 0; color: #16a34a;">Все работает</p>
+            </div>
+            <div style="width: 48px; height: 48px; border-radius: 50%; background-color: #16a34a; color: white; display: flex; align-items: center; justify-content: center;">
+              <svg class="icon-lg" viewBox="0 0 24 24">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+              </svg>
+            </div>
+          </div>
+          <p style="font-size: 12px; color: hsl(var(--muted-foreground)); margin: 16px 0 0 0;">
+            Последняя проверка: <span id="last-check">—</span>
+          </p>
         </div>
       </div>
     </div>
-  </footer>
 
-  <script src="/scripts/v0-main.js?v=1"></script>
+    <!-- Main Content Grid -->
+    <div class="grid grid-cols-3 gap-6">
+      <!-- Recent Activity -->
+      <div style="grid-column: span 2;">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Последняя активность</h3>
+            <p class="card-description">Недавние поисковые запросы и системные события</p>
+          </div>
+          <div class="card-content">
+            <div id="recent-activity">
+              <p style="text-align: center; color: hsl(var(--muted-foreground)); padding: 32px;">Загрузка...</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Actions -->
+      <div>
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Быстрые действия</h3>
+            <p class="card-description">Частые операции</p>
+          </div>
+          <div class="card-content">
+            <div style="display: flex; flex-direction: column; gap: 12px;">
+              <a href="search.html" class="btn btn-primary btn-md" style="text-decoration: none;">
+                <svg class="icon" style="margin-right: 8px;" viewBox="0 0 24 24">
+                  <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+                </svg>
+                Новый поиск
+              </a>
+              
+              <a href="products.html" class="btn btn-secondary btn-md" style="text-decoration: none;">
+                <svg class="icon" style="margin-right: 8px;" viewBox="0 0 24 24">
+                  <path d="M16.5 9.4 7.55 4.24"/><path d="M7.45 4.26 2 6.26l5.5 2 5.5-2-5.5-2z"/><path d="m6.93 13.45-5.5-2v6.5l5.5 2v-6.5z"/><path d="m13.07 13.45 5.5-2v6.5l-5.5 2v-6.5z"/>
+                </svg>
+                Каталог
+              </a>
+              
+              <a href="orders.html" class="btn btn-secondary btn-md" style="text-decoration: none;">
+                <svg class="icon" style="margin-right: 8px;" viewBox="0 0 24 24">
+                  <circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/>
+                </svg>
+                Мои заказы
+              </a>
+              
+              <hr style="border: none; border-top: 1px solid hsl(var(--border)); margin: 8px 0;">
+              
+              <a href="settings.html" class="btn btn-ghost btn-md" style="text-decoration: none;">
+                <svg class="icon" style="margin-right: 8px;" viewBox="0 0 24 24">
+                  <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/>
+                </svg>
+                Настройки
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Provider Status -->
+    <div class="card" style="margin-top: 32px;">
+      <div class="card-header">
+        <h3 class="card-title">Статус поставщиков</h3>
+        <p class="card-description">Текущее состояние подключений к API провайдеров</p>
+      </div>
+      <div class="card-content">
+        <div class="grid grid-cols-4 gap-4" id="provider-status">
+          <p style="text-align: center; color: hsl(var(--muted-foreground)); padding: 32px; grid-column: span 4;">Проверка статуса...</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/dashboard-layout.js"></script>
+  <script>
+    // Dashboard data loading
+    class DashboardData {
+      constructor() {
+        this.loadData();
+        this.startAutoRefresh();
+      }
+
+      async loadData() {
+        try {
+          // Load metrics
+          await this.loadMetrics();
+          
+          // Load recent activity
+          await this.loadRecentActivity();
+          
+          // Load provider status
+          await this.loadProviderStatus();
+          
+        } catch (error) {
+          console.error('Error loading dashboard data:', error);
+        }
+      }
+
+      async loadMetrics() {
+        // For now, simulate data - in real app this would be API calls
+        document.getElementById('total-products').textContent = '2,847,293';
+        document.getElementById('daily-searches').textContent = '1,247';
+        document.getElementById('last-check').textContent = new Date().toLocaleTimeString('ru');
+      }
+
+      async loadRecentActivity() {
+        const activities = [
+          { time: '2 мин назад', action: 'Поиск "LM317T"', user: 'Пользователь', results: 45 },
+          { time: '5 мин назад', action: 'Поиск "ATmega328P"', user: 'Админ', results: 28 },
+          { time: '8 мин назад', action: 'Поиск "BC547"', user: 'Пользователь', results: 67 },
+          { time: '12 мин назад', action: 'Поиск "1N4007"', user: 'Пользователь', results: 52 },
+          { time: '18 мин назад', action: 'Обновление каталога TME', user: 'Система', results: null }
+        ];
+
+        const activityHtml = activities.map(activity => `
+          <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid hsl(var(--border));">
+            <div>
+              <p style="margin: 0; font-weight: 500;">${activity.action}</p>
+              <p style="margin: 0; font-size: 12px; color: hsl(var(--muted-foreground));">${activity.time} • ${activity.user}</p>
+            </div>
+            <div>
+              ${activity.results ? `<span class="badge badge-secondary">${activity.results} найдено</span>` : `<span class="badge badge-default">Система</span>`}
+            </div>
+          </div>
+        `).join('');
+
+        document.getElementById('recent-activity').innerHTML = activityHtml;
+      }
+
+      async loadProviderStatus() {
+        const providers = [
+          { name: 'DigiKey', status: 'online', response: 156, products: '12M+' },
+          { name: 'TME', status: 'online', response: 203, products: '800K+' },
+          { name: 'Mouser', status: 'online', response: 178, products: '8M+' },
+          { name: 'Farnell', status: 'warning', response: 456, products: '2M+' }
+        ];
+
+        const statusHtml = providers.map(provider => {
+          const statusColor = provider.status === 'online' ? '#16a34a' : 
+                             provider.status === 'warning' ? '#ea580c' : '#dc2626';
+          
+          return `
+            <div style="display: flex; align-items: center; justify-content: space-between; padding: 16px; border: 1px solid hsl(var(--border)); border-radius: calc(var(--radius)); background: hsl(var(--card));">
+              <div style="display: flex; align-items: center; gap: 12px;">
+                <div style="width: 12px; height: 12px; border-radius: 50%; background-color: ${statusColor};"></div>
+                <div>
+                  <p style="margin: 0; font-weight: 600;">${provider.name}</p>
+                  <p style="margin: 0; font-size: 12px; color: hsl(var(--muted-foreground));">${provider.products}</p>
+                </div>
+              </div>
+              <div style="text-align: right;">
+                <p style="margin: 0; font-size: 12px; color: hsl(var(--muted-foreground));">${provider.response}ms</p>
+              </div>
+            </div>
+          `;
+        }).join('');
+
+        document.getElementById('provider-status').innerHTML = statusHtml;
+      }
+
+      startAutoRefresh() {
+        // Refresh metrics every 30 seconds
+        setInterval(() => {
+          this.loadMetrics();
+        }, 30000);
+
+        // Refresh activity every 2 minutes
+        setInterval(() => {
+          this.loadRecentActivity();
+        }, 120000);
+
+        // Refresh provider status every 5 minutes
+        setInterval(() => {
+          this.loadProviderStatus();
+        }, 300000);
+      }
+    }
+
+    // Initialize dashboard when page loads
+    document.addEventListener('DOMContentLoaded', () => {
+      new DashboardData();
+    });
+  </script>
+</body>
+</html>
 </body>
 </html>

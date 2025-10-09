@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Каталог — Deep Aggregator</title>
+  <link rel="stylesheet" href="/styles/design-system.css">
+</head>
+<body>
+  <div class="container">
+    <!-- Page Header -->
+    <div style="margin-bottom: 32px;">
+      <h1 style="font-size: 32px; font-weight: 700; margin: 0 0 8px 0;">Каталог компонентов</h1>
+      <p style="color: hsl(var(--muted-foreground)); margin: 0;">Обзор популярных электронных компонентов по категориям</p>
+    </div>
+
+    <!-- Search & Filters -->
+    <div class="card" style="margin-bottom: 32px;">
+      <div class="card-content" style="padding: 24px;">
+        <div style="display: grid; grid-template-columns: 1fr auto auto; gap: 16px; align-items: end;">
+          <!-- Search Input -->
+          <div>
+            <label for="catalog-search" style="display: block; font-weight: 500; margin-bottom: 8px;">Быстрый поиск</label>
+            <input 
+              type="text" 
+              id="catalog-search" 
+              class="input" 
+              placeholder="Введите MPN, производителя или категорию..."
+              style="height: 48px;"
+            >
+          </div>
+          
+          <!-- Category Filter -->
+          <div>
+            <label for="category-filter" style="display: block; font-weight: 500; margin-bottom: 8px;">Категория</label>
+            <select id="category-filter" class="input" style="height: 48px; padding-right: 32px;">
+              <option value="">Все категории</option>
+              <option value="semiconductors">Полупроводники</option>
+              <option value="passive">Пассивные компоненты</option>
+              <option value="connectors">Разъемы</option>
+              <option value="power">Источники питания</option>
+              <option value="sensors">Датчики</option>
+              <option value="displays">Дисплеи</option>
+            </select>
+          </div>
+          
+          <!-- Sort Options -->
+          <div>
+            <label for="sort-options" style="display: block; font-weight: 500; margin-bottom: 8px;">Сортировка</label>
+            <select id="sort-options" class="input" style="height: 48px; padding-right: 32px;">
+              <option value="popular">Популярные</option>
+              <option value="name">По названию</option>
+              <option value="price-low">Цена: низкая</option>
+              <option value="price-high">Цена: высокая</option>
+              <option value="availability">Наличие</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Categories Overview -->
+    <div style="margin-bottom: 32px;">
+      <h2 style="font-size: 24px; font-weight: 600; margin: 0 0 16px 0;">Популярные категории</h2>
+      <div class="grid grid-cols-3 gap-4" id="category-cards">
+        <!-- Category cards will be populated -->
+      </div>
+    </div>
+
+    <!-- Featured Products -->
+    <div style="margin-bottom: 32px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+        <h2 style="font-size: 24px; font-weight: 600; margin: 0;">Рекомендуемые товары</h2>
+        <button class="btn btn-ghost btn-sm" id="refresh-featured">
+          <svg class="icon-sm" style="margin-right: 4px;" viewBox="0 0 24 24">
+            <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/>
+          </svg>
+          Обновить
+        </button>
+      </div>
+      <div class="grid grid-cols-4 gap-4" id="featured-products">
+        <!-- Featured products will be populated -->
+      </div>
+    </div>
+
+    <!-- All Products Table -->
+    <div class="card">
+      <div class="card-header">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <h3 class="card-title">Все товары</h3>
+            <p class="card-description" id="products-count">Загрузка каталога...</p>
+          </div>
+          <div style="display: flex; gap: 8px;">
+            <button class="btn btn-ghost btn-sm" id="grid-view-btn">
+              <svg class="icon-sm" viewBox="0 0 24 24">
+                <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/>
+              </svg>
+            </button>
+            <button class="btn btn-ghost btn-sm view-btn-active" id="list-view-btn">
+              <svg class="icon-sm" viewBox="0 0 24 24">
+                <path d="M3 6h18M3 12h18M3 18h18"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="card-content" style="padding: 0;">
+        <!-- List View -->
+        <div id="list-view">
+          <table class="table">
+            <thead class="table-header">
+              <tr>
+                <th class="table-head" style="width: 80px;">Фото</th>
+                <th class="table-head" style="width: 150px;">MPN</th>
+                <th class="table-head" style="width: 120px;">Производитель</th>
+                <th class="table-head">Описание</th>
+                <th class="table-head" style="width: 100px;">Категория</th>
+                <th class="table-head" style="width: 100px;">Цена от</th>
+                <th class="table-head" style="width: 100px;">Действие</th>
+              </tr>
+            </thead>
+            <tbody class="table-body" id="products-table-body">
+              <!-- Products will be populated -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Grid View -->
+        <div id="grid-view" style="display: none; padding: 24px;">
+          <div class="grid grid-cols-4 gap-4" id="products-grid">
+            <!-- Product cards will be populated -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pagination -->
+    <div style="display: flex; justify-content: center; align-items: center; gap: 16px; margin-top: 32px;">
+      <button class="btn btn-ghost btn-sm" id="prev-page" disabled>
+        <svg class="icon-sm" style="margin-right: 4px;" viewBox="0 0 24 24">
+          <path d="M15 18l-6-6 6-6"/>
+        </svg>
+        Назад
+      </button>
+      
+      <div style="display: flex; gap: 4px;" id="page-numbers">
+        <!-- Page numbers will be populated -->
+      </div>
+      
+      <button class="btn btn-ghost btn-sm" id="next-page">
+        Вперёд
+        <svg class="icon-sm" style="margin-left: 4px;" viewBox="0 0 24 24">
+          <path d="M9 18l6-6-6-6"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <style>
+    /* View toggle buttons */
+    .view-btn-active {
+      background-color: hsl(var(--primary)) !important;
+      color: hsl(var(--primary-foreground)) !important;
+    }
+
+    /* Category card hover effects */
+    .category-card {
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .category-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    }
+
+    /* Product card styling */
+    .product-card {
+      border: 1px solid hsl(var(--border));
+      border-radius: calc(var(--radius) + 2px);
+      padding: 16px;
+      transition: all 0.2s ease;
+      background: hsl(var(--card));
+    }
+
+    .product-card:hover {
+      border-color: hsl(var(--primary));
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Filter animations */
+    .filter-active {
+      animation: highlight 0.3s ease;
+    }
+
+    @keyframes highlight {
+      0% { background-color: hsl(var(--primary) / 0.1); }
+      100% { background-color: transparent; }
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .grid-cols-3, .grid-cols-4 {
+        grid-template-columns: 1fr !important;
+      }
+      
+      .card-content div[style*="grid-template-columns"] {
+        grid-template-columns: 1fr !important;
+        gap: 12px !important;
+      }
+    }
+  </style>
+
+  <script src="/js/dashboard-layout.js"></script>
+  <script>
+    class CatalogController {
+      constructor() {
+        this.currentView = 'list';
+        this.currentPage = 1;
+        this.itemsPerPage = 20;
+        this.currentFilters = {
+          search: '',
+          category: '',
+          sort: 'popular'
+        };
+        this.products = [];
+        this.categories = [];
+        this.init();
+      }
+
+      init() {
+        this.bindViewToggle();
+        this.bindFilters();
+        this.bindPagination();
+        this.loadData();
+      }
+
+      bindViewToggle() {
+        const listBtn = document.getElementById('list-view-btn');
+        const gridBtn = document.getElementById('grid-view-btn');
+        const listView = document.getElementById('list-view');
+        const gridView = document.getElementById('grid-view');
+
+        listBtn.addEventListener('click', () => {
+          this.currentView = 'list';
+          listView.style.display = 'block';
+          gridView.style.display = 'none';
+          listBtn.classList.add('view-btn-active');
+          gridBtn.classList.remove('view-btn-active');
+        });
+
+        gridBtn.addEventListener('click', () => {
+          this.currentView = 'grid';
+          listView.style.display = 'none';
+          gridView.style.display = 'block';
+          gridBtn.classList.add('view-btn-active');
+          listBtn.classList.remove('view-btn-active');
+          this.renderProductsGrid();
+        });
+      }
+
+      bindFilters() {
+        const searchInput = document.getElementById('catalog-search');
+        const categoryFilter = document.getElementById('category-filter');
+        const sortOptions = document.getElementById('sort-options');
+
+        // Debounced search
+        let searchTimeout;
+        searchInput.addEventListener('input', (e) => {
+          clearTimeout(searchTimeout);
+          searchTimeout = setTimeout(() => {
+            this.currentFilters.search = e.target.value;
+            this.currentPage = 1;
+            this.filterAndRenderProducts();
+          }, 300);
+        });
+
+        categoryFilter.addEventListener('change', (e) => {
+          this.currentFilters.category = e.target.value;
+          this.currentPage = 1;
+          this.filterAndRenderProducts();
+        });
+
+        sortOptions.addEventListener('change', (e) => {
+          this.currentFilters.sort = e.target.value;
+          this.filterAndRenderProducts();
+        });
+
+        // Quick search on Enter
+        searchInput.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+            window.location.href = `search.html?q=${encodeURIComponent(e.target.value)}`;
+          }
+        });
+      }
+
+      bindPagination() {
+        const prevBtn = document.getElementById('prev-page');
+        const nextBtn = document.getElementById('next-page');
+
+        prevBtn.addEventListener('click', () => {
+          if (this.currentPage > 1) {
+            this.currentPage--;
+            this.renderProducts();
+          }
+        });
+
+        nextBtn.addEventListener('click', () => {
+          const totalPages = Math.ceil(this.getFilteredProducts().length / this.itemsPerPage);
+          if (this.currentPage < totalPages) {
+            this.currentPage++;
+            this.renderProducts();
+          }
+        });
+      }
+
+      async loadData() {
+        // Simulate loading data - in real app this would be API calls
+        this.categories = [
+          { id: 'semiconductors', name: 'Полупроводники', count: 45230, icon: '🔌', color: '#3b82f6' },
+          { id: 'passive', name: 'Пассивные компоненты', count: 128450, icon: '⚡', color: '#10b981' },
+          { id: 'connectors', name: 'Разъемы', count: 23180, icon: '🔗', color: '#f59e0b' },
+          { id: 'power', name: 'Источники питания', count: 8920, icon: '🔋', color: '#ef4444' },
+          { id: 'sensors', name: 'Датчики', count: 15670, icon: '📡', color: '#8b5cf6' },
+          { id: 'displays', name: 'Дисплеи', count: 3890, icon: '📺', color: '#06b6d4' }
+        ];
+
+        this.products = [
+          { mpn: 'LM317T', manufacturer: 'Texas Instruments', description: 'Adjustable Linear Voltage Regulator', category: 'semiconductors', price: '₽85', image: '/images/lm317t.jpg' },
+          { mpn: 'BC547', manufacturer: 'Fairchild', description: 'NPN General Purpose Transistor', category: 'semiconductors', price: '₽12', image: '/images/bc547.jpg' },
+          { mpn: '1N4007', manufacturer: 'Vishay', description: 'Rectifier Diode 1000V 1A', category: 'semiconductors', price: '₽8', image: '/images/1n4007.jpg' },
+          { mpn: 'Arduino Uno R3', manufacturer: 'Arduino', description: 'Development Board ATmega328P', category: 'semiconductors', price: '₽2450', image: '/images/arduino.jpg' },
+          { mpn: 'ESP32-DevKitC', manufacturer: 'Espressif', description: 'WiFi + Bluetooth Development Kit', category: 'semiconductors', price: '₽890', image: '/images/esp32.jpg' }
+        ];
+
+        this.renderCategories();
+        this.renderFeaturedProducts();
+        this.renderProducts();
+        this.updateProductsCount();
+      }
+
+      renderCategories() {
+        const container = document.getElementById('category-cards');
+        
+        container.innerHTML = this.categories.map(cat => `
+          <div class="card category-card" data-category="${cat.id}" style="cursor: pointer;">
+            <div class="card-content" style="padding: 24px; text-align: center;">
+              <div style="font-size: 32px; margin-bottom: 12px;">${cat.icon}</div>
+              <h4 style="font-size: 16px; font-weight: 600; margin: 0 0 4px 0;">${cat.name}</h4>
+              <p style="color: hsl(var(--muted-foreground)); margin: 0; font-size: 14px;">${cat.count.toLocaleString('ru')} товаров</p>
+            </div>
+          </div>
+        `).join('');
+
+        // Bind category clicks
+        container.addEventListener('click', (e) => {
+          const categoryCard = e.target.closest('[data-category]');
+          if (categoryCard) {
+            const categoryId = categoryCard.dataset.category;
+            document.getElementById('category-filter').value = categoryId;
+            this.currentFilters.category = categoryId;
+            this.currentPage = 1;
+            this.filterAndRenderProducts();
+            
+            // Highlight effect
+            categoryCard.classList.add('filter-active');
+            setTimeout(() => categoryCard.classList.remove('filter-active'), 300);
+          }
+        });
+      }
+
+      renderFeaturedProducts() {
+        const container = document.getElementById('featured-products');
+        const featured = this.products.slice(0, 4);
+        
+        container.innerHTML = featured.map(product => `
+          <div class="product-card">
+            <div style="text-align: center; margin-bottom: 12px;">
+              <img src="${product.image}" alt="${product.mpn}" style="width: 100%; height: 120px; object-fit: contain; border-radius: calc(var(--radius));" onerror="this.src='/images/no-image.png'">
+            </div>
+            <h5 style="font-size: 14px; font-weight: 600; margin: 0 0 4px 0;">${product.mpn}</h5>
+            <p style="font-size: 12px; color: hsl(var(--muted-foreground)); margin: 0 0 8px 0;">${product.manufacturer}</p>
+            <p style="font-size: 13px; line-height: 1.3; margin: 0 0 12px 0; height: 39px; overflow: hidden;">${product.description}</p>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <span style="font-weight: 600; color: #16a34a;">${product.price}</span>
+              <a href="product-v3.html?id=${product.mpn}" class="btn btn-primary btn-sm" style="text-decoration: none;">Смотреть</a>
+            </div>
+          </div>
+        `).join('');
+      }
+
+      getFilteredProducts() {
+        let filtered = [...this.products];
+
+        // Apply search filter
+        if (this.currentFilters.search) {
+          const search = this.currentFilters.search.toLowerCase();
+          filtered = filtered.filter(product => 
+            product.mpn.toLowerCase().includes(search) ||
+            product.manufacturer.toLowerCase().includes(search) ||
+            product.description.toLowerCase().includes(search)
+          );
+        }
+
+        // Apply category filter
+        if (this.currentFilters.category) {
+          filtered = filtered.filter(product => product.category === this.currentFilters.category);
+        }
+
+        // Apply sorting
+        switch (this.currentFilters.sort) {
+          case 'name':
+            filtered.sort((a, b) => a.mpn.localeCompare(b.mpn));
+            break;
+          case 'price-low':
+            filtered.sort((a, b) => parseInt(a.price.replace(/[^\d]/g, '')) - parseInt(b.price.replace(/[^\d]/g, '')));
+            break;
+          case 'price-high':
+            filtered.sort((a, b) => parseInt(b.price.replace(/[^\d]/g, '')) - parseInt(a.price.replace(/[^\d]/g, '')));
+            break;
+          // 'popular' and others keep original order
+        }
+
+        return filtered;
+      }
+
+      renderProducts() {
+        const filtered = this.getFilteredProducts();
+        const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+        const endIndex = startIndex + this.itemsPerPage;
+        const pageProducts = filtered.slice(startIndex, endIndex);
+
+        this.renderProductsTable(pageProducts);
+        if (this.currentView === 'grid') {
+          this.renderProductsGrid(pageProducts);
+        }
+        this.renderPagination(filtered.length);
+      }
+
+      renderProductsTable(products) {
+        const tbody = document.getElementById('products-table-body');
+        
+        tbody.innerHTML = products.map(product => `
+          <tr class="table-row">
+            <td class="table-cell">
+              <img src="${product.image}" alt="${product.mpn}" class="product-thumb" onerror="this.src='/images/no-image.png'">
+            </td>
+            <td class="table-cell">
+              <div style="font-weight: 600;">${product.mpn}</div>
+            </td>
+            <td class="table-cell">${product.manufacturer}</td>
+            <td class="table-cell">${product.description}</td>
+            <td class="table-cell">
+              <span class="badge badge-secondary">${this.getCategoryName(product.category)}</span>
+            </td>
+            <td class="table-cell" style="text-align: right;">
+              <span style="font-weight: 600; color: #16a34a;">${product.price}</span>
+            </td>
+            <td class="table-cell" style="text-align: center;">
+              <a href="product-v3.html?id=${product.mpn}" class="btn btn-primary btn-sm" style="text-decoration: none;">Смотреть</a>
+            </td>
+          </tr>
+        `).join('');
+      }
+
+      renderProductsGrid(products = this.getFilteredProducts().slice((this.currentPage - 1) * this.itemsPerPage, this.currentPage * this.itemsPerPage)) {
+        const container = document.getElementById('products-grid');
+        
+        container.innerHTML = products.map(product => `
+          <div class="product-card">
+            <div style="text-align: center; margin-bottom: 12px;">
+              <img src="${product.image}" alt="${product.mpn}" style="width: 100%; height: 120px; object-fit: contain; border-radius: calc(var(--radius));" onerror="this.src='/images/no-image.png'">
+            </div>
+            <h5 style="font-size: 14px; font-weight: 600; margin: 0 0 4px 0;">${product.mpn}</h5>
+            <p style="font-size: 12px; color: hsl(var(--muted-foreground)); margin: 0 0 8px 0;">${product.manufacturer}</p>
+            <p style="font-size: 13px; line-height: 1.3; margin: 0 0 12px 0; min-height: 39px;">${product.description}</p>
+            <div style="margin-bottom: 8px;">
+              <span class="badge badge-secondary">${this.getCategoryName(product.category)}</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <span style="font-weight: 600; color: #16a34a;">${product.price}</span>
+              <a href="product-v3.html?id=${product.mpn}" class="btn btn-primary btn-sm" style="text-decoration: none;">Смотреть</a>
+            </div>
+          </div>
+        `).join('');
+      }
+
+      renderPagination(totalItems) {
+        const totalPages = Math.ceil(totalItems / this.itemsPerPage);
+        const pageNumbers = document.getElementById('page-numbers');
+        const prevBtn = document.getElementById('prev-page');
+        const nextBtn = document.getElementById('next-page');
+
+        // Update button states
+        prevBtn.disabled = this.currentPage === 1;
+        nextBtn.disabled = this.currentPage === totalPages;
+
+        // Generate page numbers
+        let pages = [];
+        for (let i = Math.max(1, this.currentPage - 2); i <= Math.min(totalPages, this.currentPage + 2); i++) {
+          pages.push(i);
+        }
+
+        pageNumbers.innerHTML = pages.map(page => `
+          <button class="btn ${page === this.currentPage ? 'btn-primary' : 'btn-ghost'} btn-sm" data-page="${page}">
+            ${page}
+          </button>
+        `).join('');
+
+        // Bind page clicks
+        pageNumbers.addEventListener('click', (e) => {
+          if (e.target.dataset.page) {
+            this.currentPage = parseInt(e.target.dataset.page);
+            this.renderProducts();
+          }
+        });
+      }
+
+      filterAndRenderProducts() {
+        this.renderProducts();
+        this.updateProductsCount();
+      }
+
+      updateProductsCount() {
+        const filtered = this.getFilteredProducts();
+        const countElement = document.getElementById('products-count');
+        countElement.textContent = `${filtered.length} товаров найдено`;
+      }
+
+      getCategoryName(categoryId) {
+        const category = this.categories.find(cat => cat.id === categoryId);
+        return category ? category.name : categoryId;
+      }
+    }
+
+    // Initialize when page loads
+    window.addEventListener('load', () => {
+      new CatalogController();
+    });
+  </script>
+</body>
+</html>

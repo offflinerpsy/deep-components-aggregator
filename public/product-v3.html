@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Карточка товара — Deep Aggregator</title>
+  <link rel="stylesheet" href="/styles/design-system.css">
+</head>
+<body>
+  <div class="container">
+    <!-- Breadcrumbs -->
+    <nav style="margin-bottom: 24px;">
+      <div style="display: flex; align-items: center; gap: 8px; font-size: 14px; color: hsl(var(--muted-foreground));">
+        <a href="index.html" style="color: hsl(var(--primary)); text-decoration: none;">Обзор</a>
+        <svg class="icon-sm" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
+        <a href="search.html" style="color: hsl(var(--primary)); text-decoration: none;">Поиск</a>
+        <svg class="icon-sm" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
+        <span>Карточка товара</span>
+      </div>
+    </nav>
+
+    <!-- Main Product Grid -->
+    <div style="display: grid; grid-template-columns: 5fr 7fr; gap: 32px; margin-bottom: 32px;" id="product-main-grid">
+      <!-- Product Gallery -->
+      <div>
+        <div class="card">
+          <div class="card-content" style="padding: 24px;">
+            <!-- Main Image -->
+            <div style="text-align: center; margin-bottom: 16px;">
+              <img 
+                id="main-product-image" 
+                style="width: 100%; max-width: 400px; height: 300px; object-fit: contain; border-radius: calc(var(--radius)); border: 1px solid hsl(var(--border));"
+                alt="Изображение товара"
+                loading="lazy"
+              >
+            </div>
+            
+            <!-- Thumbnail Gallery -->
+            <div style="display: flex; gap: 8px; justify-content: center; flex-wrap: wrap;" id="image-thumbnails">
+              <!-- Thumbnails will be populated by JavaScript -->
+            </div>
+            
+            <!-- Documents Section -->
+            <div style="margin-top: 24px; border-top: 1px solid hsl(var(--border)); padding-top: 16px;">
+              <h4 style="font-size: 14px; font-weight: 600; margin: 0 0 12px 0;">Документация</h4>
+              <div id="product-documents" style="display: flex; flex-direction: column; gap: 8px;">
+                <!-- Documents will be populated by JavaScript -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Product Information -->
+      <div>
+        <!-- Product Header -->
+        <div style="margin-bottom: 24px;">
+          <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
+            <h1 style="font-size: 28px; font-weight: 700; margin: 0;" id="product-title">Загрузка...</h1>
+            <div id="product-badges">
+              <!-- Status badges will be populated -->
+            </div>
+          </div>
+          <p style="color: hsl(var(--muted-foreground)); margin: 0; font-size: 16px;" id="product-subtitle">Информация загружается...</p>
+        </div>
+
+        <!-- Key Specifications -->
+        <div class="card" style="margin-bottom: 24px;">
+          <div class="card-header">
+            <h3 class="card-title">Основные характеристики</h3>
+          </div>
+          <div class="card-content">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;" id="key-specs">
+              <!-- Specifications will be populated -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Pricing & Availability -->
+        <div class="card" style="margin-bottom: 24px;">
+          <div class="card-header">
+            <h3 class="card-title">Цены и наличие</h3>
+            <p class="card-description">Актуальная информация от поставщиков</p>
+          </div>
+          <div class="card-content">
+            <div id="pricing-table">
+              <!-- Pricing table will be populated -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div style="display: flex; gap: 12px; margin-bottom: 24px;">
+          <a href="#" class="btn btn-primary btn-lg" id="primary-buy-btn" style="text-decoration: none; flex: 1; justify-content: center;">
+            <svg class="icon" style="margin-right: 8px;" viewBox="0 0 24 24">
+              <circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/>
+            </svg>
+            Купить у поставщика
+          </a>
+          <button class="btn btn-secondary btn-lg" id="add-to-compare">
+            <svg class="icon" style="margin-right: 8px;" viewBox="0 0 24 24">
+              <path d="M3 3v18h18"/><path d="M18.7 8.7l-5.7 5.7-3-3-6 6"/>
+            </svg>
+            Сравнить
+          </button>
+          <button class="btn btn-ghost btn-lg" id="share-product">
+            <svg class="icon" viewBox="0 0 24 24">
+              <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.59 13.51l6.83 3.98"/><path d="M15.41 6.51l-6.82 3.98"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Detailed Information Tabs -->
+    <div class="card">
+      <div class="card-header">
+        <div style="display: flex; gap: 24px; border-bottom: 1px solid hsl(var(--border)); margin: -24px -24px 0 -24px; padding: 0 24px;">
+          <button class="tab-btn active" data-tab="description" style="border: none; background: none; padding: 16px 0; font-weight: 600; border-bottom: 2px solid transparent; cursor: pointer; transition: all 0.2s ease;">
+            Описание
+          </button>
+          <button class="tab-btn" data-tab="specifications" style="border: none; background: none; padding: 16px 0; font-weight: 600; border-bottom: 2px solid transparent; cursor: pointer; transition: all 0.2s ease;">
+            Полные характеристики
+          </button>
+          <button class="tab-btn" data-tab="datasheets" style="border: none; background: none; padding: 16px 0; font-weight: 600; border-bottom: 2px solid transparent; cursor: pointer; transition: all 0.2s ease;">
+            Документация
+          </button>
+          <button class="tab-btn" data-tab="alternatives" style="border: none; background: none; padding: 16px 0; font-weight: 600; border-bottom: 2px solid transparent; cursor: pointer; transition: all 0.2s ease;">
+            Аналоги
+          </button>
+        </div>
+      </div>
+      <div class="card-content" style="padding-top: 24px;">
+        <!-- Description Tab -->
+        <div class="tab-content active" data-tab="description">
+          <div id="product-description">
+            <p style="color: hsl(var(--muted-foreground)); margin: 0;">Загрузка описания товара...</p>
+          </div>
+        </div>
+
+        <!-- Specifications Tab -->
+        <div class="tab-content" data-tab="specifications" style="display: none;">
+          <div id="full-specifications">
+            <p style="color: hsl(var(--muted-foreground)); margin: 0;">Загрузка характеристик...</p>
+          </div>
+        </div>
+
+        <!-- Datasheets Tab -->
+        <div class="tab-content" data-tab="datasheets" style="display: none;">
+          <div id="product-datasheets">
+            <p style="color: hsl(var(--muted-foreground)); margin: 0;">Загрузка документации...</p>
+          </div>
+        </div>
+
+        <!-- Alternatives Tab -->
+        <div class="tab-content" data-tab="alternatives" style="display: none;">
+          <div id="product-alternatives">
+            <p style="color: hsl(var(--muted-foreground)); margin: 0;">Поиск аналогов...</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    /* Tab styling */
+    .tab-btn.active {
+      color: hsl(var(--primary)) !important;
+      border-bottom-color: hsl(var(--primary)) !important;
+    }
+
+    .tab-btn:hover {
+      color: hsl(var(--primary));
+    }
+
+    .tab-content {
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Thumbnail hover effects */
+    .thumbnail {
+      width: 60px;
+      height: 60px;
+      border-radius: calc(var(--radius));
+      border: 2px solid hsl(var(--border));
+      cursor: pointer;
+      transition: all 0.2s ease;
+      object-fit: contain;
+    }
+
+    .thumbnail:hover {
+      border-color: hsl(var(--primary));
+      transform: scale(1.05);
+    }
+
+    .thumbnail.active {
+      border-color: hsl(var(--primary));
+      box-shadow: 0 0 0 1px hsl(var(--primary));
+    }
+
+    /* Pricing table */
+    .pricing-row {
+      display: grid;
+      grid-template-columns: auto 1fr auto auto auto;
+      gap: 16px;
+      align-items: center;
+      padding: 12px;
+      border-bottom: 1px solid hsl(var(--border));
+      transition: background-color 0.2s ease;
+    }
+
+    .pricing-row:hover {
+      background-color: hsl(var(--muted) / 0.5);
+    }
+
+    .pricing-row:last-child {
+      border-bottom: none;
+    }
+
+    /* Mobile responsive */
+    @media (max-width: 768px) {
+      #product-main-grid {
+        grid-template-columns: 1fr !important;
+        gap: 24px !important;
+      }
+
+      .tab-btn {
+        font-size: 14px !important;
+        padding: 12px 0 !important;
+      }
+    }
+  </style>
+
+  <script src="/js/dashboard-layout.js"></script>
+  <script>
+    class ProductPageController {
+      constructor() {
+        this.productData = null;
+        this.currentImageIndex = 0;
+        this.init();
+      }
+
+      init() {
+        this.bindTabSwitching();
+        this.loadProductData();
+        this.bindImageGallery();
+      }
+
+      bindTabSwitching() {
+        const tabButtons = document.querySelectorAll('.tab-btn');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        tabButtons.forEach(button => {
+          button.addEventListener('click', () => {
+            const targetTab = button.dataset.tab;
+
+            // Update button states
+            tabButtons.forEach(btn => btn.classList.remove('active'));
+            button.classList.add('active');
+
+            // Update content visibility
+            tabContents.forEach(content => {
+              if (content.dataset.tab === targetTab) {
+                content.style.display = 'block';
+                content.classList.add('active');
+              } else {
+                content.style.display = 'none';
+                content.classList.remove('active');
+              }
+            });
+          });
+        });
+      }
+
+      bindImageGallery() {
+        // Image thumbnail clicking
+        document.addEventListener('click', (e) => {
+          if (e.target.classList.contains('thumbnail')) {
+            const newSrc = e.target.dataset.fullImage;
+            const mainImage = document.getElementById('main-product-image');
+            
+            if (newSrc && mainImage) {
+              mainImage.src = newSrc;
+              
+              // Update active thumbnail
+              document.querySelectorAll('.thumbnail').forEach(thumb => {
+                thumb.classList.remove('active');
+              });
+              e.target.classList.add('active');
+            }
+          }
+        });
+      }
+
+      async loadProductData() {
+        try {
+          // Get product parameters from URL
+          const urlParams = new URLSearchParams(window.location.search);
+          const source = urlParams.get('src') || 'unknown';
+          const productId = urlParams.get('id') || 'unknown';
+
+          // For demo purposes, simulate product data
+          this.productData = {
+            mpn: productId,
+            manufacturer: 'Texas Instruments',
+            title: 'LM317T Adjustable Linear Voltage Regulator',
+            description: 'The LM317 is an adjustable three-terminal positive-voltage regulator capable of supplying more than 1.5 A over an output-voltage range of 1.25 V to 37 V.',
+            images: [
+              '/images/products/lm317t-main.jpg',
+              '/images/products/lm317t-pinout.jpg',
+              '/images/products/lm317t-package.jpg'
+            ],
+            specifications: {
+              'Тип корпуса': 'TO-220',
+              'Выходной ток': '1.5 A',
+              'Входное напряжение': '3-40 V',
+              'Выходное напряжение': '1.25-37 V',
+              'Точность': '±1%',
+              'Рабочая температура': '-55°C to 150°C'
+            },
+            pricing: [
+              { provider: 'DigiKey', price: '₽85', stock: '15,420', moq: '1', leadTime: '1-2 дня', url: 'https://digikey.com' },
+              { provider: 'TME', price: '₽78', stock: '2,856', moq: '10', leadTime: '3-5 дней', url: 'https://tme.eu' },
+              { provider: 'Mouser', price: '₽92', stock: '8,924', moq: '1', leadTime: '1-3 дня', url: 'https://mouser.com' }
+            ],
+            documents: [
+              { name: 'Datasheet', url: '/docs/lm317t-datasheet.pdf', type: 'PDF' },
+              { name: 'Application Note', url: '/docs/lm317t-appnote.pdf', type: 'PDF' }
+            ]
+          };
+
+          this.renderProductData();
+        } catch (error) {
+          console.error('Error loading product data:', error);
+          this.showError('Ошибка загрузки данных товара');
+        }
+      }
+
+      renderProductData() {
+        const data = this.productData;
+
+        // Update page title
+        document.title = `${data.mpn} — Deep Aggregator`;
+
+        // Product header
+        document.getElementById('product-title').textContent = data.mpn;
+        document.getElementById('product-subtitle').textContent = `${data.manufacturer} • ${data.title}`;
+
+        // Badges
+        const badgesContainer = document.getElementById('product-badges');
+        badgesContainer.innerHTML = `
+          <span class="badge badge-default">В наличии</span>
+          <span class="badge badge-secondary">Популярный</span>
+        `;
+
+        // Main image
+        const mainImage = document.getElementById('main-product-image');
+        mainImage.src = data.images[0] || '/images/no-image-product.png';
+        mainImage.onerror = () => { mainImage.src = '/images/no-image-product.png'; };
+
+        // Thumbnails
+        this.renderImageThumbnails(data.images);
+
+        // Key specifications
+        this.renderKeySpecifications(data.specifications);
+
+        // Pricing table
+        this.renderPricingTable(data.pricing);
+
+        // Description
+        document.getElementById('product-description').innerHTML = `
+          <h4 style="margin: 0 0 16px 0; font-size: 16px; font-weight: 600;">Описание</h4>
+          <p style="line-height: 1.6; margin: 0; color: hsl(var(--foreground));">${data.description}</p>
+        `;
+
+        // Full specifications
+        this.renderFullSpecifications(data.specifications);
+
+        // Documents
+        this.renderDocuments(data.documents);
+
+        // Update primary buy button
+        if (data.pricing && data.pricing.length > 0) {
+          const primaryProvider = data.pricing[0];
+          const primaryBtn = document.getElementById('primary-buy-btn');
+          primaryBtn.href = primaryProvider.url;
+          primaryBtn.innerHTML = `
+            <svg class="icon" style="margin-right: 8px;" viewBox="0 0 24 24">
+              <circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/>
+            </svg>
+            Купить за ${primaryProvider.price} (${primaryProvider.provider})
+          `;
+        }
+      }
+
+      renderImageThumbnails(images) {
+        const container = document.getElementById('image-thumbnails');
+        container.innerHTML = images.map((img, index) => `
+          <img 
+            src="${img}" 
+            data-full-image="${img}"
+            class="thumbnail ${index === 0 ? 'active' : ''}"
+            alt="Thumbnail ${index + 1}"
+            onerror="this.src='/images/no-image-thumb.png'"
+          >
+        `).join('');
+      }
+
+      renderKeySpecifications(specs) {
+        const container = document.getElementById('key-specs');
+        const keySpecs = Object.entries(specs).slice(0, 6); // Show first 6 specs
+        
+        container.innerHTML = keySpecs.map(([key, value]) => `
+          <div style="border-bottom: 1px solid hsl(var(--border)); padding-bottom: 8px;">
+            <div style="font-size: 12px; color: hsl(var(--muted-foreground)); margin-bottom: 2px;">${key}</div>
+            <div style="font-weight: 600;">${value}</div>
+          </div>
+        `).join('');
+      }
+
+      renderPricingTable(pricing) {
+        const container = document.getElementById('pricing-table');
+        
+        container.innerHTML = `
+          <div style="font-size: 12px; color: hsl(var(--muted-foreground)); display: grid; grid-template-columns: auto 1fr auto auto auto; gap: 16px; padding: 8px 12px; font-weight: 600; border-bottom: 1px solid hsl(var(--border));">
+            <span>Поставщик</span>
+            <span>Наличие</span>
+            <span>МОК</span>
+            <span>Срок</span>
+            <span>Цена</span>
+          </div>
+          ${pricing.map(item => `
+            <div class="pricing-row">
+              <span style="font-weight: 600; color: hsl(var(--primary));">${item.provider}</span>
+              <span style="color: hsl(var(--muted-foreground));">${item.stock} шт.</span>
+              <span>${item.moq}</span>
+              <span style="font-size: 12px; color: hsl(var(--muted-foreground));">${item.leadTime}</span>
+              <div style="display: flex; gap: 8px; align-items: center;">
+                <span style="font-weight: 600; color: #16a34a;">${item.price}</span>
+                <a href="${item.url}" target="_blank" class="btn btn-primary btn-sm" style="text-decoration: none;">Купить</a>
+              </div>
+            </div>
+          `).join('')}
+        `;
+      }
+
+      renderFullSpecifications(specs) {
+        const container = document.getElementById('full-specifications');
+        
+        container.innerHTML = `
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
+            ${Object.entries(specs).map(([key, value]) => `
+              <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px; border: 1px solid hsl(var(--border)); border-radius: calc(var(--radius));">
+                <span style="font-weight: 500;">${key}</span>
+                <span style="color: hsl(var(--muted-foreground));">${value}</span>
+              </div>
+            `).join('')}
+          </div>
+        `;
+      }
+
+      renderDocuments(documents) {
+        const galleryContainer = document.getElementById('product-documents');
+        const tabContainer = document.getElementById('product-datasheets');
+        
+        const documentsHtml = documents.map(doc => `
+          <a href="${doc.url}" target="_blank" style="display: flex; align-items: center; gap: 8px; padding: 8px; border: 1px solid hsl(var(--border)); border-radius: calc(var(--radius)); text-decoration: none; color: hsl(var(--foreground)); transition: all 0.2s ease;">
+            <svg class="icon-sm" viewBox="0 0 24 24">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10,9 9,9 8,9"/>
+            </svg>
+            <span style="font-size: 14px; font-weight: 500;">${doc.name}</span>
+            <span class="badge badge-secondary" style="margin-left: auto;">${doc.type}</span>
+          </a>
+        `).join('');
+        
+        galleryContainer.innerHTML = documentsHtml;
+        tabContainer.innerHTML = `<div style="display: flex; flex-direction: column; gap: 12px;">${documentsHtml}</div>`;
+      }
+
+      showError(message) {
+        document.getElementById('product-title').textContent = 'Ошибка загрузки';
+        document.getElementById('product-subtitle').textContent = message;
+      }
+    }
+
+    // Initialize when page loads
+    window.addEventListener('load', () => {
+      new ProductPageController();
+    });
+  </script>
+</body>
+</html>

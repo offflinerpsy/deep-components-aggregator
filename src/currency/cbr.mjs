@@ -28,7 +28,7 @@ export const loadRates = () => {
   try {
     if (fs.existsSync(RATES_FILE_PATH)) {
       const data = JSON.parse(fs.readFileSync(RATES_FILE_PATH, 'utf8'));
-      
+
       // Handle both formats: legacy {ts, USD, EUR} and new {timestamp, rates: {USD, EUR}}
       if (data.rates && typeof data.rates === 'object') {
         // New format

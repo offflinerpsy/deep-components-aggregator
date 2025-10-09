@@ -1,6 +1,6 @@
 /**
  * Enhanced Search Interface with Russian Support
- * 
+ *
  * Features:
  * - Russian query normalization indicators
  * - Improved table structure (Manufacturer|MPN|Description|Region|Price ₽|CTA)
@@ -16,14 +16,14 @@ const $$ = (selector) => document.querySelectorAll(selector);
 // Format price in rubles
 const formatRub = (price) => {
   if (!price || price <= 0) return '—';
-  
+
   // Handle price ranges
   if (typeof price === 'object' && (price.min || price.max)) {
     const min = price.min ? formatRub(price.min) : '—';
     const max = price.max ? formatRub(price.max) : '—';
     return min === max ? min : `${min} — ${max}`;
   }
-  
+
   return new Intl.NumberFormat('ru-RU', {
     style: 'currency',
     currency: 'RUB',
@@ -41,7 +41,7 @@ const normalize = (value, fallback = '—') => {
 // Create region badges
 const createRegionBadges = (regions) => {
   if (!Array.isArray(regions) || regions.length === 0) return '—';
-  
+
   return regions
     .slice(0, 3) // Limit to 3 regions max
     .map(region => `<span class="region-badge">${normalize(region)}</span>`)
@@ -51,56 +51,67 @@ const createRegionBadges = (regions) => {
 // Create product table row
 const createProductRow = (product, index) => {
   // Product image with fallback
-  const imageUrl = product.photo || '/api/image?url=' + encodeURIComponent(product.photo || '');
-  const placeholderImage = 'data:image/svg+xml;base64,' + btoa(`
+  const rawImage = product.photo || product.image_url || '';
+  const imageUrl = rawImage ? `/api/image?url=${encodeURIComponent(rawImage)}` : '';
+  const placeholderSvg = `
     <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">
       <rect width="100%" height="100%" fill="#f3f4f6"/>
       <text x="50%" y="50%" text-anchor="middle" dy="0.3em" fill="#9ca3af" font-size="10">Фото</text>
     </svg>
-  `);
-  
+  `;
+  const placeholderImage = `data:image/svg+xml,${encodeURIComponent(placeholderSvg.trim())}`;
+
   // Calculate price range from pricing array
   let priceDisplay = '—';
-  if (Array.isArray(product.pricing) && product.pricing.length > 0) {
-    const rubPrices = product.pricing
-      .map(p => p.price_rub)
+  const pricingList = Array.isArray(product.pricing) ? product.pricing : Array.isArray(product.price_breaks) ? product.price_breaks : [];
+
+  if (pricingList.length > 0) {
+    const rubPrices = pricingList
+      .map(p => p.price_rub || p.priceRub || 0)
       .filter(p => p && p > 0)
       .sort((a, b) => a - b);
-    
+
     if (rubPrices.length > 0) {
       const min = rubPrices[0];
       const max = rubPrices[rubPrices.length - 1];
       priceDisplay = min === max ? formatRub(min) : `${formatRub(min)} — ${formatRub(max)}`;
     }
-  } else if (product.minRub) {
-    priceDisplay = formatRub(product.minRub);
-  } else if (product.price_rub) {
-    priceDisplay = formatRub(product.price_rub);
+  } else if (product.minRub || product.min_rub || product.min_price_rub) {
+    const minCandidate = product.minRub || product.min_rub || product.min_price_rub;
+    priceDisplay = formatRub(minCandidate);
+  } else if (product.price_rub || product.priceRub) {
+    priceDisplay = formatRub(product.price_rub || product.priceRub);
   }
-  
+
   // Product detail URL
-  const detailUrl = `/ui/product.html?src=${encodeURIComponent(product._src || 'unknown')}&id=${encodeURIComponent(product.mpn || '')}`;
-  
+  const detailUrl = product.product_url ? product.product_url : `/ui/product.html?src=${encodeURIComponent(product._src || product.source || 'unknown')}&id=${encodeURIComponent(product.mpn || '')}`;
+
+  const providerLabel = product.source ? `<div class="product-subtitle" style="margin-top:4px; color: var(--muted); font-size: 12px;">${normalize(product.source)}</div>` : '';
+
+  const descriptionText = normalize(product.description || product.description_short || product.title);
+  const subtitleSource = product.title || product.description || product.description_short || '';
+
   return `
     <tr data-testid="product-row" data-index="${index}">
       <td class="col-image" data-label="Фото">
-        <img class="product-thumb" 
-             src="${placeholderImage}" 
-             data-src="${imageUrl}"
+     <img class="product-thumb"
+       src="${placeholderImage}"
+       ${imageUrl ? `data-src="${imageUrl}"` : ''}
              alt="${normalize(product.mpn)}"
              loading="lazy"
-             onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-        <div style="display:none; width:48px; height:48px; background:#f3f4f6; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:10px; color:#9ca3af;">Фото</div>
+             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+  <div style="display:none; width:48px; height:48px; background:#f3f4f6; border-radius:8px; align-items:center; justify-content:center; font-size:10px; color:#9ca3af;">Фото</div>
       </td>
       <td class="col-manufacturer" data-label="Производитель">
         ${normalize(product.manufacturer)}
       </td>
       <td class="col-mpn" data-label="MPN">
         <div class="product-title">${normalize(product.mpn)}</div>
-        <div class="product-subtitle">${normalize(product.title || product.description, '').substring(0, 60)}${(product.title || product.description || '').length > 60 ? '...' : ''}</div>
+        <div class="product-subtitle">${normalize(subtitleSource, '').substring(0, 60)}${subtitleSource.length > 60 ? '...' : ''}</div>
+        ${providerLabel}
       </td>
       <td class="col-description" data-label="Описание">
-        ${normalize(product.description || product.title)}
+        ${descriptionText}
       </td>
       <td class="col-region" data-label="Регион склада">
         ${createRegionBadges(product.regions)}
@@ -121,10 +132,10 @@ const renderResults = (results, metadata = {}) => {
   const resultsSummary = $('#results-summary');
   const resultsTable = $('#results-table');
   const tbody = $('#results-tbody');
-  
+
   // Show results section
   resultsSection.style.display = 'block';
-  
+
   // Handle empty results
   if (!results || results.length === 0) {
     tbody.innerHTML = `
@@ -141,10 +152,10 @@ const renderResults = (results, metadata = {}) => {
     resultsSummary.textContent = 'Результатов не найдено';
     return;
   }
-  
+
   // Render product rows
   tbody.innerHTML = results.map(createProductRow).join('');
-  
+
   // Update summary with enhanced metadata
   let summaryText = `Найдено: ${results.length} результатов`;
   if (metadata.source) {
@@ -159,9 +170,9 @@ const renderResults = (results, metadata = {}) => {
   if (metadata.elapsed) {
     summaryText += ` • ${metadata.elapsed}мс`;
   }
-  
+
   resultsSummary.textContent = summaryText;
-  
+
   // Lazy load images
   lazyLoadImages();
 };
@@ -169,7 +180,7 @@ const renderResults = (results, metadata = {}) => {
 // Lazy load product images
 const lazyLoadImages = () => {
   const images = $$('img[data-src]');
-  
+
   const imageObserver = new IntersectionObserver((entries, observer) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
@@ -180,7 +191,7 @@ const lazyLoadImages = () => {
       }
     });
   });
-  
+
   images.forEach(img => imageObserver.observe(img));
 };
 
@@ -189,7 +200,7 @@ const showLoading = () => {
   const resultsSection = $('#results-section');
   const resultsSummary = $('#results-summary');
   const tbody = $('#results-tbody');
-  
+
   resultsSection.style.display = 'block';
   resultsSummary.innerHTML = `
     <div class="loading">
@@ -197,7 +208,7 @@ const showLoading = () => {
       Поиск компонентов...
     </div>
   `;
-  
+
   tbody.innerHTML = '';
 };
 
@@ -206,10 +217,10 @@ const showError = (message) => {
   const resultsSection = $('#results-section');
   const resultsSummary = $('#results-summary');
   const tbody = $('#results-tbody');
-  
+
   resultsSection.style.display = 'block';
   resultsSummary.textContent = 'Ошибка поиска';
-  
+
   tbody.innerHTML = `
     <tr>
       <td colspan="7" class="empty-state" style="color: var(--danger);">
@@ -226,45 +237,45 @@ const showError = (message) => {
 // Perform search with enhanced error handling
 const performSearch = async (query) => {
   const cleanQuery = query ? query.trim() : '';
-  
+
   // Guard clause: empty query
   if (!cleanQuery) {
     const resultsSection = $('#results-section');
     resultsSection.style.display = 'none';
     return;
   }
-  
+
   console.log(`🔍 Enhanced Search: "${cleanQuery}"`);
-  
+
   // Update URL without reload
   const newUrl = `${window.location.pathname}?q=${encodeURIComponent(cleanQuery)}`;
   history.replaceState(null, '', newUrl);
-  
+
   // Show loading state
   showLoading();
-  
+
   // Perform API request
   const apiUrl = `/api/search?q=${encodeURIComponent(cleanQuery)}`;
   const response = await fetch(apiUrl);
-  
+
   // Guard clause: network error
   if (!response.ok) {
     console.error(`❌ Search API error: ${response.status} ${response.statusText}`);
     showError(`Ошибка сети: ${response.status} ${response.statusText}`);
     return;
   }
-  
+
   // Parse response
   const text = await response.text();
   let data;
-  
+
   // Guard clause: invalid JSON
   if (!text) {
     console.error('❌ Empty response from search API');
     showError('Сервер вернул пустой ответ');
     return;
   }
-  
+
   // Parse JSON with guard clause
   const parseResult = parseJSON(text);
   if (!parseResult.success) {
@@ -272,16 +283,16 @@ const performSearch = async (query) => {
     showError('Ошибка формата ответа сервера');
     return;
   }
-  
+
   data = parseResult.data;
-  
+
   // Guard clause: API error response
   if (!data.ok) {
     console.error('❌ API returned error:', data.error);
     showError(data.error || 'Внутренняя ошибка сервера');
     return;
   }
-  
+
   // Log enhanced search metadata
   if (data.meta) {
     console.log(`📊 Search completed:`, {
@@ -293,7 +304,7 @@ const performSearch = async (query) => {
       elapsed: data.meta.elapsed
     });
   }
-  
+
   // Render results
   renderResults(data.rows || [], data.meta || {});
 };
@@ -304,15 +315,15 @@ const parseJSON = (text) => {
   if (!trimmed) {
     return { success: false, error: 'Empty text' };
   }
-  
+
   if (!trimmed.startsWith('{') && !trimmed.startsWith('[')) {
     return { success: false, error: 'Not JSON format' };
   }
-  
+
   // Manual JSON parsing without try/catch
   let data;
   let parseError = null;
-  
+
   // Use a validation approach
   const isValidJSON = (str) => {
     if (typeof str !== 'string') return false;
@@ -320,11 +331,11 @@ const parseJSON = (text) => {
     const last = str.charAt(str.length - 1);
     return (first === '{' && last === '}') || (first === '[' && last === ']');
   };
-  
+
   if (!isValidJSON(trimmed)) {
     return { success: false, error: 'Invalid JSON structure' };
   }
-  
+
   // Use built-in JSON.parse but validate first
   const result = JSON.parse(trimmed);
   return { success: true, data: result };
@@ -334,13 +345,13 @@ const parseJSON = (text) => {
 const initSearch = () => {
   const searchForm = $('#search-form');
   const searchInput = $('#search-input');
-  
+
   // Guard clause: missing elements
   if (!searchForm || !searchInput) {
     console.error('❌ Search form elements not found');
     return;
   }
-  
+
   // Form submission handler
   searchForm.addEventListener('submit', (e) => {
     e.preventDefault();
@@ -349,13 +360,13 @@ const initSearch = () => {
       performSearch(query);
     }
   });
-  
+
   // Real-time search on input (debounced)
   let searchTimeout;
   searchInput.addEventListener('input', (e) => {
     clearTimeout(searchTimeout);
     const query = e.target.value.trim();
-    
+
     if (query.length >= 2) {
       searchTimeout = setTimeout(() => {
         performSearch(query);
@@ -365,7 +376,7 @@ const initSearch = () => {
       resultsSection.style.display = 'none';
     }
   });
-  
+
   console.log('✅ Enhanced search initialized');
 };
 

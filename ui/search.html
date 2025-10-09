@@ -379,20 +379,20 @@
     /* Responsive */
     @media (max-width: 768px) {
       .container { padding: 0 16px; }
-      
+
       .results-table {
         font-size: 14px;
       }
-      
+
       .results-table th,
       .results-table td {
         padding: 12px 8px;
       }
-      
+
       .col-description {
         min-width: 150px;
       }
-      
+
       /* Stack table on mobile if needed */
       @media (max-width: 640px) {
         .results-table,
@@ -403,27 +403,27 @@
         .results-table tr {
           display: block;
         }
-        
+
         .results-table thead tr {
           position: absolute;
           top: -9999px;
           left: -9999px;
         }
-        
+
         .results-table tr {
           border: 1px solid var(--stroke);
           margin-bottom: 8px;
           border-radius: var(--radius-sm);
           padding: 16px;
         }
-        
+
         .results-table td {
           border: none;
           padding: 8px 0;
           position: relative;
           padding-left: 50%;
         }
-        
+
         .results-table td:before {
           content: attr(data-label);
           position: absolute;
@@ -515,7 +515,7 @@
       try {
         const authResponse = await fetch('/auth/me');
         const authNav = document.getElementById('auth-nav');
-        
+
         if (authResponse.ok) {
           const user = await authResponse.json();
           authNav.innerHTML = `

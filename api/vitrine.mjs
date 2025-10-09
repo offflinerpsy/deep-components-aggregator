@@ -1,9 +1,9 @@
 /**
  * Vitrine API — Cache-Only Product Browsing
- * 
+ *
  * GET /api/vitrine/sections — Returns available sections from cached searches
  * GET /api/vitrine/list?section&q&in_stock&price_min&price_max&region&sort — Filtered cache-only results
- * 
+ *
  * **No external API calls** — all data from local cache (searches, search_rows tables)
  * **Filters**: section (by source), q (text search using FTS5), in_stock, price range, region, sort
  * **Sort options**: relevance (default, uses bm25 when q present), price_asc, price_desc, stock_desc
@@ -20,10 +20,10 @@ import { cacheHitsTotal, cacheMissesTotal, ftsQueriesTotal, ftsQueryDurationMs }
  */
 function getSections(req, res) {
   const db = openDb();
-  
+
   // Aggregate by source
   const rows = db.prepare(`
-    SELECT 
+    SELECT
       source as id,
       source as label,
       COUNT(*) as count,
@@ -32,7 +32,7 @@ function getSections(req, res) {
     GROUP BY source
     ORDER BY items DESC
   `).all();
-  
+
   res.json({ ok: true, sections: rows });
 }
 
@@ -49,7 +49,7 @@ function getSections(req, res) {
  */
 function getList(req, res) {
   const db = openDb();
-  
+
   const section = String(req.query.section || '').trim();
   const q = String(req.query.q || '').trim();
   const inStock = req.query.in_stock === '1';
@@ -58,34 +58,34 @@ function getList(req, res) {
   const region = String(req.query.region || '').trim().toLowerCase();
   const sort = String(req.query.sort || 'relevance').trim();
   const limit = Math.min(parseInt(req.query.limit || '100', 10), 500);
-  
+
   let allRows = [];
   let usedFts = false;
   let queryMeta = null;
-  
+
   // Step 1: If text search query present, use FTS5 for relevance ranking
   if (q) {
     usedFts = true;
-    
+
     // RU→EN normalization: detect Cyrillic, transliterate, apply synonyms
     queryMeta = normalizeQuery(q);
     const ftsQuery = queryMeta.normalized; // Use synonym-mapped query for FTS5
-    
+
     // Measure FTS5 query duration
     const ftsStart = Date.now();
     const ftsResults = searchCachedFts(db, ftsQuery, 5000); // Get up to 5000 FTS matches
     const ftsDuration = Date.now() - ftsStart;
-    
+
     // Record metrics
     ftsQueriesTotal.inc();
     ftsQueryDurationMs.observe(ftsDuration);
-    
+
     if (ftsResults.length > 0) {
       cacheHitsTotal.inc({ source: 'vitrine' });
     } else {
       cacheMissesTotal.inc({ source: 'vitrine' });
     }
-    
+
     allRows = ftsResults.map(r => ({ ...r.row, _fts_rank: r.rank }));
   } else {
     // Step 1b: No text search — get all cached search queries
@@ -99,32 +99,32 @@ function getList(req, res) {
         SELECT q FROM searches ORDER BY ts DESC
       `).all();
     }
-    
+
     if (!searchQueries.length) {
       res.json({ ok: true, rows: [], meta: { total: 0, cached: true, usedFts, filters: { section, q, inStock, priceMin, priceMax, region, sort } } });
       return;
     }
-    
+
     // Step 2: Fetch all rows for these queries
     for (const { q: cachedQ } of searchQueries) {
       const items = db.prepare(`
         SELECT row FROM search_rows WHERE q = ? ORDER BY ord
       `).all(cachedQ);
-      
+
       for (const item of items) {
         allRows.push(JSON.parse(item.row));
       }
     }
   }
-  
+
   // Step 3: Apply filters
   let filtered = allRows;
-  
+
   // Section filter (only if not using FTS, since FTS already searches all)
   if (section && !usedFts) {
     filtered = filtered.filter(row => row.source === section);
   }
-  
+
   // In-stock filter
   if (inStock) {
     filtered = filtered.filter(row => {
@@ -132,7 +132,7 @@ function getList(req, res) {
       return stock > 0;
     });
   }
-  
+
   // Price range filter (RUB)
   if (priceMin > 0 || priceMax < Infinity) {
     filtered = filtered.filter(row => {
@@ -140,7 +140,7 @@ function getList(req, res) {
       return price >= priceMin && price <= priceMax;
     });
   }
-  
+
   // Region filter
   if (region) {
     filtered = filtered.filter(row => {
@@ -148,8 +148,8 @@ function getList(req, res) {
       return rowRegion === region;
     });
   }
-  
-    // Step 4: Sort results
+
+  // Step 4: Sort results
   switch (sort) {
     case 'price_asc':
       filtered.sort((a, b) => {
@@ -181,7 +181,7 @@ function getList(req, res) {
       }
       break;
   }
-  
+
   // Step 4.5: Fetch pinned products and prepend to results
   const pinnedRows = db.prepare(`
     SELECT sr.row, vp.pinned_at
@@ -189,19 +189,19 @@ function getList(req, res) {
     JOIN search_rows sr ON sr.rowid = vp.rowid
     ORDER BY vp.pinned_at DESC
   `).all();
-  
+
   const pinnedProducts = pinnedRows.map(p => ({
     ...JSON.parse(p.row),
     _pinned: true,
     _pinned_at: p.pinned_at
   }));
-  
+
   // Prepend pinned products (they appear at top)
   filtered = [...pinnedProducts, ...filtered];
-  
+
   // Step 5: Limit results
   const rows = filtered.slice(0, limit);
-  
+
   res.json({
     ok: true,
     rows,

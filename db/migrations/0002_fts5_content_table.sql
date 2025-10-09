@@ -77,7 +77,7 @@ END;
 -- Backfill: Populate FTS5 from existing search_rows data
 -- This inserts all existing rows using the same JSON extraction logic
 INSERT INTO search_rows_fts(rowid, mpn, manufacturer, title, description)
-SELECT 
+SELECT
   rowid,
   COALESCE(json_extract(row, '$.mpn'), ''),
   COALESCE(json_extract(row, '$.manufacturer'), ''),

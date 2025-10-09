@@ -28,7 +28,23 @@ export const loadRates = () => {
   try {
     if (fs.existsSync(RATES_FILE_PATH)) {
       const data = JSON.parse(fs.readFileSync(RATES_FILE_PATH, 'utf8'));
-      return data;
+      
+      // Handle both formats: legacy {ts, USD, EUR} and new {timestamp, rates: {USD, EUR}}
+      if (data.rates && typeof data.rates === 'object') {
+        // New format
+        return data;
+      } else if (data.ts && (data.USD || data.EUR)) {
+        // Legacy format - convert to new format
+        return {
+          timestamp: data.ts,
+          rates: {
+            USD: data.USD || 90.0,
+            EUR: data.EUR || 100.0,
+            GBP: data.GBP || 110.0,
+            CNY: data.CNY || 12.5
+          }
+        };
+      }
     }
   } catch (error) {
     console.error('Ошибка при загрузке курсов валют:', error.message);

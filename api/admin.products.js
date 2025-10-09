@@ -35,18 +35,18 @@ const listProductsHandler = (db) => {
         message: 'Authentication required to access admin products'
       });
     }
-    
+
     const page = Number(req.query.page || 1);
     const limit = Math.min(Number(req.query.limit || 50), 100);
     const offset = (page - 1) * limit;
-    
+
     const category = req.query.category || null;
     const featured = req.query.featured === '1' ? 1 : null;
     const active = req.query.active !== '0' ? 1 : null; // Default: show only active
-    
+
     let whereClause = [];
     let params = [];
-    
+
     if (category) {
       whereClause.push('category = ?');
       params.push(category);
@@ -59,19 +59,19 @@ const listProductsHandler = (db) => {
       whereClause.push('is_active = ?');
       params.push(active);
     }
-    
+
     const where = whereClause.length > 0 ? `WHERE ${whereClause.join(' AND ')}` : '';
-    
+
     const products = db.prepare(`
       SELECT * FROM products
       ${where}
       ORDER BY created_at DESC
       LIMIT ? OFFSET ?
     `).all(...params, limit, offset);
-    
+
     const totalStmt = db.prepare(`SELECT COUNT(*) as total FROM products ${where}`);
     const { total } = totalStmt.get(...params);
-    
+
     res.json({
       ok: true,
       products,
@@ -97,19 +97,19 @@ const getProductHandler = (db) => {
         message: 'Authentication required to access admin products'
       });
     }
-    
+
     const id = Number(req.params.id);
-    
+
     if (!Number.isInteger(id) || id <= 0) {
       return res.status(400).json({ ok: false, error: 'Invalid product ID' });
     }
-    
+
     const product = db.prepare('SELECT * FROM products WHERE id = ?').get(id);
-    
+
     if (!product) {
       return res.status(404).json({ ok: false, error: 'Product not found' });
     }
-    
+
     // Parse JSON fields
     if (product.price_breaks) {
       try {
@@ -118,7 +118,7 @@ const getProductHandler = (db) => {
         product.price_breaks = [];
       }
     }
-    
+
     res.json({ ok: true, product });
   };
 };
@@ -135,9 +135,9 @@ const createProductHandler = (db, logger) => {
         message: 'Authentication required to create products'
       });
     }
-    
+
     const valid = validateProduct(req.body);
-    
+
     if (!valid) {
       logger.warn('Product validation failed', { errors: validateProduct.errors });
       return res.status(400).json({
@@ -146,13 +146,13 @@ const createProductHandler = (db, logger) => {
         details: validateProduct.errors
       });
     }
-    
+
     const data = req.body;
     const currentUser = getCurrentUser(req);
-    
+
     // Serialize price_breaks to JSON
     const priceBreaksJson = data.price_breaks ? JSON.stringify(data.price_breaks) : null;
-    
+
     try {
       const stmt = db.prepare(`
         INSERT INTO products (
@@ -162,7 +162,7 @@ const createProductHandler = (db, logger) => {
           is_featured, is_active, created_by
         ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
       `);
-      
+
       const result = stmt.run(
         data.mpn,
         data.manufacturer,
@@ -184,11 +184,11 @@ const createProductHandler = (db, logger) => {
         data.is_active !== false ? 1 : 0,
         currentUser
       );
-      
+
       const product = db.prepare('SELECT * FROM products WHERE id = ?').get(result.lastInsertRowid);
-      
+
       logger.info('Product created', { id: product.id, mpn: product.mpn, user: currentUser });
-      
+
       res.status(201).json({ ok: true, product });
     } catch (error) {
       if (error.message.includes('UNIQUE constraint')) {
@@ -198,7 +198,7 @@ const createProductHandler = (db, logger) => {
           details: 'A product with this MPN and manufacturer already exists'
         });
       }
-      
+
       logger.error('Failed to create product', { error: error.message });
       res.status(500).json({ ok: false, error: 'Database error' });
     }
@@ -217,15 +217,15 @@ const updateProductHandler = (db, logger) => {
         message: 'Authentication required to update products'
       });
     }
-    
+
     const id = Number(req.params.id);
-    
+
     if (!Number.isInteger(id) || id <= 0) {
       return res.status(400).json({ ok: false, error: 'Invalid product ID' });
     }
-    
+
     const valid = validateProduct(req.body);
-    
+
     if (!valid) {
       logger.warn('Product validation failed', { errors: validateProduct.errors });
       return res.status(400).json({
@@ -234,16 +234,16 @@ const updateProductHandler = (db, logger) => {
         details: validateProduct.errors
       });
     }
-    
+
     const existing = db.prepare('SELECT id FROM products WHERE id = ?').get(id);
-    
+
     if (!existing) {
       return res.status(404).json({ ok: false, error: 'Product not found' });
     }
-    
+
     const data = req.body;
     const priceBreaksJson = data.price_breaks ? JSON.stringify(data.price_breaks) : null;
-    
+
     try {
       const stmt = db.prepare(`
         UPDATE products SET
@@ -267,7 +267,7 @@ const updateProductHandler = (db, logger) => {
           is_active = ?
         WHERE id = ?
       `);
-      
+
       stmt.run(
         data.mpn,
         data.manufacturer,
@@ -289,11 +289,11 @@ const updateProductHandler = (db, logger) => {
         data.is_active !== false ? 1 : 0,
         id
       );
-      
+
       const product = db.prepare('SELECT * FROM products WHERE id = ?').get(id);
-      
+
       logger.info('Product updated', { id, mpn: product.mpn });
-      
+
       res.json({ ok: true, product });
     } catch (error) {
       if (error.message.includes('UNIQUE constraint')) {
@@ -303,7 +303,7 @@ const updateProductHandler = (db, logger) => {
           details: 'A product with this MPN and manufacturer already exists'
         });
       }
-      
+
       logger.error('Failed to update product', { id, error: error.message });
       res.status(500).json({ ok: false, error: 'Database error' });
     }
@@ -322,24 +322,24 @@ const deleteProductHandler = (db, logger) => {
         message: 'Authentication required to delete products'
       });
     }
-    
+
     const id = Number(req.params.id);
-    
+
     if (!Number.isInteger(id) || id <= 0) {
       return res.status(400).json({ ok: false, error: 'Invalid product ID' });
     }
-    
+
     const product = db.prepare('SELECT mpn, manufacturer FROM products WHERE id = ?').get(id);
-    
+
     if (!product) {
       return res.status(404).json({ ok: false, error: 'Product not found' });
     }
-    
+
     try {
       db.prepare('DELETE FROM products WHERE id = ?').run(id);
-      
+
       logger.info('Product deleted', { id, mpn: product.mpn, manufacturer: product.manufacturer });
-      
+
       res.json({ ok: true, message: 'Product deleted successfully' });
     } catch (error) {
       logger.error('Failed to delete product', { id, error: error.message });
@@ -355,6 +355,6 @@ export function mountAdminProductRoutes(app, db, logger) {
   app.post('/api/admin/products', createProductHandler(db, logger));
   app.put('/api/admin/products/:id', updateProductHandler(db, logger));
   app.delete('/api/admin/products/:id', deleteProductHandler(db, logger));
-  
+
   logger.info('Admin product routes mounted');
 }

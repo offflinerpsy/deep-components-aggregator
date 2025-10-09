@@ -28,16 +28,16 @@ export function streamOrderStatus(req, res) {
   try {
     // Get initial order status
     const stmt = db.prepare(`
-      SELECT 
-        id, 
-        status, 
-        created_at, 
+      SELECT
+        id,
+        status,
+        created_at,
         updated_at,
         customer_name,
         mpn,
         manufacturer,
         qty
-      FROM orders 
+      FROM orders
       WHERE id = ?
     `);
     const order = stmt.get(id);
@@ -68,7 +68,7 @@ export function streamOrderStatus(req, res) {
     // Send status timeline (for UI visualization)
     const statusSteps = ['pending', 'processing', 'completed'];
     const currentIndex = statusSteps.indexOf(order.status);
-    
+
     sse.send(res, 'timeline', {
       steps: statusSteps.map((step, index) => ({
         name: step,
@@ -98,7 +98,7 @@ export function streamOrderStatus(req, res) {
 
   } catch (err) {
     console.error('[order.stream] Error:', err);
-    
+
     if (!res.writableEnded) {
       sse.send(res, 'error', { message: 'Internal server error' });
       sse.done(res);

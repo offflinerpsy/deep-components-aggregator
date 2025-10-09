@@ -232,10 +232,10 @@ export const settingsUpdatesTotal = new Counter({
  */
 export function updateOrdersByStatusGauge(db) {
   if (!db) return;
-  
+
   const statusCounts = db.prepare(`
-    SELECT status, COUNT(*) as count 
-    FROM orders 
+    SELECT status, COUNT(*) as count
+    FROM orders
     GROUP BY status
   `).all();
 

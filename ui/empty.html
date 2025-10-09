@@ -1,11 +1,17 @@
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Ничего не найдено — DeepAgg</title>
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -15,24 +21,28 @@
       justify-content: center;
       padding: 20px;
     }
+
     .container {
       background: white;
       border-radius: 12px;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
       max-width: 600px;
       width: 100%;
       padding: 40px;
     }
+
     h1 {
       font-size: 2rem;
       color: #2d3748;
       margin-bottom: 16px;
     }
+
     p {
       color: #4a5568;
       line-height: 1.6;
       margin-bottom: 12px;
     }
+
     .search-query {
       background: #edf2f7;
       padding: 12px 16px;
@@ -42,6 +52,7 @@
       margin: 20px 0;
       font-size: 0.95rem;
     }
+
     .advice {
       background: #fff5e6;
       border-left: 4px solid #f59e0b;
@@ -49,39 +60,46 @@
       border-radius: 6px;
       margin: 20px 0;
     }
+
     .advice h3 {
       color: #d97706;
       font-size: 1rem;
       margin-bottom: 8px;
     }
+
     .advice ul {
       list-style: none;
       padding-left: 0;
     }
+
     .advice li {
       color: #92400e;
       padding: 4px 0;
       padding-left: 20px;
       position: relative;
     }
+
     .advice li:before {
       content: "→";
       position: absolute;
       left: 0;
       color: #f59e0b;
     }
+
     .stats {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
       gap: 12px;
       margin: 24px 0;
     }
+
     .stat {
       background: #f7fafc;
       padding: 12px;
       border-radius: 6px;
       text-align: center;
     }
+
     .stat-label {
       font-size: 0.75rem;
       color: #718096;
@@ -89,19 +107,31 @@
       letter-spacing: 0.05em;
       margin-bottom: 4px;
     }
+
     .stat-value {
       font-size: 1.25rem;
       font-weight: 600;
       color: #2d3748;
     }
-    .stat.ok .stat-value { color: #10b981; }
-    .stat.warning .stat-value { color: #f59e0b; }
-    .stat.error .stat-value { color: #ef4444; }
+
+    .stat.ok .stat-value {
+      color: #10b981;
+    }
+
+    .stat.warning .stat-value {
+      color: #f59e0b;
+    }
+
+    .stat.error .stat-value {
+      color: #ef4444;
+    }
+
     .actions {
       display: flex;
       gap: 12px;
       margin-top: 24px;
     }
+
     .btn {
       flex: 1;
       padding: 12px 24px;
@@ -114,27 +144,33 @@
       text-align: center;
       transition: all 0.2s;
     }
+
     .btn-primary {
       background: #667eea;
       color: white;
     }
+
     .btn-primary:hover {
       background: #5568d3;
       transform: translateY(-1px);
       box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
     }
+
     .btn-secondary {
       background: #e2e8f0;
       color: #2d3748;
     }
+
     .btn-secondary:hover {
       background: #cbd5e0;
     }
+
     .loading {
       text-align: center;
       color: #718096;
       padding: 40px 0;
     }
+
     .spinner {
       border: 3px solid #e2e8f0;
       border-top: 3px solid #667eea;
@@ -144,57 +180,64 @@
       animation: spin 1s linear infinite;
       margin: 0 auto 16px;
     }
+
     @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
     }
   </style>
 </head>
+
 <body>
   <div class="container">
     <h1>🔍 Ничего не найдено</h1>
     <p>Мы не смогли найти результаты по вашему запросу.</p>
-    
+
     <div class="search-query" id="query-display">
       Загрузка...
     </div>
-    
+
     <div id="diagnostics-loading" class="loading">
       <div class="spinner"></div>
       <p>Проверяем возможные причины...</p>
     </div>
-    
+
     <div id="diagnostics-content" style="display: none;">
       <div class="stats" id="stats-grid"></div>
-      
+
       <div class="advice" id="advice-box" style="display: none;">
         <h3>💡 Рекомендации</h3>
         <ul id="advice-list"></ul>
       </div>
-      
+
       <div class="actions">
         <a href="/" class="btn btn-primary">← Новый поиск</a>
         <a href="/ui/diag.html" class="btn btn-secondary">🛠️ Диагностика сети</a>
       </div>
     </div>
   </div>
-  
+
   <script>
     // Get query from URL
     const params = new URLSearchParams(window.location.search);
     const query = params.get('q') || 'не указан';
     document.getElementById('query-display').textContent = `Запрос: "${query}"`;
-    
+
     // Fetch diagnostics
     async function loadDiagnostics() {
       try {
         const response = await fetch(`/api/search/reasons?q=${encodeURIComponent(query)}`);
         const data = await response.json();
-        
+
         // Hide loading
         document.getElementById('diagnostics-loading').style.display = 'none';
         document.getElementById('diagnostics-content').style.display = 'block';
-        
+
         // Render stats
         const statsGrid = document.getElementById('stats-grid');
         statsGrid.innerHTML = `
@@ -211,7 +254,7 @@
             <div class="stat-value">${Object.values(data.providers_reachable).filter(v => v).length}/${Object.keys(data.providers_reachable).length}</div>
           </div>
         `;
-        
+
         // Render advice
         if (data.advice && data.advice.length > 0) {
           document.getElementById('advice-box').style.display = 'block';
@@ -225,7 +268,7 @@
         `;
       }
     }
-    
+
     // Load on page load
     if (query && query !== 'не указан') {
       loadDiagnostics();
@@ -235,4 +278,5 @@
     }
   </script>
 </body>
+
 </html>

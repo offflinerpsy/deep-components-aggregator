@@ -25,9 +25,13 @@ export function createDispatcher() {
 
     return new ProxyAgent({
       uri: proxyUrl,
-      requestTimeout: 30000,
+      // undici 7.x uses headersTimeout/bodyTimeout instead of requestTimeout
+      connectTimeout: 10000,      // CONNECT timeout для proxy tunnel
+      headersTimeout: 30000,      // Timeout для получения headers
+      bodyTimeout: 30000,         // Timeout для получения body
       keepAliveTimeout: 60000,
-      keepAliveMaxTimeout: 600000
+      keepAliveMaxTimeout: 600000,
+      connections: 100
     });
   }
 
@@ -35,7 +39,9 @@ export function createDispatcher() {
 
   // Fallback to direct connection
   return new Agent({
-    requestTimeout: 30000,
+    connectTimeout: 10000,
+    headersTimeout: 30000,
+    bodyTimeout: 30000,
     keepAliveTimeout: 60000,
     keepAliveMaxTimeout: 600000,
     maxRedirections: 3

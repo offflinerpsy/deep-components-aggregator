@@ -318,7 +318,7 @@ app.get('/api/currency/rates', (req, res) => {
 app.get('/api/metrics', async (req, res) => {
   const { getMetrics } = await import('./metrics/registry.js');
   const metrics = await getMetrics();
-  
+
   // RFC: Prometheus text exposition format 0.0.4
   // https://prometheus.io/docs/instrumenting/exposition_formats/
   // Must use writeHead to preserve exact header order (Express normalizes setHeader)

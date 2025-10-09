@@ -38,9 +38,9 @@ console.log(`Found ${migrationFiles.length} migration files:\n`);
 for (const file of migrationFiles) {
   const filePath = path.join(MIGRATIONS_DIR, file);
   const sql = fs.readFileSync(filePath, 'utf8');
-  
+
   console.log(`Applying: ${file}`);
-  
+
   try {
     db.exec(sql);
     console.log(`✅ ${file} applied successfully\n`);

@@ -24,7 +24,7 @@ let errors = 0;
 const tx = db.transaction(() => {
   // Clear existing FTS5 data (if any)
   db.prepare('DELETE FROM search_rows_fts').run();
-  
+
   for (const r of rows) {
     try {
       const data = JSON.parse(r.row);
@@ -32,7 +32,7 @@ const tx = db.transaction(() => {
       const manufacturer = String(data.manufacturer || '');
       const title = String(data.title || '');
       const description = String(data.description || data.description_short || '');
-      
+
       insFts.run(r.q, r.ord, mpn, manufacturer, title, description);
       indexed++;
     } catch (err) {

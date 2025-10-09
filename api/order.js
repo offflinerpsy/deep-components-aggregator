@@ -26,7 +26,7 @@ const validateOrderRequest = ajv.compile(orderRequestSchema);
 function generateDealerLinks(mpn, manufacturer) {
   const encodedMpn = encodeURIComponent(mpn);
   const encodedMfr = encodeURIComponent(manufacturer);
-  
+
   return [
     {
       dealer: 'mouser',
@@ -60,9 +60,9 @@ function generateDealerLinks(mpn, manufacturer) {
 function calculatePricing(basePrice, policy) {
   const markupPercent = policy.markup_percent || 0;
   const markupFixed = policy.markup_fixed_rub || 0;
-  
+
   const finalPrice = Math.ceil(basePrice * (1 + markupPercent) + markupFixed);
-  
+
   return {
     base_price_rub: basePrice,
     markup_percent: markupPercent,
@@ -82,16 +82,16 @@ export function createOrderHandler(db, logger) {
   return async (req, res) => {
     const startTime = process.hrtime.bigint();
     const requestId = req.id || randomUUID();
-    
+
     // Optional: capture userId if authenticated (guest orders allowed)
     const userId = req.user?.id || null;
-    
+
     // Guard: Validate request body
     const valid = validateOrderRequest(req.body);
     if (!valid) {
       ordersTotal.inc({ status: 'rejected' });
       logger.warn({ requestId, userId, errors: validateOrderRequest.errors }, 'Order validation failed');
-      
+
       return res.status(400).json({
         ok: false,
         error: 'validation_error',
@@ -102,29 +102,29 @@ export function createOrderHandler(db, logger) {
         }))
       });
     }
-    
+
     const { customer, item, pricing_snapshot, meta } = req.body;
-    
+
     // Guard: Check at least one contact method
     const hasContact = customer.contact.email || customer.contact.phone || customer.contact.telegram;
     if (!hasContact) {
       ordersTotal.inc({ status: 'rejected' });
       logger.warn({ requestId }, 'No contact method provided');
-      
+
       return res.status(400).json({
         ok: false,
         error: 'validation_error',
         errors: [{ field: 'customer.contact', message: 'At least one contact method is required' }]
       });
     }
-    
+
     // Generate order ID
     const orderId = randomUUID();
     const now = Date.now();
-    
+
     // Get pricing policy from settings (with fallback)
     let policy = { markup_percent: 0.30, markup_fixed_rub: 0 }; // Default: 30% markup
-    
+
     try {
       const pricingPolicy = db.prepare('SELECT value FROM settings WHERE key = ?').get('pricing_policy');
       if (pricingPolicy) {
@@ -134,7 +134,7 @@ export function createOrderHandler(db, logger) {
       // Table doesn't exist or query failed - use default policy
       logger.warn({ requestId, error: error.message }, 'Failed to fetch pricing policy, using defaults');
     }
-    
+
     // Calculate pricing if not provided
     let finalPricing = pricing_snapshot;
     if (!finalPricing) {
@@ -143,22 +143,22 @@ export function createOrderHandler(db, logger) {
       finalPricing = calculatePricing(basePrice, policy);
       logger.info({ requestId, orderId, calculated: true }, 'Pricing calculated from policy');
     }
-    
+
     // Generate dealer links
     const dealerLinks = generateDealerLinks(item.mpn, item.manufacturer);
-    
+
     // Generate OEMsTrade supplier links for admin panel
     const suppliersLinks = [
       `https://oemstrade.com/search?q=${encodeURIComponent(item.mpn)}`,
       `https://www.google.com/search?q=site:oemstrade.com+${encodeURIComponent(item.mpn)}`
     ];
-    
+
     // Merge meta with suppliers links
     const finalMeta = {
       ...meta,
       suppliersLinks
     };
-    
+
     // Insert order into database (transaction)
     const insertStmt = db.prepare(`
       INSERT INTO orders (
@@ -170,7 +170,7 @@ export function createOrderHandler(db, logger) {
         status, meta
       ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `);
-    
+
     const insertTransaction = db.transaction(() => {
       insertStmt.run(
         orderId,
@@ -188,17 +188,17 @@ export function createOrderHandler(db, logger) {
         JSON.stringify(finalMeta)
       );
     });
-    
+
     insertTransaction();
-    
+
     // Record metrics
     const endTime = process.hrtime.bigint();
     const durationSeconds = Number(endTime - startTime) / 1e9;
-    
+
     ordersTotal.inc({ status: 'accepted' });
     orderCreateDuration.observe(durationSeconds);
     updateOrdersByStatusGauge(db); // Update gauge after creation
-    
+
     // Log success (NO PII - only technical fields)
     logger.info({
       requestId,
@@ -209,7 +209,7 @@ export function createOrderHandler(db, logger) {
       qty: item.qty,
       durationMs: Math.round(durationSeconds * 1000)
     }, 'Order created successfully');
-    
+
     // Return order ID
     res.status(201).json({
       ok: true,

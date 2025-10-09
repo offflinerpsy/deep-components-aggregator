@@ -24,11 +24,11 @@ async function getEgressIP(useProxy = false) {
       ...options,
       signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS)
     });
-    
+
     const text = await response.text();
     const ip = text.match(/ip=([^\n]+)/)?.[1];
     const warp = text.match(/warp=([^\n]+)/)?.[1];
-    
+
     return {
       ok: true,
       ip,
@@ -54,7 +54,7 @@ async function testProvider(endpoint, useProxy = false) {
       ...options,
       signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS)
     });
-    
+
     return {
       name: endpoint.name,
       url: endpoint.url,

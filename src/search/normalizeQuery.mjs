@@ -1,9 +1,9 @@
 /**
  * RU→EN Search Normalization Pipeline
- * 
+ *
  * Detects Cyrillic input and transliterates to English for FTS5 search.
  * No external dependencies — lightweight GOST-like transliteration.
- * 
+ *
  * Flow:
  * 1. Detect Cyrillic characters
  * 2. Transliterate using GOST-7.79 System B mapping
@@ -23,13 +23,13 @@ export function hasCyrillic(str) {
 /**
  * Transliterate Cyrillic to Latin using GOST 7.79 System B
  * Optimized for electronics terms and component names
- * 
+ *
  * @param {string} text - Cyrillic text
  * @returns {string} - Transliterated Latin text
  */
 export function transliterateRuToEn(text) {
   if (!text) return '';
-  
+
   // GOST 7.79 System B mapping + electronics-specific adjustments
   const map = {
     // Lowercase
@@ -40,7 +40,7 @@ export function transliterateRuToEn(text) {
     'у': 'u', 'ф': 'f', 'х': 'h', 'ц': 'c', 'ч': 'ch',
     'ш': 'sh', 'щ': 'shh', 'ъ': '', 'ы': 'y', 'ь': '',
     'э': 'e', 'ю': 'yu', 'я': 'ya',
-    
+
     // Uppercase
     'А': 'A', 'Б': 'B', 'В': 'V', 'Г': 'G', 'Д': 'D',
     'Е': 'E', 'Ё': 'Yo', 'Ж': 'Zh', 'З': 'Z', 'И': 'I',
@@ -50,20 +50,20 @@ export function transliterateRuToEn(text) {
     'Ш': 'Sh', 'Щ': 'Shh', 'Ъ': '', 'Ы': 'Y', 'Ь': '',
     'Э': 'E', 'Ю': 'Yu', 'Я': 'Ya'
   };
-  
+
   return text.split('').map(char => map[char] || char).join('');
 }
 
 /**
  * Electronics-specific synonym mapping
  * Maps common Russian electronics terms to English equivalents
- * 
+ *
  * @param {string} query - Search query (may be mixed RU/EN)
  * @returns {Array<string>} - Array of normalized queries (original + synonyms)
  */
 export function applySynonyms(query) {
   const lowercaseQuery = query.toLowerCase();
-  
+
   // Electronics synonyms: Russian → English + transliterated → English
   const synonyms = {
     // Russian Cyrillic → English
@@ -83,7 +83,7 @@ export function applySynonyms(query) {
     'микроконтроллер': ['microcontroller', 'mcu'],
     'модуль': ['module'],
     'плата': ['board', 'pcb'],
-    
+
     // Transliterated (GOST 7.79) → English
     'tranzistor': ['transistor'],
     'rezistor': ['resistor'],
@@ -102,7 +102,7 @@ export function applySynonyms(query) {
     'modul': ['module'],
     'plata': ['board', 'pcb']
   };
-  
+
   // Check if query matches a known synonym
   for (const [ruOrTranslit, enVariants] of Object.entries(synonyms)) {
     if (lowercaseQuery.includes(ruOrTranslit)) {
@@ -110,7 +110,7 @@ export function applySynonyms(query) {
       return [query, ...enVariants];
     }
   }
-  
+
   // No synonym match — return original query
   return [query];
 }
@@ -118,7 +118,7 @@ export function applySynonyms(query) {
 /**
  * Normalize search query for FTS5
  * Main entry point for RU→EN pipeline
- * 
+ *
  * @param {string} query - User's search query
  * @returns {Object} - Normalized query object
  *   {
@@ -141,25 +141,25 @@ export function normalizeQuery(query) {
       tokens: []
     };
   }
-  
+
   const trimmed = query.trim();
   const isCyrillic = hasCyrillic(trimmed);
-  
+
   // Step 1: Transliterate if Cyrillic
   const transliterated = isCyrillic ? transliterateRuToEn(trimmed) : trimmed;
-  
+
   // Step 2: Apply synonyms to transliterated query
   const synonymQueries = applySynonyms(transliterated);
-  
+
   // Step 3: Choose best normalized query
   // Priority: synonym > transliterated > original
-  const normalized = synonymQueries.length > 1 
+  const normalized = synonymQueries.length > 1
     ? synonymQueries[1]  // First synonym is best match
     : transliterated;
-  
+
   // Step 4: Tokenize (simple space-based splitting)
   const tokens = normalized.toLowerCase().split(/\s+/).filter(Boolean);
-  
+
   return {
     original: trimmed,
     hasCyrillic: isCyrillic,

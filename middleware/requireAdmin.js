@@ -8,18 +8,18 @@ export function requireAdmin(req, res, next) {
   if (!req.isAuthenticated || !req.isAuthenticated()) {
     // RFC 7235: 401 requires WWW-Authenticate header
     res.setHeader('WWW-Authenticate', 'Bearer realm="Admin API"');
-    return res.status(401).json({ 
+    return res.status(401).json({
       error: 'Unauthorized',
-      message: 'Authentication required' 
+      message: 'Authentication required'
     });
   }
 
   // Check if user has admin role
   if (!req.user || req.user.role !== 'admin') {
     // RFC 7235: 403 means authenticated but forbidden (no WWW-Authenticate)
-    return res.status(403).json({ 
+    return res.status(403).json({
       error: 'Forbidden',
-      message: 'Admin access required' 
+      message: 'Admin access required'
     });
   }
 

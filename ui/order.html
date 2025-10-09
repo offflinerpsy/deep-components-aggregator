@@ -1,11 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Order Status Tracker</title>
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -15,6 +21,7 @@
       justify-content: center;
       padding: 20px;
     }
+
     .container {
       background: white;
       border-radius: 12px;
@@ -23,34 +30,41 @@
       max-width: 600px;
       width: 100%;
     }
+
     h1 {
       color: #333;
       margin-bottom: 24px;
       font-size: 28px;
     }
+
     .order-info {
       background: #f7f9fc;
       border-radius: 8px;
       padding: 20px;
       margin-bottom: 32px;
     }
+
     .order-info h2 {
       color: #667eea;
       font-size: 18px;
       margin-bottom: 12px;
     }
+
     .order-info p {
       color: #555;
       margin: 6px 0;
       font-size: 14px;
     }
+
     .order-info strong {
       color: #333;
     }
+
     .timeline {
       position: relative;
       padding-left: 40px;
     }
+
     .timeline::before {
       content: '';
       position: absolute;
@@ -60,11 +74,13 @@
       width: 2px;
       background: #e0e0e0;
     }
+
     .timeline-step {
       position: relative;
       margin-bottom: 24px;
       padding-left: 20px;
     }
+
     .timeline-step::before {
       content: '';
       position: absolute;
@@ -77,29 +93,44 @@
       border: 2px solid white;
       box-shadow: 0 0 0 2px #e0e0e0;
     }
+
     .timeline-step.completed::before {
       background: #4caf50;
       box-shadow: 0 0 0 2px #4caf50;
     }
+
     .timeline-step.active::before {
       background: #667eea;
       box-shadow: 0 0 0 2px #667eea;
       animation: pulse 2s infinite;
     }
+
     @keyframes pulse {
-      0%, 100% { transform: scale(1); opacity: 1; }
-      50% { transform: scale(1.2); opacity: 0.8; }
+
+      0%,
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+
+      50% {
+        transform: scale(1.2);
+        opacity: 0.8;
+      }
     }
+
     .timeline-step h3 {
       color: #999;
       font-size: 16px;
       text-transform: capitalize;
       font-weight: 600;
     }
+
     .timeline-step.completed h3,
     .timeline-step.active h3 {
       color: #333;
     }
+
     .error {
       background: #fee;
       color: #c33;
@@ -107,15 +138,18 @@
       border-radius: 8px;
       border-left: 4px solid #c33;
     }
+
     .connection-status {
       font-size: 12px;
       color: #999;
       margin-top: 20px;
       text-align: center;
     }
+
     .connection-status.connected {
       color: #4caf50;
     }
+
     .loading {
       text-align: center;
       padding: 40px;
@@ -123,10 +157,11 @@
     }
   </style>
 </head>
+
 <body>
   <div class="container">
     <h1>📦 Order Status Tracker</h1>
-    
+
     <div id="loading" class="loading">
       <p>Loading order status...</p>
     </div>
@@ -174,11 +209,11 @@
 
       eventSource.addEventListener('status', (event) => {
         const data = JSON.parse(event.data);
-        
+
         // Hide loading, show order info
         document.getElementById('loading').style.display = 'none';
         document.getElementById('order-info').style.display = 'block';
-        
+
         // Populate order details
         document.getElementById('order-id').textContent = data.orderId;
         document.getElementById('customer-name').textContent = data.customer || 'Guest';
@@ -192,7 +227,7 @@
         const data = JSON.parse(event.data);
         const timelineEl = document.getElementById('timeline');
         timelineEl.style.display = 'block';
-        
+
         timelineEl.innerHTML = data.steps.map(step => `
           <div class="timeline-step ${step.completed ? 'completed' : ''} ${step.active ? 'active' : ''}">
             <h3>${step.name}</h3>
@@ -202,14 +237,14 @@
 
       eventSource.addEventListener('error', (event) => {
         const data = event.data ? JSON.parse(event.data) : { message: 'Connection error' };
-        
+
         document.getElementById('loading').style.display = 'none';
         document.getElementById('error').textContent = data.message || 'Failed to connect to order stream';
         document.getElementById('error').style.display = 'block';
-        
+
         statusEl.textContent = '● Disconnected';
         statusEl.classList.remove('connected');
-        
+
         eventSource.close();
       });
 
@@ -228,4 +263,5 @@
     }
   </script>
 </body>
+
 </html>

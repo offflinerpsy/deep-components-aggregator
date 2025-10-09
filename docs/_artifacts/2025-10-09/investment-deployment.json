@@ -1,0 +1,36 @@
+{
+  "deployment_date": "2025-10-09T22:55:00Z",
+  "project": "Investment",
+  "repository": "https://github.com/offflinerpsy/Investment.git",
+  "location": "/var/www/investment",
+  "framework": "Next.js 15.2.4",
+  "node_version": "Node.js (npm)",
+  "build_status": "success",
+  "runtime": {
+    "process_manager": "PM2",
+    "process_name": "investment",
+    "process_id": 1,
+    "port": 3000,
+    "status": "online",
+    "memory": "21.3mb",
+    "startup_time": "552ms"
+  },
+  "network": {
+    "local": "http://localhost:3000",
+    "public": "http://5.129.228.88:3000"
+  },
+  "verification": {
+    "http_status": "200 OK",
+    "cache_status": "HIT",
+    "prerender": true
+  },
+  "commands": {
+    "clone": "git clone https://github.com/offflinerpsy/Investment.git investment",
+    "install": "npm install",
+    "build": "npm run build",
+    "start": "pm2 start npm --name investment -- start",
+    "logs": "pm2 logs investment",
+    "restart": "pm2 restart investment",
+    "stop": "pm2 stop investment"
+  }
+}

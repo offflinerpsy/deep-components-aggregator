@@ -55,8 +55,8 @@ const createProductRow = (product, index) => {
   const imageUrl = rawImage ? `/api/image?url=${encodeURIComponent(rawImage)}` : '';
   const placeholderSvg = `
     <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">
-      <rect width="100%" height="100%" fill="#f3f4f6"/>
-      <text x="50%" y="50%" text-anchor="middle" dy="0.3em" fill="#9ca3af" font-size="10">Фото</text>
+      <rect width="100%" height="100%" fill="hsl(var(--muted))"/>
+      <text x="50%" y="50%" text-anchor="middle" dy="0.3em" fill="hsl(var(--muted-foreground))" font-size="10">Фото</text>
     </svg>
   `;
   const placeholderImage = `data:image/svg+xml,${encodeURIComponent(placeholderSvg.trim())}`;
@@ -86,41 +86,41 @@ const createProductRow = (product, index) => {
   // Product detail URL
   const detailUrl = product.product_url ? product.product_url : `/ui/product.html?src=${encodeURIComponent(product._src || product.source || 'unknown')}&id=${encodeURIComponent(product.mpn || '')}`;
 
-  const providerLabel = product.source ? `<div class="product-subtitle" style="margin-top:4px; color: var(--muted); font-size: 12px;">${normalize(product.source)}</div>` : '';
+  const providerLabel = product.source ? `<div style="margin-top:4px; color: hsl(var(--muted-foreground)); font-size: 12px;">${normalize(product.source)}</div>` : '';
 
   const descriptionText = normalize(product.description || product.description_short || product.title);
   const subtitleSource = product.title || product.description || product.description_short || '';
 
   return `
-    <tr data-testid="product-row" data-index="${index}">
-      <td class="col-image" data-label="Фото">
-     <img class="product-thumb"
-       src="${placeholderImage}"
-       ${imageUrl ? `data-src="${imageUrl}"` : ''}
+    <tr class="table-row" data-testid="product-row" data-index="${index}">
+      <td class="table-cell" data-label="Фото">
+        <img class="product-thumb"
+             src="${placeholderImage}"
+             ${imageUrl ? `data-src="${imageUrl}"` : ''}
              alt="${normalize(product.mpn)}"
              loading="lazy"
              onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-  <div style="display:none; width:48px; height:48px; background:#f3f4f6; border-radius:8px; align-items:center; justify-content:center; font-size:10px; color:#9ca3af;">Фото</div>
+        <div style="display:none; width:48px; height:48px; background:hsl(var(--muted)); border-radius:calc(var(--radius)); align-items:center; justify-content:center; font-size:10px; color:hsl(var(--muted-foreground));">Фото</div>
       </td>
-      <td class="col-manufacturer" data-label="Производитель">
+      <td class="table-cell" data-label="Производитель">
         ${normalize(product.manufacturer)}
       </td>
-      <td class="col-mpn" data-label="MPN">
-        <div class="product-title">${normalize(product.mpn)}</div>
-        <div class="product-subtitle">${normalize(subtitleSource, '').substring(0, 60)}${subtitleSource.length > 60 ? '...' : ''}</div>
+      <td class="table-cell" data-label="MPN">
+        <div style="font-weight: 600; margin-bottom: 2px;">${normalize(product.mpn)}</div>
+        <div style="font-size: 13px; color: hsl(var(--muted-foreground));">${normalize(subtitleSource, '').substring(0, 60)}${subtitleSource.length > 60 ? '...' : ''}</div>
         ${providerLabel}
       </td>
-      <td class="col-description" data-label="Описание">
+      <td class="table-cell" data-label="Описание">
         ${descriptionText}
       </td>
-      <td class="col-region" data-label="Регион склада">
+      <td class="table-cell" data-label="Регион">
         ${createRegionBadges(product.regions)}
       </td>
-      <td class="col-price" data-label="Цена ₽">
+      <td class="table-cell" data-label="Цена ₽" style="text-align: right;">
         <div class="price-rub">${priceDisplay}</div>
       </td>
-      <td class="col-cta" data-label="Действие">
-        <a href="${detailUrl}" class="btn-buy">Купить</a>
+      <td class="table-cell" data-label="Действие" style="text-align: center;">
+        <a href="${detailUrl}" class="btn btn-primary btn-sm" style="text-decoration: none;">Купить</a>
       </td>
     </tr>
   `;
@@ -173,13 +173,18 @@ const renderResults = (results, metadata = {}) => {
 
   resultsSummary.textContent = summaryText;
 
+  // Render card view if controller exists
+  if (window.searchPageController && typeof window.searchPageController.renderCardView === 'function') {
+    window.searchPageController.renderCardView(results);
+  }
+
   // Lazy load images
-  lazyLoadImages();
+  initLazyLoading();
 };
 
-// Lazy load product images
-const lazyLoadImages = () => {
-  const images = $$('img[data-src]');
+// Initialize lazy loading for images
+const initLazyLoading = () => {
+  const images = $('img[data-src]');
 
   const imageObserver = new IntersectionObserver((entries, observer) => {
     entries.forEach(entry => {

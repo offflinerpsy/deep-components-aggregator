@@ -254,15 +254,18 @@ interface PriceBreak {
 
 ### 3. PRODUCT DETAILS
 
-#### GET /api/product/:mpn
+#### GET /api/product?mpn=VALUE
 **Назначение**: Получить детальную информацию о компоненте
+
+**КРИТИЧНО**: Backend использует **query params**, НЕ path params!
 
 **Request**:
 ```bash
-GET /api/product/ESP32-WROOM-32?provider=mouser
+GET /api/product?mpn=ESP32-WROOM-32&provider=mouser
 ```
 
 **Query Parameters**:
+- `mpn` (required): Part number компонента
 - `provider` (optional): `mouser`, `digikey`, `tme`, `farnell`
 
 **Response**:

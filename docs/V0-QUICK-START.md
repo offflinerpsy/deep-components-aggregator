@@ -107,8 +107,10 @@ Style: Dark glassmorphism matching homepage
 ```
 Create Next.js 15 product detail page.
 
-API: GET /api/product/[mpn]?provider=mouser
+API: GET /api/product?mpn=[VALUE]&provider=mouser
 Docs: https://github.com/offflinerpsy/components-aggregator/blob/main/docs/V0-INTEGRATION-GUIDE.md#3-product-details
+
+ВАЖНО: Backend uses QUERY PARAMS (?mpn=...), not path params (/:mpn)
 
 Response structure:
 {
@@ -273,7 +275,7 @@ eventSource.addEventListener('done', () => {
 ```typescript
 // ✅ Правильно:
 fetch('/api/health')
-fetch('/api/product/ESP32?provider=mouser')
+fetch('/api/product?mpn=ESP32&provider=mouser')  // Query params!
 
 // ❌ Неправильно:
 fetch('http://127.0.0.1:9201/api/health')

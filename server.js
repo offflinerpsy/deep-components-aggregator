@@ -1157,7 +1157,9 @@ app.get('/api/pdf', async (req, res) => {
 
     // Set headers for PDF display/download
     res.setHeader('Content-Type', contentType);
-    res.setHeader('Content-Disposition', 'inline');
+    const dl = String(req.query.dl || '').trim();
+    const disp = dl === '1' ? 'attachment' : 'inline';
+    res.setHeader('Content-Disposition', disp);
     res.send(Buffer.from(buffer));
 
     console.log(`   ✅ PDF served: ${buffer.byteLength} bytes`);

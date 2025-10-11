@@ -1,3 +1,5 @@
+/* eslint-env browser */
+/* global document, window, history, IntersectionObserver */
 /**
  * Enhanced Search Interface with Russian Support
  *
@@ -83,8 +85,8 @@ const createProductRow = (product, index) => {
     priceDisplay = formatRub(product.price_rub || product.priceRub);
   }
 
-  // Product detail URL
-  const detailUrl = product.product_url ? product.product_url : `/ui/product.html?src=${encodeURIComponent(product._src || product.source || 'unknown')}&id=${encodeURIComponent(product.mpn || '')}`;
+  // Product detail URL (route to new PDP without changing layout)
+  const detailUrl = product.product_url ? product.product_url : `/ui/product-v2.html?src=${encodeURIComponent(product._src || product.source || 'unknown')}&mpn=${encodeURIComponent(product.mpn || '')}`;
 
   const providerLabel = product.source ? `<div style="margin-top:4px; color: hsl(var(--muted-foreground)); font-size: 12px;">${normalize(product.source)}</div>` : '';
 
@@ -111,7 +113,7 @@ const createProductRow = (product, index) => {
         ${providerLabel}
       </td>
       <td class="table-cell" data-label="Описание">
-        ${descriptionText}
+        <div class="desc-clamp">${descriptionText}</div>
       </td>
       <td class="table-cell" data-label="Регион">
         ${createRegionBadges(product.regions)}
@@ -130,7 +132,7 @@ const createProductRow = (product, index) => {
 const renderResults = (results, metadata = {}) => {
   const resultsSection = $('#results-section');
   const resultsSummary = $('#results-summary');
-  const resultsTable = $('#results-table');
+  // const resultsTable = $('#results-table');
   const tbody = $('#results-tbody');
 
   // Show results section
@@ -173,6 +175,12 @@ const renderResults = (results, metadata = {}) => {
 
   resultsSummary.textContent = summaryText;
 
+  // RU→EN badge indicator next to summary
+  const ruenBadge = document.getElementById('ruen-badge');
+  if (ruenBadge) {
+    ruenBadge.style.display = metadata.hasCyrillic ? 'inline-flex' : 'none';
+  }
+
   // Render card view if controller exists
   if (window.searchPageController && typeof window.searchPageController.renderCardView === 'function') {
     window.searchPageController.renderCardView(results);
@@ -184,7 +192,7 @@ const renderResults = (results, metadata = {}) => {
 
 // Initialize lazy loading for images
 const initLazyLoading = () => {
-  const images = $('img[data-src]');
+  const images = $$('img[data-src]');
 
   const imageObserver = new IntersectionObserver((entries, observer) => {
     entries.forEach(entry => {
@@ -272,7 +280,7 @@ const performSearch = async (query) => {
 
   // Parse response
   const text = await response.text();
-  let data;
+  // no standalone 'data' to satisfy linter
 
   // Guard clause: invalid JSON
   if (!text) {
@@ -289,29 +297,31 @@ const performSearch = async (query) => {
     return;
   }
 
-  data = parseResult.data;
+  const parsed = parseResult.data;
 
   // Guard clause: API error response
-  if (!data.ok) {
-    console.error('❌ API returned error:', data.error);
-    showError(data.error || 'Внутренняя ошибка сервера');
+  if (!parsed.ok) {
+    console.error('❌ API returned error:', parsed.error);
+    showError(parsed.error || 'Внутренняя ошибка сервера');
     return;
   }
 
   // Log enhanced search metadata
-  if (data.meta) {
+  if (parsed.meta) {
     console.log(`📊 Search completed:`, {
-      strategy: data.meta.searchStrategy,
-      source: data.meta.source,
-      usedQuery: data.meta.usedQuery,
-      hasCyrillic: data.meta.hasCyrillic,
-      attempts: data.meta.attempts,
-      elapsed: data.meta.elapsed
+      strategy: parsed.meta.searchStrategy,
+      source: parsed.meta.source,
+      usedQuery: parsed.meta.usedQuery,
+      hasCyrillic: parsed.meta.hasCyrillic,
+      attempts: parsed.meta.attempts,
+      elapsed: parsed.meta.elapsed
     });
   }
 
   // Render results
-  renderResults(data.rows || [], data.meta || {});
+  const r = parsed.rows || [];
+  const m = parsed.meta || {};
+  renderResults(r, m);
 };
 
 // Safe JSON parsing
@@ -326,8 +336,6 @@ const parseJSON = (text) => {
   }
 
   // Manual JSON parsing without try/catch
-  let data;
-  let parseError = null;
 
   // Use a validation approach
   const isValidJSON = (str) => {

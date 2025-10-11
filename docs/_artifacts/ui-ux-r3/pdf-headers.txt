@@ -1,0 +1,12 @@
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  0     0    0     0    0     0      0      0 --:--:--  0:00:01 --:--:--     0  0     0    0     0    0     0      0      0 --:--:--  0:00:02 --:--:--     0  0     0    0     0    0     0      0      0 --:--:--  0:00:03 --:--:--     0  0 1178k    0     0    0     0      0      0 --:--:--  0:00:03 --:--:--     0  0 1178k    0     0    0     0      0      0 --:--:--  0:00:03 --:--:--     0
+HTTP/1.1 200 OK
+x-powered-by: Express
+content-type: application/pdf
+content-disposition: attachment
+content-length: 1206918
+etag: W/"126a86-oBvmKx2VzmtinN/z5RdBk9T/P1U"
+date: Sat, 11 Oct 2025 15:51:43 GMT
+connection: close
+

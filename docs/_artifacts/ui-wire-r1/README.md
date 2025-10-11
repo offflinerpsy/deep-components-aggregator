@@ -1,0 +1,1 @@
+Artifacts for UI⇆API Wiring R1: api-captures/* (raw curls), sse-proof/* (headers and first 100 lines), ui-smoke-results.md (checklist).

@@ -1,0 +1,1 @@
+SSE canon: headers.txt shows text/event-stream; charset=utf-8, Cache-Control: no-cache, no-transform, Connection: keep-alive, X-Accel-Buffering: no. stream.txt contains first 100 lines with events separated by double newlines and optional `: ping` heartbeats.

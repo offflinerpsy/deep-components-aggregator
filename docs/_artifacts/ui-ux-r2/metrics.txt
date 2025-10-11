@@ -1,0 +1,50 @@
+# HELP orders_total Total number of order requests
+# TYPE orders_total counter
+
+# HELP orders_by_status Current number of orders in each status
+# TYPE orders_by_status gauge
+
+# HELP order_create_duration_seconds Duration of order creation in seconds
+# TYPE order_create_duration_seconds histogram
+order_create_duration_seconds_bucket{le="0.01",app="deep-aggregator",version="3.0.0"} 0
+order_create_duration_seconds_bucket{le="0.05",app="deep-aggregator",version="3.0.0"} 0
+order_create_duration_seconds_bucket{le="0.1",app="deep-aggregator",version="3.0.0"} 0
+order_create_duration_seconds_bucket{le="0.5",app="deep-aggregator",version="3.0.0"} 0
+order_create_duration_seconds_bucket{le="1",app="deep-aggregator",version="3.0.0"} 0
+order_create_duration_seconds_bucket{le="2",app="deep-aggregator",version="3.0.0"} 0
+order_create_duration_seconds_bucket{le="5",app="deep-aggregator",version="3.0.0"} 0
+order_create_duration_seconds_bucket{le="+Inf",app="deep-aggregator",version="3.0.0"} 0
+order_create_duration_seconds_sum{app="deep-aggregator",version="3.0.0"} 0
+order_create_duration_seconds_count{app="deep-aggregator",version="3.0.0"} 0
+
+# HELP http_requests_total Total number of HTTP requests
+# TYPE http_requests_total counter
+
+# HELP http_request_duration_seconds Duration of HTTP requests in seconds
+# TYPE http_request_duration_seconds histogram
+
+# HELP api_calls_total Total number of API calls to external sources
+# TYPE api_calls_total counter
+api_calls_total{source="tme",status="success",app="deep-aggregator",version="3.0.0"} 11
+api_calls_total{source="farnell",status="success",app="deep-aggregator",version="3.0.0"} 11
+api_calls_total{source="mouser",status="success",app="deep-aggregator",version="3.0.0"} 11
+api_calls_total{source="digikey",status="error",app="deep-aggregator",version="3.0.0"} 11
+
+# HELP api_call_duration_seconds Duration of API calls to external sources in seconds
+# TYPE api_call_duration_seconds histogram
+api_call_duration_seconds_bucket{le="0.1",app="deep-aggregator",version="3.0.0",source="tme"} 0
+api_call_duration_seconds_bucket{le="0.5",app="deep-aggregator",version="3.0.0",source="tme"} 9
+api_call_duration_seconds_bucket{le="1",app="deep-aggregator",version="3.0.0",source="tme"} 11
+api_call_duration_seconds_bucket{le="2",app="deep-aggregator",version="3.0.0",source="tme"} 11
+api_call_duration_seconds_bucket{le="5",app="deep-aggregator",version="3.0.0",source="tme"} 11
+api_call_duration_seconds_bucket{le="10",app="deep-aggregator",version="3.0.0",source="tme"} 11
+api_call_duration_seconds_bucket{le="+Inf",app="deep-aggregator",version="3.0.0",source="tme"} 11
+api_call_duration_seconds_sum{app="deep-aggregator",version="3.0.0",source="tme"} 4.007347535
+api_call_duration_seconds_count{app="deep-aggregator",version="3.0.0",source="tme"} 11
+api_call_duration_seconds_bucket{le="0.1",app="deep-aggregator",version="3.0.0",source="farnell"} 0
+api_call_duration_seconds_bucket{le="0.5",app="deep-aggregator",version="3.0.0",source="farnell"} 0
+api_call_duration_seconds_bucket{le="1",app="deep-aggregator",version="3.0.0",source="farnell"} 8
+api_call_duration_seconds_bucket{le="2",app="deep-aggregator",version="3.0.0",source="farnell"} 11
+api_call_duration_seconds_bucket{le="5",app="deep-aggregator",version="3.0.0",source="farnell"} 11
+api_call_duration_seconds_bucket{le="10",app="deep-aggregator",version="3.0.0",source="farnell"} 11
+api_call_duration_seconds_bucket{le="+Inf",app="deep-aggregator",version="3.0.0",source="farnell"} 11

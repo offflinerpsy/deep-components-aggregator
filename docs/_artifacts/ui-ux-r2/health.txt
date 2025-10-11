@@ -1,0 +1,10 @@
+HTTP/1.1 200 OK
+X-Powered-By: Express
+Content-Type: application/json; charset=utf-8
+Content-Length: 510
+ETag: W/"1fe-B+fvWiJq+LfZwBTskOKNOOtjgvU"
+Date: Sat, 11 Oct 2025 12:25:39 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+
+{"status":"ok","version":"3.2","ts":1760185539359,"latency_ms":0,"probe":false,"proxy":{"trust":true,"value":1},"sources":{"digikey":{"status":"configured","note":"OAuth credentials present"},"mouser":{"status":"configured","note":"API key present"},"tme":{"status":"configured","note":"Token/secret present"},"farnell":{"status":"configured","note":"API key present"}},"currency":{"status":"stale","age_hours":29,"rates":{"USD":81.4103,"EUR":94.703}},"cache":{"db_path":"./data/db/deep-agg.db","status":"ok"}}

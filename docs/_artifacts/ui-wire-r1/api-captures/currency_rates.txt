@@ -1,0 +1,10 @@
+HTTP/1.1 200 OK
+X-Powered-By: Express
+Content-Type: application/json; charset=utf-8
+Content-Length: 145
+ETag: W/"91-6DX8i5EgLlEL6tjOjpmqBBfHS9E"
+Date: Sat, 11 Oct 2025 11:48:43 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+
+{"ok":true,"timestamp":1760078720748,"date":"2025-10-10","age_hours":29,"rates":{"USD":81.4103,"EUR":94.703,"GBP":109.2608},"source":"ЦБ РФ"}

@@ -1,0 +1,141 @@
+HTTP/1.1 200 OK
+X-Powered-By: Express
+Content-Type: text/plain; version=0.0.4; charset=utf-8
+Content-Length: 8769
+Date: Sat, 11 Oct 2025 11:48:43 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+
+# HELP orders_total Total number of order requests
+# TYPE orders_total counter
+
+# HELP orders_by_status Current number of orders in each status
+# TYPE orders_by_status gauge
+
+# HELP order_create_duration_seconds Duration of order creation in seconds
+# TYPE order_create_duration_seconds histogram
+order_create_duration_seconds_bucket{le="0.01",app="deep-aggregator",version="3.0.0"} 0
+order_create_duration_seconds_bucket{le="0.05",app="deep-aggregator",version="3.0.0"} 0
+order_create_duration_seconds_bucket{le="0.1",app="deep-aggregator",version="3.0.0"} 0
+order_create_duration_seconds_bucket{le="0.5",app="deep-aggregator",version="3.0.0"} 0
+order_create_duration_seconds_bucket{le="1",app="deep-aggregator",version="3.0.0"} 0
+order_create_duration_seconds_bucket{le="2",app="deep-aggregator",version="3.0.0"} 0
+order_create_duration_seconds_bucket{le="5",app="deep-aggregator",version="3.0.0"} 0
+order_create_duration_seconds_bucket{le="+Inf",app="deep-aggregator",version="3.0.0"} 0
+order_create_duration_seconds_sum{app="deep-aggregator",version="3.0.0"} 0
+order_create_duration_seconds_count{app="deep-aggregator",version="3.0.0"} 0
+
+# HELP http_requests_total Total number of HTTP requests
+# TYPE http_requests_total counter
+
+# HELP http_request_duration_seconds Duration of HTTP requests in seconds
+# TYPE http_request_duration_seconds histogram
+
+# HELP api_calls_total Total number of API calls to external sources
+# TYPE api_calls_total counter
+api_calls_total{source="tme",status="success",app="deep-aggregator",version="3.0.0"} 9
+api_calls_total{source="farnell",status="success",app="deep-aggregator",version="3.0.0"} 9
+api_calls_total{source="mouser",status="success",app="deep-aggregator",version="3.0.0"} 9
+api_calls_total{source="digikey",status="error",app="deep-aggregator",version="3.0.0"} 9
+
+# HELP api_call_duration_seconds Duration of API calls to external sources in seconds
+# TYPE api_call_duration_seconds histogram
+api_call_duration_seconds_bucket{le="0.1",app="deep-aggregator",version="3.0.0",source="tme"} 0
+api_call_duration_seconds_bucket{le="0.5",app="deep-aggregator",version="3.0.0",source="tme"} 7
+api_call_duration_seconds_bucket{le="1",app="deep-aggregator",version="3.0.0",source="tme"} 9
+api_call_duration_seconds_bucket{le="2",app="deep-aggregator",version="3.0.0",source="tme"} 9
+api_call_duration_seconds_bucket{le="5",app="deep-aggregator",version="3.0.0",source="tme"} 9
+api_call_duration_seconds_bucket{le="10",app="deep-aggregator",version="3.0.0",source="tme"} 9
+api_call_duration_seconds_bucket{le="+Inf",app="deep-aggregator",version="3.0.0",source="tme"} 9
+api_call_duration_seconds_sum{app="deep-aggregator",version="3.0.0",source="tme"} 3.296152605
+api_call_duration_seconds_count{app="deep-aggregator",version="3.0.0",source="tme"} 9
+api_call_duration_seconds_bucket{le="0.1",app="deep-aggregator",version="3.0.0",source="farnell"} 0
+api_call_duration_seconds_bucket{le="0.5",app="deep-aggregator",version="3.0.0",source="farnell"} 0
+api_call_duration_seconds_bucket{le="1",app="deep-aggregator",version="3.0.0",source="farnell"} 6
+api_call_duration_seconds_bucket{le="2",app="deep-aggregator",version="3.0.0",source="farnell"} 9
+api_call_duration_seconds_bucket{le="5",app="deep-aggregator",version="3.0.0",source="farnell"} 9
+api_call_duration_seconds_bucket{le="10",app="deep-aggregator",version="3.0.0",source="farnell"} 9
+api_call_duration_seconds_bucket{le="+Inf",app="deep-aggregator",version="3.0.0",source="farnell"} 9
+api_call_duration_seconds_sum{app="deep-aggregator",version="3.0.0",source="farnell"} 8.398178729
+api_call_duration_seconds_count{app="deep-aggregator",version="3.0.0",source="farnell"} 9
+api_call_duration_seconds_bucket{le="0.1",app="deep-aggregator",version="3.0.0",source="mouser"} 0
+api_call_duration_seconds_bucket{le="0.5",app="deep-aggregator",version="3.0.0",source="mouser"} 0
+api_call_duration_seconds_bucket{le="1",app="deep-aggregator",version="3.0.0",source="mouser"} 5
+api_call_duration_seconds_bucket{le="2",app="deep-aggregator",version="3.0.0",source="mouser"} 8
+api_call_duration_seconds_bucket{le="5",app="deep-aggregator",version="3.0.0",source="mouser"} 9
+api_call_duration_seconds_bucket{le="10",app="deep-aggregator",version="3.0.0",source="mouser"} 9
+api_call_duration_seconds_bucket{le="+Inf",app="deep-aggregator",version="3.0.0",source="mouser"} 9
+api_call_duration_seconds_sum{app="deep-aggregator",version="3.0.0",source="mouser"} 10.336863593000002
+api_call_duration_seconds_count{app="deep-aggregator",version="3.0.0",source="mouser"} 9
+api_call_duration_seconds_bucket{le="0.1",app="deep-aggregator",version="3.0.0",source="digikey"} 0
+api_call_duration_seconds_bucket{le="0.5",app="deep-aggregator",version="3.0.0",source="digikey"} 3
+api_call_duration_seconds_bucket{le="1",app="deep-aggregator",version="3.0.0",source="digikey"} 4
+api_call_duration_seconds_bucket{le="2",app="deep-aggregator",version="3.0.0",source="digikey"} 9
+api_call_duration_seconds_bucket{le="5",app="deep-aggregator",version="3.0.0",source="digikey"} 9
+api_call_duration_seconds_bucket{le="10",app="deep-aggregator",version="3.0.0",source="digikey"} 9
+api_call_duration_seconds_bucket{le="+Inf",app="deep-aggregator",version="3.0.0",source="digikey"} 9
+api_call_duration_seconds_sum{app="deep-aggregator",version="3.0.0",source="digikey"} 10.150503645999999
+api_call_duration_seconds_count{app="deep-aggregator",version="3.0.0",source="digikey"} 9
+
+# HELP cache_operations_total Total number of cache operations
+# TYPE cache_operations_total counter
+cache_operations_total{operation="miss",type="search",app="deep-aggregator",version="3.0.0"} 1
+cache_operations_total{operation="hit",type="search",app="deep-aggregator",version="3.0.0"} 6
+
+# HELP cache_hits_total Total number of cache hits
+# TYPE cache_hits_total counter
+
+# HELP cache_misses_total Total number of cache misses
+# TYPE cache_misses_total counter
+
+# HELP fts_queries_total Total number of FTS5 queries executed
+# TYPE fts_queries_total counter
+fts_queries_total{app="deep-aggregator",version="3.0.0"} 0
+
+# HELP fts_query_duration_ms FTS5 query duration in milliseconds
+# TYPE fts_query_duration_ms histogram
+fts_query_duration_ms_bucket{le="1",app="deep-aggregator",version="3.0.0"} 0
+fts_query_duration_ms_bucket{le="5",app="deep-aggregator",version="3.0.0"} 0
+fts_query_duration_ms_bucket{le="10",app="deep-aggregator",version="3.0.0"} 0
+fts_query_duration_ms_bucket{le="50",app="deep-aggregator",version="3.0.0"} 0
+fts_query_duration_ms_bucket{le="100",app="deep-aggregator",version="3.0.0"} 0
+fts_query_duration_ms_bucket{le="500",app="deep-aggregator",version="3.0.0"} 0
+fts_query_duration_ms_bucket{le="1000",app="deep-aggregator",version="3.0.0"} 0
+fts_query_duration_ms_bucket{le="5000",app="deep-aggregator",version="3.0.0"} 0
+fts_query_duration_ms_bucket{le="+Inf",app="deep-aggregator",version="3.0.0"} 0
+fts_query_duration_ms_sum{app="deep-aggregator",version="3.0.0"} 0
+fts_query_duration_ms_count{app="deep-aggregator",version="3.0.0"} 0
+
+# HELP search_requests_total Total number of search requests
+# TYPE search_requests_total counter
+search_requests_total{status="success",app="deep-aggregator",version="3.0.0"} 7
+
+# HELP search_errors_total Total number of search errors
+# TYPE search_errors_total counter
+
+# HELP search_latency_seconds Search request latency in seconds
+# TYPE search_latency_seconds histogram
+search_latency_seconds_bucket{le="0.01",app="deep-aggregator",version="3.0.0"} 5
+search_latency_seconds_bucket{le="0.05",app="deep-aggregator",version="3.0.0"} 6
+search_latency_seconds_bucket{le="0.1",app="deep-aggregator",version="3.0.0"} 6
+search_latency_seconds_bucket{le="0.5",app="deep-aggregator",version="3.0.0"} 6
+search_latency_seconds_bucket{le="1",app="deep-aggregator",version="3.0.0"} 6
+search_latency_seconds_bucket{le="2",app="deep-aggregator",version="3.0.0"} 7
+search_latency_seconds_bucket{le="5",app="deep-aggregator",version="3.0.0"} 7
+search_latency_seconds_bucket{le="10",app="deep-aggregator",version="3.0.0"} 7
+search_latency_seconds_bucket{le="+Inf",app="deep-aggregator",version="3.0.0"} 7
+search_latency_seconds_sum{app="deep-aggregator",version="3.0.0"} 1.259105314
+search_latency_seconds_count{app="deep-aggregator",version="3.0.0"} 7
+
+# HELP search_results_by_source_total Total number of search results by source
+# TYPE search_results_by_source_total counter
+search_results_by_source_total{source="providers",app="deep-aggregator",version="3.0.0"} 298
+
+# HELP rate_limit_hits_total Total number of rate limit hits
+# TYPE rate_limit_hits_total counter
+
+# HELP settings_reads_total Total number of settings reads
+# TYPE settings_reads_total counter
+
+# HELP settings_updates_total Total number of settings updates
+# TYPE settings_updates_total counter

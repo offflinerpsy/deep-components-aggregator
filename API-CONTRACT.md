@@ -22,4 +22,14 @@ SSE — канон (подтверждено артефактами):
 
 Примечание по прокси/сети: в бэкенде включён Undici ProxyAgent и setGlobalDispatcher (унификация HTTP через прокси, вкл. встроенный fetch). Рекомендуемый инвариант окружения: `NO_PROXY=127.0.0.1,localhost`.
 
+## R2 Final — Порты и процессы (Source of Truth)
+
+- Backend (Express): 127.0.0.1:9201 — единый источник данных (не торчит наружу).
+- Frontend (Next.js/v0): 127.0.0.1:3000 — единственный фронт. Любые dev-поднятия на 3001 — запрещены.
+- Все клиентские вызовы — только через `/api/*` (Next.js rewrites). Прямых URL бэка в клиенте быть не должно.
+- PM2 автозапуск: `pm2 start server.js --name deep-agg -- --port 9201 && pm2 save && pm2 startup`; фронт: `pm2 start "npm run start -- -p 3000" --name deep-v0 && pm2 save`.
+- Глобальный HTTP-диспетчер: Undici `ProxyAgent` + `setGlobalDispatcher`; `NO_PROXY=127.0.0.1,localhost,::1`.
+
+Документ «Server Source of Truth»: `docs/SERVER-SOURCE-OF-TRUTH.md`.
+
 Происхождение: `server.js`, `api/*.mjs|js`, `src/api/*.mjs|js`. Живые ответы приложены в `docs/_artifacts/ui-wire-r1/`.

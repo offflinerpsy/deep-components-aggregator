@@ -96,6 +96,11 @@ export function searchCachedFts(db, query, options = {}) {
   const limit = options.limit || 100;
   const weights = options.weights || [10, 6, 2, 1]; // mpn > manufacturer > title > description
 
+  // Escape FTS5 special characters in query
+  // FTS5 operators: - (NOT), * (prefix), "" (phrase), OR, AND, NEAR, ()
+  // Wrap query in double quotes to treat as literal phrase
+  const escapedQuery = `"${query.replace(/"/g, '""')}"`;
+
   // FTS5 query with bm25 ranking using content-table JOIN
   // bm25() returns negative scores — sort ASC for best matches first (closer to 0 = better)
   const sql = `
@@ -112,7 +117,7 @@ export function searchCachedFts(db, query, options = {}) {
     LIMIT ?
   `;
 
-  const matches = db.prepare(sql).all(...weights, query, limit);
+  const matches = db.prepare(sql).all(...weights, escapedQuery, limit);
 
   // Parse JSON and return results
   const results = matches.map(match => ({

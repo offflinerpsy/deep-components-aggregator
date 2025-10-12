@@ -146,22 +146,19 @@ export async function tmeGetProduct({ token, secret, symbol, symbols, country = 
 
   // Generate signature: (secret, method, url, params)
   const signature = generateSignature(secret, 'POST', url, params);
+
+  // Add signature to params BEFORE building formData
+  // (must use the SAME params order for signature and body)
   params.ApiSignature = signature;
 
   // TME API requires POST with form data in body, not query string
-  const formData = new URLSearchParams();
-  for (const [key, value] of Object.entries(params)) {
-    if (Array.isArray(value)) {
-      value.forEach((v, i) => formData.append(`${key}[${i}]`, v));
-    } else {
-      formData.append(key, value);
-    }
-  }
+  // IMPORTANT: Sort params BEFORE building query string to match signature
+  const sortedParams = sortKeysRecursive(params);
+  const bodyString = httpBuildQuery(sortedParams);
 
   // Diagnostics: inspect final serialized form
-  const rawBody = formData.toString();
   console.log('[TME][GetProducts] Symbol count:', symbolList.length);
-  console.log('[TME][GetProducts] Body preview:', rawBody.slice(0, 180) + (rawBody.length > 180 ? '...' : ''));
+  console.log('[TME][GetProducts] Body preview:', bodyString.slice(0, 180) + (bodyString.length > 180 ? '...' : ''));
   console.log('[TME][GetProducts] Signature (len):', signature?.length);
   console.log('[TME][GetProducts] First symbol:', symbolList[0]);
 
@@ -171,7 +168,7 @@ export async function tmeGetProduct({ token, secret, symbol, symbols, country = 
       'Accept': 'application/json',
       'Content-Type': 'application/x-www-form-urlencoded'
     },
-    body: formData.toString()
+    body: bodyString
   });
 
   if (!response.ok) {

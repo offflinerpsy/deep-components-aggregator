@@ -196,9 +196,10 @@ export const convert = (amount, fromCurrency, toCurrency) => {
   // Конвертируем через рубль
   const amountInRub = amount * rates[fromCurrency];
   if (toCurrency === 'RUB') {
-    return Math.round(amountInRub);
+    // Сохраняем копейки (2 знака после запятой)
+    return Math.round(amountInRub * 100) / 100;
   }
-  return Math.round(amountInRub / rates[toCurrency]);
+  return Math.round((amountInRub / rates[toCurrency]) * 100) / 100;
 };
 
 /**

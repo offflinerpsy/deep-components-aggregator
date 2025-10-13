@@ -76,7 +76,9 @@ let adminRouter;
 import {
   getStaticPages,
   getStaticPageBySlug,
-  createOrder as createAdminOrder
+  createOrder as createAdminOrder,
+  updateApiHealth,
+  incrementSearchStats
 } from './src/api/adminRoutes.js';
 
 const __filename = fileURLToPath(import.meta.url);

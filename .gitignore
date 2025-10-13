@@ -68,3 +68,23 @@ Thumbs.db
 *.bat
 *.ps1
 *.exe
+
+# Component backups
+*.backup-before-v0
+*.backup
+
+# Build artifacts
+.next/
+out/
+build/
+dist/
+
+# PM2
+.pm2/
+
+# macOS
+.DS_Store
+
+# IDE
+.idea/
+*.sublime-*

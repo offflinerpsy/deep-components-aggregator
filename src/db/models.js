@@ -1,0 +1,371 @@
+/**
+ * Sequelize models for AdminJS
+ * All tables for admin panel
+ */
+
+import { DataTypes } from 'sequelize'
+import sequelize from './sequelize.js'
+import bcrypt from 'bcrypt'
+
+// ============================================
+// Admin Users (авторизация в админке)
+// ============================================
+const AdminUser = sequelize.define('AdminUser', {
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true
+  },
+  email: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    unique: true,
+    validate: {
+      isEmail: true
+    }
+  },
+  password_hash: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
+  name: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
+  role: {
+    type: DataTypes.ENUM('admin', 'moderator'),
+    defaultValue: 'admin'
+  },
+  is_active: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: true
+  }
+}, {
+  tableName: 'admin_users',
+  indexes: [
+    { fields: ['email'], unique: true }
+  ]
+})
+
+// Hash password before save
+AdminUser.beforeCreate(async (user) => {
+  if (user.password_hash) {
+    user.password_hash = await bcrypt.hash(user.password_hash, 10)
+  }
+})
+
+AdminUser.beforeUpdate(async (user) => {
+  if (user.changed('password_hash')) {
+    user.password_hash = await bcrypt.hash(user.password_hash, 10)
+  }
+})
+
+// Verify password method
+AdminUser.prototype.verifyPassword = async function(password) {
+  return bcrypt.compare(password, this.password_hash)
+}
+
+// ============================================
+// Orders (заказы клиентов)
+// ============================================
+const Order = sequelize.define('Order', {
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true
+  },
+  order_number: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    unique: true
+  },
+  client_name: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
+  client_email: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    validate: {
+      isEmail: true
+    }
+  },
+  client_phone: {
+    type: DataTypes.STRING
+  },
+  client_address: {
+    type: DataTypes.TEXT
+  },
+  items: {
+    type: DataTypes.JSON,
+    allowNull: false,
+    comment: 'Array of {mpn, manufacturer, quantity, price, dealer_links}'
+  },
+  total_price: {
+    type: DataTypes.DECIMAL(10, 2),
+    allowNull: false
+  },
+  currency: {
+    type: DataTypes.STRING(3),
+    defaultValue: 'RUB'
+  },
+  status: {
+    type: DataTypes.ENUM('new', 'processing', 'shipped', 'delivered', 'cancelled'),
+    defaultValue: 'new'
+  },
+  notes: {
+    type: DataTypes.TEXT,
+    comment: 'Admin notes'
+  }
+}, {
+  tableName: 'admin_orders',
+  indexes: [
+    { fields: ['order_number'], unique: true },
+    { fields: ['client_email'] },
+    { fields: ['status'] },
+    { fields: ['created_at'] }
+  ]
+})
+
+// ============================================
+// API Health (мониторинг API)
+// ============================================
+const ApiHealth = sequelize.define('ApiHealth', {
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true
+  },
+  service: {
+    type: DataTypes.ENUM('digikey', 'mouser', 'farnell', 'tme'),
+    allowNull: false,
+    unique: true
+  },
+  status: {
+    type: DataTypes.ENUM('online', 'offline', 'degraded'),
+    defaultValue: 'offline'
+  },
+  last_check: {
+    type: DataTypes.DATE,
+    defaultValue: DataTypes.NOW
+  },
+  response_time_ms: {
+    type: DataTypes.INTEGER,
+    comment: 'Last response time in milliseconds'
+  },
+  error_message: {
+    type: DataTypes.TEXT
+  },
+  success_rate_24h: {
+    type: DataTypes.DECIMAL(5, 2),
+    comment: 'Success rate in last 24 hours (%)'
+  }
+}, {
+  tableName: 'api_health',
+  indexes: [
+    { fields: ['service'], unique: true }
+  ]
+})
+
+// ============================================
+// API Keys (управление ключами)
+// ============================================
+const ApiKey = sequelize.define('ApiKey', {
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true
+  },
+  service: {
+    type: DataTypes.ENUM('digikey', 'mouser', 'farnell', 'tme', 'oemstrade'),
+    allowNull: false
+  },
+  key_name: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    comment: 'e.g., "CLIENT_ID", "API_KEY"'
+  },
+  key_value: {
+    type: DataTypes.TEXT,
+    allowNull: false,
+    comment: 'Encrypted value'
+  },
+  is_active: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: true
+  },
+  expires_at: {
+    type: DataTypes.DATE,
+    comment: 'Key expiration date (if applicable)'
+  },
+  last_used: {
+    type: DataTypes.DATE
+  }
+}, {
+  tableName: 'api_keys',
+  indexes: [
+    { fields: ['service', 'key_name'] }
+  ]
+})
+
+// ============================================
+// Static Pages (статические страницы)
+// ============================================
+const StaticPage = sequelize.define('StaticPage', {
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true
+  },
+  slug: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    unique: true,
+    comment: 'URL slug (e.g., "about-us", "contacts")'
+  },
+  title: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
+  content: {
+    type: DataTypes.TEXT,
+    comment: 'HTML or Markdown content'
+  },
+  meta_description: {
+    type: DataTypes.TEXT
+  },
+  is_published: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false
+  },
+  position: {
+    type: DataTypes.ENUM('header', 'footer', 'both'),
+    defaultValue: 'footer',
+    comment: 'Where to show link'
+  },
+  sort_order: {
+    type: DataTypes.INTEGER,
+    defaultValue: 0
+  }
+}, {
+  tableName: 'static_pages',
+  indexes: [
+    { fields: ['slug'], unique: true },
+    { fields: ['is_published'] },
+    { fields: ['position'] }
+  ]
+})
+
+// ============================================
+// Manual Products (ручные товары)
+// ============================================
+const ManualProduct = sequelize.define('ManualProduct', {
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true
+  },
+  mpn: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    unique: true,
+    comment: 'Manufacturer Part Number'
+  },
+  manufacturer: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
+  description: {
+    type: DataTypes.TEXT
+  },
+  price: {
+    type: DataTypes.DECIMAL(10, 2)
+  },
+  currency: {
+    type: DataTypes.STRING(3),
+    defaultValue: 'RUB'
+  },
+  region: {
+    type: DataTypes.STRING,
+    comment: 'e.g., "RU", "US", "EU"'
+  },
+  stock: {
+    type: DataTypes.INTEGER,
+    defaultValue: 0
+  },
+  image_url: {
+    type: DataTypes.STRING
+  },
+  datasheet_url: {
+    type: DataTypes.STRING
+  },
+  is_active: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: true
+  },
+  category: {
+    type: DataTypes.STRING,
+    comment: 'Product category (optional)'
+  }
+}, {
+  tableName: 'manual_products',
+  indexes: [
+    { fields: ['mpn'], unique: true },
+    { fields: ['manufacturer'] },
+    { fields: ['is_active'] }
+  ]
+})
+
+// ============================================
+// Project Stats (статистика проекта)
+// ============================================
+const ProjectStat = sequelize.define('ProjectStat', {
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true
+  },
+  date: {
+    type: DataTypes.DATEONLY,
+    allowNull: false,
+    unique: true
+  },
+  total_searches: {
+    type: DataTypes.INTEGER,
+    defaultValue: 0
+  },
+  cache_hits: {
+    type: DataTypes.INTEGER,
+    defaultValue: 0
+  },
+  live_searches: {
+    type: DataTypes.INTEGER,
+    defaultValue: 0
+  },
+  total_orders: {
+    type: DataTypes.INTEGER,
+    defaultValue: 0
+  },
+  avg_response_time_ms: {
+    type: DataTypes.INTEGER
+  }
+}, {
+  tableName: 'project_stats',
+  indexes: [
+    { fields: ['date'], unique: true }
+  ]
+})
+
+// ============================================
+// Export all models
+// ============================================
+export {
+  sequelize,
+  AdminUser,
+  Order,
+  ApiHealth,
+  ApiKey,
+  StaticPage,
+  ManualProduct,
+  ProjectStat
+}

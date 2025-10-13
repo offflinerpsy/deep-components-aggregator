@@ -1,64 +1,38 @@
 {
-  "chat.agent.enabled": true,
-  "github.copilot.chat.agent.runTasks": true,
-  "github.copilot.chat.codeGeneration.useInstructionFiles": true,
-  "chat.promptFiles": true,
-  "chat.mcp.access": "all",
-  "chat.mcp.autostart": "newAndOutdated",
-  "chat.agent.maxRequests": 150,
-  "chat.tools.global.autoApprove": true,
-  "chat.tools.terminal.autoApprove": {
-    "/^git (status|diff\\b.*|add\\b.*|commit\\b.*|pull\\b.*|push\\b.*|merge\\b.*)$/": true,
-    "/^(ls|pwd|cat|sed\\b.*|awk\\b.*|grep\\b.*|find\\b.*)$/": true,
-    "/^journalctl\\b.*--no-pager\\b.*$/": true,
-    "/^pm2 (status|reload\\b.*|restart\\b.*|logs\\b.*--nostream\\b.*)$/": true,
-    "/^nginx -t( && systemctl reload nginx)?$/": true,
-    "/^ssh\\b.*-o RequestTTY=no\\b.*\\s-n\\b.*-o ConnectTimeout=\\d+\\b.* '.*'$/": {
-      "approve": true,
-      "matchCommandLine": true
-    },
-    "/\\brm\\b\\s+-rf\\b/": false,
-    "del": false,
-    "/dangerous/": false
-  },
-  "diffEditor.hideUnchangedRegions.enabled": true,
-  "workbench.editor.enablePreview": false,
-  "chat.tools.edits.autoApprove": {
-    "**/*": true,
-    "**/.env": false,
-    "**/.env.*": false,
-    "**/.vscode/*.json": false
-  },
-  "chat.editing.autoAccept": 800,
   "github.copilot.enable": {
-    "markdown": true
+    "*": true
   },
-  "files.eol": "\n",
-  "editor.tabSize": 2,
-  "editor.insertSpaces": true,
-  "editor.formatOnSave": true,
-  "editor.formatOnPaste": false,
-  "editor.trimAutoWhitespace": true,
-  "files.trimTrailingWhitespace": true,
-  "files.insertFinalNewline": true,
-  "files.encoding": "utf8",
-  "[python]": {
-    "editor.tabSize": 4
-  },
-  "[markdown]": {
-    "files.trimTrailingWhitespace": false
-  },
-  "conventionalCommits.scopes": [
-    "search",
-    "api",
-    "auth",
-    "admin",
-    "ui",
-    "db",
-    "config",
-    "proxy",
-    "audit",
-    "repo",
-    "docs"
-  ]
+  "github.copilot.advanced": {},
+  "github.copilot.chat.runCommand.enabled": true,
+  "github.copilot.chat.runCommand.allowList": ["*"],
+  "github.copilot.chat.executeCommand.enabled": true,
+  "github.copilot.chat.executeCommand.allowList": ["*"],
+  "github.copilot.chat.terminalChatLocation": "terminal",
+  "github.copilot.chat.useProjectTemplates": false,
+  "chat.commandCenter.enabled": true,
+  "terminal.integrated.confirmOnKill": "never",
+  "terminal.integrated.confirmOnExit": "never",
+  "terminal.integrated.enablePersistentSessions": false,
+  "terminal.integrated.commandsToSkipShell": [],
+  "terminal.integrated.allowChords": false,
+  "files.autoSave": "afterDelay",
+  "files.autoSaveDelay": 500,
+  "security.workspace.trust.enabled": false,
+  "security.workspace.trust.untrustedFiles": "open",
+  "security.workspace.trust.banner": "never",
+  "security.workspace.trust.startupPrompt": "never",
+  "security.workspace.trust.emptyWindow": false,
+  "extensions.ignoreRecommendations": true,
+  "workbench.enableExperiments": false,
+  "telemetry.telemetryLevel": "off",
+  "git.confirmSync": false,
+  "git.autofetch": false,
+  "git.confirmNoVerifyCommit": false,
+  "explorer.confirmDelete": false,
+  "explorer.confirmDragAndDrop": false,
+  "debug.confirmOnExit": "never",
+  "workbench.startupEditor": "none",
+  "window.confirmBeforeClose": "never",
+  "files.confirmDelete": false,
+  "files.confirmDragAndDrop": false
 }

@@ -1,0 +1,11 @@
+{
+	"folders": [
+		{
+			"path": "v0-components-aggregator-page/app/product/[mpn]"
+		},
+		{
+			"path": "."
+		}
+	],
+	"settings": {}
+}

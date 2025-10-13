@@ -60,6 +60,25 @@ import { mountAdminRoutes } from './api/admin.orders.js';
 import { mountAdminSettingsRoutes } from './api/admin.settings.js';
 import { mountAdminProductRoutes } from './api/admin.products.js';
 
+// AdminJS Panel (dynamic import)
+let adminRouter;
+(async () => {
+  try {
+    const adminModule = await import('./src/admin/index-cjs.js');
+    adminRouter = adminModule.adminRouter;
+    console.log('✅ AdminJS loaded');
+  } catch (error) {
+    console.error('❌ Failed to load AdminJS:', error);
+  }
+})();
+
+// AdminJS API Routes
+import {
+  getStaticPages,
+  getStaticPageBySlug,
+  createOrder as createAdminOrder
+} from './src/api/adminRoutes.js';
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -348,6 +367,21 @@ app.get('/api/order/:id/stream', streamOrderStatus);
 mountAdminRoutes(app, db, logger);
 mountAdminSettingsRoutes(app, db, logger);
 mountAdminProductRoutes(app, db, logger);
+// ============================================
+// AdminJS Panel Routes
+// ============================================
+app.use('/admin', (req, res, next) => {
+  if (adminRouter) {
+    adminRouter(req, res, next);
+  } else {
+    res.status(503).send('Admin panel is loading...');
+  }
+});
+
+// AdminJS API for frontend
+app.get('/api/static-pages', getStaticPages);
+app.get('/api/pages/:slug', getStaticPageBySlug);
+app.post('/api/admin/orders', express.json(), createAdminOrder);
 
 // Admin vitrine controls (pin/unpin products)
 import mountAdminVitrine from './api/admin-vitrine.mjs';
@@ -1188,6 +1222,18 @@ const PORT = Number(process.env.PORT || 9201);
   }
 })();
 
+// ============================================
+// AdminJS Database Connection
+// ============================================
+(async () => {
+  try {
+    const { sequelize } = await import('./src/db/models.js');
+    await sequelize.authenticate();
+    console.log('✅ AdminJS database connected');
+  } catch (error) {
+    console.error('❌ AdminJS database connection failed:', error);
+  }
+})();
 const server = app.listen(PORT, '0.0.0.0', () => {
   console.log('\n✅ Server Started');
   console.log(`🌐 http://localhost:${PORT}`);
@@ -1196,7 +1242,8 @@ const server = app.listen(PORT, '0.0.0.0', () => {
   console.log(`🔐 Auth: POST http://localhost:${PORT}/auth/register|login`);
   console.log(`👤 User Orders: GET http://localhost:${PORT}/api/user/orders`);
   console.log(`📦 Create Order: POST http://localhost:${PORT}/api/order (auth required)`);
-  console.log(`🔧 Admin: http://localhost:${PORT}/api/admin/orders (Nginx Basic Auth)`);
+  console.log(`🔧 Admin Panel: http://localhost:${PORT}/admin (AdminJS)`);
+  console.log(`🔧 Admin API: http://localhost:${PORT}/api/admin/orders (Nginx Basic Auth)`);
   console.log('='.repeat(50) + '\n');
 });
 

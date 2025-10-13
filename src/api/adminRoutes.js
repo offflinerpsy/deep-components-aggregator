@@ -6,7 +6,7 @@
 // Static pages API for frontend
 export async function getStaticPages(req, res) {
   try {
-    const { StaticPage } = await import('./db/models.js')
+    const { StaticPage } = await import('../db/models.js')
     
     const position = req.query.position // 'header', 'footer', 'both'
     
@@ -31,7 +31,7 @@ export async function getStaticPages(req, res) {
 // Get single static page by slug
 export async function getStaticPageBySlug(req, res) {
   try {
-    const { StaticPage } = await import('./db/models.js')
+    const { StaticPage } = await import('../db/models.js')
     const { slug } = req.params
     
     const page = await StaticPage.findOne({
@@ -52,7 +52,7 @@ export async function getStaticPageBySlug(req, res) {
 // Create order endpoint
 export async function createOrder(req, res) {
   try {
-    const { Order, ProjectStat } = await import('./db/models.js')
+    const { Order, ProjectStat } = await import('../db/models.js')
     const {
       client_name,
       client_email,
@@ -111,7 +111,7 @@ export async function createOrder(req, res) {
 // Update project stats (call this from search handlers)
 export async function incrementSearchStats(isCache = false) {
   try {
-    const { ProjectStat } = await import('./db/models.js')
+    const { ProjectStat } = await import('../db/models.js')
     const today = new Date().toISOString().split('T')[0]
     
     const [stats] = await ProjectStat.findOrCreate({
@@ -138,7 +138,7 @@ export async function incrementSearchStats(isCache = false) {
 // Update API health (call this from API parsers)
 export async function updateApiHealth(service, isSuccess, responseTimeMs = null, errorMessage = null) {
   try {
-    const { ApiHealth } = await import('./db/models.js')
+    const { ApiHealth } = await import('../db/models.js')
     
     const status = isSuccess ? 'online' : 'offline'
     

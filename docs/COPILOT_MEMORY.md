@@ -28,3 +28,9 @@ Append 1–5 short bullets after each significant task or bug fix.
 - [perf] Mailcow anti-loop protection essential — connection rate limiting and queue management prevent server overload
 - [arch] Email infrastructure decision: Mailcow Docker stack chosen over alternatives for integrated webmail, admin interface, and security features
 
+- [arch] Session config now built at runtime (`buildSessionConfig`) to avoid empty env capture on cold start
+- [rule] Unified WARP proxy port = 40000 across services; enforce `NO_PROXY=127.0.0.1,localhost`
+- [gotcha] Russian normalization module existed but `/api/search` didn't invoke it → Cyrillic queries 400 (pending integration)
+- [rule] Provider orchestrator already enhanced via `executeEnhancedSearch` per provider; endpoint must surface its metadata
+- [perf] Cache should key on normalized primary query to improve RU→EN hit ratio without duplicating variants
+

@@ -677,8 +677,12 @@ app.get('/api/product', async (req, res) => {
     const results = await Promise.allSettled([
       // Mouser
       keys.mouser ? (async () => {
+        const startTime = Date.now();
         try {
           const result = await mouserSearchByKeyword({ apiKey: keys.mouser, q: mpn, records: 1 });
+          const responseTime = Date.now() - startTime;
+          await updateApiHealth('mouser', true, responseTime);
+          
           const p = result?.data?.SearchResults?.Parts?.[0];
           if (!p) return null;
 
@@ -791,12 +795,14 @@ app.get('/api/product', async (req, res) => {
           };
         } catch (error) {
           console.log('   ❌ Mouser: Error -', error.message);
+          await updateApiHealth('mouser', false, null, error.message);
           return null;
         }
       })() : Promise.resolve(null),
 
       // TME
       (keys.tmeToken && keys.tmeSecret) ? (async () => {
+        const startTime = Date.now();
         try {
           console.log('   → TME: Searching for', mpn);
           const result = await tmeSearchProducts({
@@ -806,6 +812,9 @@ app.get('/api/product', async (req, res) => {
             country: 'PL',
             language: 'EN'
           });
+
+          const responseTime = Date.now() - startTime;
+          await updateApiHealth('tme', true, responseTime);
 
           // TME returns { Status: 'OK', Data: { ProductList: [...] } }
           const tmeData = result?.data?.Data || result?.data;  // Handle both cases
@@ -880,15 +889,20 @@ app.get('/api/product', async (req, res) => {
           };
         } catch (error) {
           console.log('   ❌ TME: Error -', error.message);
+          await updateApiHealth('tme', false, null, error.message);
           return null;
         }
       })() : Promise.resolve(null),
 
       // Farnell
       keys.farnell ? (async () => {
+        const startTime = Date.now();
         try {
           console.log('   → Farnell: Searching for', mpn);
           const result = await farnellByMPN({ apiKey: keys.farnell, region: keys.farnellRegion, q: mpn, limit: 1 });
+
+          const responseTime = Date.now() - startTime;
+          await updateApiHealth('farnell', true, responseTime);
 
           console.log('   🔍 Farnell raw response status:', result?.status);
 
@@ -952,12 +966,14 @@ app.get('/api/product', async (req, res) => {
           };
         } catch (error) {
           console.log('   ❌ Farnell: Error -', error.message);
+          await updateApiHealth('farnell', false, null, error.message);
           return null;
         }
       })() : Promise.resolve(null),
 
       // DigiKey
       (keys.digikeyClientId && keys.digikeyClientSecret) ? (async () => {
+        const startTime = Date.now();
         console.log('   🔍 DigiKey: Starting search...');
         try {
           const result = await digikeyGetProduct({
@@ -965,6 +981,9 @@ app.get('/api/product', async (req, res) => {
             clientSecret: keys.digikeyClientSecret,
             partNumber: mpn
           });
+
+          const responseTime = Date.now() - startTime;
+          await updateApiHealth('digikey', true, responseTime);
 
           console.log(`   🔍 DigiKey: Got response, status=${result?.status}`);
           const p = result?.data?.Product || result?.data?.Products?.[0];
@@ -1083,6 +1102,7 @@ app.get('/api/product', async (req, res) => {
           };
         } catch (error) {
           console.log('   ❌ DigiKey: Error -', error.message);
+          await updateApiHealth('digikey', false, null, error.message);
           return null;
         }
       })() : Promise.resolve(null)

@@ -16,64 +16,42 @@ const SQLiteStore = connectSqlite3(session);
  * Session configuration
  * Cookie settings follow security best practices
  */
-const isProd = process.env.NODE_ENV === 'production';
-const behindProxy = String(process.env.BEHIND_PROXY || '1') === '1';
-
-const SESSION_CONFIG = {
-  // Session store
-  store: new SQLiteStore({
-    db: 'sessions.sqlite',
-    dir: process.env.DATA_DIR || path.join(__dirname, '..', 'var', 'db'),
-    table: 'sessions',
-    // Clean up expired sessions every hour
-    concurrentDB: true
-  }),
-  
-  // Session secret (MUST be set in production via env var)
-  secret: process.env.SESSION_SECRET || 'dev-secret-change-in-production',
-  
-  // Cookie settings
-  cookie: {
-    // HttpOnly - prevents XSS attacks
-    httpOnly: true,
-    
-  // Secure - HTTPS only; enforce when работаем за прокси
-  secure: behindProxy ? true : isProd,
-    
-  // SameSite - всегда None при работе через прокси/туннели
-  sameSite: behindProxy ? 'none' : 'lax',
-    
-    // Max age - 7 days (configurable)
-    maxAge: parseInt(process.env.SESSION_TTL_MS) || 7 * 24 * 60 * 60 * 1000
-  },
-  
-  // Session name (default is 'connect.sid')
-  name: 'deep_agg_sid',
-  
-  // Resave - don't save unchanged sessions
-  resave: false,
-  
-  // SaveUninitialized - don't save empty sessions
-  saveUninitialized: false,
-  
-  // Rolling - refresh cookie on each request
-  rolling: true,
-  
-  // Trust proxy setups
-  proxy: behindProxy
-};
+function buildSessionConfig() {
+  const isProd = process.env.NODE_ENV === 'production';
+  const behindProxy = String(process.env.BEHIND_PROXY || '1') === '1';
+  const secret = process.env.SESSION_SECRET || 'dev-secret-change-in-production';
+  return {
+    store: new SQLiteStore({
+      db: 'sessions.sqlite',
+      dir: process.env.DATA_DIR || path.join(__dirname, '..', 'var', 'db'),
+      table: 'sessions',
+      concurrentDB: true
+    }),
+    secret,
+    cookie: {
+      httpOnly: true,
+      secure: behindProxy ? true : isProd,
+      sameSite: behindProxy ? 'none' : 'lax',
+      maxAge: parseInt(process.env.SESSION_TTL_MS) || 7 * 24 * 60 * 60 * 1000
+    },
+    name: 'deep_agg_sid',
+    resave: false,
+    saveUninitialized: false,
+    rolling: true,
+    proxy: behindProxy
+  };
+}
 
 /**
  * Create session middleware
  * @returns {Function} Express session middleware
  */
 export function createSessionMiddleware() {
-  // Validate session secret in production
-  if (process.env.NODE_ENV === 'production' && SESSION_CONFIG.secret === 'dev-secret-change-in-production') {
+  const cfg = buildSessionConfig();
+  if (process.env.NODE_ENV === 'production' && cfg.secret === 'dev-secret-change-in-production') {
     throw new Error('SESSION_SECRET environment variable must be set in production');
   }
-  
-  return session(SESSION_CONFIG);
+  return session(cfg);
 }
 
 /**
@@ -84,7 +62,8 @@ export function createSessionMiddleware() {
  */
 export async function checkSessionHealth() {
   return new Promise((resolve) => {
-    SESSION_CONFIG.store.length((err, length) => {
+    const cfg = buildSessionConfig();
+    cfg.store.length((err, length) => {
       if (err) {
         resolve({
           healthy: false,
@@ -104,5 +83,5 @@ export async function checkSessionHealth() {
 export default {
   createSessionMiddleware,
   checkSessionHealth,
-  SESSION_CONFIG
+  buildSessionConfig
 };

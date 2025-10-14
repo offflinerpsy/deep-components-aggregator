@@ -125,6 +125,12 @@ function getList(req, res) {
     filtered = filtered.filter(row => row.source === section);
   }
 
+  // ✅ ALWAYS exclude items without prices (min_price_rub must exist and > 0)
+  filtered = filtered.filter(row => {
+    const price = parseFloat(row.min_price_rub || row.price_rub || row.price || '0') || 0;
+    return price > 0;
+  });
+
   // In-stock filter
   if (inStock) {
     filtered = filtered.filter(row => {

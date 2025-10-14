@@ -31,27 +31,51 @@ const adminOptions = {
       resource: Order,
       options: {
         navigation: { name: 'Управление', icon: 'ShoppingCart' },
-        listProperties: ['id', 'order_number', 'client_name', 'client_email', 'total_price', 'status', 'created_at'],
-        showProperties: ['id', 'order_number', 'client_name', 'client_email', 'client_phone', 'client_address', 'items', 'total_price', 'currency', 'status', 'notes', 'created_at'],
-        editProperties: ['status', 'notes'],
-        filterProperties: ['order_number', 'client_email', 'status'],
+        listProperties: ['id', 'customer_name', 'mpn', 'manufacturer', 'qty', 'status', 'created_at'],
+        showProperties: ['id', 'customer_name', 'customer_contact', 'mpn', 'manufacturer', 'qty', 'pricing_snapshot', 'dealer_links', 'status', 'meta', 'created_at', 'updated_at'],
+        editProperties: ['status', 'meta'],
+        filterProperties: ['customer_contact', 'mpn', 'manufacturer', 'status'],
         sort: {
           sortBy: 'created_at',
           direction: 'desc'
         },
         properties: {
-          items: {
+          id: {
+            isTitle: true
+          },
+          customer_name: {
+            type: 'string'
+          },
+          customer_contact: {
+            type: 'string',
+            isTitle: false
+          },
+          mpn: {
+            type: 'string'
+          },
+          manufacturer: {
+            type: 'string'
+          },
+          qty: {
+            type: 'number'
+          },
+          pricing_snapshot: {
             type: 'mixed',
-            components: {
-              show: AdminJS.bundle('./components/OrderItemsShow')
-            }
+            isVisible: { list: false, show: true, edit: false, filter: false }
+          },
+          dealer_links: {
+            type: 'mixed',
+            isVisible: { list: false, show: true, edit: false, filter: false }
+          },
+          meta: {
+            type: 'mixed',
+            isVisible: { list: false, show: true, edit: true, filter: false }
           },
           status: {
             availableValues: [
-              { value: 'new', label: 'Новый' },
+              { value: 'pending', label: 'Ожидает' },
               { value: 'processing', label: 'В обработке' },
-              { value: 'shipped', label: 'Отправлен' },
-              { value: 'delivered', label: 'Доставлен' },
+              { value: 'completed', label: 'Выполнен' },
               { value: 'cancelled', label: 'Отменён' }
             ]
           }

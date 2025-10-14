@@ -1,7 +1,18 @@
 // Deep Components Aggregator - CLEAN REWRITE
 // v3.0 - With TME, Mouser, Farnell support
 
-import 'dotenv/config';
+// Explicit dotenv load (side-effect import was unreliable in current runtime)
+import dotenv from 'dotenv';
+// Force override so stale exported HTTP_PROXY=18080 is replaced by .env value 40000
+dotenv.config({ path: '.env', override: true });
+// Early diagnostic for SESSION_SECRET availability (prevents silent crash loops)
+if (!process.env.SESSION_SECRET) {
+  console.error('[boot] SESSION_SECRET missing after dotenv load');
+} else {
+  const s = process.env.SESSION_SECRET;
+  const masked = s.length > 12 ? s.slice(0,4) + '***' + s.slice(-4) : '***';
+  console.log('[boot] SESSION_SECRET loaded len=%d value=%s', s.length, masked);
+}
 // Enable proxy-by-default before any network clients load
 import './src/bootstrap/proxy.mjs';
 

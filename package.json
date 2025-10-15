@@ -10,6 +10,8 @@
     "lint": "eslint tests/ --max-warnings 10",
     "test": "vitest run",
     "test:watch": "vitest",
+    "smtp:verify": "node ./scripts/verify-smtp.mjs",
+    "smtp:test": "node ./scripts/send-test-email.mjs",
     "rates:refresh": "node ./scripts/refresh-rates.mjs",
     "data:ingest:chipdip": "node ./scripts/ingest-chipdip-urls.mjs --glob 'loads/urls/*.txt' --concurrency 4 --batch 100",
     "data:index:build": "node ./scripts/build-index.mjs",
@@ -21,6 +23,7 @@
     "providers:check": "node ./scripts/check-providers.mjs",
     "snapshots": "node v0-components-aggregator-page/scripts/snapshots.mjs",
     "sse": "bash v0-components-aggregator-page/scripts/capture-sse.sh",
+    "diag:capture": "node ./scripts/capture-diagnostics.mjs",
     "deploy": "bash ./deploy-to-server.sh"
   },
   "dependencies": {
@@ -47,6 +50,7 @@
     "http-proxy-to-socks": "^1.1.4",
     "nanoid": "^5.0.3",
     "natural": "^8.1.0",
+    "nodemailer": "^6.9.15",
     "p-queue": "^9.0.0",
     "passport": "^0.7.0",
     "passport-google-oidc": "^0.1.0",

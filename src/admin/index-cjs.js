@@ -52,6 +52,9 @@ const adminOptions = {
               { value: 'cancelled', label: 'Отменён' }
             ]
           }
+        },
+        actions: {
+          export: { isVisible: true }
         }
       }
     },
@@ -185,6 +188,30 @@ const adminOptions = {
     }
   ],
   rootPath: '/admin',
+  dashboard: {
+    handler: async () => {
+      const [ordersCount, pendingCount, processingCount, completedCount] = await Promise.all([
+        Order.count(),
+        Order.count({ where: { status: 'pending' } }),
+        Order.count({ where: { status: 'processing' } }),
+        Order.count({ where: { status: 'completed' } })
+      ])
+
+      const health = await ApiHealth.findAll()
+      const healthSummary = health.map(h => ({ service: h.service, status: h.status, last_check: h.last_check, response_time_ms: h.response_time_ms }))
+
+      const pages = await StaticPage.count({ where: { is_published: true } })
+
+      return {
+        stats: {
+          orders: { total: ordersCount, pending: pendingCount, processing: processingCount, completed: completedCount },
+          staticPagesPublished: pages
+        },
+        health: healthSummary
+      }
+    },
+    component: false
+  },
   branding: {
     companyName: 'Deep Components Aggregator',
     logo: false,
@@ -229,5 +256,14 @@ const adminRouter = AdminJSExpress.buildAuthenticatedRouter(
     }
   }
 )
+
+// Warn if weak admin secrets in production
+if (process.env.NODE_ENV === 'production') {
+  const cookieWeak = !process.env.ADMIN_COOKIE_SECRET || process.env.ADMIN_COOKIE_SECRET.includes('change-in-production')
+  const sessionWeak = !process.env.ADMIN_SESSION_SECRET || process.env.ADMIN_SESSION_SECRET.includes('change-in-production')
+  if (cookieWeak || sessionWeak) {
+    console.warn('[admin] Weak admin secrets detected in production. Please set ADMIN_COOKIE_SECRET and ADMIN_SESSION_SECRET.')
+  }
+}
 
 export { adminJs, adminRouter, sequelize, AdminUser, Order, ApiHealth, ApiKey, StaticPage, ManualProduct, ProjectStat }

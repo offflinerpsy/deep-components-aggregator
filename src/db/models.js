@@ -235,6 +235,17 @@ const ApiKey = sequelize.define('ApiKey', {
 // ============================================
 // Static Pages (статические страницы)
 // ============================================
+function slugify(input) {
+  const s = String(input || '')
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9а-яё\-\s_]/g, '') // убрать лишние символы (оставить буквы/цифры/дефис/пробел/нижнее подчёркивание)
+    .replace(/[\s_]+/g, '-')             // пробелы/подчёркивания -> дефис
+    .replace(/-+/g, '-')                  // схлопнуть повторяющиеся дефисы
+    .replace(/^-|-$|\.+$/g, '')          // обрезать дефисы по краям и точки в конце
+  return s
+}
+
 const StaticPage = sequelize.define('StaticPage', {
   id: {
     type: DataTypes.INTEGER,
@@ -278,6 +289,20 @@ const StaticPage = sequelize.define('StaticPage', {
     { fields: ['is_published'] },
     { fields: ['position'] }
   ]
+})
+
+// Автогенерация slug на основе title, если не задан
+StaticPage.beforeValidate((page) => {
+  if (!page.slug && page.title) {
+    page.slug = slugify(page.title)
+  }
+})
+
+// Нормализация slug перед сохранением
+StaticPage.beforeSave((page) => {
+  if (page.slug) {
+    page.slug = slugify(page.slug)
+  }
 })
 
 // ============================================

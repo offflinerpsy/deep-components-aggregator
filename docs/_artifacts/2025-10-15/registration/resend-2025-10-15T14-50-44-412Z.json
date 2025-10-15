@@ -1,0 +1,20 @@
+{
+  "status": 409,
+  "headers": {
+    "connection": "keep-alive",
+    "content-length": "39",
+    "content-type": "application/json; charset=utf-8",
+    "date": "Wed, 15 Oct 2025 14:50:44 GMT",
+    "etag": "W/\"27-AQ5/ROJ5OZQERWvClhGAgZpeuQ4\"",
+    "keep-alive": "timeout=5",
+    "ratelimit-limit": "5",
+    "ratelimit-policy": "5;w=900",
+    "ratelimit-remaining": "3",
+    "ratelimit-reset": "900",
+    "x-powered-by": "Express"
+  },
+  "body": {
+    "ok": false,
+    "error": "already_verified"
+  }
+}

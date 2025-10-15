@@ -184,6 +184,8 @@ mountVitrine(app);
 
 // Search diagnostics (why no results?)
 import mountSearchReasons from './api/search-reasons.mjs';
+// Search normalization helpers
+import { processSearchQuery, selectSearchStrategy } from './src/search/searchIntegration.mjs';
 mountSearchReasons(app, { keys });
 
 // Health check
@@ -554,49 +556,29 @@ app.get('/api/search', async (req, res) => {
       return res.json({ ok: true, q, rows: [], meta: { source: 'none', total: 0 } });
     }
 
-    // Check cache (use original query for cache key)
+    // Normalization: build normalized variants and primary for cache key
+    const processed = processSearchQuery(q);
+    const strategy = selectSearchStrategy(processed);
+    const primaryNorm = (strategy && strategy.primaryQuery) ? String(strategy.primaryQuery).toLowerCase() : q.toLowerCase();
+
+    // Check cache (normalized primary key). Do not return cache as final — use for enrichment/fallback only.
     const TTL = 7 * 24 * 60 * 60 * 1000;
-    const cached = readCachedSearch(db, q.toLowerCase(), TTL);
-    if (cached && req.query.fresh !== '1') {
-      console.log(`📦 Cache HIT: ${cached.rows.length} rows from ${cached.meta.source}`);
-
-      // Metrics
+    const cached = readCachedSearch(db, primaryNorm, TTL);
+    if (cached) {
+      console.log(`📦 Cache AVAILABLE: ${cached.rows.length} rows for key="${primaryNorm}" (source=${cached.meta.source})`);
       cacheOperations.inc({ operation: 'hit', type: 'search' });
-      searchRequestsTotal.inc({ status: 'success' });
-      searchResultsBySource.inc({ source: cached.meta.source }, cached.rows.length);
-      searchTimer();
-
-      // Add currency info to cached response
-      const ratesData = loadRates();
-      const ratesDate = new Date(ratesData.timestamp).toISOString().split('T')[0];
-
-      return res.json({
-        ok: true,
-        q,
-        rows: cached.rows,
-        meta: {
-          ...cached.meta,
-          cached: true,
-          providers: cached.meta.providers || [],
-          currency: {
-            rates: {
-              USD: ratesData.rates.USD,
-              EUR: ratesData.rates.EUR
-            },
-            date: ratesDate,
-            source: 'ЦБ РФ'
-          }
-        }
-      });
+    } else {
+      cacheOperations.inc({ operation: 'miss', type: 'search' });
     }
 
+    // Live search always primary
     const aggregated = await orchestrateProviderSearch(q, keys);
     const rows = aggregated.rows;
     const providerSummary = aggregated.providers;
 
-    cacheOperations.inc({ operation: 'miss', type: 'search' });
+    // If we have live rows, cache them under normalized key; else, fallback to cached rows (tech-only)
     if (rows.length > 0) {
-      cacheSearch(db, q.toLowerCase(), rows, { source: 'providers' });
+      cacheSearch(db, primaryNorm, rows, { source: 'providers' });
     }
 
     const elapsed = Date.now() - startTime;
@@ -629,6 +611,32 @@ app.get('/api/search', async (req, res) => {
 
     if (usedQueries.size > 0) {
       responseMeta.usedQueries = Array.from(usedQueries);
+    }
+
+    // Helper to strip pricing/stock from cached rows (tech-only)
+    const toTechOnly = (r) => {
+      if (!r || typeof r !== 'object') return r;
+      const {
+        min_price, min_currency, min_price_rub, price_breaks,
+        pricing, availability, stock,
+        ...rest
+      } = r;
+      return rest;
+    };
+
+    // Fallback: no live rows — return cached rows (if present) but annotate as cache-fallback
+    if (rows.length === 0 && cached) {
+      console.log(`↩️  Fallback to cache for "${primaryNorm}" (${cached.rows.length} rows, tech-only)`);
+      responseMeta.source = 'cache-fallback';
+      responseMeta.total = cached.rows.length;
+      responseMeta.cached = true;
+      responseMeta.tech_only = true;
+      const techRows = cached.rows.map(toTechOnly);
+      res.json({ ok: true, q, rows: techRows, meta: responseMeta });
+      searchRequestsTotal.inc({ status: 'success' });
+      searchResultsBySource.inc({ source: 'cache' }, techRows.length);
+      searchTimer();
+      return;
     }
 
     console.log(`⏱️  Completed in ${elapsed}ms: ${rows.length} results aggregated from ${providerSummary.length} providers`);

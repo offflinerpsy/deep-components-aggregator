@@ -1,0 +1,21 @@
+{
+  "status": 202,
+  "headers": {
+    "connection": "keep-alive",
+    "content-length": "142",
+    "content-type": "application/json; charset=utf-8",
+    "date": "Wed, 15 Oct 2025 15:04:26 GMT",
+    "etag": "W/\"8e-9HN7CKW1c9i+uR50gRJ0Pdo6oXI\"",
+    "keep-alive": "timeout=5",
+    "ratelimit-limit": "5",
+    "ratelimit-policy": "5;w=900",
+    "ratelimit-remaining": "1",
+    "ratelimit-reset": "78",
+    "x-powered-by": "Express"
+  },
+  "body": {
+    "ok": true,
+    "userId": "4f7ddfa4-af51-4ed6-abc8-038a5c56ffd4",
+    "message": "Registration accepted. Please check your email to verify your account."
+  }
+}

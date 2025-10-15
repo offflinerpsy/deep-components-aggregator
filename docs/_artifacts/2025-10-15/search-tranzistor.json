@@ -1,0 +1,3209 @@
+{
+  "meta": {
+    "cached": false,
+    "currency": {
+      "date": "2025-10-14",
+      "rates": {
+        "EUR": 92.6816,
+        "USD": 79.9589
+      },
+      "source": "ЦБ РФ"
+    },
+    "elapsed": 2361,
+    "providers": [
+      {
+        "message": "Mouser API error: InvalidCharacters",
+        "provider": "mouser",
+        "status": "error"
+      },
+      {
+        "attempts": 3,
+        "elapsed_ms": 1132,
+        "provider": "digikey",
+        "status": "ok",
+        "strategy": "russian-enhanced",
+        "total": 10,
+        "usedQuery": "transistor",
+        "variantsTried": 3
+      },
+      {
+        "attempts": 3,
+        "elapsed_ms": 1963,
+        "provider": "tme",
+        "status": "ok",
+        "strategy": "russian-enhanced",
+        "total": 10,
+        "usedQuery": "transistor",
+        "variantsTried": 3
+      },
+      {
+        "attempts": 1,
+        "elapsed_ms": 2339,
+        "provider": "farnell",
+        "status": "ok",
+        "strategy": "russian-enhanced",
+        "total": 25,
+        "usedQuery": "tranzistor",
+        "variantsTried": 3
+      }
+    ],
+    "source": "providers",
+    "total": 45,
+    "usedQueries": [
+      "transistor",
+      "tranzistor"
+    ]
+  },
+  "ok": true,
+  "q": "транзистор",
+  "rows": [
+    {
+      "availability": {
+        "inStock": 1110129,
+        "leadTime": "16"
+      },
+      "datasheet_url": "https://www.mccsemi.com/pdf/Products/MMBT3904(SOT-23).pdf",
+      "datasheets": [
+        "https://www.mccsemi.com/pdf/Products/MMBT3904(SOT-23).pdf"
+      ],
+      "description_short": "Bipolar (BJT) Transistor NPN 40 V 200 mA 300MHz 350 mW Surface Mount SOT-23",
+      "image_url": "https://mm.digikey.com/Volume0/opasdata/d220001/medias/images/6152/353%7ESOT23-3%7E%7E3.jpg",
+      "images": [
+        "https://mm.digikey.com/Volume0/opasdata/d220001/medias/images/6152/353%7ESOT23-3%7E%7E3.jpg"
+      ],
+      "manufacturer": "MCC (Micro Commercial Components)",
+      "min_currency": "USD",
+      "min_price": 0.00978,
+      "min_price_rub": 0.78,
+      "mpn": "MMBT3904-TP",
+      "package": "Tape & Reel (TR)",
+      "packaging": "0",
+      "price_breaks": [
+        {
+          "currency": "USD",
+          "price": 0.01972,
+          "price_rub": 1.58,
+          "qty": 3000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01742,
+          "price_rub": 1.39,
+          "qty": 6000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01625,
+          "price_rub": 1.3,
+          "qty": 9000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01492,
+          "price_rub": 1.19,
+          "qty": 15000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01413,
+          "price_rub": 1.13,
+          "qty": 21000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01337,
+          "price_rub": 1.07,
+          "qty": 30000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01169,
+          "price_rub": 0.93,
+          "qty": 75000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01065,
+          "price_rub": 0.85,
+          "qty": 150000
+        },
+        {
+          "currency": "USD",
+          "price": 0.00978,
+          "price_rub": 0.78,
+          "qty": 300000
+        }
+      ],
+      "pricing": [
+        {
+          "currency": "USD",
+          "price": 0.01972,
+          "price_rub": 1.58,
+          "qty": 3000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01742,
+          "price_rub": 1.39,
+          "qty": 6000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01625,
+          "price_rub": 1.3,
+          "qty": 9000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01492,
+          "price_rub": 1.19,
+          "qty": 15000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01413,
+          "price_rub": 1.13,
+          "qty": 21000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01337,
+          "price_rub": 1.07,
+          "qty": 30000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01169,
+          "price_rub": 0.93,
+          "qty": 75000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01065,
+          "price_rub": 0.85,
+          "qty": 150000
+        },
+        {
+          "currency": "USD",
+          "price": 0.00978,
+          "price_rub": 0.78,
+          "qty": 300000
+        }
+      ],
+      "product_url": "https://www.digikey.com/en/products/detail/mcc-micro-commercial-components/MMBT3904-TP/717280",
+      "raw_id": "MMBT3904TPMSTR-ND",
+      "regions": [
+        "US",
+        "GLOBAL"
+      ],
+      "source": "digikey",
+      "stock": 1110129,
+      "technical_specs": {
+        "Description": "TRANS NPN 40V 0.2A SOT-23",
+        "Detailed Description": "Bipolar (BJT) Transistor NPN 40 V 200 mA 300MHz 350 mW Surface Mount SOT-23",
+        "DigiKey Part Number": "MMBT3904TPMSTR-ND",
+        "Manufacturer": "MCC (Micro Commercial Components)",
+        "Manufacturer Part Number": "MMBT3904-TP",
+        "Minimum Order Quantity": "3000",
+        "Packaging": "Tape & Reel (TR)",
+        "Part Status": "Active",
+        "Product Category": "Discrete Semiconductor Products",
+        "Product URL": "https://www.digikey.com/en/products/detail/mcc-micro-commercial-components/MMBT3904-TP/717280",
+        "RoHS Status": "ROHS3 Compliant",
+        "Standard Packaging": "0"
+      },
+      "title": "TRANS NPN 40V 0.2A SOT-23"
+    },
+    {
+      "availability": {
+        "inStock": 863026,
+        "leadTime": "16"
+      },
+      "datasheet_url": "https://www.mccsemi.com/pdf/Products/MMBT2222A(SOT-23).pdf",
+      "datasheets": [
+        "https://www.mccsemi.com/pdf/Products/MMBT2222A(SOT-23).pdf"
+      ],
+      "description_short": "Bipolar (BJT) Transistor NPN 40 V 600 mA 300MHz 350 mW Surface Mount SOT-23",
+      "image_url": "https://mm.digikey.com/Volume0/opasdata/d220001/medias/images/6152/353%7ESOT23-3%7E%7E3.jpg",
+      "images": [
+        "https://mm.digikey.com/Volume0/opasdata/d220001/medias/images/6152/353%7ESOT23-3%7E%7E3.jpg"
+      ],
+      "manufacturer": "MCC (Micro Commercial Components)",
+      "min_currency": "USD",
+      "min_price": 0.00997,
+      "min_price_rub": 0.8,
+      "mpn": "MMBT2222A-TP",
+      "package": "Tape & Reel (TR)",
+      "packaging": "0",
+      "price_breaks": [
+        {
+          "currency": "USD",
+          "price": 0.02008,
+          "price_rub": 1.61,
+          "qty": 3000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01774,
+          "price_rub": 1.42,
+          "qty": 6000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01655,
+          "price_rub": 1.32,
+          "qty": 9000
+        },
+        {
+          "currency": "USD",
+          "price": 0.0152,
+          "price_rub": 1.22,
+          "qty": 15000
+        },
+        {
+          "currency": "USD",
+          "price": 0.0144,
+          "price_rub": 1.15,
+          "qty": 21000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01363,
+          "price_rub": 1.09,
+          "qty": 30000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01192,
+          "price_rub": 0.95,
+          "qty": 75000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01086,
+          "price_rub": 0.87,
+          "qty": 150000
+        },
+        {
+          "currency": "USD",
+          "price": 0.00997,
+          "price_rub": 0.8,
+          "qty": 300000
+        }
+      ],
+      "pricing": [
+        {
+          "currency": "USD",
+          "price": 0.02008,
+          "price_rub": 1.61,
+          "qty": 3000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01774,
+          "price_rub": 1.42,
+          "qty": 6000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01655,
+          "price_rub": 1.32,
+          "qty": 9000
+        },
+        {
+          "currency": "USD",
+          "price": 0.0152,
+          "price_rub": 1.22,
+          "qty": 15000
+        },
+        {
+          "currency": "USD",
+          "price": 0.0144,
+          "price_rub": 1.15,
+          "qty": 21000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01363,
+          "price_rub": 1.09,
+          "qty": 30000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01192,
+          "price_rub": 0.95,
+          "qty": 75000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01086,
+          "price_rub": 0.87,
+          "qty": 150000
+        },
+        {
+          "currency": "USD",
+          "price": 0.00997,
+          "price_rub": 0.8,
+          "qty": 300000
+        }
+      ],
+      "product_url": "https://www.digikey.com/en/products/detail/mcc-micro-commercial-components/MMBT2222A-TP/717279",
+      "raw_id": "MMBT2222ATPMSTR-ND",
+      "regions": [
+        "US",
+        "GLOBAL"
+      ],
+      "source": "digikey",
+      "stock": 863026,
+      "technical_specs": {
+        "Description": "TRANS NPN 40V 0.6A SOT-23",
+        "Detailed Description": "Bipolar (BJT) Transistor NPN 40 V 600 mA 300MHz 350 mW Surface Mount SOT-23",
+        "DigiKey Part Number": "MMBT2222ATPMSTR-ND",
+        "Manufacturer": "MCC (Micro Commercial Components)",
+        "Manufacturer Part Number": "MMBT2222A-TP",
+        "Minimum Order Quantity": "3000",
+        "Packaging": "Tape & Reel (TR)",
+        "Part Status": "Active",
+        "Product Category": "Discrete Semiconductor Products",
+        "Product URL": "https://www.digikey.com/en/products/detail/mcc-micro-commercial-components/MMBT2222A-TP/717279",
+        "RoHS Status": "ROHS3 Compliant",
+        "Standard Packaging": "0"
+      },
+      "title": "TRANS NPN 40V 0.6A SOT-23"
+    },
+    {
+      "availability": {
+        "inStock": 636451,
+        "leadTime": "11"
+      },
+      "datasheet_url": "https://www.onsemi.com/pdf/datasheet/mmbt3906lt1-d.pdf",
+      "datasheets": [
+        "https://www.onsemi.com/pdf/datasheet/mmbt3906lt1-d.pdf"
+      ],
+      "description_short": "Bipolar (BJT) Transistor PNP 40 V 200 mA 250MHz 300 mW Surface Mount SOT-23-3 (TO-236)",
+      "image_url": "https://mm.digikey.com/Volume0/opasdata/d220001/medias/images/5883/488%7E318-08%7EET%2CL%2CLT%2CSF%2CSN%7E3.jpg",
+      "images": [
+        "https://mm.digikey.com/Volume0/opasdata/d220001/medias/images/5883/488%7E318-08%7EET%2CL%2CLT%2CSF%2CSN%7E3.jpg"
+      ],
+      "manufacturer": "onsemi",
+      "min_currency": "USD",
+      "min_price": 0.01108,
+      "min_price_rub": 0.89,
+      "mpn": "MMBT3906LT1G",
+      "package": "Tape & Reel (TR)",
+      "packaging": "0",
+      "price_breaks": [
+        {
+          "currency": "USD",
+          "price": 0.02206,
+          "price_rub": 1.76,
+          "qty": 3000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01952,
+          "price_rub": 1.56,
+          "qty": 6000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01822,
+          "price_rub": 1.46,
+          "qty": 9000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01675,
+          "price_rub": 1.34,
+          "qty": 15000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01589,
+          "price_rub": 1.27,
+          "qty": 21000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01504,
+          "price_rub": 1.2,
+          "qty": 30000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01319,
+          "price_rub": 1.05,
+          "qty": 75000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01204,
+          "price_rub": 0.96,
+          "qty": 150000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01108,
+          "price_rub": 0.89,
+          "qty": 300000
+        }
+      ],
+      "pricing": [
+        {
+          "currency": "USD",
+          "price": 0.02206,
+          "price_rub": 1.76,
+          "qty": 3000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01952,
+          "price_rub": 1.56,
+          "qty": 6000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01822,
+          "price_rub": 1.46,
+          "qty": 9000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01675,
+          "price_rub": 1.34,
+          "qty": 15000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01589,
+          "price_rub": 1.27,
+          "qty": 21000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01504,
+          "price_rub": 1.2,
+          "qty": 30000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01319,
+          "price_rub": 1.05,
+          "qty": 75000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01204,
+          "price_rub": 0.96,
+          "qty": 150000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01108,
+          "price_rub": 0.89,
+          "qty": 300000
+        }
+      ],
+      "product_url": "https://www.digikey.com/en/products/detail/onsemi/MMBT3906LT1G/919605",
+      "raw_id": "MMBT3906LT1GOSTR-ND",
+      "regions": [
+        "US",
+        "GLOBAL"
+      ],
+      "source": "digikey",
+      "stock": 636451,
+      "technical_specs": {
+        "Description": "TRANS PNP 40V 0.2A SOT23-3",
+        "Detailed Description": "Bipolar (BJT) Transistor PNP 40 V 200 mA 250MHz 300 mW Surface Mount SOT-23-3 (TO-236)",
+        "DigiKey Part Number": "MMBT3906LT1GOSTR-ND",
+        "Manufacturer": "onsemi",
+        "Manufacturer Part Number": "MMBT3906LT1G",
+        "Minimum Order Quantity": "3000",
+        "Packaging": "Tape & Reel (TR)",
+        "Part Status": "Active",
+        "Product Category": "Discrete Semiconductor Products",
+        "Product URL": "https://www.digikey.com/en/products/detail/onsemi/MMBT3906LT1G/919605",
+        "RoHS Status": "ROHS3 Compliant",
+        "Standard Packaging": "0"
+      },
+      "title": "TRANS PNP 40V 0.2A SOT23-3"
+    },
+    {
+      "availability": {
+        "inStock": 236850,
+        "leadTime": "16"
+      },
+      "datasheet_url": "https://www.mccsemi.com/pdf/Products/MMBT4401(SOT-23).pdf",
+      "datasheets": [
+        "https://www.mccsemi.com/pdf/Products/MMBT4401(SOT-23).pdf"
+      ],
+      "description_short": "Bipolar (BJT) Transistor NPN 40 V 600 mA 250MHz 350 mW Surface Mount SOT-23",
+      "image_url": "https://mm.digikey.com/Volume0/opasdata/d220001/medias/images/6152/353%7ESOT23-3%7E%7E3.jpg",
+      "images": [
+        "https://mm.digikey.com/Volume0/opasdata/d220001/medias/images/6152/353%7ESOT23-3%7E%7E3.jpg"
+      ],
+      "manufacturer": "MCC (Micro Commercial Components)",
+      "min_currency": "USD",
+      "min_price": 0.01144,
+      "min_price_rub": 0.91,
+      "mpn": "MMBT4401-TP",
+      "package": "Tape & Reel (TR)",
+      "packaging": "3000",
+      "price_breaks": [
+        {
+          "currency": "USD",
+          "price": 0.02271,
+          "price_rub": 1.82,
+          "qty": 3000
+        },
+        {
+          "currency": "USD",
+          "price": 0.0201,
+          "price_rub": 1.61,
+          "qty": 6000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01876,
+          "price_rub": 1.5,
+          "qty": 9000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01726,
+          "price_rub": 1.38,
+          "qty": 15000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01637,
+          "price_rub": 1.31,
+          "qty": 21000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01551,
+          "price_rub": 1.24,
+          "qty": 30000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01361,
+          "price_rub": 1.09,
+          "qty": 75000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01243,
+          "price_rub": 0.99,
+          "qty": 150000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01144,
+          "price_rub": 0.91,
+          "qty": 300000
+        }
+      ],
+      "pricing": [
+        {
+          "currency": "USD",
+          "price": 0.02271,
+          "price_rub": 1.82,
+          "qty": 3000
+        },
+        {
+          "currency": "USD",
+          "price": 0.0201,
+          "price_rub": 1.61,
+          "qty": 6000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01876,
+          "price_rub": 1.5,
+          "qty": 9000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01726,
+          "price_rub": 1.38,
+          "qty": 15000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01637,
+          "price_rub": 1.31,
+          "qty": 21000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01551,
+          "price_rub": 1.24,
+          "qty": 30000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01361,
+          "price_rub": 1.09,
+          "qty": 75000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01243,
+          "price_rub": 0.99,
+          "qty": 150000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01144,
+          "price_rub": 0.91,
+          "qty": 300000
+        }
+      ],
+      "product_url": "https://www.digikey.com/en/products/detail/mcc-micro-commercial-components/MMBT4401-TP/717281",
+      "raw_id": "MMBT4401TPMSTR-ND",
+      "regions": [
+        "US",
+        "GLOBAL"
+      ],
+      "source": "digikey",
+      "stock": 236850,
+      "technical_specs": {
+        "Description": "TRANS NPN 40V 0.6A SOT-23",
+        "Detailed Description": "Bipolar (BJT) Transistor NPN 40 V 600 mA 250MHz 350 mW Surface Mount SOT-23",
+        "DigiKey Part Number": "MMBT4401TPMSTR-ND",
+        "Manufacturer": "MCC (Micro Commercial Components)",
+        "Manufacturer Part Number": "MMBT4401-TP",
+        "Minimum Order Quantity": "3000",
+        "Packaging": "Tape & Reel (TR)",
+        "Part Status": "Active",
+        "Product Category": "Discrete Semiconductor Products",
+        "Product URL": "https://www.digikey.com/en/products/detail/mcc-micro-commercial-components/MMBT4401-TP/717281",
+        "RoHS Status": "ROHS3 Compliant",
+        "Standard Packaging": "3000"
+      },
+      "title": "TRANS NPN 40V 0.6A SOT-23"
+    },
+    {
+      "availability": {
+        "inStock": 1994789,
+        "leadTime": "12"
+      },
+      "datasheet_url": "https://www.diodes.com/assets/Datasheets/MMBT3904.pdf",
+      "datasheets": [
+        "https://www.diodes.com/assets/Datasheets/MMBT3904.pdf"
+      ],
+      "description_short": "Bipolar (BJT) Transistor NPN 40 V 200 mA 300MHz 300 mW Surface Mount SOT-23-3",
+      "image_url": "https://mm.digikey.com/Volume0/opasdata/d220001/medias/images/4806/31%7ESOT23-3%7EF%2CN%2CSA%7E3.JPG",
+      "images": [
+        "https://mm.digikey.com/Volume0/opasdata/d220001/medias/images/4806/31%7ESOT23-3%7EF%2CN%2CSA%7E3.JPG"
+      ],
+      "manufacturer": "Diodes Incorporated",
+      "min_currency": "USD",
+      "min_price": 0.01192,
+      "min_price_rub": 0.95,
+      "mpn": "MMBT3904-7-F",
+      "package": "Tape & Reel (TR)",
+      "packaging": "0",
+      "price_breaks": [
+        {
+          "currency": "USD",
+          "price": 0.02356,
+          "price_rub": 1.88,
+          "qty": 3000
+        },
+        {
+          "currency": "USD",
+          "price": 0.02087,
+          "price_rub": 1.67,
+          "qty": 6000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01949,
+          "price_rub": 1.56,
+          "qty": 9000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01794,
+          "price_rub": 1.43,
+          "qty": 15000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01702,
+          "price_rub": 1.36,
+          "qty": 21000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01613,
+          "price_rub": 1.29,
+          "qty": 30000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01416,
+          "price_rub": 1.13,
+          "qty": 75000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01294,
+          "price_rub": 1.03,
+          "qty": 150000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01192,
+          "price_rub": 0.95,
+          "qty": 300000
+        }
+      ],
+      "pricing": [
+        {
+          "currency": "USD",
+          "price": 0.02356,
+          "price_rub": 1.88,
+          "qty": 3000
+        },
+        {
+          "currency": "USD",
+          "price": 0.02087,
+          "price_rub": 1.67,
+          "qty": 6000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01949,
+          "price_rub": 1.56,
+          "qty": 9000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01794,
+          "price_rub": 1.43,
+          "qty": 15000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01702,
+          "price_rub": 1.36,
+          "qty": 21000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01613,
+          "price_rub": 1.29,
+          "qty": 30000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01416,
+          "price_rub": 1.13,
+          "qty": 75000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01294,
+          "price_rub": 1.03,
+          "qty": 150000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01192,
+          "price_rub": 0.95,
+          "qty": 300000
+        }
+      ],
+      "product_url": "https://www.digikey.com/en/products/detail/diodes-incorporated/MMBT3904-7-F/814494",
+      "raw_id": "MMBT3904-FDITR-ND",
+      "regions": [
+        "US",
+        "GLOBAL"
+      ],
+      "source": "digikey",
+      "stock": 1994789,
+      "technical_specs": {
+        "Description": "TRANS NPN 40V 0.2A SOT-23-3",
+        "Detailed Description": "Bipolar (BJT) Transistor NPN 40 V 200 mA 300MHz 300 mW Surface Mount SOT-23-3",
+        "DigiKey Part Number": "MMBT3904-FDITR-ND",
+        "Manufacturer": "Diodes Incorporated",
+        "Manufacturer Part Number": "MMBT3904-7-F",
+        "Minimum Order Quantity": "3000",
+        "Packaging": "Tape & Reel (TR)",
+        "Part Status": "Active",
+        "Product Category": "Discrete Semiconductor Products",
+        "Product URL": "https://www.digikey.com/en/products/detail/diodes-incorporated/MMBT3904-7-F/814494",
+        "RoHS Status": "ROHS3 Compliant",
+        "Standard Packaging": "0"
+      },
+      "title": "TRANS NPN 40V 0.2A SOT-23-3"
+    },
+    {
+      "availability": {
+        "inStock": 59319,
+        "leadTime": "12"
+      },
+      "datasheet_url": "https://www.diodes.com/assets/Datasheets/MMBT3906.pdf",
+      "datasheets": [
+        "https://www.diodes.com/assets/Datasheets/MMBT3906.pdf"
+      ],
+      "description_short": "Bipolar (BJT) Transistor PNP 40 V 200 mA 250MHz 300 mW Surface Mount SOT-23-3",
+      "image_url": "https://mm.digikey.com/Volume0/opasdata/d220001/medias/images/4806/31%7ESOT23-3%7EF%2CN%2CSA%7E3.JPG",
+      "images": [
+        "https://mm.digikey.com/Volume0/opasdata/d220001/medias/images/4806/31%7ESOT23-3%7EF%2CN%2CSA%7E3.JPG"
+      ],
+      "manufacturer": "Diodes Incorporated",
+      "min_currency": "USD",
+      "min_price": 0.01192,
+      "min_price_rub": 0.95,
+      "mpn": "MMBT3906-7-F",
+      "package": "Tape & Reel (TR)",
+      "packaging": "0",
+      "price_breaks": [
+        {
+          "currency": "USD",
+          "price": 0.02356,
+          "price_rub": 1.88,
+          "qty": 3000
+        },
+        {
+          "currency": "USD",
+          "price": 0.02087,
+          "price_rub": 1.67,
+          "qty": 6000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01949,
+          "price_rub": 1.56,
+          "qty": 9000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01794,
+          "price_rub": 1.43,
+          "qty": 15000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01702,
+          "price_rub": 1.36,
+          "qty": 21000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01613,
+          "price_rub": 1.29,
+          "qty": 30000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01416,
+          "price_rub": 1.13,
+          "qty": 75000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01294,
+          "price_rub": 1.03,
+          "qty": 150000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01192,
+          "price_rub": 0.95,
+          "qty": 300000
+        }
+      ],
+      "pricing": [
+        {
+          "currency": "USD",
+          "price": 0.02356,
+          "price_rub": 1.88,
+          "qty": 3000
+        },
+        {
+          "currency": "USD",
+          "price": 0.02087,
+          "price_rub": 1.67,
+          "qty": 6000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01949,
+          "price_rub": 1.56,
+          "qty": 9000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01794,
+          "price_rub": 1.43,
+          "qty": 15000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01702,
+          "price_rub": 1.36,
+          "qty": 21000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01613,
+          "price_rub": 1.29,
+          "qty": 30000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01416,
+          "price_rub": 1.13,
+          "qty": 75000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01294,
+          "price_rub": 1.03,
+          "qty": 150000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01192,
+          "price_rub": 0.95,
+          "qty": 300000
+        }
+      ],
+      "product_url": "https://www.digikey.com/en/products/detail/diodes-incorporated/MMBT3906-7-F/770797",
+      "raw_id": "MMBT3906-FDITR-ND",
+      "regions": [
+        "US",
+        "GLOBAL"
+      ],
+      "source": "digikey",
+      "stock": 59319,
+      "technical_specs": {
+        "Description": "TRANS PNP 40V 0.2A SOT-23-3",
+        "Detailed Description": "Bipolar (BJT) Transistor PNP 40 V 200 mA 250MHz 300 mW Surface Mount SOT-23-3",
+        "DigiKey Part Number": "MMBT3906-FDITR-ND",
+        "Manufacturer": "Diodes Incorporated",
+        "Manufacturer Part Number": "MMBT3906-7-F",
+        "Minimum Order Quantity": "3000",
+        "Packaging": "Tape & Reel (TR)",
+        "Part Status": "Active",
+        "Product Category": "Discrete Semiconductor Products",
+        "Product URL": "https://www.digikey.com/en/products/detail/diodes-incorporated/MMBT3906-7-F/770797",
+        "RoHS Status": "ROHS3 Compliant",
+        "Standard Packaging": "0"
+      },
+      "title": "TRANS PNP 40V 0.2A SOT-23-3"
+    },
+    {
+      "availability": {
+        "inStock": 1385206,
+        "leadTime": "11"
+      },
+      "datasheet_url": "https://www.onsemi.com/pdf/datasheet/mmbt3904lt1-d.pdf",
+      "datasheets": [
+        "https://www.onsemi.com/pdf/datasheet/mmbt3904lt1-d.pdf"
+      ],
+      "description_short": "Bipolar (BJT) Transistor NPN 40 V 200 mA 300MHz 300 mW Surface Mount SOT-23-3 (TO-236)",
+      "image_url": "https://mm.digikey.com/Volume0/opasdata/d220001/medias/images/5883/488%7E318-08%7EET%2CL%2CLT%2CSF%2CSN%7E3.jpg",
+      "images": [
+        "https://mm.digikey.com/Volume0/opasdata/d220001/medias/images/5883/488%7E318-08%7EET%2CL%2CLT%2CSF%2CSN%7E3.jpg"
+      ],
+      "manufacturer": "onsemi",
+      "min_currency": "USD",
+      "min_price": 0.01204,
+      "min_price_rub": 0.96,
+      "mpn": "MMBT3904LT1G",
+      "package": "Tape & Reel (TR)",
+      "packaging": "0",
+      "price_breaks": [
+        {
+          "currency": "USD",
+          "price": 0.02377,
+          "price_rub": 1.9,
+          "qty": 3000
+        },
+        {
+          "currency": "USD",
+          "price": 0.02106,
+          "price_rub": 1.68,
+          "qty": 6000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01967,
+          "price_rub": 1.57,
+          "qty": 9000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01811,
+          "price_rub": 1.45,
+          "qty": 15000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01718,
+          "price_rub": 1.37,
+          "qty": 21000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01628,
+          "price_rub": 1.3,
+          "qty": 30000
+        },
+        {
+          "currency": "USD",
+          "price": 0.0143,
+          "price_rub": 1.14,
+          "qty": 75000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01307,
+          "price_rub": 1.05,
+          "qty": 150000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01204,
+          "price_rub": 0.96,
+          "qty": 300000
+        }
+      ],
+      "pricing": [
+        {
+          "currency": "USD",
+          "price": 0.02377,
+          "price_rub": 1.9,
+          "qty": 3000
+        },
+        {
+          "currency": "USD",
+          "price": 0.02106,
+          "price_rub": 1.68,
+          "qty": 6000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01967,
+          "price_rub": 1.57,
+          "qty": 9000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01811,
+          "price_rub": 1.45,
+          "qty": 15000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01718,
+          "price_rub": 1.37,
+          "qty": 21000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01628,
+          "price_rub": 1.3,
+          "qty": 30000
+        },
+        {
+          "currency": "USD",
+          "price": 0.0143,
+          "price_rub": 1.14,
+          "qty": 75000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01307,
+          "price_rub": 1.05,
+          "qty": 150000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01204,
+          "price_rub": 0.96,
+          "qty": 300000
+        }
+      ],
+      "product_url": "https://www.digikey.com/en/products/detail/onsemi/MMBT3904LT1G/919601",
+      "raw_id": "MMBT3904LT1GOSTR-ND",
+      "regions": [
+        "US",
+        "GLOBAL"
+      ],
+      "source": "digikey",
+      "stock": 1385206,
+      "technical_specs": {
+        "Description": "TRANS NPN 40V 0.2A SOT23-3",
+        "Detailed Description": "Bipolar (BJT) Transistor NPN 40 V 200 mA 300MHz 300 mW Surface Mount SOT-23-3 (TO-236)",
+        "DigiKey Part Number": "MMBT3904LT1GOSTR-ND",
+        "Manufacturer": "onsemi",
+        "Manufacturer Part Number": "MMBT3904LT1G",
+        "Minimum Order Quantity": "3000",
+        "Packaging": "Tape & Reel (TR)",
+        "Part Status": "Active",
+        "Product Category": "Discrete Semiconductor Products",
+        "Product URL": "https://www.digikey.com/en/products/detail/onsemi/MMBT3904LT1G/919601",
+        "RoHS Status": "ROHS3 Compliant",
+        "Standard Packaging": "0"
+      },
+      "title": "TRANS NPN 40V 0.2A SOT23-3"
+    },
+    {
+      "availability": {
+        "inStock": 617710,
+        "leadTime": "10"
+      },
+      "datasheet_url": "https://www.onsemi.com/pdf/datasheet/bc846alt1-d.pdf",
+      "datasheets": [
+        "https://www.onsemi.com/pdf/datasheet/bc846alt1-d.pdf"
+      ],
+      "description_short": "Bipolar (BJT) Transistor NPN 65 V 100 mA 100MHz 300 mW Surface Mount SOT-23-3 (TO-236)",
+      "image_url": "https://mm.digikey.com/Volume0/opasdata/d220001/medias/images/5883/488%7E318-08%7EET%2CL%2CLT%2CSF%2CSN%7E3.jpg",
+      "images": [
+        "https://mm.digikey.com/Volume0/opasdata/d220001/medias/images/5883/488%7E318-08%7EET%2CL%2CLT%2CSF%2CSN%7E3.jpg"
+      ],
+      "manufacturer": "onsemi",
+      "min_currency": "USD",
+      "min_price": 0.0131,
+      "min_price_rub": 1.05,
+      "mpn": "BC846BLT1G",
+      "package": "Tape & Reel (TR)",
+      "packaging": "0",
+      "price_breaks": [
+        {
+          "currency": "USD",
+          "price": 0.02564,
+          "price_rub": 2.05,
+          "qty": 3000
+        },
+        {
+          "currency": "USD",
+          "price": 0.02274,
+          "price_rub": 1.82,
+          "qty": 6000
+        },
+        {
+          "currency": "USD",
+          "price": 0.02125,
+          "price_rub": 1.7,
+          "qty": 9000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01958,
+          "price_rub": 1.57,
+          "qty": 15000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01859,
+          "price_rub": 1.49,
+          "qty": 21000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01763,
+          "price_rub": 1.41,
+          "qty": 30000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01551,
+          "price_rub": 1.24,
+          "qty": 75000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01421,
+          "price_rub": 1.14,
+          "qty": 150000
+        },
+        {
+          "currency": "USD",
+          "price": 0.0131,
+          "price_rub": 1.05,
+          "qty": 300000
+        }
+      ],
+      "pricing": [
+        {
+          "currency": "USD",
+          "price": 0.02564,
+          "price_rub": 2.05,
+          "qty": 3000
+        },
+        {
+          "currency": "USD",
+          "price": 0.02274,
+          "price_rub": 1.82,
+          "qty": 6000
+        },
+        {
+          "currency": "USD",
+          "price": 0.02125,
+          "price_rub": 1.7,
+          "qty": 9000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01958,
+          "price_rub": 1.57,
+          "qty": 15000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01859,
+          "price_rub": 1.49,
+          "qty": 21000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01763,
+          "price_rub": 1.41,
+          "qty": 30000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01551,
+          "price_rub": 1.24,
+          "qty": 75000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01421,
+          "price_rub": 1.14,
+          "qty": 150000
+        },
+        {
+          "currency": "USD",
+          "price": 0.0131,
+          "price_rub": 1.05,
+          "qty": 300000
+        }
+      ],
+      "product_url": "https://www.digikey.com/en/products/detail/onsemi/BC846BLT1G/918342",
+      "raw_id": "BC846BLT1GOSTR-ND",
+      "regions": [
+        "US",
+        "GLOBAL"
+      ],
+      "source": "digikey",
+      "stock": 617710,
+      "technical_specs": {
+        "Description": "TRANS NPN 65V 0.1A SOT23-3",
+        "Detailed Description": "Bipolar (BJT) Transistor NPN 65 V 100 mA 100MHz 300 mW Surface Mount SOT-23-3 (TO-236)",
+        "DigiKey Part Number": "BC846BLT1GOSTR-ND",
+        "Manufacturer": "onsemi",
+        "Manufacturer Part Number": "BC846BLT1G",
+        "Minimum Order Quantity": "3000",
+        "Packaging": "Tape & Reel (TR)",
+        "Part Status": "Active",
+        "Product Category": "Discrete Semiconductor Products",
+        "Product URL": "https://www.digikey.com/en/products/detail/onsemi/BC846BLT1G/918342",
+        "RoHS Status": "ROHS3 Compliant",
+        "Standard Packaging": "0"
+      },
+      "title": "TRANS NPN 65V 0.1A SOT23-3"
+    },
+    {
+      "availability": {
+        "inStock": 562610,
+        "leadTime": "12"
+      },
+      "datasheet_url": "https://www.diodes.com/assets/Datasheets/ds30041.pdf",
+      "datasheets": [
+        "https://www.diodes.com/assets/Datasheets/ds30041.pdf"
+      ],
+      "description_short": "Bipolar (BJT) Transistor NPN 40 V 600 mA 300MHz 310 mW Surface Mount SOT-23-3",
+      "image_url": "https://mm.digikey.com/Volume0/opasdata/d220001/medias/images/4806/31%7ESOT23-3%7EF%2CN%2CSA%7E3.JPG",
+      "images": [
+        "https://mm.digikey.com/Volume0/opasdata/d220001/medias/images/4806/31%7ESOT23-3%7EF%2CN%2CSA%7E3.JPG"
+      ],
+      "manufacturer": "Diodes Incorporated",
+      "min_currency": "USD",
+      "min_price": 0.01323,
+      "min_price_rub": 1.06,
+      "mpn": "MMBT2222A-7-F",
+      "package": "Tape & Reel (TR)",
+      "packaging": "0",
+      "price_breaks": [
+        {
+          "currency": "USD",
+          "price": 0.02587,
+          "price_rub": 2.07,
+          "qty": 3000
+        },
+        {
+          "currency": "USD",
+          "price": 0.02294,
+          "price_rub": 1.83,
+          "qty": 6000
+        },
+        {
+          "currency": "USD",
+          "price": 0.02145,
+          "price_rub": 1.72,
+          "qty": 9000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01977,
+          "price_rub": 1.58,
+          "qty": 15000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01877,
+          "price_rub": 1.5,
+          "qty": 21000
+        },
+        {
+          "currency": "USD",
+          "price": 0.0178,
+          "price_rub": 1.42,
+          "qty": 30000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01566,
+          "price_rub": 1.25,
+          "qty": 75000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01434,
+          "price_rub": 1.15,
+          "qty": 150000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01323,
+          "price_rub": 1.06,
+          "qty": 300000
+        }
+      ],
+      "pricing": [
+        {
+          "currency": "USD",
+          "price": 0.02587,
+          "price_rub": 2.07,
+          "qty": 3000
+        },
+        {
+          "currency": "USD",
+          "price": 0.02294,
+          "price_rub": 1.83,
+          "qty": 6000
+        },
+        {
+          "currency": "USD",
+          "price": 0.02145,
+          "price_rub": 1.72,
+          "qty": 9000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01977,
+          "price_rub": 1.58,
+          "qty": 15000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01877,
+          "price_rub": 1.5,
+          "qty": 21000
+        },
+        {
+          "currency": "USD",
+          "price": 0.0178,
+          "price_rub": 1.42,
+          "qty": 30000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01566,
+          "price_rub": 1.25,
+          "qty": 75000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01434,
+          "price_rub": 1.15,
+          "qty": 150000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01323,
+          "price_rub": 1.06,
+          "qty": 300000
+        }
+      ],
+      "product_url": "https://www.digikey.com/en/products/detail/diodes-incorporated/MMBT2222A-7-F/814503",
+      "raw_id": "MMBT2222A-FDITR-ND",
+      "regions": [
+        "US",
+        "GLOBAL"
+      ],
+      "source": "digikey",
+      "stock": 562610,
+      "technical_specs": {
+        "Description": "TRANS NPN 40V 0.6A SOT-23-3",
+        "Detailed Description": "Bipolar (BJT) Transistor NPN 40 V 600 mA 300MHz 310 mW Surface Mount SOT-23-3",
+        "DigiKey Part Number": "MMBT2222A-FDITR-ND",
+        "Manufacturer": "Diodes Incorporated",
+        "Manufacturer Part Number": "MMBT2222A-7-F",
+        "Minimum Order Quantity": "3000",
+        "Packaging": "Tape & Reel (TR)",
+        "Part Status": "Active",
+        "Product Category": "Discrete Semiconductor Products",
+        "Product URL": "https://www.digikey.com/en/products/detail/diodes-incorporated/MMBT2222A-7-F/814503",
+        "RoHS Status": "ROHS3 Compliant",
+        "Standard Packaging": "0"
+      },
+      "title": "TRANS NPN 40V 0.6A SOT-23-3"
+    },
+    {
+      "availability": {
+        "inStock": 219898,
+        "leadTime": "16"
+      },
+      "datasheet_url": "https://toshiba.semicon-storage.com/info/docget.jsp?did=29712&prodName=T2N7002AK",
+      "datasheets": [
+        "https://toshiba.semicon-storage.com/info/docget.jsp?did=29712&prodName=T2N7002AK"
+      ],
+      "description_short": "N-Channel 60 V 200mA (Ta) 320mW (Ta) Surface Mount SOT-23-3",
+      "image_url": "https://mm.digikey.com/Volume0/opasdata/d220001/medias/images/4849/264_SOT-23-3%20PKG.jpg",
+      "images": [
+        "https://mm.digikey.com/Volume0/opasdata/d220001/medias/images/4849/264_SOT-23-3%20PKG.jpg"
+      ],
+      "manufacturer": "Toshiba Semiconductor and Storage",
+      "min_currency": "USD",
+      "min_price": 0.01341,
+      "min_price_rub": 1.07,
+      "mpn": "T2N7002AK,LM",
+      "package": "Tape & Reel (TR)",
+      "packaging": "3000",
+      "price_breaks": [
+        {
+          "currency": "USD",
+          "price": 0.02244,
+          "price_rub": 1.79,
+          "qty": 3000
+        },
+        {
+          "currency": "USD",
+          "price": 0.02142,
+          "price_rub": 1.71,
+          "qty": 6000
+        },
+        {
+          "currency": "USD",
+          "price": 0.0153,
+          "price_rub": 1.22,
+          "qty": 9000
+        },
+        {
+          "currency": "USD",
+          "price": 0.0148,
+          "price_rub": 1.18,
+          "qty": 15000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01466,
+          "price_rub": 1.17,
+          "qty": 21000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01452,
+          "price_rub": 1.16,
+          "qty": 30000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01341,
+          "price_rub": 1.07,
+          "qty": 75000
+        }
+      ],
+      "pricing": [
+        {
+          "currency": "USD",
+          "price": 0.02244,
+          "price_rub": 1.79,
+          "qty": 3000
+        },
+        {
+          "currency": "USD",
+          "price": 0.02142,
+          "price_rub": 1.71,
+          "qty": 6000
+        },
+        {
+          "currency": "USD",
+          "price": 0.0153,
+          "price_rub": 1.22,
+          "qty": 9000
+        },
+        {
+          "currency": "USD",
+          "price": 0.0148,
+          "price_rub": 1.18,
+          "qty": 15000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01466,
+          "price_rub": 1.17,
+          "qty": 21000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01452,
+          "price_rub": 1.16,
+          "qty": 30000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01341,
+          "price_rub": 1.07,
+          "qty": 75000
+        }
+      ],
+      "product_url": "https://www.digikey.com/en/products/detail/toshiba-semiconductor-and-storage/T2N7002AK-LM/5298028",
+      "raw_id": "T2N7002AKLMTR-ND",
+      "regions": [
+        "US",
+        "GLOBAL"
+      ],
+      "source": "digikey",
+      "stock": 219898,
+      "technical_specs": {
+        "Description": "MOSFET N-CH 60V 200MA SOT23",
+        "Detailed Description": "N-Channel 60 V 200mA (Ta) 320mW (Ta) Surface Mount SOT-23-3",
+        "DigiKey Part Number": "T2N7002AKLMTR-ND",
+        "Manufacturer": "Toshiba Semiconductor and Storage",
+        "Manufacturer Part Number": "T2N7002AK,LM",
+        "Minimum Order Quantity": "3000",
+        "Packaging": "Tape & Reel (TR)",
+        "Part Status": "Active",
+        "Product Category": "Discrete Semiconductor Products",
+        "Product URL": "https://www.digikey.com/en/products/detail/toshiba-semiconductor-and-storage/T2N7002AK-LM/5298028",
+        "RoHS Status": "ROHS3 Compliant",
+        "Series": "U-MOSVII-H",
+        "Standard Packaging": "3000"
+      },
+      "title": "MOSFET N-CH 60V 200MA SOT23"
+    },
+    {
+      "datasheet_url": "http://www.farnell.com/datasheets/2255300.pdf",
+      "description_short": "ONSEMI - MUN5211T1G - Bipolar Pre-Biased / Digital Transistor, BRT, Single NPN, 50 V, 100 mA, 10 kohm, 10 kohm",
+      "image_url": "https://uk.farnell.com/GE3SOT23-40.jpg",
+      "manufacturer": "ONSEMI",
+      "min_currency": "GBP",
+      "min_price": 0.0177,
+      "min_price_rub": 1.89,
+      "mpn": "MUN5211T1G",
+      "package": "1",
+      "packaging": "",
+      "price_breaks": [
+        {
+          "currency": "GBP",
+          "price": 0.118,
+          "price_rub": 12.57,
+          "qty": 5
+        },
+        {
+          "currency": "GBP",
+          "price": 0.0695,
+          "price_rub": 7.41,
+          "qty": 10
+        },
+        {
+          "currency": "GBP",
+          "price": 0.0436,
+          "price_rub": 4.65,
+          "qty": 100
+        },
+        {
+          "currency": "GBP",
+          "price": 0.0279,
+          "price_rub": 2.97,
+          "qty": 500
+        },
+        {
+          "currency": "GBP",
+          "price": 0.0245,
+          "price_rub": 2.61,
+          "qty": 1000
+        },
+        {
+          "currency": "GBP",
+          "price": 0.0177,
+          "price_rub": 1.89,
+          "qty": 5000
+        }
+      ],
+      "product_url": "",
+      "regions": [
+        "EU"
+      ],
+      "source": "farnell",
+      "stock": 56220,
+      "title": "ONSEMI - MUN5211T1G - Bipolar Pre-Biased / Digital Transistor, BRT, Single NPN, 50 V, 100 mA, 10 kohm, 10 kohm"
+    },
+    {
+      "datasheet_url": "https://4donline.ihs.com/images/VipMasterIC/IC/PHGL/PHGLS19535/PHGLS19702-1.pdf?hkey=6D3A4C79FDBF58556ACFDE234799DDF0",
+      "description_short": "NEXPERIA - PMST3904,115 - Bipolar (BJT) Single Transistor, Switching, NPN, 40 V, 200 mA, 200 mW, SOT-323, Surface Mount",
+      "image_url": "https://uk.farnell.com/GE3SOT323NXP-40.jpg",
+      "manufacturer": "NEXPERIA",
+      "min_currency": "GBP",
+      "min_price": 0.0186,
+      "min_price_rub": 1.98,
+      "mpn": "PMST3904,115",
+      "package": "1",
+      "packaging": "",
+      "price_breaks": [
+        {
+          "currency": "GBP",
+          "price": 0.0961,
+          "price_rub": 10.24,
+          "qty": 5
+        },
+        {
+          "currency": "GBP",
+          "price": 0.0599,
+          "price_rub": 6.38,
+          "qty": 10
+        },
+        {
+          "currency": "GBP",
+          "price": 0.0369,
+          "price_rub": 3.93,
+          "qty": 100
+        },
+        {
+          "currency": "GBP",
+          "price": 0.0245,
+          "price_rub": 2.61,
+          "qty": 500
+        },
+        {
+          "currency": "GBP",
+          "price": 0.019,
+          "price_rub": 2.02,
+          "qty": 1000
+        },
+        {
+          "currency": "GBP",
+          "price": 0.0186,
+          "price_rub": 1.98,
+          "qty": 5000
+        }
+      ],
+      "product_url": "",
+      "regions": [
+        "EU"
+      ],
+      "source": "farnell",
+      "stock": 74291,
+      "title": "NEXPERIA - PMST3904,115 - Bipolar (BJT) Single Transistor, Switching, NPN, 40 V, 200 mA, 200 mW, SOT-323, Surface Mount"
+    },
+    {
+      "datasheet_url": "https://4donline.ihs.com/images/VipMasterIC/IC/DIOD/DIOD-S-A0013289338/DIOD-S-A0013289884-1.pdf?hkey=6D3A4C79FDBF58556ACFDE234799DDF0",
+      "description_short": "DIODES INC. - 2N7002W-7-F - Power MOSFET, N Channel, 60 V, 115 mA, 7.5 ohm, SOT-323, Surface Mount",
+      "image_url": "https://uk.farnell.com/GE3SOT23W-40.jpg",
+      "manufacturer": "DIODES INC.",
+      "min_currency": "GBP",
+      "min_price": 0.0285,
+      "min_price_rub": 3.04,
+      "mpn": "2N7002W-7-F",
+      "package": "1",
+      "packaging": "",
+      "price_breaks": [
+        {
+          "currency": "GBP",
+          "price": 0.2,
+          "price_rub": 21.31,
+          "qty": 5
+        },
+        {
+          "currency": "GBP",
+          "price": 0.11,
+          "price_rub": 11.72,
+          "qty": 10
+        },
+        {
+          "currency": "GBP",
+          "price": 0.0739,
+          "price_rub": 7.87,
+          "qty": 100
+        },
+        {
+          "currency": "GBP",
+          "price": 0.0551,
+          "price_rub": 5.87,
+          "qty": 500
+        },
+        {
+          "currency": "GBP",
+          "price": 0.0476,
+          "price_rub": 5.07,
+          "qty": 1000
+        },
+        {
+          "currency": "GBP",
+          "price": 0.0285,
+          "price_rub": 3.04,
+          "qty": 5000
+        }
+      ],
+      "product_url": "",
+      "regions": [
+        "EU"
+      ],
+      "source": "farnell",
+      "stock": 956618,
+      "title": "DIODES INC. - 2N7002W-7-F - Power MOSFET, N Channel, 60 V, 115 mA, 7.5 ohm, SOT-323, Surface Mount"
+    },
+    {
+      "datasheet_url": "http://www.farnell.com/datasheets/1842044.pdf",
+      "description_short": "ONSEMI - MUN5311DW1T1G - Bipolar Pre-Biased / Digital Transistor, BRT, NPN and PNP Complement, 50 V, 50 V, 100 mA, 10 kohm",
+      "image_url": "https://uk.farnell.com/GE6SOT363-40.jpg",
+      "manufacturer": "ONSEMI",
+      "min_currency": "GBP",
+      "min_price": 0.0299,
+      "min_price_rub": 3.19,
+      "mpn": "MUN5311DW1T1G",
+      "package": "1",
+      "packaging": "",
+      "price_breaks": [
+        {
+          "currency": "GBP",
+          "price": 0.17,
+          "price_rub": 18.12,
+          "qty": 5
+        },
+        {
+          "currency": "GBP",
+          "price": 0.0983,
+          "price_rub": 10.47,
+          "qty": 10
+        },
+        {
+          "currency": "GBP",
+          "price": 0.0651,
+          "price_rub": 6.94,
+          "qty": 100
+        },
+        {
+          "currency": "GBP",
+          "price": 0.0449,
+          "price_rub": 4.78,
+          "qty": 500
+        },
+        {
+          "currency": "GBP",
+          "price": 0.0401,
+          "price_rub": 4.27,
+          "qty": 1000
+        },
+        {
+          "currency": "GBP",
+          "price": 0.0299,
+          "price_rub": 3.19,
+          "qty": 5000
+        }
+      ],
+      "product_url": "",
+      "regions": [
+        "EU"
+      ],
+      "source": "farnell",
+      "stock": 82400,
+      "title": "ONSEMI - MUN5311DW1T1G - Bipolar Pre-Biased / Digital Transistor, BRT, NPN and PNP Complement, 50 V, 50 V, 100 mA, 10 kohm"
+    },
+    {
+      "datasheet_url": "http://www.farnell.com/datasheets/1915877.pdf",
+      "description_short": "DIODES INC. - DMG1012UW - Power MOSFET, Enhancement Mode, N Channel, 20 V, 1 A, 0.45 ohm, SOT-323, Surface Mount",
+      "image_url": "https://uk.farnell.com/GE3SOT323-40.jpg",
+      "manufacturer": "DIODES INC.",
+      "min_currency": "GBP",
+      "min_price": 0.0308,
+      "min_price_rub": 3.28,
+      "mpn": "DMG1012UW",
+      "package": "1",
+      "packaging": "",
+      "price_breaks": [
+        {
+          "currency": "GBP",
+          "price": 0.127,
+          "price_rub": 13.53,
+          "qty": 5
+        },
+        {
+          "currency": "GBP",
+          "price": 0.0788,
+          "price_rub": 8.4,
+          "qty": 10
+        },
+        {
+          "currency": "GBP",
+          "price": 0.0505,
+          "price_rub": 5.38,
+          "qty": 100
+        },
+        {
+          "currency": "GBP",
+          "price": 0.0396,
+          "price_rub": 4.22,
+          "qty": 500
+        },
+        {
+          "currency": "GBP",
+          "price": 0.0349,
+          "price_rub": 3.72,
+          "qty": 1000
+        },
+        {
+          "currency": "GBP",
+          "price": 0.0308,
+          "price_rub": 3.28,
+          "qty": 5000
+        }
+      ],
+      "product_url": "",
+      "regions": [
+        "EU"
+      ],
+      "source": "farnell",
+      "stock": 193775,
+      "title": "DIODES INC. - DMG1012UW - Power MOSFET, Enhancement Mode, N Channel, 20 V, 1 A, 0.45 ohm, SOT-323, Surface Mount"
+    },
+    {
+      "datasheet_url": "https://4donline.ihs.com/images/VipMasterIC/IC/DIOD/DIOD-S-A0013043571/DIOD-S-A0013120650-1.pdf?hkey=6D3A4C79FDBF58556ACFDE234799DDF0",
+      "description_short": "DIODES INC. - DMG2305UX-7 - Power MOSFET, P Channel, 20 V, 4.2 A, 0.052 ohm, SOT-23, Surface Mount",
+      "image_url": "https://uk.farnell.com/GE3SOT23W-40.jpg",
+      "manufacturer": "DIODES INC.",
+      "min_currency": "GBP",
+      "min_price": 0.033,
+      "min_price_rub": 3.52,
+      "mpn": "DMG2305UX-7",
+      "package": "1",
+      "packaging": "",
+      "price_breaks": [
+        {
+          "currency": "GBP",
+          "price": 0.103,
+          "price_rub": 10.98,
+          "qty": 5
+        },
+        {
+          "currency": "GBP",
+          "price": 0.0784,
+          "price_rub": 8.35,
+          "qty": 10
+        },
+        {
+          "currency": "GBP",
+          "price": 0.0569,
+          "price_rub": 6.06,
+          "qty": 100
+        },
+        {
+          "currency": "GBP",
+          "price": 0.052,
+          "price_rub": 5.54,
+          "qty": 500
+        },
+        {
+          "currency": "GBP",
+          "price": 0.0499,
+          "price_rub": 5.32,
+          "qty": 1000
+        },
+        {
+          "currency": "GBP",
+          "price": 0.033,
+          "price_rub": 3.52,
+          "qty": 5000
+        }
+      ],
+      "product_url": "",
+      "regions": [
+        "EU"
+      ],
+      "source": "farnell",
+      "stock": 293142,
+      "title": "DIODES INC. - DMG2305UX-7 - Power MOSFET, P Channel, 20 V, 4.2 A, 0.052 ohm, SOT-23, Surface Mount"
+    },
+    {
+      "datasheet_url": "http://www.farnell.com/datasheets/2901964.pdf",
+      "description_short": "NEXPERIA - PUMB11,115 - Bipolar Pre-Biased / Digital Transistor, BRT, Dual PNP, 50 V, 100 mA, 10 kohm, 10 kohm",
+      "image_url": "https://uk.farnell.com/GE6SOT363-40.jpg",
+      "manufacturer": "NEXPERIA",
+      "min_currency": "GBP",
+      "min_price": 0.034,
+      "min_price_rub": 3.62,
+      "mpn": "PUMB11,115",
+      "package": "1",
+      "packaging": "",
+      "price_breaks": [
+        {
+          "currency": "GBP",
+          "price": 0.17,
+          "price_rub": 18.12,
+          "qty": 5
+        },
+        {
+          "currency": "GBP",
+          "price": 0.099,
+          "price_rub": 10.55,
+          "qty": 10
+        },
+        {
+          "currency": "GBP",
+          "price": 0.0635,
+          "price_rub": 6.77,
+          "qty": 100
+        },
+        {
+          "currency": "GBP",
+          "price": 0.0387,
+          "price_rub": 4.12,
+          "qty": 500
+        },
+        {
+          "currency": "GBP",
+          "price": 0.0347,
+          "price_rub": 3.7,
+          "qty": 1000
+        },
+        {
+          "currency": "GBP",
+          "price": 0.034,
+          "price_rub": 3.62,
+          "qty": 5000
+        }
+      ],
+      "product_url": "",
+      "regions": [
+        "EU"
+      ],
+      "source": "farnell",
+      "stock": 61115,
+      "title": "NEXPERIA - PUMB11,115 - Bipolar Pre-Biased / Digital Transistor, BRT, Dual PNP, 50 V, 100 mA, 10 kohm, 10 kohm"
+    },
+    {
+      "datasheet_url": "http://www.farnell.com/datasheets/1836010.pdf",
+      "description_short": "INFINEON - SMBTA42E6327HTSA1 - Bipolar (BJT) Single Transistor, NPN, 300 V, 500 mA, 360 mW, SOT-23, Surface Mount",
+      "image_url": "https://uk.farnell.com/GE3SOT23-40.jpg",
+      "manufacturer": "INFINEON",
+      "min_currency": "GBP",
+      "min_price": 0.0476,
+      "min_price_rub": 5.07,
+      "mpn": "SMBTA42E6327HTSA1",
+      "package": "1",
+      "packaging": "",
+      "price_breaks": [
+        {
+          "currency": "GBP",
+          "price": 0.251,
+          "price_rub": 26.75,
+          "qty": 5
+        },
+        {
+          "currency": "GBP",
+          "price": 0.153,
+          "price_rub": 16.3,
+          "qty": 10
+        },
+        {
+          "currency": "GBP",
+          "price": 0.0961,
+          "price_rub": 10.24,
+          "qty": 100
+        },
+        {
+          "currency": "GBP",
+          "price": 0.066,
+          "price_rub": 7.03,
+          "qty": 500
+        },
+        {
+          "currency": "GBP",
+          "price": 0.0551,
+          "price_rub": 5.87,
+          "qty": 1000
+        },
+        {
+          "currency": "GBP",
+          "price": 0.0476,
+          "price_rub": 5.07,
+          "qty": 5000
+        }
+      ],
+      "product_url": "",
+      "regions": [
+        "EU"
+      ],
+      "source": "farnell",
+      "stock": 59985,
+      "title": "INFINEON - SMBTA42E6327HTSA1 - Bipolar (BJT) Single Transistor, NPN, 300 V, 500 mA, 360 mW, SOT-23, Surface Mount"
+    },
+    {
+      "datasheet_url": "http://www.farnell.com/datasheets/2298371.pdf",
+      "description_short": "ONSEMI - BSS84 - Power MOSFET, P Channel, 50 V, 130 mA, 10 ohm, SOT-23, Surface Mount",
+      "image_url": "https://uk.farnell.com/GE3SOT23-40.jpg",
+      "manufacturer": "ONSEMI",
+      "min_currency": "GBP",
+      "min_price": 0.0701,
+      "min_price_rub": 7.47,
+      "mpn": "BSS84",
+      "package": "1",
+      "packaging": "",
+      "price_breaks": [
+        {
+          "currency": "GBP",
+          "price": 0.0702,
+          "price_rub": 7.48,
+          "qty": 3000
+        },
+        {
+          "currency": "GBP",
+          "price": 0.0701,
+          "price_rub": 7.47,
+          "qty": 9000
+        }
+      ],
+      "product_url": "",
+      "regions": [
+        "EU"
+      ],
+      "source": "farnell",
+      "stock": 312000,
+      "title": "ONSEMI - BSS84 - Power MOSFET, P Channel, 50 V, 130 mA, 10 ohm, SOT-23, Surface Mount"
+    },
+    {
+      "datasheet_url": "http://www.farnell.com/datasheets/2304441.pdf",
+      "description_short": "ONSEMI - FDN358P - Power MOSFET, P Channel, 30 V, 1.6 A, 0.125 ohm, SOT-23, Surface Mount",
+      "image_url": "https://uk.farnell.com/GE3SOT23-40.jpg",
+      "manufacturer": "ONSEMI",
+      "min_currency": "GBP",
+      "min_price": 0.106,
+      "min_price_rub": 11.3,
+      "mpn": "FDN358P",
+      "package": "1",
+      "packaging": "",
+      "price_breaks": [
+        {
+          "currency": "GBP",
+          "price": 0.34,
+          "price_rub": 36.23,
+          "qty": 5
+        },
+        {
+          "currency": "GBP",
+          "price": 0.239,
+          "price_rub": 25.47,
+          "qty": 10
+        },
+        {
+          "currency": "GBP",
+          "price": 0.192,
+          "price_rub": 20.46,
+          "qty": 100
+        },
+        {
+          "currency": "GBP",
+          "price": 0.158,
+          "price_rub": 16.84,
+          "qty": 500
+        },
+        {
+          "currency": "GBP",
+          "price": 0.139,
+          "price_rub": 14.81,
+          "qty": 1000
+        },
+        {
+          "currency": "GBP",
+          "price": 0.106,
+          "price_rub": 11.3,
+          "qty": 5000
+        }
+      ],
+      "product_url": "",
+      "regions": [
+        "EU"
+      ],
+      "source": "farnell",
+      "stock": 32740,
+      "title": "ONSEMI - FDN358P - Power MOSFET, P Channel, 30 V, 1.6 A, 0.125 ohm, SOT-23, Surface Mount"
+    },
+    {
+      "datasheet_url": "https://4donline.ihs.com/images/VipMasterIC/IC/ONSM/ONSM-S-A0013296983/ONSM-S-A0013296851-1.pdf?hkey=6D3A4C79FDBF58556ACFDE234799DDF0",
+      "description_short": "ONSEMI - MMBFJ108 - JFET Transistor, JFET, -25 V, 80 mA, -10 V, SOT-23, 3 Pin, 150 °C",
+      "image_url": "https://uk.farnell.com/2453373-40.jpg",
+      "manufacturer": "ONSEMI",
+      "min_currency": "GBP",
+      "min_price": 0.113,
+      "min_price_rub": 12.04,
+      "mpn": "MMBFJ108",
+      "package": "1",
+      "packaging": "",
+      "price_breaks": [
+        {
+          "currency": "GBP",
+          "price": 0.369,
+          "price_rub": 39.32,
+          "qty": 5
+        },
+        {
+          "currency": "GBP",
+          "price": 0.243,
+          "price_rub": 25.89,
+          "qty": 10
+        },
+        {
+          "currency": "GBP",
+          "price": 0.195,
+          "price_rub": 20.78,
+          "qty": 100
+        },
+        {
+          "currency": "GBP",
+          "price": 0.154,
+          "price_rub": 16.41,
+          "qty": 500
+        },
+        {
+          "currency": "GBP",
+          "price": 0.137,
+          "price_rub": 14.6,
+          "qty": 1000
+        },
+        {
+          "currency": "GBP",
+          "price": 0.113,
+          "price_rub": 12.04,
+          "qty": 5000
+        }
+      ],
+      "product_url": "",
+      "regions": [
+        "EU"
+      ],
+      "source": "farnell",
+      "stock": 135412,
+      "title": "ONSEMI - MMBFJ108 - JFET Transistor, JFET, -25 V, 80 mA, -10 V, SOT-23, 3 Pin, 150 °C"
+    },
+    {
+      "datasheet_url": "http://www.farnell.com/datasheets/2304413.pdf",
+      "description_short": "ONSEMI - NDC7001C - Dual MOSFET, Complementary N and P Channel, 50 V, 50 V, 340 mA, 340 mA, 1 ohm",
+      "image_url": "https://uk.farnell.com/GE6DilSMD06-40.jpg",
+      "manufacturer": "ONSEMI",
+      "min_currency": "GBP",
+      "min_price": 0.116,
+      "min_price_rub": 12.36,
+      "mpn": "NDC7001C",
+      "package": "1",
+      "packaging": "",
+      "price_breaks": [
+        {
+          "currency": "GBP",
+          "price": 0.539,
+          "price_rub": 57.44,
+          "qty": 5
+        },
+        {
+          "currency": "GBP",
+          "price": 0.33,
+          "price_rub": 35.17,
+          "qty": 10
+        },
+        {
+          "currency": "GBP",
+          "price": 0.216,
+          "price_rub": 23.02,
+          "qty": 100
+        },
+        {
+          "currency": "GBP",
+          "price": 0.152,
+          "price_rub": 16.2,
+          "qty": 500
+        },
+        {
+          "currency": "GBP",
+          "price": 0.134,
+          "price_rub": 14.28,
+          "qty": 1000
+        },
+        {
+          "currency": "GBP",
+          "price": 0.116,
+          "price_rub": 12.36,
+          "qty": 5000
+        }
+      ],
+      "product_url": "",
+      "regions": [
+        "EU"
+      ],
+      "source": "farnell",
+      "stock": 31193,
+      "title": "ONSEMI - NDC7001C - Dual MOSFET, Complementary N and P Channel, 50 V, 50 V, 340 mA, 340 mA, 1 ohm"
+    },
+    {
+      "datasheet_url": "https://4donline.ihs.com/images/VipMasterIC/IC/VISH/VISH-S-A0001142630/VISH-S-A0001142630-1.pdf?hkey=6D3A4C79FDBF58556ACFDE234799DDF0",
+      "description_short": "VISHAY - SIA931DJ-T1-GE3 - Dual MOSFET, P Channel, 30 V, 30 V, 4.5 A, 4.5 A, 0.052 ohm",
+      "image_url": "https://uk.farnell.com/GE6PPSC75-40.jpg",
+      "manufacturer": "VISHAY",
+      "min_currency": "GBP",
+      "min_price": 0.127,
+      "min_price_rub": 13.53,
+      "mpn": "SIA931DJ-T1-GE3",
+      "package": "1",
+      "packaging": "",
+      "price_breaks": [
+        {
+          "currency": "GBP",
+          "price": 0.584,
+          "price_rub": 62.23,
+          "qty": 5
+        },
+        {
+          "currency": "GBP",
+          "price": 0.361,
+          "price_rub": 38.47,
+          "qty": 10
+        },
+        {
+          "currency": "GBP",
+          "price": 0.234,
+          "price_rub": 24.94,
+          "qty": 100
+        },
+        {
+          "currency": "GBP",
+          "price": 0.166,
+          "price_rub": 17.69,
+          "qty": 500
+        },
+        {
+          "currency": "GBP",
+          "price": 0.147,
+          "price_rub": 15.66,
+          "qty": 1000
+        },
+        {
+          "currency": "GBP",
+          "price": 0.127,
+          "price_rub": 13.53,
+          "qty": 5000
+        }
+      ],
+      "product_url": "",
+      "regions": [
+        "EU"
+      ],
+      "source": "farnell",
+      "stock": 256055,
+      "title": "VISHAY - SIA931DJ-T1-GE3 - Dual MOSFET, P Channel, 30 V, 30 V, 4.5 A, 4.5 A, 0.052 ohm"
+    },
+    {
+      "datasheet_url": "https://4donline.ihs.com/images/VipMasterIC/IC/SGST/SGSTS01774/SGSTS01774-1.pdf?hkey=6D3A4C79FDBF58556ACFDE234799DDF0",
+      "description_short": "STMICROELECTRONICS - BD242B - Bipolar (BJT) Single Transistor, PNP, 80 V, 3 A, 40 W, TO-220, Through Hole",
+      "image_url": "https://uk.farnell.com/GE3TO22004-40.jpg",
+      "manufacturer": "STMICROELECTRONICS",
+      "min_currency": "GBP",
+      "min_price": 0.153,
+      "min_price_rub": 16.3,
+      "mpn": "BD242B",
+      "package": "1",
+      "packaging": "",
+      "price_breaks": [
+        {
+          "currency": "GBP",
+          "price": 0.732,
+          "price_rub": 78,
+          "qty": 5
+        },
+        {
+          "currency": "GBP",
+          "price": 0.453,
+          "price_rub": 48.27,
+          "qty": 10
+        },
+        {
+          "currency": "GBP",
+          "price": 0.296,
+          "price_rub": 31.54,
+          "qty": 100
+        },
+        {
+          "currency": "GBP",
+          "price": 0.21,
+          "price_rub": 22.38,
+          "qty": 500
+        },
+        {
+          "currency": "GBP",
+          "price": 0.178,
+          "price_rub": 18.97,
+          "qty": 1000
+        },
+        {
+          "currency": "GBP",
+          "price": 0.153,
+          "price_rub": 16.3,
+          "qty": 5000
+        }
+      ],
+      "product_url": "",
+      "regions": [
+        "EU"
+      ],
+      "source": "farnell",
+      "stock": 3384,
+      "title": "STMICROELECTRONICS - BD242B - Bipolar (BJT) Single Transistor, PNP, 80 V, 3 A, 40 W, TO-220, Through Hole"
+    },
+    {
+      "datasheet_url": "https://4donline.ihs.com/images/VipMasterIC/IC/VISH/VISH-S-A0018426126/VISH-S-A0018426126-1.pdf?hkey=6D3A4C79FDBF58556ACFDE234799DDF0",
+      "description_short": "VISHAY - SFH6156-2 - Optocoupler, Transistor Output, 1 Channel, Surface Mount DIP, 4 Pins, 60 mA, 5.3 kV, 63 %",
+      "image_url": "https://uk.farnell.com/1612478-40.jpg",
+      "manufacturer": "VISHAY",
+      "min_currency": "GBP",
+      "min_price": 0.165,
+      "min_price_rub": 17.58,
+      "mpn": "SFH6156-2",
+      "package": "1",
+      "packaging": "",
+      "price_breaks": [
+        {
+          "currency": "GBP",
+          "price": 0.414,
+          "price_rub": 44.12,
+          "qty": 1
+        },
+        {
+          "currency": "GBP",
+          "price": 0.28,
+          "price_rub": 29.84,
+          "qty": 10
+        },
+        {
+          "currency": "GBP",
+          "price": 0.273,
+          "price_rub": 29.09,
+          "qty": 25
+        },
+        {
+          "currency": "GBP",
+          "price": 0.266,
+          "price_rub": 28.35,
+          "qty": 50
+        },
+        {
+          "currency": "GBP",
+          "price": 0.187,
+          "price_rub": 19.93,
+          "qty": 100
+        },
+        {
+          "currency": "GBP",
+          "price": 0.165,
+          "price_rub": 17.58,
+          "qty": 500
+        }
+      ],
+      "product_url": "",
+      "regions": [
+        "EU"
+      ],
+      "source": "farnell",
+      "stock": 55850,
+      "title": "VISHAY - SFH6156-2 - Optocoupler, Transistor Output, 1 Channel, Surface Mount DIP, 4 Pins, 60 mA, 5.3 kV, 63 %"
+    },
+    {
+      "datasheet_url": "http://www.renesas.com/us/en/document/dst/ps2501-1-ps2501-4-ps2501l-1-ps2501l-4-data-sheet",
+      "description_short": "RENESAS - PS2501L-1-F3-A - Optocoupler, 1 Channel, Surface Mount DIP, 4 Pins, 80 mA, 5 kV, 80 %",
+      "image_url": "https://uk.farnell.com/1682850-40.jpg",
+      "manufacturer": "RENESAS",
+      "min_currency": "GBP",
+      "min_price": 0.208,
+      "min_price_rub": 22.16,
+      "mpn": "PS2501L-1-F3-A",
+      "package": "1",
+      "packaging": "",
+      "price_breaks": [
+        {
+          "currency": "GBP",
+          "price": 0.495,
+          "price_rub": 52.75,
+          "qty": 1
+        },
+        {
+          "currency": "GBP",
+          "price": 0.343,
+          "price_rub": 36.55,
+          "qty": 10
+        },
+        {
+          "currency": "GBP",
+          "price": 0.312,
+          "price_rub": 33.25,
+          "qty": 25
+        },
+        {
+          "currency": "GBP",
+          "price": 0.281,
+          "price_rub": 29.94,
+          "qty": 50
+        },
+        {
+          "currency": "GBP",
+          "price": 0.25,
+          "price_rub": 26.64,
+          "qty": 100
+        },
+        {
+          "currency": "GBP",
+          "price": 0.208,
+          "price_rub": 22.16,
+          "qty": 500
+        }
+      ],
+      "product_url": "",
+      "regions": [
+        "EU"
+      ],
+      "source": "farnell",
+      "stock": 56865,
+      "title": "RENESAS - PS2501L-1-F3-A - Optocoupler, 1 Channel, Surface Mount DIP, 4 Pins, 80 mA, 5 kV, 80 %"
+    },
+    {
+      "datasheet_url": "https://4donline.ihs.com/images/VipMasterIC/IC/VISH/VISH-S-A0018426138/VISH-S-A0018426138-1.pdf?hkey=6D3A4C79FDBF58556ACFDE234799DDF0",
+      "description_short": "VISHAY - SFH6286-3 - Optocoupler, Transistor Output, 1 Channel, Surface Mount DIP, 4 Pins, 50 mA, 5.3 kV, 100 %",
+      "image_url": "https://uk.farnell.com/42250448.jpg",
+      "manufacturer": "VISHAY",
+      "min_currency": "GBP",
+      "min_price": 0.355,
+      "min_price_rub": 37.83,
+      "mpn": "SFH6286-3",
+      "package": "1",
+      "packaging": "",
+      "price_breaks": [
+        {
+          "currency": "GBP",
+          "price": 0.798,
+          "price_rub": 85.04,
+          "qty": 1
+        },
+        {
+          "currency": "GBP",
+          "price": 0.574,
+          "price_rub": 61.17,
+          "qty": 10
+        },
+        {
+          "currency": "GBP",
+          "price": 0.551,
+          "price_rub": 58.72,
+          "qty": 25
+        },
+        {
+          "currency": "GBP",
+          "price": 0.528,
+          "price_rub": 56.26,
+          "qty": 50
+        },
+        {
+          "currency": "GBP",
+          "price": 0.408,
+          "price_rub": 43.48,
+          "qty": 100
+        },
+        {
+          "currency": "GBP",
+          "price": 0.355,
+          "price_rub": 37.83,
+          "qty": 500
+        }
+      ],
+      "product_url": "",
+      "regions": [
+        "EU"
+      ],
+      "source": "farnell",
+      "stock": 36365,
+      "title": "VISHAY - SFH6286-3 - Optocoupler, Transistor Output, 1 Channel, Surface Mount DIP, 4 Pins, 50 mA, 5.3 kV, 100 %"
+    },
+    {
+      "datasheet_url": "https://4donline.ihs.com/images/VipMasterIC/IC/INFN/INFNS16193/INFNS16193-1.pdf?hkey=6D3A4C79FDBF58556ACFDE234799DDF0",
+      "description_short": "INFINEON - BSC123N08NS3GATMA1 - Power MOSFET, N Channel, 80 V, 55 A, 0.0123 ohm, PG-TDSON, Surface Mount",
+      "image_url": "https://uk.farnell.com/2212820-40.jpg",
+      "manufacturer": "INFINEON",
+      "min_currency": "GBP",
+      "min_price": 0.357,
+      "min_price_rub": 38.04,
+      "mpn": "BSC123N08NS3GATMA1",
+      "package": "1",
+      "packaging": "",
+      "price_breaks": [
+        {
+          "currency": "GBP",
+          "price": 1.09,
+          "price_rub": 116.15,
+          "qty": 1
+        },
+        {
+          "currency": "GBP",
+          "price": 0.726,
+          "price_rub": 77.36,
+          "qty": 10
+        },
+        {
+          "currency": "GBP",
+          "price": 0.553,
+          "price_rub": 58.93,
+          "qty": 100
+        },
+        {
+          "currency": "GBP",
+          "price": 0.435,
+          "price_rub": 46.35,
+          "qty": 500
+        },
+        {
+          "currency": "GBP",
+          "price": 0.375,
+          "price_rub": 39.96,
+          "qty": 1000
+        },
+        {
+          "currency": "GBP",
+          "price": 0.357,
+          "price_rub": 38.04,
+          "qty": 5000
+        }
+      ],
+      "product_url": "",
+      "regions": [
+        "EU"
+      ],
+      "source": "farnell",
+      "stock": 67254,
+      "title": "INFINEON - BSC123N08NS3GATMA1 - Power MOSFET, N Channel, 80 V, 55 A, 0.0123 ohm, PG-TDSON, Surface Mount"
+    },
+    {
+      "datasheet_url": "https://4donline.ihs.com/images/VipMasterIC/IC/SGST/SGSTS16849/SGSTS16849-1.pdf?hkey=6D3A4C79FDBF58556ACFDE234799DDF0",
+      "description_short": "STMICROELECTRONICS - STD20NF06LT4 - Power MOSFET, N Channel, 60 V, 24 A, 0.04 ohm, TO-252 (DPAK), Surface Mount",
+      "image_url": "https://uk.farnell.com/GE3TO252-40.jpg",
+      "manufacturer": "STMICROELECTRONICS",
+      "min_currency": "GBP",
+      "min_price": 0.358,
+      "min_price_rub": 38.15,
+      "mpn": "STD20NF06LT4",
+      "package": "1",
+      "packaging": "",
+      "price_breaks": [
+        {
+          "currency": "GBP",
+          "price": 0.901,
+          "price_rub": 96.01,
+          "qty": 1
+        },
+        {
+          "currency": "GBP",
+          "price": 0.659,
+          "price_rub": 70.22,
+          "qty": 10
+        },
+        {
+          "currency": "GBP",
+          "price": 0.528,
+          "price_rub": 56.26,
+          "qty": 100
+        },
+        {
+          "currency": "GBP",
+          "price": 0.404,
+          "price_rub": 43.05,
+          "qty": 500
+        },
+        {
+          "currency": "GBP",
+          "price": 0.369,
+          "price_rub": 39.32,
+          "qty": 1000
+        },
+        {
+          "currency": "GBP",
+          "price": 0.358,
+          "price_rub": 38.15,
+          "qty": 5000
+        }
+      ],
+      "product_url": "",
+      "regions": [
+        "EU"
+      ],
+      "source": "farnell",
+      "stock": 83820,
+      "title": "STMICROELECTRONICS - STD20NF06LT4 - Power MOSFET, N Channel, 60 V, 24 A, 0.04 ohm, TO-252 (DPAK), Surface Mount"
+    },
+    {
+      "datasheet_url": "http://www.farnell.com/datasheets/2304363.pdf",
+      "description_short": "ONSEMI - FDD86252 - Power MOSFET, N Channel, 150 V, 27 A, 0.052 ohm, TO-252 (DPAK), Surface Mount",
+      "image_url": "https://uk.farnell.com/GE3TO252-40.jpg",
+      "manufacturer": "ONSEMI",
+      "min_currency": "GBP",
+      "min_price": 0.382,
+      "min_price_rub": 40.71,
+      "mpn": "FDD86252",
+      "package": "1",
+      "packaging": "",
+      "price_breaks": [
+        {
+          "currency": "GBP",
+          "price": 0.672,
+          "price_rub": 71.61,
+          "qty": 1
+        },
+        {
+          "currency": "GBP",
+          "price": 0.567,
+          "price_rub": 60.42,
+          "qty": 10
+        },
+        {
+          "currency": "GBP",
+          "price": 0.479,
+          "price_rub": 51.04,
+          "qty": 100
+        },
+        {
+          "currency": "GBP",
+          "price": 0.433,
+          "price_rub": 46.14,
+          "qty": 500
+        },
+        {
+          "currency": "GBP",
+          "price": 0.421,
+          "price_rub": 44.86,
+          "qty": 1000
+        },
+        {
+          "currency": "GBP",
+          "price": 0.382,
+          "price_rub": 40.71,
+          "qty": 5000
+        }
+      ],
+      "product_url": "",
+      "regions": [
+        "EU"
+      ],
+      "source": "farnell",
+      "stock": 96286,
+      "title": "ONSEMI - FDD86252 - Power MOSFET, N Channel, 150 V, 27 A, 0.052 ohm, TO-252 (DPAK), Surface Mount"
+    },
+    {
+      "datasheet_url": "https://4donline.ihs.com/images/VipMasterIC/IC/IRSD/IRSDS11472/IRSDS11472-1.pdf?hkey=6D3A4C79FDBF58556ACFDE234799DDF0",
+      "description_short": "INFINEON - IRF3205PBF - Power MOSFET, N Channel, 55 V, 110 A, 8000 µohm, TO-220AB, Through Hole",
+      "image_url": "https://uk.farnell.com/42724460.jpg",
+      "manufacturer": "INFINEON",
+      "min_currency": "GBP",
+      "min_price": 0.406,
+      "min_price_rub": 43.26,
+      "mpn": "IRF3205PBF",
+      "package": "1",
+      "packaging": "",
+      "price_breaks": [
+        {
+          "currency": "GBP",
+          "price": 1.06,
+          "price_rub": 112.95,
+          "qty": 1
+        },
+        {
+          "currency": "GBP",
+          "price": 1.03,
+          "price_rub": 109.76,
+          "qty": 10
+        },
+        {
+          "currency": "GBP",
+          "price": 0.584,
+          "price_rub": 62.23,
+          "qty": 100
+        },
+        {
+          "currency": "GBP",
+          "price": 0.5,
+          "price_rub": 53.28,
+          "qty": 500
+        },
+        {
+          "currency": "GBP",
+          "price": 0.451,
+          "price_rub": 48.06,
+          "qty": 1000
+        },
+        {
+          "currency": "GBP",
+          "price": 0.406,
+          "price_rub": 43.26,
+          "qty": 5000
+        }
+      ],
+      "product_url": "",
+      "regions": [
+        "EU"
+      ],
+      "source": "farnell",
+      "stock": 41454,
+      "title": "INFINEON - IRF3205PBF - Power MOSFET, N Channel, 55 V, 110 A, 8000 µohm, TO-220AB, Through Hole"
+    },
+    {
+      "datasheet_url": "https://fscdn.rohm.com/en/products/databook/datasheet/discrete/transistor/mosfet/rd3h160spfratl-e.pdf",
+      "description_short": "ROHM - RD3H160SPFRATL - Power MOSFET, P Channel, 45 V, 16 A, 0.035 ohm, TO-252 (DPAK), Surface Mount",
+      "image_url": "https://uk.farnell.com/GE3TO252-40.jpg",
+      "manufacturer": "ROHM",
+      "min_currency": "GBP",
+      "min_price": 0.421,
+      "min_price_rub": 44.86,
+      "mpn": "RD3H160SPFRATL",
+      "package": "1",
+      "packaging": "",
+      "price_breaks": [
+        {
+          "currency": "GBP",
+          "price": 1.34,
+          "price_rub": 142.79,
+          "qty": 1
+        },
+        {
+          "currency": "GBP",
+          "price": 0.983,
+          "price_rub": 104.75,
+          "qty": 10
+        },
+        {
+          "currency": "GBP",
+          "price": 0.715,
+          "price_rub": 76.19,
+          "qty": 100
+        },
+        {
+          "currency": "GBP",
+          "price": 0.525,
+          "price_rub": 55.94,
+          "qty": 500
+        },
+        {
+          "currency": "GBP",
+          "price": 0.496,
+          "price_rub": 52.85,
+          "qty": 1000
+        },
+        {
+          "currency": "GBP",
+          "price": 0.421,
+          "price_rub": 44.86,
+          "qty": 5000
+        }
+      ],
+      "product_url": "",
+      "regions": [
+        "EU"
+      ],
+      "source": "farnell",
+      "stock": 7402,
+      "title": "ROHM - RD3H160SPFRATL - Power MOSFET, P Channel, 45 V, 16 A, 0.035 ohm, TO-252 (DPAK), Surface Mount"
+    },
+    {
+      "datasheet_url": "https://4donline.ihs.com/images/VipMasterIC/IC/VISH/VISH-S-A0009485304/VISH-S-A0009485304-1.pdf?hkey=6D3A4C79FDBF58556ACFDE234799DDF0",
+      "description_short": "VISHAY - SUD50N04-8M8P-4GE3 - Power MOSFET, N Channel, 40 V, 50 A, 8800 µohm, TO-252 (DPAK), Surface Mount",
+      "image_url": "https://uk.farnell.com/GE3TO263-40.jpg",
+      "manufacturer": "VISHAY",
+      "min_currency": "GBP",
+      "min_price": 0.424,
+      "min_price_rub": 45.18,
+      "mpn": "SUD50N04-8M8P-4GE3",
+      "package": "1",
+      "packaging": "",
+      "price_breaks": [
+        {
+          "currency": "GBP",
+          "price": 0.68,
+          "price_rub": 72.46,
+          "qty": 1
+        },
+        {
+          "currency": "GBP",
+          "price": 0.56,
+          "price_rub": 59.67,
+          "qty": 10
+        },
+        {
+          "currency": "GBP",
+          "price": 0.482,
+          "price_rub": 51.36,
+          "qty": 100
+        },
+        {
+          "currency": "GBP",
+          "price": 0.443,
+          "price_rub": 47.21,
+          "qty": 500
+        },
+        {
+          "currency": "GBP",
+          "price": 0.434,
+          "price_rub": 46.25,
+          "qty": 1000
+        },
+        {
+          "currency": "GBP",
+          "price": 0.424,
+          "price_rub": 45.18,
+          "qty": 5000
+        }
+      ],
+      "product_url": "",
+      "regions": [
+        "EU"
+      ],
+      "source": "farnell",
+      "stock": 49015,
+      "title": "VISHAY - SUD50N04-8M8P-4GE3 - Power MOSFET, N Channel, 40 V, 50 A, 8800 µohm, TO-252 (DPAK), Surface Mount"
+    },
+    {
+      "datasheet_url": "https://4donline.ihs.com/images/VipMasterIC/IC/INFN/INFN-S-A0000149044/INFN-S-A0000149044-1.pdf?hkey=6D3A4C79FDBF58556ACFDE234799DDF0",
+      "description_short": "INFINEON - IKW40N120H3FKSA1 - IGBT, 40 A, 2.4 V, 483 W, 1.2 kV, TO-247, 3 Pins",
+      "image_url": "https://uk.farnell.com/GE3TO247-40.jpg",
+      "manufacturer": "INFINEON",
+      "min_currency": "GBP",
+      "min_price": 2.56,
+      "min_price_rub": 272.8,
+      "mpn": "IKW40N120H3FKSA1",
+      "package": "1",
+      "packaging": "",
+      "price_breaks": [
+        {
+          "currency": "GBP",
+          "price": 5.32,
+          "price_rub": 566.91,
+          "qty": 1
+        },
+        {
+          "currency": "GBP",
+          "price": 4.09,
+          "price_rub": 435.84,
+          "qty": 5
+        },
+        {
+          "currency": "GBP",
+          "price": 2.85,
+          "price_rub": 303.7,
+          "qty": 10
+        },
+        {
+          "currency": "GBP",
+          "price": 2.73,
+          "price_rub": 290.91,
+          "qty": 50
+        },
+        {
+          "currency": "GBP",
+          "price": 2.61,
+          "price_rub": 278.12,
+          "qty": 100
+        },
+        {
+          "currency": "GBP",
+          "price": 2.56,
+          "price_rub": 272.8,
+          "qty": 250
+        }
+      ],
+      "product_url": "",
+      "regions": [
+        "EU"
+      ],
+      "source": "farnell",
+      "stock": 9637,
+      "title": "INFINEON - IKW40N120H3FKSA1 - IGBT, 40 A, 2.4 V, 483 W, 1.2 kV, TO-247, 3 Pins"
+    },
+    {
+      "datasheet_url": "https://4donline.ihs.com/images/VipMasterIC/IC/SGST/SGST-S-A0006491473/SGST-S-A0006491473-1.pdf?hkey=6D3A4C79FDBF58556ACFDE234799DDF0",
+      "description_short": "STMICROELECTRONICS - STW20N90K5 - Power MOSFET, N Channel, 900 V, 20 A, 0.21 ohm, TO-247, Through Hole",
+      "image_url": "https://uk.farnell.com/GE3TO247-40.jpg",
+      "manufacturer": "STMICROELECTRONICS",
+      "min_currency": "GBP",
+      "min_price": 2.63,
+      "min_price_rub": 280.26,
+      "mpn": "STW20N90K5",
+      "package": "1",
+      "packaging": "",
+      "price_breaks": [
+        {
+          "currency": "GBP",
+          "price": 5.56,
+          "price_rub": 592.48,
+          "qty": 1
+        },
+        {
+          "currency": "GBP",
+          "price": 4.24,
+          "price_rub": 451.82,
+          "qty": 5
+        },
+        {
+          "currency": "GBP",
+          "price": 2.91,
+          "price_rub": 310.09,
+          "qty": 10
+        },
+        {
+          "currency": "GBP",
+          "price": 2.82,
+          "price_rub": 300.5,
+          "qty": 50
+        },
+        {
+          "currency": "GBP",
+          "price": 2.65,
+          "price_rub": 282.39,
+          "qty": 100
+        },
+        {
+          "currency": "GBP",
+          "price": 2.63,
+          "price_rub": 280.26,
+          "qty": 250
+        }
+      ],
+      "product_url": "",
+      "regions": [
+        "EU"
+      ],
+      "source": "farnell",
+      "stock": 2400,
+      "title": "STMICROELECTRONICS - STW20N90K5 - Power MOSFET, N Channel, 900 V, 20 A, 0.21 ohm, TO-247, Through Hole"
+    },
+    {
+      "datasheet_url": null,
+      "description_short": "Transistor: N-MOSFET; unipolar; 60V; 0.28A; Idm: 1.2A; 0.35W; SOT23",
+      "image_url": "https://www.tme.eu//ce8dc832c.cloudimg.io/v7/_cdn_/E0/6F/B0/00/1/783886_1.jpg?width=640&height=480&wat=1&wat_url=_tme-wrk_%2Ftme_new_render3d.png&wat_scale=100p&ci_sign=53a9483b00423785bfa262542fe924f68ccc28c8",
+      "manufacturer": "DIOTEC SEMICONDUCTOR",
+      "min_currency": null,
+      "min_price": null,
+      "min_price_rub": null,
+      "mpn": "2N7002",
+      "package": "",
+      "packaging": "",
+      "price_breaks": [],
+      "product_url": "https://www.tme.eu/en/details/2N7002/",
+      "regions": [
+        "EU"
+      ],
+      "source": "tme",
+      "stock": 0,
+      "title": "Transistor: N-MOSFET; unipolar; 60V; 0.28A; Idm: 1.2A; 0.35W; SOT23"
+    },
+    {
+      "datasheet_url": null,
+      "description_short": "Transistor: NPN; bipolar; 45V; 0.8A; 310mW; SOT23",
+      "image_url": "https://www.tme.eu//ce8dc832c.cloudimg.io/v7/_cdn_/73/32/01/00/0/1057591_1.jpg?width=640&height=480&wat=1&wat_url=_tme-wrk_%2Ftme_new.png&wat_scale=100p&ci_sign=c323c12673e527f03ad725a9f31be4b24e57e191",
+      "manufacturer": "DIOTEC SEMICONDUCTOR",
+      "min_currency": null,
+      "min_price": null,
+      "min_price_rub": null,
+      "mpn": "BC817-40",
+      "package": "",
+      "packaging": "",
+      "price_breaks": [],
+      "product_url": "https://www.tme.eu/en/details/BC817-40/",
+      "regions": [
+        "EU"
+      ],
+      "source": "tme",
+      "stock": 0,
+      "title": "Transistor: NPN; bipolar; 45V; 0.8A; 310mW; SOT23"
+    },
+    {
+      "datasheet_url": null,
+      "description_short": "Transistor: NPN / PNP; bipolar; complementary pair; 45V; 0.5A",
+      "image_url": "https://www.tme.eu//ce8dc832c.cloudimg.io/v7/_cdn_/26/7E/00/00/0/59234_1.jpg?width=640&height=480&wat=1&wat_url=_tme-wrk_%2Ftme_new.png&wat_scale=100p&ci_sign=071c65075befa89c65355c0ca8bf097be21f7b29",
+      "manufacturer": "NEXPERIA",
+      "min_currency": null,
+      "min_price": null,
+      "min_price_rub": null,
+      "mpn": "BC817DPN,115",
+      "package": "",
+      "packaging": "",
+      "price_breaks": [],
+      "product_url": "https://www.tme.eu/en/details/BC817DPN%2C115/",
+      "regions": [
+        "EU"
+      ],
+      "source": "tme",
+      "stock": 0,
+      "title": "Transistor: NPN / PNP; bipolar; complementary pair; 45V; 0.5A"
+    },
+    {
+      "datasheet_url": null,
+      "description_short": "Transistor: NPN; bipolar; 45V; 0.1A; 250mW; SOT23",
+      "image_url": "https://www.tme.eu//ce8dc832c.cloudimg.io/v7/_cdn_/73/32/01/00/0/1057591_1.jpg?width=640&height=480&wat=1&wat_url=_tme-wrk_%2Ftme_new.png&wat_scale=100p&ci_sign=c323c12673e527f03ad725a9f31be4b24e57e191",
+      "manufacturer": "DIOTEC SEMICONDUCTOR",
+      "min_currency": null,
+      "min_price": null,
+      "min_price_rub": null,
+      "mpn": "BC847B",
+      "package": "",
+      "packaging": "",
+      "price_breaks": [],
+      "product_url": "https://www.tme.eu/en/details/BC847B/",
+      "regions": [
+        "EU"
+      ],
+      "source": "tme",
+      "stock": 0,
+      "title": "Transistor: NPN; bipolar; 45V; 0.1A; 250mW; SOT23"
+    },
+    {
+      "datasheet_url": null,
+      "description_short": "Transistor: NPN / PNP; bipolar; complementary pair; 45V; 0.1A",
+      "image_url": "https://www.tme.eu//ce8dc832c.cloudimg.io/v7/_cdn_/79/DF/E0/00/0/982423_1.jpg?width=640&height=480&wat=1&wat_url=_tme-wrk_%2Ftme_new_render3d.png&wat_scale=100p&ci_sign=c9f5e92adfa38add86c7289bc92c125cc5076da4",
+      "manufacturer": "NEXPERIA",
+      "min_currency": null,
+      "min_price": null,
+      "min_price_rub": null,
+      "mpn": "BC847BPN,115",
+      "package": "",
+      "packaging": "",
+      "price_breaks": [],
+      "product_url": "https://www.tme.eu/en/details/BC847BPN%2C115/",
+      "regions": [
+        "EU"
+      ],
+      "source": "tme",
+      "stock": 0,
+      "title": "Transistor: NPN / PNP; bipolar; complementary pair; 45V; 0.1A"
+    },
+    {
+      "datasheet_url": null,
+      "description_short": "Transistor: N-MOSFET; unipolar; 50V; 0.22A; 0.35W; SOT23",
+      "image_url": "https://www.tme.eu//ce8dc832c.cloudimg.io/v7/_cdn_/7B/6A/A0/00/0/698039_1.jpg?width=640&height=480&wat=1&wat_url=_tme-wrk_%2Ftme_new.png&wat_scale=100p&ci_sign=0fed4fa42d3a57d000169f86d57e76c74061ba6e",
+      "manufacturer": "MICRO COMMERCIAL COMPONENTS",
+      "min_currency": null,
+      "min_price": null,
+      "min_price_rub": null,
+      "mpn": "BSS138-TP",
+      "package": "",
+      "packaging": "",
+      "price_breaks": [],
+      "product_url": "https://www.tme.eu/en/details/BSS138-TP/",
+      "regions": [
+        "EU"
+      ],
+      "source": "tme",
+      "stock": 0,
+      "title": "Transistor: N-MOSFET; unipolar; 50V; 0.22A; 0.35W; SOT23"
+    },
+    {
+      "datasheet_url": null,
+      "description_short": "Transistor: IGBT; 600V; 60A; 300W; TO247-3",
+      "image_url": "https://www.tme.eu//ce8dc832c.cloudimg.io/v7/_cdn_/C5/B5/40/00/0/285532_1.jpg?width=640&height=480&wat=1&wat_url=_tme-wrk_%2Ftme_new.png&wat_scale=100p&ci_sign=e8e75618c7432188c5dbe7bdf05318937ba13027",
+      "manufacturer": "ONSEMI",
+      "min_currency": null,
+      "min_price": null,
+      "min_price_rub": null,
+      "mpn": "FGH60N60SMD",
+      "package": "",
+      "packaging": "",
+      "price_breaks": [],
+      "product_url": "https://www.tme.eu/en/details/FGH60N60SMD/",
+      "regions": [
+        "EU"
+      ],
+      "source": "tme",
+      "stock": 0,
+      "title": "Transistor: IGBT; 600V; 60A; 300W; TO247-3"
+    },
+    {
+      "datasheet_url": null,
+      "description_short": "Transistor: P-MOSFET; unipolar; -30V; -4A; Idm: -27A; 1.4W; SOT23",
+      "image_url": "https://www.tme.eu//ce8dc832c.cloudimg.io/v7/_cdn_/73/32/01/00/0/1057591_1.jpg?width=640&height=480&wat=1&wat_url=_tme-wrk_%2Ftme_new.png&wat_scale=100p&ci_sign=c323c12673e527f03ad725a9f31be4b24e57e191",
+      "manufacturer": "DIOTEC SEMICONDUCTOR",
+      "min_currency": null,
+      "min_price": null,
+      "min_price_rub": null,
+      "mpn": "MMFTP3401",
+      "package": "",
+      "packaging": "",
+      "price_breaks": [],
+      "product_url": "https://www.tme.eu/en/details/MMFTP3401/",
+      "regions": [
+        "EU"
+      ],
+      "source": "tme",
+      "stock": 0,
+      "title": "Transistor: P-MOSFET; unipolar; -30V; -4A; Idm: -27A; 1.4W; SOT23"
+    },
+    {
+      "datasheet_url": null,
+      "description_short": "Transistor: IGBT; 600V; 30A; 200W; TO247-3",
+      "image_url": "https://www.tme.eu//ce8dc832c.cloudimg.io/v7/_cdn_/C5/B5/40/00/0/285532_1.jpg?width=640&height=480&wat=1&wat_url=_tme-wrk_%2Ftme_new.png&wat_scale=100p&ci_sign=e8e75618c7432188c5dbe7bdf05318937ba13027",
+      "manufacturer": "STMicroelectronics",
+      "min_currency": null,
+      "min_price": null,
+      "min_price_rub": null,
+      "mpn": "STGW20NC60VD",
+      "package": "",
+      "packaging": "",
+      "price_breaks": [],
+      "product_url": "https://www.tme.eu/en/details/STGW20NC60VD/",
+      "regions": [
+        "EU"
+      ],
+      "source": "tme",
+      "stock": 0,
+      "title": "Transistor: IGBT; 600V; 30A; 200W; TO247-3"
+    },
+    {
+      "datasheet_url": null,
+      "description_short": "Transistor: NPN; bipolar; Darlington; 100V; 5A; 65W; TO220AB",
+      "image_url": "https://www.tme.eu//ce8dc832c.cloudimg.io/v7/_cdn_/E7/4E/00/00/0/58494_1.jpg?width=640&height=480&wat=1&wat_url=_tme-wrk_%2Ftme_new.png&wat_scale=100p&ci_sign=39d677221313f459c76dbfda7c5575cb81f8ce03",
+      "manufacturer": "STMicroelectronics",
+      "min_currency": null,
+      "min_price": null,
+      "min_price_rub": null,
+      "mpn": "TIP122",
+      "package": "",
+      "packaging": "",
+      "price_breaks": [],
+      "product_url": "https://www.tme.eu/en/details/TIP122/",
+      "regions": [
+        "EU"
+      ],
+      "source": "tme",
+      "stock": 0,
+      "title": "Transistor: NPN; bipolar; Darlington; 100V; 5A; 65W; TO220AB"
+    }
+  ]
+}

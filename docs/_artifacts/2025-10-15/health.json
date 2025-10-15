@@ -1,0 +1,41 @@
+{
+  "cache": {
+    "db_path": "./data/db/deep-agg.db",
+    "status": "ok"
+  },
+  "currency": {
+    "age_hours": 11,
+    "rates": {
+      "EUR": 92.6816,
+      "USD": 79.9589
+    },
+    "status": "ok"
+  },
+  "latency_ms": 0,
+  "probe": false,
+  "proxy": {
+    "trust": true,
+    "value": 1
+  },
+  "sources": {
+    "digikey": {
+      "note": "OAuth credentials present",
+      "status": "configured"
+    },
+    "farnell": {
+      "note": "API key present",
+      "status": "configured"
+    },
+    "mouser": {
+      "note": "API key present",
+      "status": "configured"
+    },
+    "tme": {
+      "note": "Token/secret present",
+      "status": "configured"
+    }
+  },
+  "status": "ok",
+  "ts": 1760512267931,
+  "version": "3.2"
+}

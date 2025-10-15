@@ -1,0 +1,4495 @@
+{
+  "meta": {
+    "cached": false,
+    "currency": {
+      "date": "2025-10-14",
+      "rates": {
+        "EUR": 92.6816,
+        "USD": 79.9589
+      },
+      "source": "ЦБ РФ"
+    },
+    "elapsed": 5941,
+    "providers": [
+      {
+        "attempts": 1,
+        "elapsed_ms": 957,
+        "provider": "mouser",
+        "status": "ok",
+        "strategy": "direct",
+        "total": 50,
+        "usedQuery": "resistor",
+        "variantsTried": 1
+      },
+      {
+        "attempts": 1,
+        "elapsed_ms": 2182,
+        "provider": "digikey",
+        "status": "ok",
+        "strategy": "direct",
+        "total": 10,
+        "usedQuery": "resistor",
+        "variantsTried": 1
+      },
+      {
+        "attempts": 1,
+        "elapsed_ms": 5782,
+        "provider": "tme",
+        "status": "ok",
+        "strategy": "direct",
+        "total": 10,
+        "usedQuery": "resistor",
+        "variantsTried": 1
+      },
+      {
+        "attempts": 1,
+        "elapsed_ms": 1788,
+        "provider": "farnell",
+        "status": "ok",
+        "strategy": "direct",
+        "total": 25,
+        "usedQuery": "resistor",
+        "variantsTried": 1
+      }
+    ],
+    "source": "providers",
+    "total": 60,
+    "usedQueries": [
+      "resistor"
+    ]
+  },
+  "ok": true,
+  "q": "resistor",
+  "rows": [
+    {
+      "datasheet_url": null,
+      "description_short": "Thick Film Resistors - SMD D10/CRCW0402 100 1K65 1% EF4 e3",
+      "image_url": "https://www.mouser.com/images/vishay/images/CRCW120614K0LKEA12_SPL.jpg",
+      "manufacturer": "Vishay",
+      "min_currency": "USD",
+      "min_price": 0.01,
+      "min_price_rub": 0.8,
+      "mpn": "CRCW04021K65FKEE",
+      "package": "",
+      "packaging": "",
+      "price_breaks": [
+        {
+          "currency": "USD",
+          "price": 0.14,
+          "price_rub": 11.19,
+          "qty": 1
+        },
+        {
+          "currency": "USD",
+          "price": 0.064,
+          "price_rub": 5.12,
+          "qty": 10
+        },
+        {
+          "currency": "USD",
+          "price": 0.036,
+          "price_rub": 2.88,
+          "qty": 100
+        },
+        {
+          "currency": "USD",
+          "price": 0.021,
+          "price_rub": 1.68,
+          "qty": 1000
+        },
+        {
+          "currency": "USD",
+          "price": 0.017,
+          "price_rub": 1.36,
+          "qty": 2000
+        },
+        {
+          "currency": "USD",
+          "price": 0.016,
+          "price_rub": 1.28,
+          "qty": 5000
+        },
+        {
+          "currency": "USD",
+          "price": 0.015,
+          "price_rub": 1.2,
+          "qty": 10000
+        },
+        {
+          "currency": "USD",
+          "price": 0.013,
+          "price_rub": 1.04,
+          "qty": 25000
+        },
+        {
+          "currency": "USD",
+          "price": 0.01,
+          "price_rub": 0.8,
+          "qty": 50000
+        }
+      ],
+      "product_url": "https://www.mouser.com/ProductDetail/Vishay/CRCW04021K65FKEE?qs=t7xnP681wgWjs9FYx6P39g%3D%3D",
+      "regions": [
+        "US"
+      ],
+      "source": "mouser",
+      "stock": 49460,
+      "title": "Thick Film Resistors - SMD D10/CRCW0402 100 1K65 1% EF4 e3"
+    },
+    {
+      "datasheet_url": null,
+      "description_short": "Thick Film Resistors - SMD D11/CRCW0603 100 23R7 1% ET6 E3",
+      "image_url": "https://www.mouser.com/images/vishay/images/CRCW120614K0LKEA12_SPL.jpg",
+      "manufacturer": "Vishay",
+      "min_currency": "USD",
+      "min_price": 0.013,
+      "min_price_rub": 1.04,
+      "mpn": "CRCW060323R7FKEC",
+      "package": "",
+      "packaging": "",
+      "price_breaks": [
+        {
+          "currency": "USD",
+          "price": 0.16,
+          "price_rub": 12.79,
+          "qty": 1
+        },
+        {
+          "currency": "USD",
+          "price": 0.076,
+          "price_rub": 6.08,
+          "qty": 10
+        },
+        {
+          "currency": "USD",
+          "price": 0.044,
+          "price_rub": 3.52,
+          "qty": 100
+        },
+        {
+          "currency": "USD",
+          "price": 0.027,
+          "price_rub": 2.16,
+          "qty": 1000
+        },
+        {
+          "currency": "USD",
+          "price": 0.022,
+          "price_rub": 1.76,
+          "qty": 2000
+        },
+        {
+          "currency": "USD",
+          "price": 0.021,
+          "price_rub": 1.68,
+          "qty": 5000
+        },
+        {
+          "currency": "USD",
+          "price": 0.013,
+          "price_rub": 1.04,
+          "qty": 10000
+        }
+      ],
+      "product_url": "https://www.mouser.com/ProductDetail/Vishay/CRCW060323R7FKEC?qs=%252B6g0mu59x7IzbgVV9ByTiQ%3D%3D",
+      "regions": [
+        "US"
+      ],
+      "source": "mouser",
+      "stock": 19957,
+      "title": "Thick Film Resistors - SMD D11/CRCW0603 100 23R7 1% ET6 E3"
+    },
+    {
+      "datasheet_url": "https://www.mouser.com/datasheet/3/40/1/cr_a_as.pdf",
+      "description_short": "Thick Film Resistors - SMD ZERO OHM JUMPER",
+      "image_url": "https://www.mouser.com/images/bourns/images/CR01005A-AS_SPL.jpg",
+      "manufacturer": "Bourns",
+      "min_currency": "USD",
+      "min_price": 0.015,
+      "min_price_rub": 1.2,
+      "mpn": "CR01005AJ/-000GAS",
+      "package": "",
+      "packaging": "",
+      "price_breaks": [
+        {
+          "currency": "USD",
+          "price": 0.14,
+          "price_rub": 11.19,
+          "qty": 1
+        },
+        {
+          "currency": "USD",
+          "price": 0.071,
+          "price_rub": 5.68,
+          "qty": 10
+        },
+        {
+          "currency": "USD",
+          "price": 0.041,
+          "price_rub": 3.28,
+          "qty": 100
+        },
+        {
+          "currency": "USD",
+          "price": 0.025,
+          "price_rub": 2,
+          "qty": 1000
+        },
+        {
+          "currency": "USD",
+          "price": 0.02,
+          "price_rub": 1.6,
+          "qty": 2000
+        },
+        {
+          "currency": "USD",
+          "price": 0.019,
+          "price_rub": 1.52,
+          "qty": 5000
+        },
+        {
+          "currency": "USD",
+          "price": 0.017,
+          "price_rub": 1.36,
+          "qty": 10000
+        },
+        {
+          "currency": "USD",
+          "price": 0.016,
+          "price_rub": 1.28,
+          "qty": 20000
+        },
+        {
+          "currency": "USD",
+          "price": 0.015,
+          "price_rub": 1.2,
+          "qty": 50000
+        }
+      ],
+      "product_url": "https://www.mouser.com/ProductDetail/Bourns/CR01005AJ-000GAS?qs=bN4HulGPsrFN2R1duCeQzQ%3D%3D",
+      "regions": [
+        "US"
+      ],
+      "source": "mouser",
+      "stock": 20000,
+      "title": "Thick Film Resistors - SMD ZERO OHM JUMPER"
+    },
+    {
+      "datasheet_url": "https://www.mouser.com/datasheet/3/40/1/cr_a_as.pdf",
+      "description_short": "Thick Film Resistors - SMD ResA-AS 01005 49R9 1% 31mW TC200",
+      "image_url": "https://www.mouser.com/images/bourns/images/CR01005A-AS_SPL.jpg",
+      "manufacturer": "Bourns",
+      "min_currency": "USD",
+      "min_price": 0.019,
+      "min_price_rub": 1.52,
+      "mpn": "CR01005AFW-49R9GAS",
+      "package": "",
+      "packaging": "",
+      "price_breaks": [
+        {
+          "currency": "USD",
+          "price": 0.18,
+          "price_rub": 14.39,
+          "qty": 1
+        },
+        {
+          "currency": "USD",
+          "price": 0.089,
+          "price_rub": 7.12,
+          "qty": 10
+        },
+        {
+          "currency": "USD",
+          "price": 0.051,
+          "price_rub": 4.08,
+          "qty": 100
+        },
+        {
+          "currency": "USD",
+          "price": 0.031,
+          "price_rub": 2.48,
+          "qty": 1000
+        },
+        {
+          "currency": "USD",
+          "price": 0.026,
+          "price_rub": 2.08,
+          "qty": 2000
+        },
+        {
+          "currency": "USD",
+          "price": 0.024,
+          "price_rub": 1.92,
+          "qty": 5000
+        },
+        {
+          "currency": "USD",
+          "price": 0.022,
+          "price_rub": 1.76,
+          "qty": 10000
+        },
+        {
+          "currency": "USD",
+          "price": 0.02,
+          "price_rub": 1.6,
+          "qty": 20000
+        },
+        {
+          "currency": "USD",
+          "price": 0.019,
+          "price_rub": 1.52,
+          "qty": 50000
+        }
+      ],
+      "product_url": "https://www.mouser.com/ProductDetail/Bourns/CR01005AFW-49R9GAS?qs=bN4HulGPsrGrnxIch2ILKQ%3D%3D",
+      "regions": [
+        "US"
+      ],
+      "source": "mouser",
+      "stock": 20000,
+      "title": "Thick Film Resistors - SMD ResA-AS 01005 49R9 1% 31mW TC200"
+    },
+    {
+      "datasheet_url": "https://www.mouser.com/datasheet/3/40/1/cr_a_as.pdf",
+      "description_short": "Thick Film Resistors - SMD ResA-AS 01005 20K 1% 31mW TC200",
+      "image_url": "https://www.mouser.com/images/bourns/images/CR01005A-AS_SPL.jpg",
+      "manufacturer": "Bourns",
+      "min_currency": "USD",
+      "min_price": 0.019,
+      "min_price_rub": 1.52,
+      "mpn": "CR01005AFW-2002GAS",
+      "package": "",
+      "packaging": "",
+      "price_breaks": [
+        {
+          "currency": "USD",
+          "price": 0.18,
+          "price_rub": 14.39,
+          "qty": 1
+        },
+        {
+          "currency": "USD",
+          "price": 0.089,
+          "price_rub": 7.12,
+          "qty": 10
+        },
+        {
+          "currency": "USD",
+          "price": 0.051,
+          "price_rub": 4.08,
+          "qty": 100
+        },
+        {
+          "currency": "USD",
+          "price": 0.031,
+          "price_rub": 2.48,
+          "qty": 1000
+        },
+        {
+          "currency": "USD",
+          "price": 0.026,
+          "price_rub": 2.08,
+          "qty": 2000
+        },
+        {
+          "currency": "USD",
+          "price": 0.024,
+          "price_rub": 1.92,
+          "qty": 5000
+        },
+        {
+          "currency": "USD",
+          "price": 0.022,
+          "price_rub": 1.76,
+          "qty": 10000
+        },
+        {
+          "currency": "USD",
+          "price": 0.02,
+          "price_rub": 1.6,
+          "qty": 20000
+        },
+        {
+          "currency": "USD",
+          "price": 0.019,
+          "price_rub": 1.52,
+          "qty": 50000
+        }
+      ],
+      "product_url": "https://www.mouser.com/ProductDetail/Bourns/CR01005AFW-2002GAS?qs=bN4HulGPsrEO%2FDffSD3ZqQ%3D%3D",
+      "regions": [
+        "US"
+      ],
+      "source": "mouser",
+      "stock": 20000,
+      "title": "Thick Film Resistors - SMD ResA-AS 01005 20K 1% 31mW TC200"
+    },
+    {
+      "datasheet_url": "https://www.mouser.com/datasheet/3/40/1/cr_a_as.pdf",
+      "description_short": "Thick Film Resistors - SMD 10K OHM 1%",
+      "image_url": "https://www.mouser.com/images/bourns/images/CR01005A-AS_SPL.jpg",
+      "manufacturer": "Bourns",
+      "min_currency": "USD",
+      "min_price": 0.019,
+      "min_price_rub": 1.52,
+      "mpn": "CR01005AFW-1002GAS",
+      "package": "",
+      "packaging": "",
+      "price_breaks": [
+        {
+          "currency": "USD",
+          "price": 0.18,
+          "price_rub": 14.39,
+          "qty": 1
+        },
+        {
+          "currency": "USD",
+          "price": 0.089,
+          "price_rub": 7.12,
+          "qty": 10
+        },
+        {
+          "currency": "USD",
+          "price": 0.051,
+          "price_rub": 4.08,
+          "qty": 100
+        },
+        {
+          "currency": "USD",
+          "price": 0.031,
+          "price_rub": 2.48,
+          "qty": 1000
+        },
+        {
+          "currency": "USD",
+          "price": 0.026,
+          "price_rub": 2.08,
+          "qty": 2000
+        },
+        {
+          "currency": "USD",
+          "price": 0.024,
+          "price_rub": 1.92,
+          "qty": 5000
+        },
+        {
+          "currency": "USD",
+          "price": 0.022,
+          "price_rub": 1.76,
+          "qty": 10000
+        },
+        {
+          "currency": "USD",
+          "price": 0.02,
+          "price_rub": 1.6,
+          "qty": 20000
+        },
+        {
+          "currency": "USD",
+          "price": 0.019,
+          "price_rub": 1.52,
+          "qty": 50000
+        }
+      ],
+      "product_url": "https://www.mouser.com/ProductDetail/Bourns/CR01005AFW-1002GAS?qs=bN4HulGPsrEwkaUZU35%2F7A%3D%3D",
+      "regions": [
+        "US"
+      ],
+      "source": "mouser",
+      "stock": 20000,
+      "title": "Thick Film Resistors - SMD 10K OHM 1%"
+    },
+    {
+      "datasheet_url": "https://www.mouser.com/datasheet/3/40/1/cr_a_as.pdf",
+      "description_short": "Thick Film Resistors - SMD ResA-AS 01005 2K 1% 31mW TC200",
+      "image_url": "https://www.mouser.com/images/bourns/images/CR01005A-AS_SPL.jpg",
+      "manufacturer": "Bourns",
+      "min_currency": "USD",
+      "min_price": 0.019,
+      "min_price_rub": 1.52,
+      "mpn": "CR01005AFW-2001GAS",
+      "package": "",
+      "packaging": "",
+      "price_breaks": [
+        {
+          "currency": "USD",
+          "price": 0.18,
+          "price_rub": 14.39,
+          "qty": 1
+        },
+        {
+          "currency": "USD",
+          "price": 0.089,
+          "price_rub": 7.12,
+          "qty": 10
+        },
+        {
+          "currency": "USD",
+          "price": 0.051,
+          "price_rub": 4.08,
+          "qty": 100
+        },
+        {
+          "currency": "USD",
+          "price": 0.031,
+          "price_rub": 2.48,
+          "qty": 1000
+        },
+        {
+          "currency": "USD",
+          "price": 0.026,
+          "price_rub": 2.08,
+          "qty": 2000
+        },
+        {
+          "currency": "USD",
+          "price": 0.024,
+          "price_rub": 1.92,
+          "qty": 5000
+        },
+        {
+          "currency": "USD",
+          "price": 0.022,
+          "price_rub": 1.76,
+          "qty": 10000
+        },
+        {
+          "currency": "USD",
+          "price": 0.02,
+          "price_rub": 1.6,
+          "qty": 20000
+        },
+        {
+          "currency": "USD",
+          "price": 0.019,
+          "price_rub": 1.52,
+          "qty": 50000
+        }
+      ],
+      "product_url": "https://www.mouser.com/ProductDetail/Bourns/CR01005AFW-2001GAS?qs=bN4HulGPsrFav6Djy1%2Fk6Q%3D%3D",
+      "regions": [
+        "US"
+      ],
+      "source": "mouser",
+      "stock": 19990,
+      "title": "Thick Film Resistors - SMD ResA-AS 01005 2K 1% 31mW TC200"
+    },
+    {
+      "datasheet_url": "https://www.mouser.com/datasheet/3/40/1/cr_a_as.pdf",
+      "description_short": "Thick Film Resistors - SMD ResA-AS 01005 51R 1% 31mW TC200",
+      "image_url": "https://www.mouser.com/images/bourns/images/CR01005A-AS_SPL.jpg",
+      "manufacturer": "Bourns",
+      "min_currency": "USD",
+      "min_price": 0.019,
+      "min_price_rub": 1.52,
+      "mpn": "CR01005AFW-51R0GAS",
+      "package": "",
+      "packaging": "",
+      "price_breaks": [
+        {
+          "currency": "USD",
+          "price": 0.18,
+          "price_rub": 14.39,
+          "qty": 1
+        },
+        {
+          "currency": "USD",
+          "price": 0.089,
+          "price_rub": 7.12,
+          "qty": 10
+        },
+        {
+          "currency": "USD",
+          "price": 0.051,
+          "price_rub": 4.08,
+          "qty": 100
+        },
+        {
+          "currency": "USD",
+          "price": 0.031,
+          "price_rub": 2.48,
+          "qty": 1000
+        },
+        {
+          "currency": "USD",
+          "price": 0.026,
+          "price_rub": 2.08,
+          "qty": 2000
+        },
+        {
+          "currency": "USD",
+          "price": 0.024,
+          "price_rub": 1.92,
+          "qty": 5000
+        },
+        {
+          "currency": "USD",
+          "price": 0.022,
+          "price_rub": 1.76,
+          "qty": 10000
+        },
+        {
+          "currency": "USD",
+          "price": 0.02,
+          "price_rub": 1.6,
+          "qty": 20000
+        },
+        {
+          "currency": "USD",
+          "price": 0.019,
+          "price_rub": 1.52,
+          "qty": 50000
+        }
+      ],
+      "product_url": "https://www.mouser.com/ProductDetail/Bourns/CR01005AFW-51R0GAS?qs=bN4HulGPsrEgW6rObt6%2FRA%3D%3D",
+      "regions": [
+        "US"
+      ],
+      "source": "mouser",
+      "stock": 20000,
+      "title": "Thick Film Resistors - SMD ResA-AS 01005 51R 1% 31mW TC200"
+    },
+    {
+      "datasheet_url": "https://www.mouser.com/datasheet/3/40/1/cr_a_as.pdf",
+      "description_short": "Thick Film Resistors - SMD ResA-AS 01005 20R 1% 31mW TC200",
+      "image_url": "https://www.mouser.com/images/bourns/images/CR01005A-AS_SPL.jpg",
+      "manufacturer": "Bourns",
+      "min_currency": "USD",
+      "min_price": 0.019,
+      "min_price_rub": 1.52,
+      "mpn": "CR01005AFW-20R0GAS",
+      "package": "",
+      "packaging": "",
+      "price_breaks": [
+        {
+          "currency": "USD",
+          "price": 0.18,
+          "price_rub": 14.39,
+          "qty": 1
+        },
+        {
+          "currency": "USD",
+          "price": 0.089,
+          "price_rub": 7.12,
+          "qty": 10
+        },
+        {
+          "currency": "USD",
+          "price": 0.051,
+          "price_rub": 4.08,
+          "qty": 100
+        },
+        {
+          "currency": "USD",
+          "price": 0.031,
+          "price_rub": 2.48,
+          "qty": 1000
+        },
+        {
+          "currency": "USD",
+          "price": 0.026,
+          "price_rub": 2.08,
+          "qty": 2000
+        },
+        {
+          "currency": "USD",
+          "price": 0.024,
+          "price_rub": 1.92,
+          "qty": 5000
+        },
+        {
+          "currency": "USD",
+          "price": 0.022,
+          "price_rub": 1.76,
+          "qty": 10000
+        },
+        {
+          "currency": "USD",
+          "price": 0.02,
+          "price_rub": 1.6,
+          "qty": 20000
+        },
+        {
+          "currency": "USD",
+          "price": 0.019,
+          "price_rub": 1.52,
+          "qty": 50000
+        }
+      ],
+      "product_url": "https://www.mouser.com/ProductDetail/Bourns/CR01005AFW-20R0GAS?qs=bN4HulGPsrGG5Be7VUXmbA%3D%3D",
+      "regions": [
+        "US"
+      ],
+      "source": "mouser",
+      "stock": 20000,
+      "title": "Thick Film Resistors - SMD ResA-AS 01005 20R 1% 31mW TC200"
+    },
+    {
+      "datasheet_url": "https://www.mouser.com/datasheet/3/40/1/cr_a_as.pdf",
+      "description_short": "Thick Film Resistors - SMD 100 OHM 1%",
+      "image_url": "https://www.mouser.com/images/bourns/images/CR01005A-AS_SPL.jpg",
+      "manufacturer": "Bourns",
+      "min_currency": "USD",
+      "min_price": 0.019,
+      "min_price_rub": 1.52,
+      "mpn": "CR01005AFW-1000GAS",
+      "package": "",
+      "packaging": "",
+      "price_breaks": [
+        {
+          "currency": "USD",
+          "price": 0.18,
+          "price_rub": 14.39,
+          "qty": 1
+        },
+        {
+          "currency": "USD",
+          "price": 0.089,
+          "price_rub": 7.12,
+          "qty": 10
+        },
+        {
+          "currency": "USD",
+          "price": 0.051,
+          "price_rub": 4.08,
+          "qty": 100
+        },
+        {
+          "currency": "USD",
+          "price": 0.031,
+          "price_rub": 2.48,
+          "qty": 1000
+        },
+        {
+          "currency": "USD",
+          "price": 0.026,
+          "price_rub": 2.08,
+          "qty": 2000
+        },
+        {
+          "currency": "USD",
+          "price": 0.024,
+          "price_rub": 1.92,
+          "qty": 5000
+        },
+        {
+          "currency": "USD",
+          "price": 0.022,
+          "price_rub": 1.76,
+          "qty": 10000
+        },
+        {
+          "currency": "USD",
+          "price": 0.02,
+          "price_rub": 1.6,
+          "qty": 20000
+        },
+        {
+          "currency": "USD",
+          "price": 0.019,
+          "price_rub": 1.52,
+          "qty": 50000
+        }
+      ],
+      "product_url": "https://www.mouser.com/ProductDetail/Bourns/CR01005AFW-1000GAS?qs=bN4HulGPsrGzZfDMjNLlXQ%3D%3D",
+      "regions": [
+        "US"
+      ],
+      "source": "mouser",
+      "stock": 20000,
+      "title": "Thick Film Resistors - SMD 100 OHM 1%"
+    },
+    {
+      "datasheet_url": "https://www.mouser.com/datasheet/3/40/1/cr_a_as.pdf",
+      "description_short": "Thick Film Resistors - SMD ResA-AS 01005 4K7 1% 31mW TC200",
+      "image_url": "https://www.mouser.com/images/bourns/images/CR01005A-AS_SPL.jpg",
+      "manufacturer": "Bourns",
+      "min_currency": "USD",
+      "min_price": 0.019,
+      "min_price_rub": 1.52,
+      "mpn": "CR01005AFW-4701GAS",
+      "package": "",
+      "packaging": "",
+      "price_breaks": [
+        {
+          "currency": "USD",
+          "price": 0.18,
+          "price_rub": 14.39,
+          "qty": 1
+        },
+        {
+          "currency": "USD",
+          "price": 0.089,
+          "price_rub": 7.12,
+          "qty": 10
+        },
+        {
+          "currency": "USD",
+          "price": 0.051,
+          "price_rub": 4.08,
+          "qty": 100
+        },
+        {
+          "currency": "USD",
+          "price": 0.031,
+          "price_rub": 2.48,
+          "qty": 1000
+        },
+        {
+          "currency": "USD",
+          "price": 0.026,
+          "price_rub": 2.08,
+          "qty": 2000
+        },
+        {
+          "currency": "USD",
+          "price": 0.024,
+          "price_rub": 1.92,
+          "qty": 5000
+        },
+        {
+          "currency": "USD",
+          "price": 0.022,
+          "price_rub": 1.76,
+          "qty": 10000
+        },
+        {
+          "currency": "USD",
+          "price": 0.02,
+          "price_rub": 1.6,
+          "qty": 20000
+        },
+        {
+          "currency": "USD",
+          "price": 0.019,
+          "price_rub": 1.52,
+          "qty": 50000
+        }
+      ],
+      "product_url": "https://www.mouser.com/ProductDetail/Bourns/CR01005AFW-4701GAS?qs=bN4HulGPsrH9TkvHKGtfbQ%3D%3D",
+      "regions": [
+        "US"
+      ],
+      "source": "mouser",
+      "stock": 19965,
+      "title": "Thick Film Resistors - SMD ResA-AS 01005 4K7 1% 31mW TC200"
+    },
+    {
+      "datasheet_url": "https://www.mouser.com/datasheet/3/40/1/cr_a_as.pdf",
+      "description_short": "Thick Film Resistors - SMD ResA-AS 01005 5K1 1% 31mW TC200",
+      "image_url": "https://www.mouser.com/images/bourns/images/CR01005A-AS_SPL.jpg",
+      "manufacturer": "Bourns",
+      "min_currency": "USD",
+      "min_price": 0.019,
+      "min_price_rub": 1.52,
+      "mpn": "CR01005AFW-5101GAS",
+      "package": "",
+      "packaging": "",
+      "price_breaks": [
+        {
+          "currency": "USD",
+          "price": 0.19,
+          "price_rub": 15.19,
+          "qty": 1
+        },
+        {
+          "currency": "USD",
+          "price": 0.09,
+          "price_rub": 7.2,
+          "qty": 10
+        },
+        {
+          "currency": "USD",
+          "price": 0.052,
+          "price_rub": 4.16,
+          "qty": 100
+        },
+        {
+          "currency": "USD",
+          "price": 0.032,
+          "price_rub": 2.56,
+          "qty": 1000
+        },
+        {
+          "currency": "USD",
+          "price": 0.027,
+          "price_rub": 2.16,
+          "qty": 2000
+        },
+        {
+          "currency": "USD",
+          "price": 0.025,
+          "price_rub": 2,
+          "qty": 5000
+        },
+        {
+          "currency": "USD",
+          "price": 0.022,
+          "price_rub": 1.76,
+          "qty": 10000
+        },
+        {
+          "currency": "USD",
+          "price": 0.02,
+          "price_rub": 1.6,
+          "qty": 20000
+        },
+        {
+          "currency": "USD",
+          "price": 0.019,
+          "price_rub": 1.52,
+          "qty": 50000
+        }
+      ],
+      "product_url": "https://www.mouser.com/ProductDetail/Bourns/CR01005AFW-5101GAS?qs=bN4HulGPsrGeLFv6A3wxzA%3D%3D",
+      "regions": [
+        "US"
+      ],
+      "source": "mouser",
+      "stock": 20000,
+      "title": "Thick Film Resistors - SMD ResA-AS 01005 5K1 1% 31mW TC200"
+    },
+    {
+      "datasheet_url": "https://www.mouser.com/datasheet/3/40/1/cr_a_as.pdf",
+      "description_short": "Thick Film Resistors - SMD ResA-AS 01005 150R 1% 31mW TC200",
+      "image_url": "https://www.mouser.com/images/bourns/images/CR01005A-AS_SPL.jpg",
+      "manufacturer": "Bourns",
+      "min_currency": "USD",
+      "min_price": 0.019,
+      "min_price_rub": 1.52,
+      "mpn": "CR01005AFW-1500GAS",
+      "package": "",
+      "packaging": "",
+      "price_breaks": [
+        {
+          "currency": "USD",
+          "price": 0.18,
+          "price_rub": 14.39,
+          "qty": 1
+        },
+        {
+          "currency": "USD",
+          "price": 0.089,
+          "price_rub": 7.12,
+          "qty": 10
+        },
+        {
+          "currency": "USD",
+          "price": 0.051,
+          "price_rub": 4.08,
+          "qty": 100
+        },
+        {
+          "currency": "USD",
+          "price": 0.031,
+          "price_rub": 2.48,
+          "qty": 1000
+        },
+        {
+          "currency": "USD",
+          "price": 0.026,
+          "price_rub": 2.08,
+          "qty": 2000
+        },
+        {
+          "currency": "USD",
+          "price": 0.024,
+          "price_rub": 1.92,
+          "qty": 5000
+        },
+        {
+          "currency": "USD",
+          "price": 0.022,
+          "price_rub": 1.76,
+          "qty": 10000
+        },
+        {
+          "currency": "USD",
+          "price": 0.02,
+          "price_rub": 1.6,
+          "qty": 20000
+        },
+        {
+          "currency": "USD",
+          "price": 0.019,
+          "price_rub": 1.52,
+          "qty": 50000
+        }
+      ],
+      "product_url": "https://www.mouser.com/ProductDetail/Bourns/CR01005AFW-1500GAS?qs=bN4HulGPsrHnR%2FQ2bDKedg%3D%3D",
+      "regions": [
+        "US"
+      ],
+      "source": "mouser",
+      "stock": 20000,
+      "title": "Thick Film Resistors - SMD ResA-AS 01005 150R 1% 31mW TC200"
+    },
+    {
+      "datasheet_url": "https://www.mouser.com/datasheet/3/40/1/cr_a_as.pdf",
+      "description_short": "Thick Film Resistors - SMD ResA-AS 01005 402K 1% 31mW TC200",
+      "image_url": "https://www.mouser.com/images/bourns/images/CR01005A-AS_SPL.jpg",
+      "manufacturer": "Bourns",
+      "min_currency": "USD",
+      "min_price": 0.019,
+      "min_price_rub": 1.52,
+      "mpn": "CR01005AFW-4023GAS",
+      "package": "",
+      "packaging": "",
+      "price_breaks": [
+        {
+          "currency": "USD",
+          "price": 0.18,
+          "price_rub": 14.39,
+          "qty": 1
+        },
+        {
+          "currency": "USD",
+          "price": 0.089,
+          "price_rub": 7.12,
+          "qty": 10
+        },
+        {
+          "currency": "USD",
+          "price": 0.051,
+          "price_rub": 4.08,
+          "qty": 100
+        },
+        {
+          "currency": "USD",
+          "price": 0.031,
+          "price_rub": 2.48,
+          "qty": 1000
+        },
+        {
+          "currency": "USD",
+          "price": 0.026,
+          "price_rub": 2.08,
+          "qty": 2000
+        },
+        {
+          "currency": "USD",
+          "price": 0.024,
+          "price_rub": 1.92,
+          "qty": 5000
+        },
+        {
+          "currency": "USD",
+          "price": 0.022,
+          "price_rub": 1.76,
+          "qty": 10000
+        },
+        {
+          "currency": "USD",
+          "price": 0.02,
+          "price_rub": 1.6,
+          "qty": 20000
+        },
+        {
+          "currency": "USD",
+          "price": 0.019,
+          "price_rub": 1.52,
+          "qty": 50000
+        }
+      ],
+      "product_url": "https://www.mouser.com/ProductDetail/Bourns/CR01005AFW-4023GAS?qs=bN4HulGPsrHLFzFXmuC43w%3D%3D",
+      "regions": [
+        "US"
+      ],
+      "source": "mouser",
+      "stock": 20000,
+      "title": "Thick Film Resistors - SMD ResA-AS 01005 402K 1% 31mW TC200"
+    },
+    {
+      "datasheet_url": "https://www.mouser.com/datasheet/3/40/1/cr_a_as.pdf",
+      "description_short": "Thick Film Resistors - SMD ResA-AS 01005 47K 1% 31mW TC200",
+      "image_url": "https://www.mouser.com/images/bourns/images/CR01005A-AS_SPL.jpg",
+      "manufacturer": "Bourns",
+      "min_currency": "USD",
+      "min_price": 0.019,
+      "min_price_rub": 1.52,
+      "mpn": "CR01005AFW-4702GAS",
+      "package": "",
+      "packaging": "",
+      "price_breaks": [
+        {
+          "currency": "USD",
+          "price": 0.18,
+          "price_rub": 14.39,
+          "qty": 1
+        },
+        {
+          "currency": "USD",
+          "price": 0.089,
+          "price_rub": 7.12,
+          "qty": 10
+        },
+        {
+          "currency": "USD",
+          "price": 0.051,
+          "price_rub": 4.08,
+          "qty": 100
+        },
+        {
+          "currency": "USD",
+          "price": 0.031,
+          "price_rub": 2.48,
+          "qty": 1000
+        },
+        {
+          "currency": "USD",
+          "price": 0.026,
+          "price_rub": 2.08,
+          "qty": 2000
+        },
+        {
+          "currency": "USD",
+          "price": 0.024,
+          "price_rub": 1.92,
+          "qty": 5000
+        },
+        {
+          "currency": "USD",
+          "price": 0.022,
+          "price_rub": 1.76,
+          "qty": 10000
+        },
+        {
+          "currency": "USD",
+          "price": 0.02,
+          "price_rub": 1.6,
+          "qty": 20000
+        },
+        {
+          "currency": "USD",
+          "price": 0.019,
+          "price_rub": 1.52,
+          "qty": 50000
+        }
+      ],
+      "product_url": "https://www.mouser.com/ProductDetail/Bourns/CR01005AFW-4702GAS?qs=bN4HulGPsrEhijLozXc4XA%3D%3D",
+      "regions": [
+        "US"
+      ],
+      "source": "mouser",
+      "stock": 20000,
+      "title": "Thick Film Resistors - SMD ResA-AS 01005 47K 1% 31mW TC200"
+    },
+    {
+      "datasheet_url": "https://www.mouser.com/datasheet/3/101/1/DTA115E-D.PDF",
+      "description_short": "Digital Transistors Bias Resistor Transistor",
+      "image_url": "https://www.mouser.com/images/mouserelectronics/images/SOT_323_3_new_SPL.jpg",
+      "manufacturer": "onsemi",
+      "min_currency": "USD",
+      "min_price": 0.023,
+      "min_price_rub": 1.84,
+      "mpn": "NSVMUN5136T1G",
+      "package": "",
+      "packaging": "",
+      "price_breaks": [
+        {
+          "currency": "USD",
+          "price": 0.17,
+          "price_rub": 13.59,
+          "qty": 1
+        },
+        {
+          "currency": "USD",
+          "price": 0.113,
+          "price_rub": 9.04,
+          "qty": 10
+        },
+        {
+          "currency": "USD",
+          "price": 0.072,
+          "price_rub": 5.76,
+          "qty": 100
+        },
+        {
+          "currency": "USD",
+          "price": 0.045,
+          "price_rub": 3.6,
+          "qty": 500
+        },
+        {
+          "currency": "USD",
+          "price": 0.04,
+          "price_rub": 3.2,
+          "qty": 1000
+        },
+        {
+          "currency": "USD",
+          "price": 0.034,
+          "price_rub": 2.72,
+          "qty": 3000
+        },
+        {
+          "currency": "USD",
+          "price": 0.029,
+          "price_rub": 2.32,
+          "qty": 6000
+        },
+        {
+          "currency": "USD",
+          "price": 0.026,
+          "price_rub": 2.08,
+          "qty": 9000
+        },
+        {
+          "currency": "USD",
+          "price": 0.023,
+          "price_rub": 1.84,
+          "qty": 24000
+        }
+      ],
+      "product_url": "https://www.mouser.com/ProductDetail/onsemi/NSVMUN5136T1G?qs=3Rah4i%252BhyCHeCamDjT9ApA%3D%3D",
+      "regions": [
+        "US"
+      ],
+      "source": "mouser",
+      "stock": 17960,
+      "title": "Digital Transistors Bias Resistor Transistor"
+    },
+    {
+      "datasheet_url": null,
+      "description_short": "Metal Film Resistors - Through Hole CMF-55 51K 1% T-1 EA E3",
+      "image_url": "https://www.mouser.com/images/vishay/images/CMF60392R00FHEB_SPL.jpg",
+      "manufacturer": "Vishay / Dale",
+      "min_currency": "USD",
+      "min_price": 0.106,
+      "min_price_rub": 8.48,
+      "mpn": "CMF5551K000FKEA",
+      "package": "",
+      "packaging": "",
+      "price_breaks": [
+        {
+          "currency": "USD",
+          "price": 0.58,
+          "price_rub": 46.38,
+          "qty": 1
+        },
+        {
+          "currency": "USD",
+          "price": 0.445,
+          "price_rub": 35.58,
+          "qty": 10
+        },
+        {
+          "currency": "USD",
+          "price": 0.339,
+          "price_rub": 27.11,
+          "qty": 25
+        },
+        {
+          "currency": "USD",
+          "price": 0.187,
+          "price_rub": 14.95,
+          "qty": 100
+        },
+        {
+          "currency": "USD",
+          "price": 0.158,
+          "price_rub": 12.63,
+          "qty": 250
+        },
+        {
+          "currency": "USD",
+          "price": 0.135,
+          "price_rub": 10.79,
+          "qty": 500
+        },
+        {
+          "currency": "USD",
+          "price": 0.124,
+          "price_rub": 9.91,
+          "qty": 1000
+        },
+        {
+          "currency": "USD",
+          "price": 0.106,
+          "price_rub": 8.48,
+          "qty": 5000
+        }
+      ],
+      "product_url": "https://www.mouser.com/ProductDetail/Vishay-Dale/CMF5551K000FKEA?qs=vOcB1WHNNXL3oa0ArHYTCQ%3D%3D",
+      "regions": [
+        "US"
+      ],
+      "source": "mouser",
+      "stock": 4965,
+      "title": "Metal Film Resistors - Through Hole CMF-55 51K 1% T-1 EA E3"
+    },
+    {
+      "datasheet_url": null,
+      "description_short": "Metal Film Resistors - Through Hole CMF-55 680K 1% T-2 EA E3",
+      "image_url": "https://www.mouser.com/images/vishay/images/CMF_60_SPL.jpg",
+      "manufacturer": "Vishay",
+      "min_currency": "USD",
+      "min_price": 0.117,
+      "min_price_rub": 9.36,
+      "mpn": "CMF55680K00FHEA",
+      "package": "",
+      "packaging": "",
+      "price_breaks": [
+        {
+          "currency": "USD",
+          "price": 0.63,
+          "price_rub": 50.37,
+          "qty": 1
+        },
+        {
+          "currency": "USD",
+          "price": 0.403,
+          "price_rub": 32.22,
+          "qty": 10
+        },
+        {
+          "currency": "USD",
+          "price": 0.315,
+          "price_rub": 25.19,
+          "qty": 25
+        },
+        {
+          "currency": "USD",
+          "price": 0.216,
+          "price_rub": 17.27,
+          "qty": 100
+        },
+        {
+          "currency": "USD",
+          "price": 0.186,
+          "price_rub": 14.87,
+          "qty": 250
+        },
+        {
+          "currency": "USD",
+          "price": 0.168,
+          "price_rub": 13.43,
+          "qty": 500
+        },
+        {
+          "currency": "USD",
+          "price": 0.153,
+          "price_rub": 12.23,
+          "qty": 1000
+        },
+        {
+          "currency": "USD",
+          "price": 0.126,
+          "price_rub": 10.07,
+          "qty": 5000
+        },
+        {
+          "currency": "USD",
+          "price": 0.117,
+          "price_rub": 9.36,
+          "qty": 10000
+        }
+      ],
+      "product_url": "https://www.mouser.com/ProductDetail/Vishay/CMF55680K00FHEA?qs=HMhDvBYWqvNl0Xeg0b0fbQ%3D%3D",
+      "regions": [
+        "US"
+      ],
+      "source": "mouser",
+      "stock": 4930,
+      "title": "Metal Film Resistors - Through Hole CMF-55 680K 1% T-2 EA E3"
+    },
+    {
+      "datasheet_url": null,
+      "description_short": "Metal Film Resistors - Through Hole CMF-55 820K 1% T-2 EA E3",
+      "image_url": "https://www.mouser.com/images/vishay/images/CMF60392R00FHEB_SPL.jpg",
+      "manufacturer": "Vishay / Dale",
+      "min_currency": "USD",
+      "min_price": 0.133,
+      "min_price_rub": 10.63,
+      "mpn": "CMF55820K00FHEA",
+      "package": "",
+      "packaging": "",
+      "price_breaks": [
+        {
+          "currency": "USD",
+          "price": 0.63,
+          "price_rub": 50.37,
+          "qty": 1
+        },
+        {
+          "currency": "USD",
+          "price": 0.403,
+          "price_rub": 32.22,
+          "qty": 10
+        },
+        {
+          "currency": "USD",
+          "price": 0.315,
+          "price_rub": 25.19,
+          "qty": 25
+        },
+        {
+          "currency": "USD",
+          "price": 0.216,
+          "price_rub": 17.27,
+          "qty": 100
+        },
+        {
+          "currency": "USD",
+          "price": 0.186,
+          "price_rub": 14.87,
+          "qty": 250
+        },
+        {
+          "currency": "USD",
+          "price": 0.168,
+          "price_rub": 13.43,
+          "qty": 500
+        },
+        {
+          "currency": "USD",
+          "price": 0.153,
+          "price_rub": 12.23,
+          "qty": 1000
+        },
+        {
+          "currency": "USD",
+          "price": 0.133,
+          "price_rub": 10.63,
+          "qty": 5000
+        }
+      ],
+      "product_url": "https://www.mouser.com/ProductDetail/Vishay-Dale/CMF55820K00FHEA?qs=vOcB1WHNNXKCRdVsSwwb6g%3D%3D",
+      "regions": [
+        "US"
+      ],
+      "source": "mouser",
+      "stock": 4858,
+      "title": "Metal Film Resistors - Through Hole CMF-55 820K 1% T-2 EA E3"
+    },
+    {
+      "datasheet_url": null,
+      "description_short": "Metal Film Resistors - Through Hole Metal Film Resistors, Axial, Industrial, Precision",
+      "image_url": "https://www.mouser.com/images/vishay/images/CMF60392R00FHEB_SPL.jpg",
+      "manufacturer": "Vishay / Dale",
+      "min_currency": "USD",
+      "min_price": 0.133,
+      "min_price_rub": 10.63,
+      "mpn": "CMF55806K00FHEA",
+      "package": "",
+      "packaging": "",
+      "price_breaks": [
+        {
+          "currency": "USD",
+          "price": 0.64,
+          "price_rub": 51.17,
+          "qty": 1
+        },
+        {
+          "currency": "USD",
+          "price": 0.404,
+          "price_rub": 32.3,
+          "qty": 10
+        },
+        {
+          "currency": "USD",
+          "price": 0.316,
+          "price_rub": 25.27,
+          "qty": 25
+        },
+        {
+          "currency": "USD",
+          "price": 0.217,
+          "price_rub": 17.35,
+          "qty": 100
+        },
+        {
+          "currency": "USD",
+          "price": 0.187,
+          "price_rub": 14.95,
+          "qty": 250
+        },
+        {
+          "currency": "USD",
+          "price": 0.169,
+          "price_rub": 13.51,
+          "qty": 500
+        },
+        {
+          "currency": "USD",
+          "price": 0.157,
+          "price_rub": 12.55,
+          "qty": 1000
+        },
+        {
+          "currency": "USD",
+          "price": 0.133,
+          "price_rub": 10.63,
+          "qty": 5000
+        }
+      ],
+      "product_url": "https://www.mouser.com/ProductDetail/Vishay-Dale/CMF55806K00FHEA?qs=vOcB1WHNNXLvhr83s06UWg%3D%3D",
+      "regions": [
+        "US"
+      ],
+      "source": "mouser",
+      "stock": 3336,
+      "title": "Metal Film Resistors - Through Hole Metal Film Resistors, Axial, Industrial, Precision"
+    },
+    {
+      "datasheet_url": null,
+      "description_short": "Current Sense Resistors - SMD .004ohms 1% 1/4Watt",
+      "image_url": "https://www.mouser.com/images/vishay/images/WFC-series_SPL.jpg",
+      "manufacturer": "Vishay / Dale",
+      "min_currency": "USD",
+      "min_price": 0.134,
+      "min_price_rub": 10.71,
+      "mpn": "WFC06034L000FE66",
+      "package": "",
+      "packaging": "",
+      "price_breaks": [
+        {
+          "currency": "USD",
+          "price": 0.65,
+          "price_rub": 51.97,
+          "qty": 1
+        },
+        {
+          "currency": "USD",
+          "price": 0.408,
+          "price_rub": 32.62,
+          "qty": 10
+        },
+        {
+          "currency": "USD",
+          "price": 0.318,
+          "price_rub": 25.43,
+          "qty": 25
+        },
+        {
+          "currency": "USD",
+          "price": 0.219,
+          "price_rub": 17.51,
+          "qty": 100
+        },
+        {
+          "currency": "USD",
+          "price": 0.188,
+          "price_rub": 15.03,
+          "qty": 250
+        },
+        {
+          "currency": "USD",
+          "price": 0.17,
+          "price_rub": 13.59,
+          "qty": 500
+        },
+        {
+          "currency": "USD",
+          "price": 0.159,
+          "price_rub": 12.71,
+          "qty": 1000
+        },
+        {
+          "currency": "USD",
+          "price": 0.134,
+          "price_rub": 10.71,
+          "qty": 5000
+        }
+      ],
+      "product_url": "https://www.mouser.com/ProductDetail/Vishay-Dale/WFC06034L000FE66?qs=doiCPypUmgHN669qDvzHkQ%3D%3D",
+      "regions": [
+        "US"
+      ],
+      "source": "mouser",
+      "stock": 4491,
+      "title": "Current Sense Resistors - SMD .004ohms 1% 1/4Watt"
+    },
+    {
+      "datasheet_url": null,
+      "description_short": "Current Sense Resistors - SMD .002ohms 1% 1/4Watt",
+      "image_url": "https://www.mouser.com/images/vishay/images/WFC-series_SPL.jpg",
+      "manufacturer": "Vishay / Dale",
+      "min_currency": "USD",
+      "min_price": 0.135,
+      "min_price_rub": 10.79,
+      "mpn": "WFC06032L000FE66",
+      "package": "",
+      "packaging": "",
+      "price_breaks": [
+        {
+          "currency": "USD",
+          "price": 0.65,
+          "price_rub": 51.97,
+          "qty": 1
+        },
+        {
+          "currency": "USD",
+          "price": 0.408,
+          "price_rub": 32.62,
+          "qty": 10
+        },
+        {
+          "currency": "USD",
+          "price": 0.318,
+          "price_rub": 25.43,
+          "qty": 25
+        },
+        {
+          "currency": "USD",
+          "price": 0.219,
+          "price_rub": 17.51,
+          "qty": 100
+        },
+        {
+          "currency": "USD",
+          "price": 0.181,
+          "price_rub": 14.47,
+          "qty": 250
+        },
+        {
+          "currency": "USD",
+          "price": 0.158,
+          "price_rub": 12.63,
+          "qty": 500
+        },
+        {
+          "currency": "USD",
+          "price": 0.135,
+          "price_rub": 10.79,
+          "qty": 5000
+        }
+      ],
+      "product_url": "https://www.mouser.com/ProductDetail/Vishay-Dale/WFC06032L000FE66?qs=doiCPypUmgHDD1zlXSDLog%3D%3D",
+      "regions": [
+        "US"
+      ],
+      "source": "mouser",
+      "stock": 1944,
+      "title": "Current Sense Resistors - SMD .002ohms 1% 1/4Watt"
+    },
+    {
+      "datasheet_url": null,
+      "description_short": "Metal Film Resistors - Through Hole CMF-55 1.47K .5% T-2 EB E3",
+      "image_url": "https://www.mouser.com/images/vishay/images/CMF60392R00FHEB_SPL.jpg",
+      "manufacturer": "Vishay / Dale",
+      "min_currency": "USD",
+      "min_price": 0.269,
+      "min_price_rub": 21.51,
+      "mpn": "CMF551K4700DHEB",
+      "package": "",
+      "packaging": "",
+      "price_breaks": [
+        {
+          "currency": "USD",
+          "price": 1.27,
+          "price_rub": 101.55,
+          "qty": 1
+        },
+        {
+          "currency": "USD",
+          "price": 0.731,
+          "price_rub": 58.45,
+          "qty": 10
+        },
+        {
+          "currency": "USD",
+          "price": 0.596,
+          "price_rub": 47.66,
+          "qty": 25
+        },
+        {
+          "currency": "USD",
+          "price": 0.449,
+          "price_rub": 35.9,
+          "qty": 100
+        },
+        {
+          "currency": "USD",
+          "price": 0.398,
+          "price_rub": 31.82,
+          "qty": 250
+        },
+        {
+          "currency": "USD",
+          "price": 0.358,
+          "price_rub": 28.63,
+          "qty": 500
+        },
+        {
+          "currency": "USD",
+          "price": 0.269,
+          "price_rub": 21.51,
+          "qty": 1000
+        }
+      ],
+      "product_url": "https://www.mouser.com/ProductDetail/Vishay-Dale/CMF551K4700DHEB?qs=rMX6kfwPG0q0a2qLBNAe0A%3D%3D",
+      "regions": [
+        "US"
+      ],
+      "source": "mouser",
+      "stock": 983,
+      "title": "Metal Film Resistors - Through Hole CMF-55 1.47K .5% T-2 EB E3"
+    },
+    {
+      "datasheet_url": null,
+      "description_short": "Metal Film Resistors - Through Hole CMF-50 120 1% T-1 EA E3",
+      "image_url": "https://www.mouser.com/images/vishay/images/CMF50120R00FKEA_DSL.jpg",
+      "manufacturer": "Vishay / Dale",
+      "min_currency": "USD",
+      "min_price": 0.295,
+      "min_price_rub": 23.59,
+      "mpn": "CMF50120R00FKEA",
+      "package": "",
+      "packaging": "",
+      "price_breaks": [
+        {
+          "currency": "USD",
+          "price": 1.2,
+          "price_rub": 95.95,
+          "qty": 1
+        },
+        {
+          "currency": "USD",
+          "price": 0.689,
+          "price_rub": 55.09,
+          "qty": 10
+        },
+        {
+          "currency": "USD",
+          "price": 0.562,
+          "price_rub": 44.94,
+          "qty": 25
+        },
+        {
+          "currency": "USD",
+          "price": 0.424,
+          "price_rub": 33.9,
+          "qty": 100
+        },
+        {
+          "currency": "USD",
+          "price": 0.376,
+          "price_rub": 30.06,
+          "qty": 250
+        },
+        {
+          "currency": "USD",
+          "price": 0.348,
+          "price_rub": 27.83,
+          "qty": 500
+        },
+        {
+          "currency": "USD",
+          "price": 0.295,
+          "price_rub": 23.59,
+          "qty": 5000
+        }
+      ],
+      "product_url": "https://www.mouser.com/ProductDetail/Vishay-Dale/CMF50120R00FKEA?qs=HMhDvBYWqvO4qOB40VPZ3w%3D%3D",
+      "regions": [
+        "US"
+      ],
+      "source": "mouser",
+      "stock": 4395,
+      "title": "Metal Film Resistors - Through Hole CMF-50 120 1% T-1 EA E3"
+    },
+    {
+      "datasheet_url": null,
+      "description_short": "Thick Film Resistors - SMD CRCW0805-HP 100 0R0 1% RT1",
+      "image_url": "https://www.mouser.com/images/vishay/images/CRCW06030000Z0TAHP_SPL.jpg",
+      "manufacturer": "Vishay",
+      "min_currency": "USD",
+      "min_price": 0.35,
+      "min_price_rub": 27.99,
+      "mpn": "CRCW08050000Z0TAHP",
+      "package": "",
+      "packaging": "",
+      "price_breaks": [
+        {
+          "currency": "USD",
+          "price": 1.45,
+          "price_rub": 115.94,
+          "qty": 1
+        },
+        {
+          "currency": "USD",
+          "price": 0.828,
+          "price_rub": 66.21,
+          "qty": 10
+        },
+        {
+          "currency": "USD",
+          "price": 0.533,
+          "price_rub": 42.62,
+          "qty": 100
+        },
+        {
+          "currency": "USD",
+          "price": 0.412,
+          "price_rub": 32.94,
+          "qty": 1000
+        },
+        {
+          "currency": "USD",
+          "price": 0.35,
+          "price_rub": 27.99,
+          "qty": 5000
+        }
+      ],
+      "product_url": "https://www.mouser.com/ProductDetail/Vishay/CRCW08050000Z0TAHP?qs=bN4HulGPsrEepU%2F7iRMFNQ%3D%3D",
+      "regions": [
+        "US"
+      ],
+      "source": "mouser",
+      "stock": 2360,
+      "title": "Thick Film Resistors - SMD CRCW0805-HP 100 0R0 1% RT1"
+    },
+    {
+      "datasheet_url": null,
+      "description_short": "Thick Film Resistors - SMD CRCW0805-HP 100 220R 1% RT1",
+      "image_url": "https://www.mouser.com/images/vishay/images/CRCW06030000Z0TAHP_SPL.jpg",
+      "manufacturer": "Vishay",
+      "min_currency": "USD",
+      "min_price": 0.41,
+      "min_price_rub": 32.78,
+      "mpn": "CRCW0805220RFKTAHP",
+      "package": "",
+      "packaging": "",
+      "price_breaks": [
+        {
+          "currency": "USD",
+          "price": 1.71,
+          "price_rub": 136.73,
+          "qty": 1
+        },
+        {
+          "currency": "USD",
+          "price": 1.02,
+          "price_rub": 81.56,
+          "qty": 10
+        },
+        {
+          "currency": "USD",
+          "price": 0.663,
+          "price_rub": 53.01,
+          "qty": 100
+        },
+        {
+          "currency": "USD",
+          "price": 0.483,
+          "price_rub": 38.62,
+          "qty": 1000
+        },
+        {
+          "currency": "USD",
+          "price": 0.41,
+          "price_rub": 32.78,
+          "qty": 5000
+        }
+      ],
+      "product_url": "https://www.mouser.com/ProductDetail/Vishay/CRCW0805220RFKTAHP?qs=bN4HulGPsrGh4vFUfd9D%252BA%3D%3D",
+      "regions": [
+        "US"
+      ],
+      "source": "mouser",
+      "stock": 3228,
+      "title": "Thick Film Resistors - SMD CRCW0805-HP 100 220R 1% RT1"
+    },
+    {
+      "datasheet_url": null,
+      "description_short": "Thick Film Resistors - SMD CRCW0805-HP 100 1K0 1% RT1",
+      "image_url": "https://www.mouser.com/images/vishay/images/CRCW06030000Z0TAHP_SPL.jpg",
+      "manufacturer": "Vishay",
+      "min_currency": "USD",
+      "min_price": 0.45,
+      "min_price_rub": 35.98,
+      "mpn": "CRCW08051K00FKTAHP",
+      "package": "",
+      "packaging": "",
+      "price_breaks": [
+        {
+          "currency": "USD",
+          "price": 1.71,
+          "price_rub": 136.73,
+          "qty": 1
+        },
+        {
+          "currency": "USD",
+          "price": 1.02,
+          "price_rub": 81.56,
+          "qty": 10
+        },
+        {
+          "currency": "USD",
+          "price": 0.663,
+          "price_rub": 53.01,
+          "qty": 100
+        },
+        {
+          "currency": "USD",
+          "price": 0.53,
+          "price_rub": 42.38,
+          "qty": 1000
+        },
+        {
+          "currency": "USD",
+          "price": 0.45,
+          "price_rub": 35.98,
+          "qty": 5000
+        }
+      ],
+      "product_url": "https://www.mouser.com/ProductDetail/Vishay/CRCW08051K00FKTAHP?qs=bN4HulGPsrF3vRcnDIirUg%3D%3D",
+      "regions": [
+        "US"
+      ],
+      "source": "mouser",
+      "stock": 3268,
+      "title": "Thick Film Resistors - SMD CRCW0805-HP 100 1K0 1% RT1"
+    },
+    {
+      "datasheet_url": null,
+      "description_short": "Thick Film Resistors - SMD CRCW1206-HP 0R0 RT1",
+      "image_url": "https://www.mouser.com/images/vishay/images/CRCW06030000Z0TAHP_SPL.jpg",
+      "manufacturer": "Vishay",
+      "min_currency": "USD",
+      "min_price": 0.633,
+      "min_price_rub": 50.61,
+      "mpn": "CRCW12060000Z0TAHP",
+      "package": "",
+      "packaging": "",
+      "price_breaks": [
+        {
+          "currency": "USD",
+          "price": 1.96,
+          "price_rub": 156.72,
+          "qty": 1
+        },
+        {
+          "currency": "USD",
+          "price": 1.19,
+          "price_rub": 95.15,
+          "qty": 10
+        },
+        {
+          "currency": "USD",
+          "price": 0.807,
+          "price_rub": 64.53,
+          "qty": 100
+        },
+        {
+          "currency": "USD",
+          "price": 0.745,
+          "price_rub": 59.57,
+          "qty": 1000
+        },
+        {
+          "currency": "USD",
+          "price": 0.633,
+          "price_rub": 50.61,
+          "qty": 5000
+        }
+      ],
+      "product_url": "https://www.mouser.com/ProductDetail/Vishay/CRCW12060000Z0TAHP?qs=bN4HulGPsrGssv5rwEnRHQ%3D%3D",
+      "regions": [
+        "US"
+      ],
+      "source": "mouser",
+      "stock": 3058,
+      "title": "Thick Film Resistors - SMD CRCW1206-HP 0R0 RT1"
+    },
+    {
+      "datasheet_url": null,
+      "description_short": "Thick Film Resistors - SMD 0.2W 50Ohm Al2O3 RF Chip Resistor w/ Tin-Lead Wraparound Terminals 2% Tol on Tape and Reel",
+      "image_url": "https://www.mouser.com/images/vishay/images/RP0603ZZ-XXXXWN-91_SPL.jpg",
+      "manufacturer": "Vishay / Barry Industries",
+      "min_currency": "USD",
+      "min_price": 1.56,
+      "min_price_rub": 124.74,
+      "mpn": "RP0603CB-50R0GN-91TR",
+      "package": "",
+      "packaging": "",
+      "price_breaks": [
+        {
+          "currency": "USD",
+          "price": 4.32,
+          "price_rub": 345.42,
+          "qty": 1
+        },
+        {
+          "currency": "USD",
+          "price": 2.72,
+          "price_rub": 217.49,
+          "qty": 10
+        },
+        {
+          "currency": "USD",
+          "price": 1.93,
+          "price_rub": 154.32,
+          "qty": 100
+        },
+        {
+          "currency": "USD",
+          "price": 1.62,
+          "price_rub": 129.53,
+          "qty": 1000
+        },
+        {
+          "currency": "USD",
+          "price": 1.58,
+          "price_rub": 126.34,
+          "qty": 2000
+        },
+        {
+          "currency": "USD",
+          "price": 1.56,
+          "price_rub": 124.74,
+          "qty": 5000
+        }
+      ],
+      "product_url": "https://www.mouser.com/ProductDetail/Vishay-Barry-Industries/RP0603CB-50R0GN-91TR?qs=%252BHhoWzUJg4JgpWf9i%2FK2hA%3D%3D",
+      "regions": [
+        "US"
+      ],
+      "source": "mouser",
+      "stock": 788,
+      "title": "Thick Film Resistors - SMD 0.2W 50Ohm Al2O3 RF Chip Resistor w/ Tin-Lead Wraparound Terminals 2% Tol on Tape and Reel"
+    },
+    {
+      "datasheet_url": null,
+      "description_short": "Thin Film Resistors - SMD CHA 0402 50ohms 2% Flip chip",
+      "image_url": "https://www.mouser.com/images/vishay/images/CHA0402-series_SPL.JPG",
+      "manufacturer": "Vishay",
+      "min_currency": "USD",
+      "min_price": 1.99,
+      "min_price_rub": 159.12,
+      "mpn": "CHA0402-50RGFTD",
+      "package": "",
+      "packaging": "",
+      "price_breaks": [
+        {
+          "currency": "USD",
+          "price": 3.5,
+          "price_rub": 279.86,
+          "qty": 1
+        },
+        {
+          "currency": "USD",
+          "price": 2.42,
+          "price_rub": 193.5,
+          "qty": 10
+        },
+        {
+          "currency": "USD",
+          "price": 2.25,
+          "price_rub": 179.91,
+          "qty": 50
+        },
+        {
+          "currency": "USD",
+          "price": 2.03,
+          "price_rub": 162.32,
+          "qty": 1000
+        },
+        {
+          "currency": "USD",
+          "price": 1.99,
+          "price_rub": 159.12,
+          "qty": 2000
+        }
+      ],
+      "product_url": "https://www.mouser.com/ProductDetail/Vishay/CHA0402-50RGFTD?qs=7%2F6SraaimPS34yENTEpi1w%3D%3D",
+      "regions": [
+        "US"
+      ],
+      "source": "mouser",
+      "stock": 1190,
+      "title": "Thin Film Resistors - SMD CHA 0402 50ohms 2% Flip chip"
+    },
+    {
+      "datasheet_url": null,
+      "description_short": "Thin Film Resistors - SMD CHA 0402 50ohms 2% Nickel barrier",
+      "image_url": "https://www.mouser.com/images/vishay/images/CHA0402-series_SPL.JPG",
+      "manufacturer": "Vishay",
+      "min_currency": "USD",
+      "min_price": 1.99,
+      "min_price_rub": 159.12,
+      "mpn": "CHA0402-50RGNTD",
+      "package": "",
+      "packaging": "",
+      "price_breaks": [
+        {
+          "currency": "USD",
+          "price": 3.5,
+          "price_rub": 279.86,
+          "qty": 1
+        },
+        {
+          "currency": "USD",
+          "price": 2.42,
+          "price_rub": 193.5,
+          "qty": 10
+        },
+        {
+          "currency": "USD",
+          "price": 2.39,
+          "price_rub": 191.1,
+          "qty": 50
+        },
+        {
+          "currency": "USD",
+          "price": 2.03,
+          "price_rub": 162.32,
+          "qty": 1000
+        },
+        {
+          "currency": "USD",
+          "price": 2.01,
+          "price_rub": 160.72,
+          "qty": 2000
+        },
+        {
+          "currency": "USD",
+          "price": 1.99,
+          "price_rub": 159.12,
+          "qty": 5000
+        }
+      ],
+      "product_url": "https://www.mouser.com/ProductDetail/Vishay/CHA0402-50RGNTD?qs=7%2F6SraaimPQrgOFRhMXuhw%3D%3D",
+      "regions": [
+        "US"
+      ],
+      "source": "mouser",
+      "stock": 1350,
+      "title": "Thin Film Resistors - SMD CHA 0402 50ohms 2% Nickel barrier"
+    },
+    {
+      "datasheet_url": null,
+      "description_short": "Thick Film Resistors - SMD DTO 25 C 10U 5% R500 E3",
+      "image_url": "https://www.mouser.com/images/vishay/images/DTO025C10001FRE3_DSL.jpg",
+      "manufacturer": "Vishay / Sfernice",
+      "min_currency": "USD",
+      "min_price": 2.07,
+      "min_price_rub": 165.51,
+      "mpn": "DTO025C10R00JRE3",
+      "package": "",
+      "packaging": "",
+      "price_breaks": [
+        {
+          "currency": "USD",
+          "price": 5.75,
+          "price_rub": 459.76,
+          "qty": 1
+        },
+        {
+          "currency": "USD",
+          "price": 3.62,
+          "price_rub": 289.45,
+          "qty": 10
+        },
+        {
+          "currency": "USD",
+          "price": 2.75,
+          "price_rub": 219.89,
+          "qty": 100
+        },
+        {
+          "currency": "USD",
+          "price": 2.33,
+          "price_rub": 186.3,
+          "qty": 500
+        },
+        {
+          "currency": "USD",
+          "price": 2.15,
+          "price_rub": 171.91,
+          "qty": 1000
+        },
+        {
+          "currency": "USD",
+          "price": 2.1,
+          "price_rub": 167.91,
+          "qty": 2500
+        },
+        {
+          "currency": "USD",
+          "price": 2.07,
+          "price_rub": 165.51,
+          "qty": 5000
+        }
+      ],
+      "product_url": "https://www.mouser.com/ProductDetail/Vishay-Sfernice/DTO025C10R00JRE3?qs=jcD%2FCkGBYeObQ9gRybuyWA%3D%3D",
+      "regions": [
+        "US"
+      ],
+      "source": "mouser",
+      "stock": 391,
+      "title": "Thick Film Resistors - SMD DTO 25 C 10U 5% R500 E3"
+    },
+    {
+      "datasheet_url": null,
+      "description_short": "Thick Film Resistors - SMD DTO 25 C 30U 5% R500 E3",
+      "image_url": "https://www.mouser.com/images/vishay/images/DTO025C10001FRE3_DSL.jpg",
+      "manufacturer": "Vishay / Sfernice",
+      "min_currency": "USD",
+      "min_price": 2.07,
+      "min_price_rub": 165.51,
+      "mpn": "DTO025C30R00JRE3",
+      "package": "",
+      "packaging": "",
+      "price_breaks": [
+        {
+          "currency": "USD",
+          "price": 5.75,
+          "price_rub": 459.76,
+          "qty": 1
+        },
+        {
+          "currency": "USD",
+          "price": 3.62,
+          "price_rub": 289.45,
+          "qty": 10
+        },
+        {
+          "currency": "USD",
+          "price": 2.75,
+          "price_rub": 219.89,
+          "qty": 100
+        },
+        {
+          "currency": "USD",
+          "price": 2.33,
+          "price_rub": 186.3,
+          "qty": 500
+        },
+        {
+          "currency": "USD",
+          "price": 2.15,
+          "price_rub": 171.91,
+          "qty": 1000
+        },
+        {
+          "currency": "USD",
+          "price": 2.1,
+          "price_rub": 167.91,
+          "qty": 2500
+        },
+        {
+          "currency": "USD",
+          "price": 2.07,
+          "price_rub": 165.51,
+          "qty": 5000
+        }
+      ],
+      "product_url": "https://www.mouser.com/ProductDetail/Vishay-Sfernice/DTO025C30R00JRE3?qs=jcD%2FCkGBYeMtvgx0as7hiw%3D%3D",
+      "regions": [
+        "US"
+      ],
+      "source": "mouser",
+      "stock": 392,
+      "title": "Thick Film Resistors - SMD DTO 25 C 30U 5% R500 E3"
+    },
+    {
+      "datasheet_url": null,
+      "description_short": "Thick Film Resistors - SMD DTO025CR3000FRE3",
+      "image_url": "https://www.mouser.com/images/vishay/images/DTO025C10001FRE3_DSL.jpg",
+      "manufacturer": "Vishay / Sfernice",
+      "min_currency": "USD",
+      "min_price": 2.59,
+      "min_price_rub": 207.09,
+      "mpn": "DTO025CR3000FRE3",
+      "package": "",
+      "packaging": "",
+      "price_breaks": [
+        {
+          "currency": "USD",
+          "price": 7.03,
+          "price_rub": 562.11,
+          "qty": 1
+        },
+        {
+          "currency": "USD",
+          "price": 4.49,
+          "price_rub": 359.02,
+          "qty": 10
+        },
+        {
+          "currency": "USD",
+          "price": 3.46,
+          "price_rub": 276.66,
+          "qty": 50
+        },
+        {
+          "currency": "USD",
+          "price": 3.14,
+          "price_rub": 251.07,
+          "qty": 100
+        },
+        {
+          "currency": "USD",
+          "price": 2.66,
+          "price_rub": 212.69,
+          "qty": 500
+        },
+        {
+          "currency": "USD",
+          "price": 2.63,
+          "price_rub": 210.29,
+          "qty": 1000
+        },
+        {
+          "currency": "USD",
+          "price": 2.59,
+          "price_rub": 207.09,
+          "qty": 2500
+        }
+      ],
+      "product_url": "https://www.mouser.com/ProductDetail/Vishay-Sfernice/DTO025CR3000FRE3?qs=jcD%2FCkGBYePopGaB0ynt9w%3D%3D",
+      "regions": [
+        "US"
+      ],
+      "source": "mouser",
+      "stock": 400,
+      "title": "Thick Film Resistors - SMD DTO025CR3000FRE3"
+    },
+    {
+      "datasheet_url": null,
+      "description_short": "Thick Film Resistors - SMD DTO 25 C 10K 1% R500 E3",
+      "image_url": "https://www.mouser.com/images/vishay/images/DTO025C10001FRE3_DSL.jpg",
+      "manufacturer": "Vishay / Sfernice",
+      "min_currency": "USD",
+      "min_price": 2.59,
+      "min_price_rub": 207.09,
+      "mpn": "DTO025C10001FRE3",
+      "package": "",
+      "packaging": "",
+      "price_breaks": [
+        {
+          "currency": "USD",
+          "price": 7.03,
+          "price_rub": 562.11,
+          "qty": 1
+        },
+        {
+          "currency": "USD",
+          "price": 4.49,
+          "price_rub": 359.02,
+          "qty": 10
+        },
+        {
+          "currency": "USD",
+          "price": 3.46,
+          "price_rub": 276.66,
+          "qty": 50
+        },
+        {
+          "currency": "USD",
+          "price": 3.14,
+          "price_rub": 251.07,
+          "qty": 100
+        },
+        {
+          "currency": "USD",
+          "price": 2.66,
+          "price_rub": 212.69,
+          "qty": 500
+        },
+        {
+          "currency": "USD",
+          "price": 2.63,
+          "price_rub": 210.29,
+          "qty": 1000
+        },
+        {
+          "currency": "USD",
+          "price": 2.59,
+          "price_rub": 207.09,
+          "qty": 2500
+        }
+      ],
+      "product_url": "https://www.mouser.com/ProductDetail/Vishay-Sfernice/DTO025C10001FRE3?qs=jcD%2FCkGBYeNM2gCtdG%252BHNw%3D%3D",
+      "regions": [
+        "US"
+      ],
+      "source": "mouser",
+      "stock": 400,
+      "title": "Thick Film Resistors - SMD DTO 25 C 10K 1% R500 E3"
+    },
+    {
+      "datasheet_url": null,
+      "description_short": "Thick Film Resistors - SMD DTO 25 C 47U 1% R500 E3",
+      "image_url": "https://www.mouser.com/images/vishay/images/DTO025C10001FRE3_DSL.jpg",
+      "manufacturer": "Vishay / Sfernice",
+      "min_currency": "USD",
+      "min_price": 2.59,
+      "min_price_rub": 207.09,
+      "mpn": "DTO025C47R00FRE3",
+      "package": "",
+      "packaging": "",
+      "price_breaks": [
+        {
+          "currency": "USD",
+          "price": 7.03,
+          "price_rub": 562.11,
+          "qty": 1
+        },
+        {
+          "currency": "USD",
+          "price": 4.49,
+          "price_rub": 359.02,
+          "qty": 10
+        },
+        {
+          "currency": "USD",
+          "price": 3.46,
+          "price_rub": 276.66,
+          "qty": 50
+        },
+        {
+          "currency": "USD",
+          "price": 3.14,
+          "price_rub": 251.07,
+          "qty": 100
+        },
+        {
+          "currency": "USD",
+          "price": 2.66,
+          "price_rub": 212.69,
+          "qty": 500
+        },
+        {
+          "currency": "USD",
+          "price": 2.63,
+          "price_rub": 210.29,
+          "qty": 1000
+        },
+        {
+          "currency": "USD",
+          "price": 2.59,
+          "price_rub": 207.09,
+          "qty": 2500
+        }
+      ],
+      "product_url": "https://www.mouser.com/ProductDetail/Vishay-Sfernice/DTO025C47R00FRE3?qs=jcD%2FCkGBYePaJGH0XjCtLA%3D%3D",
+      "regions": [
+        "US"
+      ],
+      "source": "mouser",
+      "stock": 400,
+      "title": "Thick Film Resistors - SMD DTO 25 C 47U 1% R500 E3"
+    },
+    {
+      "datasheet_url": null,
+      "description_short": "Thick Film Resistors - SMD DTO 25 C U75 1% R500 E3",
+      "image_url": "https://www.mouser.com/images/vishay/images/DTO025C10001FRE3_DSL.jpg",
+      "manufacturer": "Vishay / Sfernice",
+      "min_currency": "USD",
+      "min_price": 2.59,
+      "min_price_rub": 207.09,
+      "mpn": "DTO025CR7500FRE3",
+      "package": "",
+      "packaging": "",
+      "price_breaks": [
+        {
+          "currency": "USD",
+          "price": 7.03,
+          "price_rub": 562.11,
+          "qty": 1
+        },
+        {
+          "currency": "USD",
+          "price": 4.49,
+          "price_rub": 359.02,
+          "qty": 10
+        },
+        {
+          "currency": "USD",
+          "price": 3.46,
+          "price_rub": 276.66,
+          "qty": 50
+        },
+        {
+          "currency": "USD",
+          "price": 3.14,
+          "price_rub": 251.07,
+          "qty": 100
+        },
+        {
+          "currency": "USD",
+          "price": 2.66,
+          "price_rub": 212.69,
+          "qty": 500
+        },
+        {
+          "currency": "USD",
+          "price": 2.63,
+          "price_rub": 210.29,
+          "qty": 1000
+        },
+        {
+          "currency": "USD",
+          "price": 2.59,
+          "price_rub": 207.09,
+          "qty": 2500
+        }
+      ],
+      "product_url": "https://www.mouser.com/ProductDetail/Vishay-Sfernice/DTO025CR7500FRE3?qs=jcD%2FCkGBYeMapnGIEz3UfA%3D%3D",
+      "regions": [
+        "US"
+      ],
+      "source": "mouser",
+      "stock": 388,
+      "title": "Thick Film Resistors - SMD DTO 25 C U75 1% R500 E3"
+    },
+    {
+      "datasheet_url": null,
+      "description_short": "Thick Film Resistors - SMD DTO 25 C 100U 1% R500 E3",
+      "image_url": "https://www.mouser.com/images/vishay/images/DTO025C10001FRE3_DSL.jpg",
+      "manufacturer": "Vishay / Sfernice",
+      "min_currency": "USD",
+      "min_price": 2.59,
+      "min_price_rub": 207.09,
+      "mpn": "DTO025C100R0FRE3",
+      "package": "",
+      "packaging": "",
+      "price_breaks": [
+        {
+          "currency": "USD",
+          "price": 7.03,
+          "price_rub": 562.11,
+          "qty": 1
+        },
+        {
+          "currency": "USD",
+          "price": 4.49,
+          "price_rub": 359.02,
+          "qty": 10
+        },
+        {
+          "currency": "USD",
+          "price": 3.46,
+          "price_rub": 276.66,
+          "qty": 50
+        },
+        {
+          "currency": "USD",
+          "price": 3.14,
+          "price_rub": 251.07,
+          "qty": 100
+        },
+        {
+          "currency": "USD",
+          "price": 2.66,
+          "price_rub": 212.69,
+          "qty": 500
+        },
+        {
+          "currency": "USD",
+          "price": 2.63,
+          "price_rub": 210.29,
+          "qty": 1000
+        },
+        {
+          "currency": "USD",
+          "price": 2.59,
+          "price_rub": 207.09,
+          "qty": 2500
+        }
+      ],
+      "product_url": "https://www.mouser.com/ProductDetail/Vishay-Sfernice/DTO025C100R0FRE3?qs=jcD%2FCkGBYePWGB5v0Db6gQ%3D%3D",
+      "regions": [
+        "US"
+      ],
+      "source": "mouser",
+      "stock": 356,
+      "title": "Thick Film Resistors - SMD DTO 25 C 100U 1% R500 E3"
+    },
+    {
+      "datasheet_url": null,
+      "description_short": "Thick Film Resistors - SMD DTO 25 C 4U 1% R500 E3",
+      "image_url": "https://www.mouser.com/images/vishay/images/DTO025C10001FRE3_DSL.jpg",
+      "manufacturer": "Vishay / Sfernice",
+      "min_currency": "USD",
+      "min_price": 2.79,
+      "min_price_rub": 223.09,
+      "mpn": "DTO025C4R000FRE3",
+      "package": "",
+      "packaging": "",
+      "price_breaks": [
+        {
+          "currency": "USD",
+          "price": 7.57,
+          "price_rub": 605.29,
+          "qty": 1
+        },
+        {
+          "currency": "USD",
+          "price": 4.83,
+          "price_rub": 386.2,
+          "qty": 10
+        },
+        {
+          "currency": "USD",
+          "price": 3.72,
+          "price_rub": 297.45,
+          "qty": 50
+        },
+        {
+          "currency": "USD",
+          "price": 3.39,
+          "price_rub": 271.06,
+          "qty": 100
+        },
+        {
+          "currency": "USD",
+          "price": 2.85,
+          "price_rub": 227.88,
+          "qty": 500
+        },
+        {
+          "currency": "USD",
+          "price": 2.82,
+          "price_rub": 225.48,
+          "qty": 1000
+        },
+        {
+          "currency": "USD",
+          "price": 2.79,
+          "price_rub": 223.09,
+          "qty": 2500
+        }
+      ],
+      "product_url": "https://www.mouser.com/ProductDetail/Vishay-Sfernice/DTO025C4R000FRE3?qs=jcD%2FCkGBYeMBZwEpht9%2FGQ%3D%3D",
+      "regions": [
+        "US"
+      ],
+      "source": "mouser",
+      "stock": 391,
+      "title": "Thick Film Resistors - SMD DTO 25 C 4U 1% R500 E3"
+    },
+    {
+      "datasheet_url": null,
+      "description_short": "Thick Film Resistors - SMD DTO 25 C 8U 1% R500 E3",
+      "image_url": "https://www.mouser.com/images/vishay/images/DTO025C10001FRE3_DSL.jpg",
+      "manufacturer": "Vishay / Sfernice",
+      "min_currency": "USD",
+      "min_price": 2.79,
+      "min_price_rub": 223.09,
+      "mpn": "DTO025C8R000FRE3",
+      "package": "",
+      "packaging": "",
+      "price_breaks": [
+        {
+          "currency": "USD",
+          "price": 7.57,
+          "price_rub": 605.29,
+          "qty": 1
+        },
+        {
+          "currency": "USD",
+          "price": 4.83,
+          "price_rub": 386.2,
+          "qty": 10
+        },
+        {
+          "currency": "USD",
+          "price": 3.72,
+          "price_rub": 297.45,
+          "qty": 50
+        },
+        {
+          "currency": "USD",
+          "price": 3.39,
+          "price_rub": 271.06,
+          "qty": 100
+        },
+        {
+          "currency": "USD",
+          "price": 2.85,
+          "price_rub": 227.88,
+          "qty": 500
+        },
+        {
+          "currency": "USD",
+          "price": 2.82,
+          "price_rub": 225.48,
+          "qty": 1000
+        },
+        {
+          "currency": "USD",
+          "price": 2.79,
+          "price_rub": 223.09,
+          "qty": 2500
+        }
+      ],
+      "product_url": "https://www.mouser.com/ProductDetail/Vishay-Sfernice/DTO025C8R000FRE3?qs=jcD%2FCkGBYeODk35WGJF5xA%3D%3D",
+      "regions": [
+        "US"
+      ],
+      "source": "mouser",
+      "stock": 399,
+      "title": "Thick Film Resistors - SMD DTO 25 C 8U 1% R500 E3"
+    },
+    {
+      "datasheet_url": null,
+      "description_short": "Thick Film Resistors - SMD DTO 25 C 250U 1% R500 E3",
+      "image_url": "https://www.mouser.com/images/vishay/images/DTO025C10001FRE3_DSL.jpg",
+      "manufacturer": "Vishay / Sfernice",
+      "min_currency": "USD",
+      "min_price": 3.03,
+      "min_price_rub": 242.28,
+      "mpn": "DTO025C250R0FRE3",
+      "package": "",
+      "packaging": "",
+      "price_breaks": [
+        {
+          "currency": "USD",
+          "price": 7.03,
+          "price_rub": 562.11,
+          "qty": 1
+        },
+        {
+          "currency": "USD",
+          "price": 4.49,
+          "price_rub": 359.02,
+          "qty": 10
+        },
+        {
+          "currency": "USD",
+          "price": 3.64,
+          "price_rub": 291.05,
+          "qty": 50
+        },
+        {
+          "currency": "USD",
+          "price": 3.09,
+          "price_rub": 247.07,
+          "qty": 500
+        },
+        {
+          "currency": "USD",
+          "price": 3.03,
+          "price_rub": 242.28,
+          "qty": 1000
+        }
+      ],
+      "product_url": "https://www.mouser.com/ProductDetail/Vishay-Sfernice/DTO025C250R0FRE3?qs=jcD%2FCkGBYeNqMXBspnazyA%3D%3D",
+      "regions": [
+        "US"
+      ],
+      "source": "mouser",
+      "stock": 376,
+      "title": "Thick Film Resistors - SMD DTO 25 C 250U 1% R500 E3"
+    },
+    {
+      "datasheet_url": null,
+      "description_short": "Thick Film Resistors - SMD 5W 50Ohm AlN RF Chip Resistor w/ Extended Wraparound Terminals 2% Tol on Tape and Reel",
+      "image_url": "https://www.mouser.com/images/vishay/images/RE0805ZZ-XXXXJN-2S_SPL.jpg",
+      "manufacturer": "Vishay / Barry Industries",
+      "min_currency": "USD",
+      "min_price": 3.04,
+      "min_price_rub": 243.08,
+      "mpn": "RE0805CT-50R0GN-2STR",
+      "package": "",
+      "packaging": "",
+      "price_breaks": [
+        {
+          "currency": "USD",
+          "price": 7.15,
+          "price_rub": 571.71,
+          "qty": 1
+        },
+        {
+          "currency": "USD",
+          "price": 4.75,
+          "price_rub": 379.8,
+          "qty": 10
+        },
+        {
+          "currency": "USD",
+          "price": 3.8,
+          "price_rub": 303.84,
+          "qty": 50
+        },
+        {
+          "currency": "USD",
+          "price": 3.58,
+          "price_rub": 286.25,
+          "qty": 100
+        },
+        {
+          "currency": "USD",
+          "price": 3.04,
+          "price_rub": 243.08,
+          "qty": 1000
+        }
+      ],
+      "product_url": "https://www.mouser.com/ProductDetail/Vishay-Barry-Industries/RE0805CT-50R0GN-2STR?qs=%252BHhoWzUJg4KGsEudtGI9Ug%3D%3D",
+      "regions": [
+        "US"
+      ],
+      "source": "mouser",
+      "stock": 294,
+      "title": "Thick Film Resistors - SMD 5W 50Ohm AlN RF Chip Resistor w/ Extended Wraparound Terminals 2% Tol on Tape and Reel"
+    },
+    {
+      "datasheet_url": null,
+      "description_short": "Thick Film Resistors - SMD DTO 35 C 47U 5% R500 E3",
+      "image_url": "https://www.mouser.com/images/vishay/images/DTO035C10000JRE3_DSL.jpg",
+      "manufacturer": "Vishay / Sfernice",
+      "min_currency": "USD",
+      "min_price": 3.42,
+      "min_price_rub": 273.46,
+      "mpn": "DTO035C47R00JRE3",
+      "package": "",
+      "packaging": "",
+      "price_breaks": [
+        {
+          "currency": "USD",
+          "price": 7.83,
+          "price_rub": 626.08,
+          "qty": 1
+        },
+        {
+          "currency": "USD",
+          "price": 5.2,
+          "price_rub": 415.79,
+          "qty": 10
+        },
+        {
+          "currency": "USD",
+          "price": 4.18,
+          "price_rub": 334.23,
+          "qty": 50
+        },
+        {
+          "currency": "USD",
+          "price": 4.03,
+          "price_rub": 322.23,
+          "qty": 100
+        },
+        {
+          "currency": "USD",
+          "price": 3.42,
+          "price_rub": 273.46,
+          "qty": 500
+        }
+      ],
+      "product_url": "https://www.mouser.com/ProductDetail/Vishay-Sfernice/DTO035C47R00JRE3?qs=jcD%2FCkGBYeNXxL5JM%252BGD9Q%3D%3D",
+      "regions": [
+        "US"
+      ],
+      "source": "mouser",
+      "stock": 400,
+      "title": "Thick Film Resistors - SMD DTO 35 C 47U 5% R500 E3"
+    },
+    {
+      "datasheet_url": null,
+      "description_short": "Thick Film Resistors - SMD DTO 35 C 10U 5% R500 E3",
+      "image_url": "https://www.mouser.com/images/vishay/images/DTO035C10000JRE3_DSL.jpg",
+      "manufacturer": "Vishay / Sfernice",
+      "min_currency": "USD",
+      "min_price": 3.42,
+      "min_price_rub": 273.46,
+      "mpn": "DTO035C10R00JRE3",
+      "package": "",
+      "packaging": "",
+      "price_breaks": [
+        {
+          "currency": "USD",
+          "price": 7.83,
+          "price_rub": 626.08,
+          "qty": 1
+        },
+        {
+          "currency": "USD",
+          "price": 5.2,
+          "price_rub": 415.79,
+          "qty": 10
+        },
+        {
+          "currency": "USD",
+          "price": 4.18,
+          "price_rub": 334.23,
+          "qty": 50
+        },
+        {
+          "currency": "USD",
+          "price": 4.03,
+          "price_rub": 322.23,
+          "qty": 100
+        },
+        {
+          "currency": "USD",
+          "price": 3.42,
+          "price_rub": 273.46,
+          "qty": 500
+        }
+      ],
+      "product_url": "https://www.mouser.com/ProductDetail/Vishay-Sfernice/DTO035C10R00JRE3?qs=jcD%2FCkGBYeNepxSrTsdA1w%3D%3D",
+      "regions": [
+        "US"
+      ],
+      "source": "mouser",
+      "stock": 396,
+      "title": "Thick Film Resistors - SMD DTO 35 C 10U 5% R500 E3"
+    },
+    {
+      "datasheet_url": null,
+      "description_short": "Thick Film Resistors - SMD DTO 35 C 1K 5% R500 E3",
+      "image_url": "https://www.mouser.com/images/vishay/images/DTO035C10000JRE3_DSL.jpg",
+      "manufacturer": "Vishay / Sfernice",
+      "min_currency": "USD",
+      "min_price": 3.42,
+      "min_price_rub": 273.46,
+      "mpn": "DTO035C10000JRE3",
+      "package": "",
+      "packaging": "",
+      "price_breaks": [
+        {
+          "currency": "USD",
+          "price": 7.83,
+          "price_rub": 626.08,
+          "qty": 1
+        },
+        {
+          "currency": "USD",
+          "price": 5.2,
+          "price_rub": 415.79,
+          "qty": 10
+        },
+        {
+          "currency": "USD",
+          "price": 4.18,
+          "price_rub": 334.23,
+          "qty": 50
+        },
+        {
+          "currency": "USD",
+          "price": 4.03,
+          "price_rub": 322.23,
+          "qty": 100
+        },
+        {
+          "currency": "USD",
+          "price": 3.42,
+          "price_rub": 273.46,
+          "qty": 500
+        }
+      ],
+      "product_url": "https://www.mouser.com/ProductDetail/Vishay-Sfernice/DTO035C10000JRE3?qs=jcD%2FCkGBYePusWRti0v3Ug%3D%3D",
+      "regions": [
+        "US"
+      ],
+      "source": "mouser",
+      "stock": 400,
+      "title": "Thick Film Resistors - SMD DTO 35 C 1K 5% R500 E3"
+    },
+    {
+      "datasheet_url": null,
+      "description_short": "Thick Film Resistors - SMD DTO 35 C U3 5% R500 E3",
+      "image_url": "https://www.mouser.com/images/vishay/images/DTO035C10000JRE3_DSL.jpg",
+      "manufacturer": "Vishay / Sfernice",
+      "min_currency": "USD",
+      "min_price": 3.42,
+      "min_price_rub": 273.46,
+      "mpn": "DTO035CR3000JRE3",
+      "package": "",
+      "packaging": "",
+      "price_breaks": [
+        {
+          "currency": "USD",
+          "price": 7.83,
+          "price_rub": 626.08,
+          "qty": 1
+        },
+        {
+          "currency": "USD",
+          "price": 5.2,
+          "price_rub": 415.79,
+          "qty": 10
+        },
+        {
+          "currency": "USD",
+          "price": 4.18,
+          "price_rub": 334.23,
+          "qty": 50
+        },
+        {
+          "currency": "USD",
+          "price": 4.03,
+          "price_rub": 322.23,
+          "qty": 100
+        },
+        {
+          "currency": "USD",
+          "price": 3.42,
+          "price_rub": 273.46,
+          "qty": 500
+        }
+      ],
+      "product_url": "https://www.mouser.com/ProductDetail/Vishay-Sfernice/DTO035CR3000JRE3?qs=jcD%2FCkGBYeMtOfMc30sNLg%3D%3D",
+      "regions": [
+        "US"
+      ],
+      "source": "mouser",
+      "stock": 400,
+      "title": "Thick Film Resistors - SMD DTO 35 C U3 5% R500 E3"
+    },
+    {
+      "datasheet_url": null,
+      "description_short": "Thick Film Resistors - SMD DTO 35 C 33U 5% R500 E3",
+      "image_url": "https://www.mouser.com/images/vishay/images/DTO035C10000JRE3_DSL.jpg",
+      "manufacturer": "Vishay / Sfernice",
+      "min_currency": "USD",
+      "min_price": 3.42,
+      "min_price_rub": 273.46,
+      "mpn": "DTO035C33R00JRE3",
+      "package": "",
+      "packaging": "",
+      "price_breaks": [
+        {
+          "currency": "USD",
+          "price": 7.83,
+          "price_rub": 626.08,
+          "qty": 1
+        },
+        {
+          "currency": "USD",
+          "price": 5.2,
+          "price_rub": 415.79,
+          "qty": 10
+        },
+        {
+          "currency": "USD",
+          "price": 4.18,
+          "price_rub": 334.23,
+          "qty": 50
+        },
+        {
+          "currency": "USD",
+          "price": 4.03,
+          "price_rub": 322.23,
+          "qty": 100
+        },
+        {
+          "currency": "USD",
+          "price": 3.42,
+          "price_rub": 273.46,
+          "qty": 500
+        }
+      ],
+      "product_url": "https://www.mouser.com/ProductDetail/Vishay-Sfernice/DTO035C33R00JRE3?qs=jcD%2FCkGBYeMyDDKvnq8zDA%3D%3D",
+      "regions": [
+        "US"
+      ],
+      "source": "mouser",
+      "stock": 129,
+      "title": "Thick Film Resistors - SMD DTO 35 C 33U 5% R500 E3"
+    },
+    {
+      "datasheet_url": null,
+      "description_short": "Thick Film Resistors - SMD D2TO 35 C 300U 5% R500 E3",
+      "image_url": "https://www.mouser.com/images/vishay/images/D2TO035C25000JRE3_DSL.jpg",
+      "manufacturer": "Vishay / Sfernice",
+      "min_currency": "USD",
+      "min_price": 3.51,
+      "min_price_rub": 280.66,
+      "mpn": "D2TO035C300R0JRE3",
+      "package": "",
+      "packaging": "",
+      "price_breaks": [
+        {
+          "currency": "USD",
+          "price": 7.96,
+          "price_rub": 636.47,
+          "qty": 1
+        },
+        {
+          "currency": "USD",
+          "price": 5.29,
+          "price_rub": 422.98,
+          "qty": 10
+        },
+        {
+          "currency": "USD",
+          "price": 4.27,
+          "price_rub": 341.42,
+          "qty": 50
+        },
+        {
+          "currency": "USD",
+          "price": 4.14,
+          "price_rub": 331.03,
+          "qty": 100
+        },
+        {
+          "currency": "USD",
+          "price": 3.51,
+          "price_rub": 280.66,
+          "qty": 500
+        }
+      ],
+      "product_url": "https://www.mouser.com/ProductDetail/Vishay-Sfernice/D2TO035C300R0JRE3?qs=jcD%2FCkGBYeNfGHL4CdAF9w%3D%3D",
+      "regions": [
+        "US"
+      ],
+      "source": "mouser",
+      "stock": 392,
+      "title": "Thick Film Resistors - SMD D2TO 35 C 300U 5% R500 E3"
+    },
+    {
+      "datasheet_url": null,
+      "description_short": "Thick Film Resistors - SMD D2TO 35 C 4U 1% R500 E3",
+      "image_url": "https://www.mouser.com/images/vishay/images/D2TO035C25000JRE3_DSL.jpg",
+      "manufacturer": "Vishay / Sfernice",
+      "min_currency": "USD",
+      "min_price": 4.82,
+      "min_price_rub": 385.4,
+      "mpn": "D2TO035C4R000FRE3",
+      "package": "",
+      "packaging": "",
+      "price_breaks": [
+        {
+          "currency": "USD",
+          "price": 10.92,
+          "price_rub": 873.15,
+          "qty": 1
+        },
+        {
+          "currency": "USD",
+          "price": 7.27,
+          "price_rub": 581.3,
+          "qty": 10
+        },
+        {
+          "currency": "USD",
+          "price": 5.85,
+          "price_rub": 467.76,
+          "qty": 50
+        },
+        {
+          "currency": "USD",
+          "price": 5.68,
+          "price_rub": 454.17,
+          "qty": 100
+        },
+        {
+          "currency": "USD",
+          "price": 4.82,
+          "price_rub": 385.4,
+          "qty": 500
+        }
+      ],
+      "product_url": "https://www.mouser.com/ProductDetail/Vishay-Sfernice/D2TO035C4R000FRE3?qs=jcD%2FCkGBYePtXfV8NgaNQQ%3D%3D",
+      "regions": [
+        "US"
+      ],
+      "source": "mouser",
+      "stock": 80,
+      "title": "Thick Film Resistors - SMD D2TO 35 C 4U 1% R500 E3"
+    },
+    {
+      "datasheet_url": "https://www.mouser.com/catalog/specsheets/Bourns_TFOS_Datasheet.pdf",
+      "description_short": "Thick Film Resistors - Through Hole 150 OHM 10% 260W",
+      "image_url": "https://www.mouser.com/images/bourns/images/TFOS30-1-150T_SPL.jpg",
+      "manufacturer": "Bourns",
+      "min_currency": "USD",
+      "min_price": 90.3,
+      "min_price_rub": 7220.29,
+      "mpn": "TFOS30-1-150T",
+      "package": "",
+      "packaging": "",
+      "price_breaks": [
+        {
+          "currency": "USD",
+          "price": 177.52,
+          "price_rub": 14194.3,
+          "qty": 1
+        },
+        {
+          "currency": "USD",
+          "price": 122.8,
+          "price_rub": 9818.95,
+          "qty": 10
+        },
+        {
+          "currency": "USD",
+          "price": 91.64,
+          "price_rub": 7327.43,
+          "qty": 25
+        },
+        {
+          "currency": "USD",
+          "price": 91.2,
+          "price_rub": 7292.25,
+          "qty": 40
+        },
+        {
+          "currency": "USD",
+          "price": 90.3,
+          "price_rub": 7220.29,
+          "qty": 120
+        }
+      ],
+      "product_url": "https://www.mouser.com/ProductDetail/Bourns/TFOS30-1-150T?qs=2FehpBK1j95vOXCtgfkqZw%3D%3D",
+      "regions": [
+        "US"
+      ],
+      "source": "mouser",
+      "stock": 7,
+      "title": "Thick Film Resistors - Through Hole 150 OHM 10% 260W"
+    },
+    {
+      "availability": {
+        "inStock": 9185742,
+        "leadTime": "18"
+      },
+      "datasheet_url": "https://www.yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L",
+      "datasheets": [
+        "https://www.yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L"
+      ],
+      "description_short": "100 kOhms ±1% 0.063W, 1/16W Chip Resistor 0402 (1005 Metric) Moisture Resistant Thick Film",
+      "image_url": "https://mm.digikey.com/Volume0/opasdata/d220001/medias/images/4849/13_0402-%281005-metric%29.jpg",
+      "images": [
+        "https://mm.digikey.com/Volume0/opasdata/d220001/medias/images/4849/13_0402-%281005-metric%29.jpg"
+      ],
+      "manufacturer": "YAGEO",
+      "min_currency": "USD",
+      "min_price": 0.00127,
+      "min_price_rub": 0.1,
+      "mpn": "RC0402FR-07100KL",
+      "package": "Tape & Reel (TR)",
+      "packaging": "0",
+      "price_breaks": [
+        {
+          "currency": "USD",
+          "price": 0.00127,
+          "price_rub": 0.1,
+          "qty": 10000
+        }
+      ],
+      "pricing": [
+        {
+          "currency": "USD",
+          "price": 0.00127,
+          "price_rub": 0.1,
+          "qty": 10000
+        }
+      ],
+      "product_url": "https://www.digikey.com/en/products/detail/yageo/RC0402FR-07100KL/726526",
+      "raw_id": "311-100KLRTR-ND",
+      "regions": [
+        "US",
+        "GLOBAL"
+      ],
+      "source": "digikey",
+      "stock": 9185742,
+      "technical_specs": {
+        "Description": "RES 100K OHM 1% 1/16W 0402",
+        "Detailed Description": "100 kOhms ±1% 0.063W, 1/16W Chip Resistor 0402 (1005 Metric) Moisture Resistant Thick Film",
+        "DigiKey Part Number": "311-100KLRTR-ND",
+        "Manufacturer": "YAGEO",
+        "Manufacturer Part Number": "RC0402FR-07100KL",
+        "Minimum Order Quantity": "10000",
+        "Packaging": "Tape & Reel (TR)",
+        "Part Status": "Active",
+        "Product Category": "Resistors",
+        "Product URL": "https://www.digikey.com/en/products/detail/yageo/RC0402FR-07100KL/726526",
+        "RoHS Status": "ROHS3 Compliant",
+        "Series": "RC_L",
+        "Standard Packaging": "0"
+      },
+      "title": "RES 100K OHM 1% 1/16W 0402"
+    },
+    {
+      "availability": {
+        "inStock": 22992711,
+        "leadTime": "18"
+      },
+      "datasheet_url": "https://www.yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L",
+      "datasheets": [
+        "https://www.yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L"
+      ],
+      "description_short": "0 Ohms Jumper Chip Resistor 0402 (1005 Metric) Moisture Resistant Thick Film",
+      "image_url": "https://mm.digikey.com/Volume0/opasdata/d220001/medias/images/4849/13_0402-%281005-metric%29.jpg",
+      "images": [
+        "https://mm.digikey.com/Volume0/opasdata/d220001/medias/images/4849/13_0402-%281005-metric%29.jpg"
+      ],
+      "manufacturer": "YAGEO",
+      "min_currency": "USD",
+      "min_price": 0.00134,
+      "min_price_rub": 0.11,
+      "mpn": "RC0402JR-070RL",
+      "package": "Tape & Reel (TR)",
+      "packaging": "0",
+      "price_breaks": [
+        {
+          "currency": "USD",
+          "price": 0.00206,
+          "price_rub": 0.16,
+          "qty": 10000
+        },
+        {
+          "currency": "USD",
+          "price": 0.00185,
+          "price_rub": 0.15,
+          "qty": 20000
+        },
+        {
+          "currency": "USD",
+          "price": 0.00175,
+          "price_rub": 0.14,
+          "qty": 30000
+        },
+        {
+          "currency": "USD",
+          "price": 0.00163,
+          "price_rub": 0.13,
+          "qty": 50000
+        },
+        {
+          "currency": "USD",
+          "price": 0.00155,
+          "price_rub": 0.12,
+          "qty": 70000
+        },
+        {
+          "currency": "USD",
+          "price": 0.00148,
+          "price_rub": 0.12,
+          "qty": 100000
+        },
+        {
+          "currency": "USD",
+          "price": 0.00145,
+          "price_rub": 0.12,
+          "qty": 120000
+        },
+        {
+          "currency": "USD",
+          "price": 0.00134,
+          "price_rub": 0.11,
+          "qty": 240000
+        },
+        {
+          "currency": "USD",
+          "price": 0.00133,
+          "price_rub": 0.11,
+          "qty": 250000
+        }
+      ],
+      "pricing": [
+        {
+          "currency": "USD",
+          "price": 0.00206,
+          "price_rub": 0.16,
+          "qty": 10000
+        },
+        {
+          "currency": "USD",
+          "price": 0.00185,
+          "price_rub": 0.15,
+          "qty": 20000
+        },
+        {
+          "currency": "USD",
+          "price": 0.00175,
+          "price_rub": 0.14,
+          "qty": 30000
+        },
+        {
+          "currency": "USD",
+          "price": 0.00163,
+          "price_rub": 0.13,
+          "qty": 50000
+        },
+        {
+          "currency": "USD",
+          "price": 0.00155,
+          "price_rub": 0.12,
+          "qty": 70000
+        },
+        {
+          "currency": "USD",
+          "price": 0.00148,
+          "price_rub": 0.12,
+          "qty": 100000
+        },
+        {
+          "currency": "USD",
+          "price": 0.00145,
+          "price_rub": 0.12,
+          "qty": 120000
+        },
+        {
+          "currency": "USD",
+          "price": 0.00134,
+          "price_rub": 0.11,
+          "qty": 240000
+        },
+        {
+          "currency": "USD",
+          "price": 0.00133,
+          "price_rub": 0.11,
+          "qty": 250000
+        }
+      ],
+      "product_url": "https://www.digikey.com/en/products/detail/yageo/RC0402JR-070RL/726406",
+      "raw_id": "311-0.0JRTR-ND",
+      "regions": [
+        "US",
+        "GLOBAL"
+      ],
+      "source": "digikey",
+      "stock": 22992711,
+      "technical_specs": {
+        "Description": "RES 0 OHM JUMPER 1/16W 0402",
+        "Detailed Description": "0 Ohms Jumper Chip Resistor 0402 (1005 Metric) Moisture Resistant Thick Film",
+        "DigiKey Part Number": "311-0.0JRTR-ND",
+        "Manufacturer": "YAGEO",
+        "Manufacturer Part Number": "RC0402JR-070RL",
+        "Minimum Order Quantity": "10000",
+        "Packaging": "Tape & Reel (TR)",
+        "Part Status": "Active",
+        "Product Category": "Resistors",
+        "Product URL": "https://www.digikey.com/en/products/detail/yageo/RC0402JR-070RL/726406",
+        "RoHS Status": "ROHS3 Compliant",
+        "Series": "RC_L",
+        "Standard Packaging": "0"
+      },
+      "title": "RES 0 OHM JUMPER 1/16W 0402"
+    },
+    {
+      "availability": {
+        "inStock": 13449002,
+        "leadTime": "18"
+      },
+      "datasheet_url": "https://www.yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L",
+      "datasheets": [
+        "https://www.yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L"
+      ],
+      "description_short": "4.7 kOhms ±5% 0.063W, 1/16W Chip Resistor 0402 (1005 Metric) Moisture Resistant Thick Film",
+      "image_url": "https://mm.digikey.com/Volume0/opasdata/d220001/medias/images/4849/13_0402-%281005-metric%29.jpg",
+      "images": [
+        "https://mm.digikey.com/Volume0/opasdata/d220001/medias/images/4849/13_0402-%281005-metric%29.jpg"
+      ],
+      "manufacturer": "YAGEO",
+      "min_currency": "USD",
+      "min_price": 0.00153,
+      "min_price_rub": 0.12,
+      "mpn": "RC0402JR-074K7L",
+      "package": "Tape & Reel (TR)",
+      "packaging": "0",
+      "price_breaks": [
+        {
+          "currency": "USD",
+          "price": 0.00204,
+          "price_rub": 0.16,
+          "qty": 10000
+        },
+        {
+          "currency": "USD",
+          "price": 0.00153,
+          "price_rub": 0.12,
+          "qty": 20000
+        },
+        {
+          "currency": "USD",
+          "price": 0.00153,
+          "price_rub": 0.12,
+          "qty": 240000
+        },
+        {
+          "currency": "USD",
+          "price": 0.00152,
+          "price_rub": 0.12,
+          "qty": 250000
+        }
+      ],
+      "pricing": [
+        {
+          "currency": "USD",
+          "price": 0.00204,
+          "price_rub": 0.16,
+          "qty": 10000
+        },
+        {
+          "currency": "USD",
+          "price": 0.00153,
+          "price_rub": 0.12,
+          "qty": 20000
+        },
+        {
+          "currency": "USD",
+          "price": 0.00153,
+          "price_rub": 0.12,
+          "qty": 240000
+        },
+        {
+          "currency": "USD",
+          "price": 0.00152,
+          "price_rub": 0.12,
+          "qty": 250000
+        }
+      ],
+      "product_url": "https://www.digikey.com/en/products/detail/yageo/RC0402JR-074K7L/726477",
+      "raw_id": "311-4.7KJRTR-ND",
+      "regions": [
+        "US",
+        "GLOBAL"
+      ],
+      "source": "digikey",
+      "stock": 13449002,
+      "technical_specs": {
+        "Description": "RES 4.7K OHM 5% 1/16W 0402",
+        "Detailed Description": "4.7 kOhms ±5% 0.063W, 1/16W Chip Resistor 0402 (1005 Metric) Moisture Resistant Thick Film",
+        "DigiKey Part Number": "311-4.7KJRTR-ND",
+        "Manufacturer": "YAGEO",
+        "Manufacturer Part Number": "RC0402JR-074K7L",
+        "Minimum Order Quantity": "10000",
+        "Packaging": "Tape & Reel (TR)",
+        "Part Status": "Active",
+        "Product Category": "Resistors",
+        "Product URL": "https://www.digikey.com/en/products/detail/yageo/RC0402JR-074K7L/726477",
+        "RoHS Status": "ROHS3 Compliant",
+        "Series": "RC_L",
+        "Standard Packaging": "0"
+      },
+      "title": "RES 4.7K OHM 5% 1/16W 0402"
+    },
+    {
+      "availability": {
+        "inStock": 11422109,
+        "leadTime": "18"
+      },
+      "datasheet_url": "https://www.yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L",
+      "datasheets": [
+        "https://www.yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L"
+      ],
+      "description_short": "10 kOhms ±5% 0.063W, 1/16W Chip Resistor 0402 (1005 Metric) Moisture Resistant Thick Film",
+      "image_url": "https://mm.digikey.com/Volume0/opasdata/d220001/medias/images/4849/13_0402-%281005-metric%29.jpg",
+      "images": [
+        "https://mm.digikey.com/Volume0/opasdata/d220001/medias/images/4849/13_0402-%281005-metric%29.jpg"
+      ],
+      "manufacturer": "YAGEO",
+      "min_currency": "USD",
+      "min_price": 0.00153,
+      "min_price_rub": 0.12,
+      "mpn": "RC0402JR-0710KL",
+      "package": "Tape & Reel (TR)",
+      "packaging": "0",
+      "price_breaks": [
+        {
+          "currency": "USD",
+          "price": 0.00204,
+          "price_rub": 0.16,
+          "qty": 10000
+        },
+        {
+          "currency": "USD",
+          "price": 0.0017,
+          "price_rub": 0.14,
+          "qty": 20000
+        },
+        {
+          "currency": "USD",
+          "price": 0.00166,
+          "price_rub": 0.13,
+          "qty": 30000
+        },
+        {
+          "currency": "USD",
+          "price": 0.00153,
+          "price_rub": 0.12,
+          "qty": 50000
+        },
+        {
+          "currency": "USD",
+          "price": 0.00152,
+          "price_rub": 0.12,
+          "qty": 70000
+        }
+      ],
+      "pricing": [
+        {
+          "currency": "USD",
+          "price": 0.00204,
+          "price_rub": 0.16,
+          "qty": 10000
+        },
+        {
+          "currency": "USD",
+          "price": 0.0017,
+          "price_rub": 0.14,
+          "qty": 20000
+        },
+        {
+          "currency": "USD",
+          "price": 0.00166,
+          "price_rub": 0.13,
+          "qty": 30000
+        },
+        {
+          "currency": "USD",
+          "price": 0.00153,
+          "price_rub": 0.12,
+          "qty": 50000
+        },
+        {
+          "currency": "USD",
+          "price": 0.00152,
+          "price_rub": 0.12,
+          "qty": 70000
+        }
+      ],
+      "product_url": "https://www.digikey.com/en/products/detail/yageo/RC0402JR-0710KL/726418",
+      "raw_id": "311-10KJRTR-ND",
+      "regions": [
+        "US",
+        "GLOBAL"
+      ],
+      "source": "digikey",
+      "stock": 11422109,
+      "technical_specs": {
+        "Description": "RES 10K OHM 5% 1/16W 0402",
+        "Detailed Description": "10 kOhms ±5% 0.063W, 1/16W Chip Resistor 0402 (1005 Metric) Moisture Resistant Thick Film",
+        "DigiKey Part Number": "311-10KJRTR-ND",
+        "Manufacturer": "YAGEO",
+        "Manufacturer Part Number": "RC0402JR-0710KL",
+        "Minimum Order Quantity": "10000",
+        "Packaging": "Tape & Reel (TR)",
+        "Part Status": "Active",
+        "Product Category": "Resistors",
+        "Product URL": "https://www.digikey.com/en/products/detail/yageo/RC0402JR-0710KL/726418",
+        "RoHS Status": "ROHS3 Compliant",
+        "Series": "RC_L",
+        "Standard Packaging": "0"
+      },
+      "title": "RES 10K OHM 5% 1/16W 0402"
+    },
+    {
+      "availability": {
+        "inStock": 7500306,
+        "leadTime": "17"
+      },
+      "datasheet_url": "https://www.seielect.com/catalog/SEI-RMCF_RMCP.pdf",
+      "datasheets": [
+        "https://www.seielect.com/catalog/SEI-RMCF_RMCP.pdf"
+      ],
+      "description_short": "10 kOhms ±1% 0.063W, 1/16W Chip Resistor 0402 (1005 Metric) Automotive AEC-Q200 Thick Film",
+      "image_url": "https://mm.digikey.com/Volume0/opasdata/d220001/medias/images/2597/MFG_RMC%20SERIES.jpg",
+      "images": [
+        "https://mm.digikey.com/Volume0/opasdata/d220001/medias/images/2597/MFG_RMC%20SERIES.jpg"
+      ],
+      "manufacturer": "Stackpole Electronics Inc",
+      "min_currency": "USD",
+      "min_price": 0.00168,
+      "min_price_rub": 0.13,
+      "mpn": "RMCF0402FT10K0",
+      "package": "Tape & Reel (TR)",
+      "packaging": "0",
+      "price_breaks": [
+        {
+          "currency": "USD",
+          "price": 0.0021,
+          "price_rub": 0.17,
+          "qty": 10000
+        },
+        {
+          "currency": "USD",
+          "price": 0.00205,
+          "price_rub": 0.16,
+          "qty": 20000
+        },
+        {
+          "currency": "USD",
+          "price": 0.00196,
+          "price_rub": 0.16,
+          "qty": 30000
+        },
+        {
+          "currency": "USD",
+          "price": 0.00187,
+          "price_rub": 0.15,
+          "qty": 50000
+        },
+        {
+          "currency": "USD",
+          "price": 0.00183,
+          "price_rub": 0.15,
+          "qty": 70000
+        },
+        {
+          "currency": "USD",
+          "price": 0.00169,
+          "price_rub": 0.14,
+          "qty": 100000
+        },
+        {
+          "currency": "USD",
+          "price": 0.00168,
+          "price_rub": 0.13,
+          "qty": 250000
+        }
+      ],
+      "pricing": [
+        {
+          "currency": "USD",
+          "price": 0.0021,
+          "price_rub": 0.17,
+          "qty": 10000
+        },
+        {
+          "currency": "USD",
+          "price": 0.00205,
+          "price_rub": 0.16,
+          "qty": 20000
+        },
+        {
+          "currency": "USD",
+          "price": 0.00196,
+          "price_rub": 0.16,
+          "qty": 30000
+        },
+        {
+          "currency": "USD",
+          "price": 0.00187,
+          "price_rub": 0.15,
+          "qty": 50000
+        },
+        {
+          "currency": "USD",
+          "price": 0.00183,
+          "price_rub": 0.15,
+          "qty": 70000
+        },
+        {
+          "currency": "USD",
+          "price": 0.00169,
+          "price_rub": 0.14,
+          "qty": 100000
+        },
+        {
+          "currency": "USD",
+          "price": 0.00168,
+          "price_rub": 0.13,
+          "qty": 250000
+        }
+      ],
+      "product_url": "https://www.digikey.com/en/products/detail/stackpole-electronics-inc/RMCF0402FT10K0/1761433",
+      "raw_id": "RMCF0402FT10K0TR-ND",
+      "regions": [
+        "US",
+        "GLOBAL"
+      ],
+      "source": "digikey",
+      "stock": 7500306,
+      "technical_specs": {
+        "Description": "RES 10K OHM 1% 1/16W 0402",
+        "Detailed Description": "10 kOhms ±1% 0.063W, 1/16W Chip Resistor 0402 (1005 Metric) Automotive AEC-Q200 Thick Film",
+        "DigiKey Part Number": "RMCF0402FT10K0TR-ND",
+        "Manufacturer": "Stackpole Electronics Inc",
+        "Manufacturer Part Number": "RMCF0402FT10K0",
+        "Minimum Order Quantity": "10000",
+        "Packaging": "Tape & Reel (TR)",
+        "Part Status": "Active",
+        "Product Category": "Resistors",
+        "Product URL": "https://www.digikey.com/en/products/detail/stackpole-electronics-inc/RMCF0402FT10K0/1761433",
+        "RoHS Status": "ROHS3 Compliant",
+        "Series": "RMCF",
+        "Standard Packaging": "0"
+      },
+      "title": "RES 10K OHM 1% 1/16W 0402"
+    },
+    {
+      "availability": {
+        "inStock": 11774020,
+        "leadTime": "18"
+      },
+      "datasheet_url": "https://www.yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L",
+      "datasheets": [
+        "https://www.yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L"
+      ],
+      "description_short": "10 kOhms ±1% 0.063W, 1/16W Chip Resistor 0402 (1005 Metric) Moisture Resistant Thick Film",
+      "image_url": "https://mm.digikey.com/Volume0/opasdata/d220001/medias/images/4849/13_0402-%281005-metric%29.jpg",
+      "images": [
+        "https://mm.digikey.com/Volume0/opasdata/d220001/medias/images/4849/13_0402-%281005-metric%29.jpg"
+      ],
+      "manufacturer": "YAGEO",
+      "min_currency": "USD",
+      "min_price": 0.00181,
+      "min_price_rub": 0.14,
+      "mpn": "RC0402FR-0710KL",
+      "package": "Tape & Reel (TR)",
+      "packaging": "0",
+      "price_breaks": [
+        {
+          "currency": "USD",
+          "price": 0.00286,
+          "price_rub": 0.23,
+          "qty": 10000
+        },
+        {
+          "currency": "USD",
+          "price": 0.00253,
+          "price_rub": 0.2,
+          "qty": 20000
+        },
+        {
+          "currency": "USD",
+          "price": 0.00237,
+          "price_rub": 0.19,
+          "qty": 30000
+        },
+        {
+          "currency": "USD",
+          "price": 0.0022,
+          "price_rub": 0.18,
+          "qty": 50000
+        },
+        {
+          "currency": "USD",
+          "price": 0.0021,
+          "price_rub": 0.17,
+          "qty": 70000
+        },
+        {
+          "currency": "USD",
+          "price": 0.002,
+          "price_rub": 0.16,
+          "qty": 100000
+        },
+        {
+          "currency": "USD",
+          "price": 0.00196,
+          "price_rub": 0.16,
+          "qty": 120000
+        },
+        {
+          "currency": "USD",
+          "price": 0.00182,
+          "price_rub": 0.15,
+          "qty": 240000
+        },
+        {
+          "currency": "USD",
+          "price": 0.00181,
+          "price_rub": 0.14,
+          "qty": 250000
+        }
+      ],
+      "pricing": [
+        {
+          "currency": "USD",
+          "price": 0.00286,
+          "price_rub": 0.23,
+          "qty": 10000
+        },
+        {
+          "currency": "USD",
+          "price": 0.00253,
+          "price_rub": 0.2,
+          "qty": 20000
+        },
+        {
+          "currency": "USD",
+          "price": 0.00237,
+          "price_rub": 0.19,
+          "qty": 30000
+        },
+        {
+          "currency": "USD",
+          "price": 0.0022,
+          "price_rub": 0.18,
+          "qty": 50000
+        },
+        {
+          "currency": "USD",
+          "price": 0.0021,
+          "price_rub": 0.17,
+          "qty": 70000
+        },
+        {
+          "currency": "USD",
+          "price": 0.002,
+          "price_rub": 0.16,
+          "qty": 100000
+        },
+        {
+          "currency": "USD",
+          "price": 0.00196,
+          "price_rub": 0.16,
+          "qty": 120000
+        },
+        {
+          "currency": "USD",
+          "price": 0.00182,
+          "price_rub": 0.15,
+          "qty": 240000
+        },
+        {
+          "currency": "USD",
+          "price": 0.00181,
+          "price_rub": 0.14,
+          "qty": 250000
+        }
+      ],
+      "product_url": "https://www.digikey.com/en/products/detail/yageo/RC0402FR-0710KL/726523",
+      "raw_id": "311-10.0KLRTR-ND",
+      "regions": [
+        "US",
+        "GLOBAL"
+      ],
+      "source": "digikey",
+      "stock": 11774020,
+      "technical_specs": {
+        "Description": "RES 10K OHM 1% 1/16W 0402",
+        "Detailed Description": "10 kOhms ±1% 0.063W, 1/16W Chip Resistor 0402 (1005 Metric) Moisture Resistant Thick Film",
+        "DigiKey Part Number": "311-10.0KLRTR-ND",
+        "Manufacturer": "YAGEO",
+        "Manufacturer Part Number": "RC0402FR-0710KL",
+        "Minimum Order Quantity": "10000",
+        "Packaging": "Tape & Reel (TR)",
+        "Part Status": "Active",
+        "Product Category": "Resistors",
+        "Product URL": "https://www.digikey.com/en/products/detail/yageo/RC0402FR-0710KL/726523",
+        "RoHS Status": "ROHS3 Compliant",
+        "Series": "RC_L",
+        "Standard Packaging": "0"
+      },
+      "title": "RES 10K OHM 1% 1/16W 0402"
+    },
+    {
+      "availability": {
+        "inStock": 11270000,
+        "leadTime": "18"
+      },
+      "datasheet_url": "https://www.yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L",
+      "datasheets": [
+        "https://www.yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L"
+      ],
+      "description_short": "4.75 kOhms ±1% 0.063W, 1/16W Chip Resistor 0402 (1005 Metric) Moisture Resistant Thick Film",
+      "image_url": "https://mm.digikey.com/Volume0/opasdata/d220001/medias/images/4849/13_0402-%281005-metric%29.jpg",
+      "images": [
+        "https://mm.digikey.com/Volume0/opasdata/d220001/medias/images/4849/13_0402-%281005-metric%29.jpg"
+      ],
+      "manufacturer": "YAGEO",
+      "min_currency": "USD",
+      "min_price": 0.00181,
+      "min_price_rub": 0.14,
+      "mpn": "RC0402FR-074K75L",
+      "package": "Tape & Reel (TR)",
+      "packaging": "10000",
+      "price_breaks": [
+        {
+          "currency": "USD",
+          "price": 0.00286,
+          "price_rub": 0.23,
+          "qty": 10000
+        },
+        {
+          "currency": "USD",
+          "price": 0.00253,
+          "price_rub": 0.2,
+          "qty": 20000
+        },
+        {
+          "currency": "USD",
+          "price": 0.00237,
+          "price_rub": 0.19,
+          "qty": 30000
+        },
+        {
+          "currency": "USD",
+          "price": 0.0022,
+          "price_rub": 0.18,
+          "qty": 50000
+        },
+        {
+          "currency": "USD",
+          "price": 0.0021,
+          "price_rub": 0.17,
+          "qty": 70000
+        },
+        {
+          "currency": "USD",
+          "price": 0.002,
+          "price_rub": 0.16,
+          "qty": 100000
+        },
+        {
+          "currency": "USD",
+          "price": 0.00196,
+          "price_rub": 0.16,
+          "qty": 120000
+        },
+        {
+          "currency": "USD",
+          "price": 0.00182,
+          "price_rub": 0.15,
+          "qty": 240000
+        },
+        {
+          "currency": "USD",
+          "price": 0.00181,
+          "price_rub": 0.14,
+          "qty": 250000
+        }
+      ],
+      "pricing": [
+        {
+          "currency": "USD",
+          "price": 0.00286,
+          "price_rub": 0.23,
+          "qty": 10000
+        },
+        {
+          "currency": "USD",
+          "price": 0.00253,
+          "price_rub": 0.2,
+          "qty": 20000
+        },
+        {
+          "currency": "USD",
+          "price": 0.00237,
+          "price_rub": 0.19,
+          "qty": 30000
+        },
+        {
+          "currency": "USD",
+          "price": 0.0022,
+          "price_rub": 0.18,
+          "qty": 50000
+        },
+        {
+          "currency": "USD",
+          "price": 0.0021,
+          "price_rub": 0.17,
+          "qty": 70000
+        },
+        {
+          "currency": "USD",
+          "price": 0.002,
+          "price_rub": 0.16,
+          "qty": 100000
+        },
+        {
+          "currency": "USD",
+          "price": 0.00196,
+          "price_rub": 0.16,
+          "qty": 120000
+        },
+        {
+          "currency": "USD",
+          "price": 0.00182,
+          "price_rub": 0.15,
+          "qty": 240000
+        },
+        {
+          "currency": "USD",
+          "price": 0.00181,
+          "price_rub": 0.14,
+          "qty": 250000
+        }
+      ],
+      "product_url": "https://www.digikey.com/en/products/detail/yageo/RC0402FR-074K75L/2827567",
+      "raw_id": "311-4.75KLTR-ND",
+      "regions": [
+        "US",
+        "GLOBAL"
+      ],
+      "source": "digikey",
+      "stock": 11270000,
+      "technical_specs": {
+        "Description": "RES 4.75K OHM 1% 1/16W 0402",
+        "Detailed Description": "4.75 kOhms ±1% 0.063W, 1/16W Chip Resistor 0402 (1005 Metric) Moisture Resistant Thick Film",
+        "DigiKey Part Number": "311-4.75KLTR-ND",
+        "Manufacturer": "YAGEO",
+        "Manufacturer Part Number": "RC0402FR-074K75L",
+        "Minimum Order Quantity": "10000",
+        "Packaging": "Tape & Reel (TR)",
+        "Part Status": "Active",
+        "Product Category": "Resistors",
+        "Product URL": "https://www.digikey.com/en/products/detail/yageo/RC0402FR-074K75L/2827567",
+        "RoHS Status": "ROHS3 Compliant",
+        "Series": "RC_L",
+        "Standard Packaging": "10000"
+      },
+      "title": "RES 4.75K OHM 1% 1/16W 0402"
+    },
+    {
+      "availability": {
+        "inStock": 14839024,
+        "leadTime": "18"
+      },
+      "datasheet_url": "https://www.yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L",
+      "datasheets": [
+        "https://www.yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L"
+      ],
+      "description_short": "10 kOhms ±1% 0.1W, 1/10W Chip Resistor 0603 (1608 Metric) Moisture Resistant Thick Film",
+      "image_url": "https://mm.digikey.com/Volume0/opasdata/d220001/medias/images/4848/13_0603-%281608-metric%29.jpg",
+      "images": [
+        "https://mm.digikey.com/Volume0/opasdata/d220001/medias/images/4848/13_0603-%281608-metric%29.jpg"
+      ],
+      "manufacturer": "YAGEO",
+      "min_currency": "USD",
+      "min_price": 0.00204,
+      "min_price_rub": 0.16,
+      "mpn": "RC0603FR-0710KL",
+      "package": "Tape & Reel (TR)",
+      "packaging": "0",
+      "price_breaks": [
+        {
+          "currency": "USD",
+          "price": 0.00204,
+          "price_rub": 0.16,
+          "qty": 5000
+        }
+      ],
+      "pricing": [
+        {
+          "currency": "USD",
+          "price": 0.00204,
+          "price_rub": 0.16,
+          "qty": 5000
+        }
+      ],
+      "product_url": "https://www.digikey.com/en/products/detail/yageo/RC0603FR-0710KL/726880",
+      "raw_id": "311-10.0KHRTR-ND",
+      "regions": [
+        "US",
+        "GLOBAL"
+      ],
+      "source": "digikey",
+      "stock": 14839024,
+      "technical_specs": {
+        "Description": "RES 10K OHM 1% 1/10W 0603",
+        "Detailed Description": "10 kOhms ±1% 0.1W, 1/10W Chip Resistor 0603 (1608 Metric) Moisture Resistant Thick Film",
+        "DigiKey Part Number": "311-10.0KHRTR-ND",
+        "Manufacturer": "YAGEO",
+        "Manufacturer Part Number": "RC0603FR-0710KL",
+        "Minimum Order Quantity": "5000",
+        "Packaging": "Tape & Reel (TR)",
+        "Part Status": "Active",
+        "Product Category": "Resistors",
+        "Product URL": "https://www.digikey.com/en/products/detail/yageo/RC0603FR-0710KL/726880",
+        "RoHS Status": "ROHS3 Compliant",
+        "Series": "RC_L",
+        "Standard Packaging": "0"
+      },
+      "title": "RES 10K OHM 1% 1/10W 0603"
+    },
+    {
+      "availability": {
+        "inStock": 12571495,
+        "leadTime": "12"
+      },
+      "datasheet_url": "https://industrial.panasonic.com/ww/products/pt/general-purpose-chip-resistors/models/ERJ2GE0R00X",
+      "datasheets": [
+        "https://industrial.panasonic.com/ww/products/pt/general-purpose-chip-resistors/models/ERJ2GE0R00X"
+      ],
+      "description_short": "0 Ohms Jumper Chip Resistor 0402 (1005 Metric) Automotive AEC-Q200 Thick Film",
+      "image_url": "https://mm.digikey.com/Volume0/opasdata/d220001/medias/images/957/ERJ-PA2-Series.jpg",
+      "images": [
+        "https://mm.digikey.com/Volume0/opasdata/d220001/medias/images/957/ERJ-PA2-Series.jpg"
+      ],
+      "manufacturer": "Panasonic Electronic Components",
+      "min_currency": "USD",
+      "min_price": 0.00268,
+      "min_price_rub": 0.21,
+      "mpn": "ERJ-2GE0R00X",
+      "package": "Tape & Reel (TR)",
+      "packaging": "0",
+      "price_breaks": [
+        {
+          "currency": "USD",
+          "price": 0.00401,
+          "price_rub": 0.32,
+          "qty": 10000
+        },
+        {
+          "currency": "USD",
+          "price": 0.00363,
+          "price_rub": 0.29,
+          "qty": 20000
+        },
+        {
+          "currency": "USD",
+          "price": 0.00343,
+          "price_rub": 0.27,
+          "qty": 30000
+        },
+        {
+          "currency": "USD",
+          "price": 0.00321,
+          "price_rub": 0.26,
+          "qty": 50000
+        },
+        {
+          "currency": "USD",
+          "price": 0.00308,
+          "price_rub": 0.25,
+          "qty": 70000
+        },
+        {
+          "currency": "USD",
+          "price": 0.00295,
+          "price_rub": 0.24,
+          "qty": 100000
+        },
+        {
+          "currency": "USD",
+          "price": 0.00289,
+          "price_rub": 0.23,
+          "qty": 120000
+        },
+        {
+          "currency": "USD",
+          "price": 0.00268,
+          "price_rub": 0.21,
+          "qty": 240000
+        },
+        {
+          "currency": "USD",
+          "price": 0.00267,
+          "price_rub": 0.21,
+          "qty": 250000
+        }
+      ],
+      "pricing": [
+        {
+          "currency": "USD",
+          "price": 0.00401,
+          "price_rub": 0.32,
+          "qty": 10000
+        },
+        {
+          "currency": "USD",
+          "price": 0.00363,
+          "price_rub": 0.29,
+          "qty": 20000
+        },
+        {
+          "currency": "USD",
+          "price": 0.00343,
+          "price_rub": 0.27,
+          "qty": 30000
+        },
+        {
+          "currency": "USD",
+          "price": 0.00321,
+          "price_rub": 0.26,
+          "qty": 50000
+        },
+        {
+          "currency": "USD",
+          "price": 0.00308,
+          "price_rub": 0.25,
+          "qty": 70000
+        },
+        {
+          "currency": "USD",
+          "price": 0.00295,
+          "price_rub": 0.24,
+          "qty": 100000
+        },
+        {
+          "currency": "USD",
+          "price": 0.00289,
+          "price_rub": 0.23,
+          "qty": 120000
+        },
+        {
+          "currency": "USD",
+          "price": 0.00268,
+          "price_rub": 0.21,
+          "qty": 240000
+        },
+        {
+          "currency": "USD",
+          "price": 0.00267,
+          "price_rub": 0.21,
+          "qty": 250000
+        }
+      ],
+      "product_url": "https://www.digikey.com/en/products/detail/panasonic-electronic-components/ERJ-2GE0R00X/146727",
+      "raw_id": "P0.0JTR-ND",
+      "regions": [
+        "US",
+        "GLOBAL"
+      ],
+      "source": "digikey",
+      "stock": 12571495,
+      "technical_specs": {
+        "Description": "RES SMD 0 OHM JUMPER 1/10W 0402",
+        "Detailed Description": "0 Ohms Jumper Chip Resistor 0402 (1005 Metric) Automotive AEC-Q200 Thick Film",
+        "DigiKey Part Number": "P0.0JTR-ND",
+        "Manufacturer": "Panasonic Electronic Components",
+        "Manufacturer Part Number": "ERJ-2GE0R00X",
+        "Minimum Order Quantity": "10000",
+        "Packaging": "Tape & Reel (TR)",
+        "Part Status": "Active",
+        "Product Category": "Resistors",
+        "Product URL": "https://www.digikey.com/en/products/detail/panasonic-electronic-components/ERJ-2GE0R00X/146727",
+        "RoHS Status": "ROHS3 Compliant",
+        "Series": "ERJ-2G",
+        "Standard Packaging": "0"
+      },
+      "title": "RES SMD 0 OHM JUMPER 1/10W 0402"
+    },
+    {
+      "availability": {
+        "inStock": 8083983,
+        "leadTime": "13"
+      },
+      "datasheet_url": "https://www.vishay.com/docs/20035/dcrcwe3.pdf",
+      "datasheets": [
+        "https://www.vishay.com/docs/20035/dcrcwe3.pdf"
+      ],
+      "description_short": "10 kOhms ±1% 0.063W, 1/16W Chip Resistor 0402 (1005 Metric) Automotive AEC-Q200 Thick Film",
+      "image_url": "https://mm.digikey.com/Volume0/opasdata/d220001/medias/images/596/Vishay-CRCW-0402.jpg",
+      "images": [
+        "https://mm.digikey.com/Volume0/opasdata/d220001/medias/images/596/Vishay-CRCW-0402.jpg"
+      ],
+      "manufacturer": "Vishay Dale",
+      "min_currency": "USD",
+      "min_price": 0.00384,
+      "min_price_rub": 0.31,
+      "mpn": "CRCW040210K0FKED",
+      "package": "Tape & Reel (TR)",
+      "packaging": "0",
+      "price_breaks": [
+        {
+          "currency": "USD",
+          "price": 0.00438,
+          "price_rub": 0.35,
+          "qty": 10000
+        },
+        {
+          "currency": "USD",
+          "price": 0.00433,
+          "price_rub": 0.35,
+          "qty": 20000
+        },
+        {
+          "currency": "USD",
+          "price": 0.0043,
+          "price_rub": 0.34,
+          "qty": 30000
+        },
+        {
+          "currency": "USD",
+          "price": 0.00427,
+          "price_rub": 0.34,
+          "qty": 50000
+        },
+        {
+          "currency": "USD",
+          "price": 0.00425,
+          "price_rub": 0.34,
+          "qty": 70000
+        },
+        {
+          "currency": "USD",
+          "price": 0.00414,
+          "price_rub": 0.33,
+          "qty": 100000
+        },
+        {
+          "currency": "USD",
+          "price": 0.00407,
+          "price_rub": 0.33,
+          "qty": 120000
+        },
+        {
+          "currency": "USD",
+          "price": 0.00384,
+          "price_rub": 0.31,
+          "qty": 240000
+        },
+        {
+          "currency": "USD",
+          "price": 0.00383,
+          "price_rub": 0.31,
+          "qty": 250000
+        }
+      ],
+      "pricing": [
+        {
+          "currency": "USD",
+          "price": 0.00438,
+          "price_rub": 0.35,
+          "qty": 10000
+        },
+        {
+          "currency": "USD",
+          "price": 0.00433,
+          "price_rub": 0.35,
+          "qty": 20000
+        },
+        {
+          "currency": "USD",
+          "price": 0.0043,
+          "price_rub": 0.34,
+          "qty": 30000
+        },
+        {
+          "currency": "USD",
+          "price": 0.00427,
+          "price_rub": 0.34,
+          "qty": 50000
+        },
+        {
+          "currency": "USD",
+          "price": 0.00425,
+          "price_rub": 0.34,
+          "qty": 70000
+        },
+        {
+          "currency": "USD",
+          "price": 0.00414,
+          "price_rub": 0.33,
+          "qty": 100000
+        },
+        {
+          "currency": "USD",
+          "price": 0.00407,
+          "price_rub": 0.33,
+          "qty": 120000
+        },
+        {
+          "currency": "USD",
+          "price": 0.00384,
+          "price_rub": 0.31,
+          "qty": 240000
+        },
+        {
+          "currency": "USD",
+          "price": 0.00383,
+          "price_rub": 0.31,
+          "qty": 250000
+        }
+      ],
+      "product_url": "https://www.digikey.com/en/products/detail/vishay-dale/CRCW040210K0FKED/1178121",
+      "raw_id": "541-10.0KLTR-ND",
+      "regions": [
+        "US",
+        "GLOBAL"
+      ],
+      "source": "digikey",
+      "stock": 8083983,
+      "technical_specs": {
+        "Description": "RES 10K OHM 1% 1/16W 0402",
+        "Detailed Description": "10 kOhms ±1% 0.063W, 1/16W Chip Resistor 0402 (1005 Metric) Automotive AEC-Q200 Thick Film",
+        "DigiKey Part Number": "541-10.0KLTR-ND",
+        "Manufacturer": "Vishay Dale",
+        "Manufacturer Part Number": "CRCW040210K0FKED",
+        "Minimum Order Quantity": "10000",
+        "Packaging": "Tape & Reel (TR)",
+        "Part Status": "Active",
+        "Product Category": "Resistors",
+        "Product URL": "https://www.digikey.com/en/products/detail/vishay-dale/CRCW040210K0FKED/1178121",
+        "RoHS Status": "ROHS3 Compliant",
+        "Series": "D/CRCW e3",
+        "Standard Packaging": "0"
+      },
+      "title": "RES 10K OHM 1% 1/16W 0402"
+    }
+  ]
+}

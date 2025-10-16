@@ -15,7 +15,9 @@ import {
   ApiKey,
   StaticPage,
   ManualProduct,
-  ProjectStat
+  ProjectStat,
+  AdminNotification,
+  Setting
 } from '../db/models.js'
 
 // Register Sequelize adapter
@@ -28,33 +30,242 @@ AdminJS.registerAdapter({
 const adminOptions = {
   resources: [
     {
+      resource: Setting,
+      options: {
+        navigation: { name: 'Система', icon: 'Sliders' },
+        listProperties: ['key', 'category', 'type', 'updated_at', 'is_public'],
+        showProperties: ['key', 'value', 'type', 'category', 'description', 'is_public', 'created_at', 'updated_at'],
+        editProperties: ['key', 'value', 'type', 'category', 'description', 'is_public'],
+        filterProperties: ['category', 'type', 'is_public'],
+        sort: { sortBy: 'category', direction: 'asc' },
+        properties: {
+          value: {
+            type: 'textarea',
+            props: {
+              rows: 3
+            }
+          },
+          type: {
+            availableValues: [
+              { value: 'string', label: 'Строка' },
+              { value: 'number', label: 'Число' },
+              { value: 'boolean', label: 'Логическое' },
+              { value: 'json', label: 'JSON' },
+              { value: 'array', label: 'Массив' }
+            ]
+          },
+          category: {
+            availableValues: [
+              { value: 'general', label: 'Общие' },
+              { value: 'pricing', label: 'Ценообразование' },
+              { value: 'notifications', label: 'Уведомления' },
+              { value: 'api', label: 'API' },
+              { value: 'seo', label: 'SEO' }
+            ]
+          }
+        },
+        actions: {
+          new: {
+            before: async (request) => {
+              // Ensure key is lowercase and has no spaces
+              if (request.payload.key) {
+                request.payload.key = request.payload.key
+                  .toLowerCase()
+                  .replace(/\s+/g, '_')
+                  .replace(/[^a-z0-9_]/g, '');
+              }
+              return request;
+            }
+          },
+          edit: {
+            before: async (request) => {
+              // Ensure key is lowercase and has no spaces
+              if (request.payload.key) {
+                request.payload.key = request.payload.key
+                  .toLowerCase()
+                  .replace(/\s+/g, '_')
+                  .replace(/[^a-z0-9_]/g, '');
+              }
+              return request;
+            }
+          }
+        }
+      }
+    },
+    {
+      resource: AdminNotification,
+      options: {
+        navigation: { name: 'Уведомления', icon: 'Bell' },
+        listProperties: ['title', 'type', 'priority', 'created_at', 'read_at'],
+        showProperties: ['title', 'message', 'type', 'priority', 'payload', 'created_at', 'read_at'],
+        editProperties: ['title', 'message', 'type', 'priority', 'payload'],
+        filterProperties: ['type', 'priority', 'read_at'],
+        sort: { sortBy: 'created_at', direction: 'desc' },
+        properties: {
+          payload: { type: 'mixed' },
+          message: {
+            type: 'textarea',
+            props: {
+              rows: 3
+            }
+          },
+          priority: {
+            availableValues: [
+              { value: 'low', label: 'Низкий' },
+              { value: 'normal', label: 'Обычный' },
+              { value: 'high', label: 'Высокий' }
+            ]
+          },
+          type: {
+            availableValues: [
+              { value: 'order', label: 'Заказ' },
+              { value: 'system', label: 'Система' },
+              { value: 'alert', label: 'Оповещение' }
+            ]
+          }
+        },
+        actions: {
+          markAsRead: {
+            actionType: 'record',
+            icon: 'CheckDouble',
+            isVisible: (context) => {
+              const record = context.record
+              return record && !record.params.read_at
+            },
+            handler: async (request, response, context) => {
+              const { record } = context
+              if (record) {
+                await record.update({ read_at: new Date() })
+                return {
+                  record: record.toJSON(context.currentAdmin),
+                  notice: { message: 'Отмечено как прочитанное', type: 'success' }
+                }
+              }
+              return { record }
+            }
+          },
+          markAsUnread: {
+            actionType: 'record',
+            icon: 'Undo',
+            isVisible: (context) => {
+              const record = context.record
+              return record && record.params.read_at
+            },
+            handler: async (request, response, context) => {
+              const { record } = context
+              if (record) {
+                await record.update({ read_at: null })
+                return {
+                  record: record.toJSON(context.currentAdmin),
+                  notice: { message: 'Отмечено как непрочитанное', type: 'success' }
+                }
+              }
+              return { record }
+            }
+          },
+          markAllAsRead: {
+            actionType: 'bulk',
+            icon: 'CheckSquare',
+            isVisible: true,
+            handler: async (request, response, context) => {
+              const { records } = context
+              if (records && records.length) {
+                await Promise.all(records.map(record => record.update({ read_at: new Date() })))
+                return {
+                  records: records.map(record => record.toJSON(context.currentAdmin)),
+                  notice: { message: `${records.length} уведомлений отмечено как прочитанные`, type: 'success' }
+                }
+              }
+              return { records }
+            }
+          }
+        }
+      }
+    },
+    {
       resource: Order,
       options: {
         navigation: { name: 'Управление', icon: 'ShoppingCart' },
-        listProperties: ['id', 'order_number', 'client_name', 'client_email', 'total_price', 'status', 'created_at'],
-        showProperties: ['id', 'order_number', 'client_name', 'client_email', 'client_phone', 'client_address', 'items', 'total_price', 'currency', 'status', 'notes', 'created_at'],
-        editProperties: ['status', 'notes'],
-        filterProperties: ['order_number', 'client_email', 'status'],
-        sort: {
-          sortBy: 'created_at',
-          direction: 'desc'
-        },
+  listProperties: ['order_code', 'mpn', 'created_at', 'qty', 'customer_name', 'status'],
+        showProperties: ['order_code', 'created_at', 'customer_name', 'customer_email', 'customer_contact', 'mpn', 'manufacturer', 'qty', 'pricing_snapshot', 'dealer_links', 'status', 'status_comment', 'status_history'],
+        editProperties: ['status', 'status_comment'],
+        filterProperties: ['order_code', 'customer_email', 'mpn', 'status'],
+        sort: { sortBy: 'created_at', direction: 'desc' },
         properties: {
-          items: {
-            type: 'mixed'
+          pricing_snapshot: { type: 'mixed' },
+          dealer_links: {
+            type: 'mixed',
+            components: {
+              show: AdminJS.bundle('../components/dealer-links-component')
+            }
           },
+          mpn: {
+            components: {
+              show: AdminJS.bundle('../components/mpn-link-component')
+            }
+          },
+          customer_contact: { type: 'mixed' },
+          status_history: { type: 'mixed' },
           status: {
             availableValues: [
-              { value: 'new', label: 'Новый' },
+              { value: 'pending', label: 'Новый' },
               { value: 'processing', label: 'В обработке' },
-              { value: 'shipped', label: 'Отправлен' },
-              { value: 'delivered', label: 'Доставлен' },
+              { value: 'completed', label: 'Завершён' },
               { value: 'cancelled', label: 'Отменён' }
             ]
           }
         },
         actions: {
-          export: { isVisible: true }
+          export: { isVisible: true },
+          // Custom action: Update status with optional comment
+          updateStatus: {
+            actionType: 'record',
+            icon: 'FlagInCog',
+            isVisible: true,
+            guard: 'Изменить статус заказа? Клиенту придёт письмо, если указан email.',
+            component: false,
+            handler: async (request, response, context) => {
+              const { record } = context
+              const id = record?.params?.id || record?.id
+              const status = request?.payload?.status
+              const comment = request?.payload?.comment || null
+              if (!id || !status) {
+                return {
+                  notice: {
+                    message: 'Нужны поля: status (и опционально comment)'
+                  }
+                }
+              }
+              try {
+                const res = await fetch(`${process.env.BASE_URL || 'http://localhost:9201'}/api/admin/orders/${id}`, {
+                  method: 'PATCH',
+                  headers: { 'content-type': 'application/json' },
+                  body: JSON.stringify({ status, comment })
+                })
+                const json = await res.json()
+                return {
+                  record: record?.toJSON ? record.toJSON(context.currentAdmin) : record,
+                  notice: {
+                    message: json && json.ok ? 'Статус обновлён' : `Ошибка: ${json?.error || res.status}`
+                  }
+                }
+              } catch (e) {
+                return { notice: { message: `Ошибка запроса: ${e.message}` } }
+              }
+            },
+            // Simple form with status and optional comment
+            componentProps: {
+              fields: [
+                { name: 'status', type: 'select', availableValues: [
+                  { value: 'pending', label: 'Новый' },
+                  { value: 'processing', label: 'В обработке' },
+                  { value: 'completed', label: 'Завершён' },
+                  { value: 'cancelled', label: 'Отменён' }
+                ]},
+                { name: 'comment', type: 'textarea', props: { rows: 3 } }
+              ]
+            }
+          }
         }
       }
     },
@@ -266,4 +477,4 @@ if (process.env.NODE_ENV === 'production') {
   }
 }
 
-export { adminJs, adminRouter, sequelize, AdminUser, Order, ApiHealth, ApiKey, StaticPage, ManualProduct, ProjectStat }
+export { adminJs, adminRouter, sequelize, AdminUser, Order, ApiHealth, ApiKey, StaticPage, ManualProduct, ProjectStat, AdminNotification, Setting }

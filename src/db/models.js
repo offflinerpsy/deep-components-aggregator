@@ -567,12 +567,15 @@ const Setting = sequelize.define('Setting', {
     type: DataTypes.BOOLEAN,
     defaultValue: false,
     comment: 'Whether the setting is accessible via public API'
+  },
+  updated_at: {
+    type: DataTypes.BIGINT,
+    allowNull: false,
+    comment: 'Timestamp of last update'
   }
 }, {
   tableName: 'settings',
-  timestamps: true,
-  createdAt: 'created_at',
-  updatedAt: 'updated_at',
+  timestamps: false,
   indexes: [
     { fields: ['key'], unique: true },
     { fields: ['category'] },
@@ -640,13 +643,13 @@ const ManualProductField = sequelize.define('ManualProductField', {
 })
 
 // Define associations
-ManualProduct.hasMany(ManualProductField, { 
-  foreignKey: 'product_id', 
+ManualProduct.hasMany(ManualProductField, {
+  foreignKey: 'product_id',
   as: 'customFields',
   onDelete: 'CASCADE'
 })
-ManualProductField.belongsTo(ManualProduct, { 
-  foreignKey: 'product_id', 
+ManualProductField.belongsTo(ManualProduct, {
+  foreignKey: 'product_id',
   as: 'product'
 })
 

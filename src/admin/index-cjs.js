@@ -37,17 +37,21 @@ const adminOptions = {
       resource: Setting,
       options: {
         navigation: { name: 'Система', icon: 'Sliders' },
-        listProperties: ['key', 'value', 'updated_at'],
-        showProperties: ['key', 'value', 'updated_at'],
-        editProperties: ['key', 'value'],
-        filterProperties: ['key'],
+        listProperties: ['key', 'value', 'category', 'type', 'updated_at'],
+        showProperties: ['key', 'value', 'category', 'type', 'description', 'is_public', 'updated_at'],
+        editProperties: ['key', 'value', 'category', 'type', 'description', 'is_public'],
+        filterProperties: ['key', 'category', 'type'],
         sort: { sortBy: 'key', direction: 'asc' },
         properties: {
+          key: {
+            description: 'Ключ настройки (например: markup_percentage, notifications)'
+          },
           value: {
             type: 'textarea',
             props: {
               rows: 3
-            }
+            },
+            description: 'Значение настройки. Для JSON используйте корректный формат'
           },
           type: {
             availableValues: [
@@ -399,8 +403,12 @@ const adminOptions = {
             availableValues: [
               { value: 'RUB', label: 'Рубль (RUB)' },
               { value: 'USD', label: 'Доллар (USD)' },
-              { value: 'EUR', label: 'Евро (EUR)' }
-            ]
+              { value: 'EUR', label: 'Евро (EUR)' },
+              { value: 'GBP', label: 'Фунт стерлингов (GBP)' },
+              { value: 'CNY', label: 'Юань (CNY)' },
+              { value: 'JPY', label: 'Иена (JPY)' }
+            ],
+            description: 'Валюта цены товара'
           },
           region: {
             type: 'string',

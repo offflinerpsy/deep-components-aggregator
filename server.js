@@ -76,6 +76,8 @@ import { mountAdminSettingsRoutes } from './api/admin.settings.js';
 import { mountAdminNotificationsRoutes } from './api/admin.notifications.js';
 import { mountAdminPagesRoutes } from './api/admin.pages.mjs';
 import { mountAdminProductRoutes } from './api/admin.products.js';
+import { mountAdminMarkupRoutes } from './api/admin.markup.js';
+import { requireAdmin } from './middleware/requireAdmin.js';
 import { checkEmailHandler } from './api/auth-check.js';
 // Import static pages routes
 import staticPagesModule from './api/static-pages.mjs';
@@ -476,6 +478,7 @@ mountAdminSettingsRoutes(app, db, logger);
 mountAdminNotificationsRoutes(app, db, logger);
 mountAdminPagesRoutes(app, db, logger);
 mountAdminProductRoutes(app, db, logger);
+mountAdminMarkupRoutes(app, { db, logger, requireAdmin });
 // ============================================
 // AdminJS Panel Routes
 // ============================================

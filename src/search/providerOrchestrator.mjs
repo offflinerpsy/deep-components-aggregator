@@ -8,6 +8,7 @@ import { normTME } from '../integrations/tme/normalize.mjs';
 import { farnellByKeyword } from '../integrations/farnell/client.mjs';
 import { normFarnell } from '../integrations/farnell/normalize.mjs';
 import { searchManualProducts } from './manualProducts.mjs';
+import { applyMarkupToProducts } from '../utils/markup.mjs';
 import PQueue from 'p-queue';
 import { apiCallsTotal, apiCallDuration } from '../../metrics/registry.js';
 
@@ -387,9 +388,9 @@ export async function orchestrateProviderSearch(query, keys) {
     }
   });
 
-  // Add manual products to search results
+  // Add manual products to search results (at the beginning for priority)
   const manualProducts = searchManualProducts(trimmed);
-  aggregatedRows = aggregatedRows.concat(manualProducts);
+  aggregatedRows = manualProducts.concat(aggregatedRows);
   
   // Add manual products provider summary
   if (manualProducts.length > 0) {
@@ -402,11 +403,14 @@ export async function orchestrateProviderSearch(query, keys) {
     });
   }
 
-  const deduped = dedupeRows(aggregatedRows).slice(0, 60);
-  const ranked = rankRows(deduped, trimmed);
+        const deduped = dedupeRows(aggregatedRows).slice(0, 60);
+        const ranked = rankRows(deduped, trimmed);
+        
+        // Применяем наценку ко всем товарам
+        const productsWithMarkup = applyMarkupToProducts(ranked);
 
-  return {
-    rows: ranked,
-    providers: providerSummaries
-  };
+        return {
+          rows: productsWithMarkup,
+          providers: providerSummaries
+        };
 }

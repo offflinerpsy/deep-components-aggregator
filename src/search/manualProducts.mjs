@@ -4,6 +4,7 @@
  */
 
 import { openDb } from '../db/sql.mjs';
+import { applyMarkup } from '../utils/markup.mjs';
 
 /**
  * Получить произвольные поля товара
@@ -12,18 +13,18 @@ import { openDb } from '../db/sql.mjs';
  */
 function getCustomFields(productId) {
   const db = openDb();
-  
+
   try {
     const rows = db.prepare(`
-      SELECT field_name, field_value, field_type 
-      FROM manual_product_fields 
+      SELECT field_name, field_value, field_type
+      FROM manual_product_fields
       WHERE product_id = ?
     `).all(productId);
-    
+
     const customFields = {};
     rows.forEach(row => {
       let value = row.field_value;
-      
+
       // Преобразуем значение в зависимости от типа
       switch (row.field_type) {
         case 'number':
@@ -42,10 +43,10 @@ function getCustomFields(productId) {
         default:
           value = String(value || '');
       }
-      
+
       customFields[row.field_name] = value;
     });
-    
+
     return customFields;
   } catch (error) {
     console.error('Error getting custom fields:', error);
@@ -60,16 +61,16 @@ function getCustomFields(productId) {
  */
 export function searchManualProducts(query) {
   const db = openDb();
-  
+
   if (!query || query.trim().length === 0) {
     return [];
   }
 
   const searchTerm = `%${query.toLowerCase()}%`;
-  
+
   try {
     const rows = db.prepare(`
-      SELECT 
+      SELECT
         mpn,
         manufacturer,
         description as title,
@@ -93,16 +94,16 @@ export function searchManualProducts(query) {
         'manual' as source,
         created_at,
         updated_at
-      FROM manual_products 
-      WHERE is_active = 1 
+      FROM manual_products
+      WHERE is_active = 1
         AND (
-          LOWER(mpn) LIKE ? OR 
-          LOWER(manufacturer) LIKE ? OR 
+          LOWER(mpn) LIKE ? OR
+          LOWER(manufacturer) LIKE ? OR
           LOWER(description) LIKE ? OR
           LOWER(category) LIKE ?
         )
-      ORDER BY 
-        CASE 
+      ORDER BY
+        CASE
           WHEN LOWER(mpn) = LOWER(?) THEN 1
           WHEN LOWER(mpn) LIKE ? THEN 2
           WHEN LOWER(manufacturer) LIKE ? THEN 3
@@ -121,11 +122,11 @@ export function searchManualProducts(query) {
     return rows.map(row => {
       // Получаем произвольные поля
       const customFields = getCustomFields(row.id);
-      
+
       // Объединяем технические характеристики с произвольными полями
       const technicalSpecs = row.technical_specs ? JSON.parse(row.technical_specs) : {};
       const mergedSpecs = { ...technicalSpecs, ...customFields };
-      
+
       return {
         mpn: row.mpn,
         manufacturer: row.manufacturer,
@@ -134,8 +135,8 @@ export function searchManualProducts(query) {
         source: 'manual',
         region: row.region || 'GLOBAL',
         stock: row.stock || 0,
-        min_price: row.price || 0,
-        min_price_rub: row.price || 0, // Assuming RUB for manual products
+        min_price: applyMarkup(row.price || 0, row.currency),
+        min_price_rub: applyMarkup(row.price || 0, 'RUB'),
         image_url: row.image_url,
         datasheet_url: row.datasheet_url,
         technical_specs: mergedSpecs,
@@ -165,14 +166,14 @@ export function searchManualProducts(query) {
  */
 export function getManualProduct(mpn) {
   const db = openDb();
-  
+
   if (!mpn || mpn.trim().length === 0) {
     return null;
   }
 
   try {
     const row = db.prepare(`
-      SELECT * FROM manual_products 
+      SELECT * FROM manual_products
       WHERE is_active = 1 AND LOWER(mpn) = LOWER(?)
       LIMIT 1
     `).get(mpn);
@@ -183,7 +184,7 @@ export function getManualProduct(mpn) {
 
     // Получаем произвольные поля
     const customFields = getCustomFields(row.id);
-    
+
     // Объединяем технические характеристики с произвольными полями
     const technicalSpecs = row.technical_specs ? JSON.parse(row.technical_specs) : {};
     const mergedSpecs = { ...technicalSpecs, ...customFields };
@@ -196,8 +197,8 @@ export function getManualProduct(mpn) {
       source: 'manual',
       region: row.region || 'GLOBAL',
       stock: row.stock || 0,
-      min_price: row.price || 0,
-      min_price_rub: row.price || 0,
+      min_price: applyMarkup(row.price || 0, row.currency),
+      min_price_rub: applyMarkup(row.price || 0, 'RUB'),
       image_url: row.image_url,
       datasheet_url: row.datasheet_url,
       technical_specs: mergedSpecs,

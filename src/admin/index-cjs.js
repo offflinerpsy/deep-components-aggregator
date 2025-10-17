@@ -18,6 +18,7 @@ const {
   ApiKey,
   StaticPage,
   ManualProduct,
+  ManualProductField,
   ProjectStat,
   AdminNotification,
   Setting
@@ -371,23 +372,27 @@ const adminOptions = {
         properties: {
           mpn: {
             type: 'string',
-            isRequired: true
+            isRequired: true,
+            description: 'Номер детали производителя (Manufacturer Part Number). Должен быть уникальным. Пример: CRCW040210K0FKED'
           },
           manufacturer: {
             type: 'string',
-            isRequired: true
+            isRequired: true,
+            description: 'Название производителя. Пример: Vishay, Texas Instruments, STMicroelectronics'
           },
           description: {
             type: 'textarea',
             props: {
               rows: 3
-            }
+            },
+            description: 'Подробное описание товара. Будет отображаться в карточке товара'
           },
           price: {
             type: 'number',
             props: {
               step: 0.01
-            }
+            },
+            description: 'Цена за единицу товара. Используется для отображения в результатах поиска'
           },
           currency: {
             type: 'string',
@@ -503,6 +508,48 @@ const adminOptions = {
             props: {
               placeholder: 'manual, custom, etc.'
             }
+          }
+        }
+      }
+    },
+    {
+      resource: ManualProductField,
+      options: {
+        navigation: { name: 'Товары', icon: 'Package' },
+        listProperties: ['product_id', 'field_name', 'field_value', 'field_type'],
+        showProperties: ['product_id', 'field_name', 'field_value', 'field_type', 'created_at', 'updated_at'],
+        editProperties: ['product_id', 'field_name', 'field_value', 'field_type'],
+        sort: {
+          sortBy: 'product_id',
+          direction: 'asc'
+        },
+        properties: {
+          product_id: {
+            type: 'number',
+            isRequired: true,
+            description: 'ID товара из таблицы Manual Products. Найдите ID в списке товаров'
+          },
+          field_name: {
+            type: 'string',
+            isRequired: true,
+            description: 'Название поля. Примеры: Packaging, RoHS Status, Power (Watts), Lead Time, Minimum Order Quantity, Operating Temperature, Package / Case, Size / Dimension'
+          },
+          field_value: {
+            type: 'textarea',
+            props: {
+              rows: 2
+            },
+            description: 'Значение поля. Для boolean: true/false, yes/no. Для number: только числа. Для string: любой текст'
+          },
+          field_type: {
+            type: 'string',
+            availableValues: [
+              { value: 'string', label: 'Строка' },
+              { value: 'number', label: 'Число' },
+              { value: 'boolean', label: 'Логическое' },
+              { value: 'json', label: 'JSON' }
+            ],
+            description: 'Тип данных поля. string - текст, number - числа, boolean - да/нет, json - сложные структуры'
           }
         }
       }
@@ -624,4 +671,4 @@ if (process.env.NODE_ENV === 'production') {
   }
 }
 
-module.exports = { adminJs, adminRouter, sequelize, AdminUser, Order, ApiHealth, ApiKey, StaticPage, ManualProduct, ProjectStat, AdminNotification, Setting }
+module.exports = { adminJs, adminRouter, sequelize, AdminUser, Order, ApiHealth, ApiKey, StaticPage, ManualProduct, ManualProductField, ProjectStat, AdminNotification, Setting }

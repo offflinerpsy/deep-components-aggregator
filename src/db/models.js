@@ -537,15 +537,10 @@ const AdminNotification = sequelize.define('AdminNotification', {
 // Settings (system configuration)
 // ============================================
 const Setting = sequelize.define('Setting', {
-  id: {
-    type: DataTypes.INTEGER,
-    primaryKey: true,
-    autoIncrement: true
-  },
   key: {
     type: DataTypes.STRING,
+    primaryKey: true,
     allowNull: false,
-    unique: true,
     comment: 'Setting key (e.g., "pricing_policy", "notification_email")'
   },
   value: {
@@ -608,6 +603,54 @@ Setting.prototype.getTypedValue = function() {
 };
 
 // ============================================
+// Manual Product Fields (dynamic fields for manual products)
+// ============================================
+const ManualProductField = sequelize.define('ManualProductField', {
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true
+  },
+  product_id: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    comment: 'Reference to manual_products.id'
+  },
+  field_name: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    comment: 'Name of the custom field (e.g., "Packaging", "RoHS Status")'
+  },
+  field_value: {
+    type: DataTypes.TEXT,
+    comment: 'Value of the custom field'
+  },
+  field_type: {
+    type: DataTypes.ENUM('string', 'number', 'boolean', 'json'),
+    defaultValue: 'string',
+    comment: 'Data type of the field value'
+  }
+}, {
+  tableName: 'manual_product_fields',
+  indexes: [
+    { fields: ['product_id'] },
+    { fields: ['field_name'] },
+    { fields: ['product_id', 'field_name'], unique: true }
+  ]
+})
+
+// Define associations
+ManualProduct.hasMany(ManualProductField, { 
+  foreignKey: 'product_id', 
+  as: 'customFields',
+  onDelete: 'CASCADE'
+})
+ManualProductField.belongsTo(ManualProduct, { 
+  foreignKey: 'product_id', 
+  as: 'product'
+})
+
+// ============================================
 // Export all models
 // ============================================
 export {
@@ -618,6 +661,7 @@ export {
   ApiKey,
   StaticPage,
   ManualProduct,
+  ManualProductField,
   ProjectStat,
   AdminNotification,
   Setting

@@ -1,0 +1,40 @@
+{
+  "domain": "prosnab.tech",
+  "smtpHost": "mail.prosnab.tech",
+  "spf": [
+    [
+      "v=spf1 mx ~all"
+    ]
+  ],
+  "dmarc": [
+    [
+      "v=DMARC1; p=quarantine; rua=mailto:postmaster@prosnab.tech"
+    ]
+  ],
+  "dkim": {
+    "dkim": [],
+    "default": [],
+    "mail": []
+  },
+  "mx": [
+    {
+      "exchange": "mail.prosnab.tech",
+      "priority": 10
+    }
+  ],
+  "aRecords": [
+    "5.129.228.88"
+  ],
+  "smtpA": [
+    "5.129.228.88"
+  ],
+  "ptr": [
+    {
+      "ip": "5.129.228.88",
+      "ptr": [
+        "5739319-zw86058",
+        "5739319-zw86058.local"
+      ]
+    }
+  ]
+}

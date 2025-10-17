@@ -1,0 +1,1 @@
+ARTDIR=docs/_artifacts/2025-10-15/diag-20251015T105221Z

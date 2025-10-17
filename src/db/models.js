@@ -306,6 +306,11 @@ const StaticPage = sequelize.define('StaticPage', {
     defaultValue: 'footer',
     comment: 'Where to show link'
   },
+  section: {
+    type: DataTypes.ENUM('about', 'help', 'info'),
+    defaultValue: 'info',
+    comment: 'Footer section grouping'
+  },
   sort_order: {
     type: DataTypes.INTEGER,
     defaultValue: 0
@@ -315,7 +320,8 @@ const StaticPage = sequelize.define('StaticPage', {
   indexes: [
     { fields: ['slug'], unique: true },
     { fields: ['is_published'] },
-    { fields: ['position'] }
+    { fields: ['position'] },
+    { fields: ['section'] }
   ]
 })
 
@@ -542,7 +548,7 @@ const Setting = sequelize.define('Setting', {
 // Helper method to get typed value
 Setting.prototype.getTypedValue = function() {
   const rawValue = this.value;
-  
+
   switch (this.type) {
     case 'number':
       return Number(rawValue);

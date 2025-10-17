@@ -22,9 +22,16 @@ const fmtRub = (price) => {
 
 const getUrlParams = () => {
   const params = new URLSearchParams(window.location.search);
+  let id = params.get('id') || params.get('mpn') || '';
+  if (!id) {
+    const m = window.location.pathname.match(/\/product\/([^/?#]+)/);
+    if (m && m[1]) {
+      id = decodeURIComponent(m[1]);
+    }
+  }
   return {
     src: params.get('src') || 'mouser',
-    id: params.get('id') || params.get('mpn') || ''
+    id
   };
 };
 

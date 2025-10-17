@@ -1,0 +1,29 @@
+{
+  "ts": "2025-10-15T16:26:14.172Z",
+  "results": [
+    {
+      "host": "gmail-smtp-in.l.google.com",
+      "port": 25,
+      "ok": true,
+      "banner": "220 mx.google.com ESMTP a640c23a62f3a-b5e19810721si151793966b.996 - gsmtp",
+      "error": null,
+      "elapsed_ms": 2120
+    },
+    {
+      "host": "alt1.gmail-smtp-in.l.google.com",
+      "port": 25,
+      "ok": true,
+      "banner": "220 mx.google.com ESMTP a640c23a62f3a-b5cb9a5983bsi184855966b.129 - gsmtp",
+      "error": null,
+      "elapsed_ms": 82
+    },
+    {
+      "host": "mx.yandex.net",
+      "port": 25,
+      "ok": true,
+      "banner": "220 mail-nwsmtp-mxfront-production-main-86.iva.yp-c.yandex.net Ok 1760545574-EQTJJXiEqGk0",
+      "error": null,
+      "elapsed_ms": 132
+    }
+  ]
+}

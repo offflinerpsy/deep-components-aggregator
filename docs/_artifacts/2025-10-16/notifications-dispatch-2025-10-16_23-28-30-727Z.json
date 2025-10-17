@@ -1,0 +1,26 @@
+{
+  "ts": 1760657310727,
+  "type": "order_created",
+  "payload": {
+    "order_id": "99bfd9a2-6128-4492-b90d-ad9db61c9500",
+    "order_code": "ORD-8DC3F8",
+    "customer_name": "димка",
+    "mpn": "MMBT3904-TP",
+    "manufacturer": "Micro Commercial Components (MCC)",
+    "qty": 1,
+    "comment": "репа",
+    "created_at": 1760657310711
+  },
+  "channels": [
+    {
+      "channel": "email",
+      "skipped": true,
+      "reason": "admin_notify_email not set"
+    },
+    {
+      "channel": "telegram",
+      "skipped": true,
+      "reason": "telegram_bot_token/chat_id not set"
+    }
+  ]
+}

@@ -1,0 +1,540 @@
+<!-- v0 Results Page -->
+<div class="min-h-screen relative bg-background page-transition" id="results-root" data-query="<%= encodeURIComponent(query) %>">
+  <div id="loading-overlay" class="loading-overlay hidden">
+    <div class="loader"></div>
+  </div>
+
+  <header class="glass sticky top-0 z-50 border-b border-border bg-background">
+    <div class="container mx-auto px-6 py-4 flex items-center justify-between">
+      <button type="button" class="logo" id="logo-home">
+        <div class="logo-chip">
+          <span class="logo-spark"></span>
+        </div>
+        <svg class="logo-text-svg" width="180" height="32" viewBox="0 0 180 32" fill="none">
+          <text x="0" y="24" font-family="Roboto" font-size="24" font-weight="300" letter-spacing="2" stroke="url(#logoGradient)" stroke-width="0.5" fill="url(#logoGradient)">
+            ДИПОНИКА
+          </text>
+          <defs>
+            <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#667eea" />
+              <stop offset="100%" stop-color="#764ba2" />
+            </linearGradient>
+          </defs>
+        </svg>
+      </button>
+
+      <div class="flex items-center gap-8">
+        <nav class="hidden md:flex items-center gap-8">
+          <button type="button" class="text-muted-foreground hover:text-foreground transition-colors" data-nav="home">Главная</button>
+          <button type="button" class="text-muted-foreground hover:text-foreground transition-colors">О нас</button>
+          <button type="button" class="text-muted-foreground hover:text-foreground transition-colors">Вход</button>
+          <button type="button" class="text-muted-foreground hover:text-foreground transition-colors">Регистрация</button>
+        </nav>
+
+        <button type="button" id="theme-toggle" class="w-10 h-10 p-0 inline-flex items-center justify-center rounded-md border border-border hover:bg-muted transition-colors">
+          <span id="icon-moon" aria-hidden="true">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+            </svg>
+          </span>
+          <span id="icon-sun" class="hidden" aria-hidden="true">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+            </svg>
+          </span>
+          <span class="sr-only">Переключить тему</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container mx-auto px-6 py-12 relative z-10">
+    <div class="flex flex-col gap-6 mb-8">
+      <div>
+        <h1 class="title-main text-left">Результаты запроса: <span class="gradient-text"><%= query %></span></h1>
+        <p class="text-muted-foreground mt-2">Включаем кэш, живой поиск и RU→EN нормализацию, чтобы найти максимум совпадений.</p>
+      </div>
+
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 fade-in">
+        <form class="search-box w-full md:max-w-xl" id="results-search-form">
+          <input type="text" id="results-search-input" value="<%= query %>" placeholder="Поиск компонентов..." autocomplete="off" />
+          <button type="reset" id="results-search-reset"></button>
+        </form>
+
+        <div class="glass-card px-4 py-3 rounded-lg inline-flex items-center gap-3 text-sm text-muted-foreground" id="summary-card">
+          <span id="status-text">Поиск...</span>
+          <span id="status-badge" class="hidden px-2 py-1 rounded-full bg-blue-500/10 text-blue-600 dark:text-blue-300 border border-blue-500/30 text-xs font-medium">
+            RU→EN
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="glass-card rounded-xl overflow-hidden" id="results-table-container" hidden>
+      <div class="overflow-x-auto">
+        <table class="w-full" id="results-table">
+          <thead class="bg-white/30 dark:bg-black/30">
+            <tr>
+              <th class="px-6 py-4 text-left text-xs font-semibold text-muted-foreground uppercase tracking-wider">Фото</th>
+              <th class="px-6 py-4 text-left text-xs font-semibold text-muted-foreground uppercase tracking-wider">Производитель</th>
+              <th class="px-6 py-4 text-left text-xs font-semibold text-muted-foreground uppercase tracking-wider">MPN</th>
+              <th class="px-6 py-4 text-left text-xs font-semibold text-muted-foreground uppercase tracking-wider">Описание</th>
+              <th class="px-6 py-4 text-center text-xs font-semibold text-muted-foreground uppercase tracking-wider">Регион</th>
+              <th class="px-6 py-4 text-right text-xs font-semibold text-muted-foreground uppercase tracking-wider">Цена за шт.</th>
+              <th class="px-6 py-4 text-center text-xs font-semibold text-muted-foreground uppercase tracking-wider">Действие</th>
+            </tr>
+          </thead>
+          <tbody id="results-tbody" class="divide-y divide-border/50"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div id="results-cards-container" class="md:hidden space-y-4" hidden></div>
+
+    <div id="empty-state" class="hidden text-center py-12">
+      <div class="glass-card max-w-md mx-auto">
+        <p class="text-muted-foreground mb-4">Ничего не найдено по запросу "<%= query %>"</p>
+        <p class="text-sm text-muted-foreground/80">Попробуйте изменить поисковый запрос или уточнить MPN.</p>
+        <a href="/" class="inline-block mt-4 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-500/80 transition-colors">Вернуться на главную</a>
+      </div>
+    </div>
+
+    <div id="error-state" class="hidden text-center py-12">
+      <div class="glass-card max-w-md mx-auto">
+        <p class="text-red-500 dark:text-red-400 mb-4">Ошибка загрузки результатов</p>
+        <p class="text-sm text-muted-foreground" id="error-message"></p>
+        <button type="button" class="inline-block mt-4 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-500/80 transition-colors" id="retry-button">
+          Попробовать снова
+        </button>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script>
+(function() {
+  const htmlRoot = document.documentElement;
+  const rootEl = document.getElementById('results-root');
+  const query = rootEl ? decodeURIComponent(rootEl.getAttribute('data-query') || '') : '';
+  const overlay = document.getElementById('loading-overlay');
+  const themeToggle = document.getElementById('theme-toggle');
+  const iconMoon = document.getElementById('icon-moon');
+  const iconSun = document.getElementById('icon-sun');
+  const logoHome = document.getElementById('logo-home');
+  const searchForm = document.getElementById('results-search-form');
+  const searchInput = document.getElementById('results-search-input');
+  const searchReset = document.getElementById('results-search-reset');
+  const statusText = document.getElementById('status-text');
+  const statusBadge = document.getElementById('status-badge');
+  const tableContainer = document.getElementById('results-table-container');
+  const cardsContainer = document.getElementById('results-cards-container');
+  const tbody = document.getElementById('results-tbody');
+  const emptyState = document.getElementById('empty-state');
+  const errorState = document.getElementById('error-state');
+  const errorMessage = document.getElementById('error-message');
+  const retryButton = document.getElementById('retry-button');
+
+  const STORAGE_KEY = 'diponika-theme';
+  const navHome = document.querySelector('[data-nav="home"]');
+
+  let results = [];
+  let completed = false;
+  let eventSource = null;
+  let hasLiveResults = false;
+
+  function showOverlay() {
+    overlay?.classList.remove('hidden');
+  }
+
+  function hideOverlay() {
+    overlay?.classList.add('hidden');
+  }
+
+  function applyTheme(theme) {
+    if (theme === 'dark') {
+      htmlRoot.classList.add('dark');
+      iconMoon.classList.add('hidden');
+      iconSun.classList.remove('hidden');
+    } else {
+      htmlRoot.classList.remove('dark');
+      iconSun.classList.add('hidden');
+      iconMoon.classList.remove('hidden');
+    }
+    localStorage.setItem(STORAGE_KEY, theme);
+  }
+
+  const storedTheme = localStorage.getItem(STORAGE_KEY);
+  applyTheme(storedTheme === 'dark' ? 'dark' : 'light');
+
+  themeToggle?.addEventListener('click', () => {
+    const nextTheme = htmlRoot.classList.contains('dark') ? 'light' : 'dark';
+    applyTheme(nextTheme);
+  });
+
+  logoHome?.addEventListener('click', () => {
+    window.location.href = '/';
+  });
+
+  navHome?.addEventListener('click', () => {
+    window.location.href = '/';
+  });
+
+  searchForm?.addEventListener('submit', (event) => {
+    event.preventDefault();
+    const value = (searchInput?.value || '').trim();
+    if (value) {
+      window.location.href = `/results?q=${encodeURIComponent(value)}`;
+    }
+  });
+
+  searchReset?.addEventListener('click', () => {
+    if (searchInput) {
+      searchInput.value = '';
+      searchInput.focus();
+    }
+  });
+
+  retryButton?.addEventListener('click', () => {
+    window.location.reload();
+  });
+
+  function hasCyrillic(text) {
+    return /[\u0400-\u04FF]/.test(text || '');
+  }
+
+  function toNumber(value) {
+    const num = Number(value);
+    return Number.isFinite(num) ? num : null;
+  }
+
+  function normalizeRegionList(item) {
+    if (Array.isArray(item?.regions) && item.regions.length) {
+      return item.regions;
+    }
+    if (item?.region) {
+      return [item.region];
+    }
+    return [];
+  }
+
+  function normalizePriceBreaks(item) {
+    const rawBreaks = Array.isArray(item?.price_breaks) ? item.price_breaks : [];
+    return rawBreaks.map((entry) => {
+      const qty = toNumber(entry?.qty || entry?.quantity || entry?.break || entry?.from) || 1;
+      const priceRub = toNumber(entry?.price_rub || entry?.priceRub || entry?.rubPrice);
+      const price = toNumber(entry?.price || entry?.value || entry?.unitPrice || entry?.amount);
+      const currency = entry?.currency || entry?.currency_code || entry?.currencyCode || entry?.curr || item?.min_currency || 'USD';
+      return { qty, priceRub, price, currency };
+    }).filter((entry) => Number.isFinite(entry.priceRub) || Number.isFinite(entry.price));
+  }
+
+  function extractBestPrice(item) {
+    const priceRub = toNumber(item?.min_price_rub || item?.minRub);
+    const price = toNumber(item?.min_price || item?.minPrice);
+    const currency = item?.min_currency || item?.currency || null;
+    const qty = toNumber(item?.min_qty || item?.minQty) || 1;
+
+    const breaks = normalizePriceBreaks(item);
+
+    if (Number.isFinite(priceRub)) {
+      return { qty, value: priceRub, currency: 'RUB', breaks: breaks.length ? breaks : [] };
+    }
+
+    if (Number.isFinite(price)) {
+      return { qty, value: price, currency: currency || 'USD', breaks };
+    }
+
+    if (breaks.length) {
+      const sorted = breaks.slice().sort((a, b) => {
+        const valueA = Number.isFinite(a.priceRub) ? a.priceRub : a.price || Infinity;
+        const valueB = Number.isFinite(b.priceRub) ? b.priceRub : b.price || Infinity;
+        return valueA - valueB;
+      });
+      const winner = sorted[0];
+      return {
+        qty: winner.qty || 1,
+        value: Number.isFinite(winner.priceRub) ? winner.priceRub : winner.price,
+        currency: Number.isFinite(winner.priceRub) ? 'RUB' : winner.currency || 'USD',
+        breaks: sorted
+      };
+    }
+
+    return { qty: null, value: null, currency: null, breaks: [] };
+  }
+
+  function formatCurrency(value, currency) {
+    if (!Number.isFinite(value)) {
+      return '—';
+    }
+    if (!currency || currency === 'RUB' || currency === 'RUR' || currency === '₽') {
+      return `${value.toLocaleString('ru-RU')} ₽`;
+    }
+    return `${value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ${currency}`;
+  }
+
+  function renderPriceTooltip(breaks) {
+    if (!breaks.length) {
+      return '';
+    }
+
+    const items = breaks.map((entry) => {
+      const priceText = Number.isFinite(entry.priceRub)
+        ? `${entry.priceRub.toLocaleString('ru-RU')} ₽`
+        : Number.isFinite(entry.price)
+          ? `${entry.price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ${entry.currency || 'USD'}`
+          : '—';
+      return `<div class="flex justify-between items-center py-2 border-b border-border/30 last:border-0">
+        <span class="text-sm text-muted-foreground font-medium">от ${entry.qty} шт</span>
+        <span class="text-sm font-semibold text-foreground">${priceText}</span>
+      </div>`;
+    }).join('');
+
+    return `<div class="absolute right-0 top-full mt-2 w-64 p-4 bg-white/95 dark:bg-black/95 backdrop-blur-xl rounded-lg shadow-2xl border border-white/30 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
+      <div class="text-xs font-semibold text-muted-foreground uppercase mb-3">Цены по количеству</div>
+      <div class="space-y-2">${items}</div>
+      <div class="mt-3 pt-3 border-t border-border/30 text-xs text-muted-foreground">Наведите для подробностей</div>
+    </div>`;
+  }
+
+  function renderRegions(regions) {
+    if (!regions.length) {
+      return '<span class="text-muted-foreground">—</span>';
+    }
+    return regions.map((region) => `<span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-500/20 text-blue-600 dark:text-blue-300 border border-blue-500/30">${region}</span>`).join('');
+  }
+
+  function renderImageCell(item) {
+    const imageUrl = item?.image_url || item?.photo || '';
+    if (imageUrl) {
+      return `<img src="${imageUrl}" alt="${item?.mpn || 'component'}" class="w-16 h-16 object-contain rounded-lg border border-white/30 bg-white/60 dark:bg-black/40" />`;
+    }
+    return `<div class="w-16 h-16 rounded-lg bg-white/50 dark:bg-black/30 flex items-center justify-center border border-white/30">
+      <svg class="w-8 h-8 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+        <rect x="4" y="4" width="16" height="16" rx="2" />
+        <line x1="8" y1="8" x2="16" y2="8" />
+        <line x1="8" y1="12" x2="16" y2="12" />
+        <line x1="8" y1="16" x2="16" y2="16" />
+      </svg>
+    </div>`;
+  }
+
+  function renderTableRow(item) {
+    const regions = normalizeRegionList(item);
+    const price = extractBestPrice(item);
+    const priceText = formatCurrency(price.value, price.currency);
+    const priceTooltip = price.breaks.length ? renderPriceTooltip(price.breaks) : '';
+    const stockValue = Number.isFinite(item?.stock) ? item.stock : Number.isFinite(item?.stock_total) ? item.stock_total : null;
+
+    return `<tr class="cursor-pointer hover:bg-white/20 dark:hover:bg-white/5 transition-all" data-mpn="${encodeURIComponent(item.mpn)}">
+      <td class="px-6 py-5">${renderImageCell(item)}</td>
+      <td class="px-6 py-5">
+        <div class="font-medium text-foreground">${item.manufacturer || '—'}</div>
+        <div class="text-xs text-muted-foreground mt-1">${item.source ? item.source.toUpperCase() : ''}</div>
+      </td>
+      <td class="px-6 py-5">
+        <div class="font-mono text-sm text-muted-foreground">${item.mpn}</div>
+      </td>
+      <td class="px-6 py-5">
+        <div class="text-sm text-muted-foreground max-w-md line-clamp-2">${item.description_short || item.title || '—'}</div>
+      </td>
+      <td class="px-6 py-5">
+        <div class="flex flex-wrap gap-2 justify-center">${renderRegions(regions)}</div>
+      </td>
+      <td class="px-6 py-5">
+        <div class="text-right">
+          <div class="group relative inline-block">
+            <div class="text-lg font-bold text-green-600 dark:text-green-400">${priceText}</div>
+            <div class="text-xs text-muted-foreground mt-0.5">${price.qty ? `от ${price.qty} шт` : '—'}</div>
+            ${priceTooltip}
+          </div>
+        </div>
+      </td>
+      <td class="px-6 py-5">
+        <div class="flex flex-col items-center gap-2">
+          <span class="text-xs text-muted-foreground">${Number.isFinite(stockValue) ? `${stockValue.toLocaleString('ru-RU')} шт` : 'Наличие уточняем'}</span>
+          <button type="button" class="px-6 py-2 bg-blue-500/20 hover:bg-blue-500 text-blue-600 hover:text-white border border-blue-500/50 rounded-lg font-medium transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/30" data-cta="${encodeURIComponent(item.mpn)}">
+            Подробнее
+          </button>
+        </div>
+      </td>
+    </tr>`;
+  }
+
+  function renderCard(item) {
+    const regions = normalizeRegionList(item);
+    const price = extractBestPrice(item);
+    const priceText = formatCurrency(price.value, price.currency);
+    const stockValue = Number.isFinite(item?.stock) ? item.stock : Number.isFinite(item?.stock_total) ? item.stock_total : null;
+    const imageUrl = item?.image_url || item?.photo || '';
+
+    return `<div class="glass-card p-5 rounded-xl transition-all duration-300 hover:scale-[1.02]" data-mpn="${encodeURIComponent(item.mpn)}">
+      <div class="flex items-start gap-4 mb-4">
+        <div class="shrink-0">${imageUrl ? `<img src="${imageUrl}" alt="${item?.mpn}" class="w-16 h-16 object-contain rounded-lg border border-white/30 bg-white/60 dark:bg-black/40" />` : `<div class="w-16 h-16 rounded-lg bg-white/50 dark:bg-black/30 flex items-center justify-center border border-white/30">
+          <svg class="w-8 h-8 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+            <rect x="4" y="4" width="16" height="16" rx="2" />
+            <line x1="8" y1="8" x2="16" y2="8" />
+            <line x1="8" y1="12" x2="16" y2="12" />
+            <line x1="8" y1="16" x2="16" y2="16" />
+          </svg>
+        </div>`}</div>
+        <div class="flex-1">
+          <div class="font-semibold text-primary mb-2">${item.mpn}</div>
+          <div class="text-sm text-foreground mb-1">${item.title || '—'}</div>
+          <div class="text-xs text-muted-foreground mb-2">${item.manufacturer || '—'}</div>
+          <div class="text-xs text-muted-foreground/80 mb-4">${item.description_short || 'Описание появится позже'}</div>
+          <div class="flex flex-wrap gap-2 mb-4">${renderRegions(regions)}</div>
+          <div class="flex items-center justify-between">
+            <div>
+              <div class="text-lg font-bold text-green-600 dark:text-green-400">${priceText}</div>
+              <div class="text-xs text-muted-foreground">${price.qty ? `от ${price.qty} шт` : '—'}</div>
+            </div>
+            <div class="text-xs text-muted-foreground">${Number.isFinite(stockValue) ? `${stockValue.toLocaleString('ru-RU')} шт` : 'Наличие уточняем'}</div>
+          </div>
+        </div>
+      </div>
+      <button type="button" class="w-full px-4 py-2 bg-blue-500/20 hover:bg-blue-500 text-blue-600 hover:text-white border border-blue-500/50 rounded-lg font-medium transition-all duration-300" data-cta="${encodeURIComponent(item.mpn)}">Подробнее</button>
+    </div>`;
+  }
+
+  function updateUI() {
+    const hasResults = results.length > 0;
+
+    if (!hasResults && completed) {
+      tableContainer.hidden = true;
+      cardsContainer.hidden = true;
+      emptyState.classList.remove('hidden');
+      hideOverlay();
+      return;
+    }
+
+    if (!hasResults) {
+      return;
+    }
+
+    emptyState.classList.add('hidden');
+    tableContainer.hidden = false;
+    cardsContainer.hidden = false;
+    hideOverlay();
+
+    tbody.innerHTML = results.map(renderTableRow).join('');
+    cardsContainer.innerHTML = results.map(renderCard).join('');
+
+    tbody.querySelectorAll('tr[data-mpn]').forEach((row) => {
+      row.addEventListener('click', () => {
+        const mpn = row.getAttribute('data-mpn');
+        if (mpn) {
+          window.location.href = `/product/${mpn}`;
+        }
+      });
+    });
+
+    document.querySelectorAll('[data-cta]').forEach((button) => {
+      button.addEventListener('click', (event) => {
+        event.stopPropagation();
+        const mpn = button.getAttribute('data-cta');
+        if (mpn) {
+          window.location.href = `/product/${mpn}`;
+        }
+      });
+    });
+  }
+
+  function startSearch() {
+    showOverlay();
+    emptyState.classList.add('hidden');
+    errorState.classList.add('hidden');
+    tableContainer.hidden = true;
+    cardsContainer.hidden = true;
+    statusText.textContent = 'Поиск...';
+    statusBadge.classList.add('hidden');
+    if (hasCyrillic(query)) {
+      statusBadge.classList.remove('hidden');
+    }
+    results = [];
+    completed = false;
+    hasLiveResults = false;
+
+    fetch(`/api/search?q=${encodeURIComponent(query)}`)
+      .then((response) => response.json())
+      .then((payload) => {
+        if (payload?.ok && Array.isArray(payload.rows) && payload.rows.length) {
+          statusText.textContent = `Найдено: ${payload.rows.length} (кэш)`;
+          results = payload.rows;
+          updateUI();
+        }
+      })
+      .catch((error) => {
+        console.warn('Cache request failed:', error);
+      });
+
+    eventSource = new EventSource(`/api/live/search?q=${encodeURIComponent(query)}`);
+
+    // Сервер шлёт 'search:start' при открытии потока
+    eventSource.addEventListener('search:start', (event) => {
+      const data = event?.data ? JSON.parse(event.data) : null;
+      statusText.textContent = 'Поиск начат...';
+    });
+
+    // Прогресс по провайдерам: 'provider:partial' и ошибки: 'provider:error'
+    eventSource.addEventListener('provider:partial', (event) => {
+      const data = event?.data ? JSON.parse(event.data) : null;
+      const provider = data?.provider ? String(data.provider).toUpperCase() : 'PROVIDER';
+      const count = Number(data?.count) || 0;
+      statusText.textContent = `Поиск: ${provider} ≈ ${count}`;
+    });
+
+    eventSource.addEventListener('provider:error', (event) => {
+      const data = event?.data ? JSON.parse(event.data) : null;
+      const provider = data?.provider ? String(data.provider).toUpperCase() : 'PROVIDER';
+      statusText.textContent = `Провайдер ${provider}: ошибка`;
+    });
+
+    // Финальные результаты: событие 'result' с формой { rows: [...], meta: {...} }
+    eventSource.addEventListener('result', (event) => {
+      const data = event?.data ? JSON.parse(event.data) : null;
+      const rows = Array.isArray(data) ? data : (Array.isArray(data?.rows) ? data.rows : []);
+      if (!Array.isArray(rows) || rows.length === 0) {
+        return;
+      }
+      hasLiveResults = true;
+      results = rows;
+      statusText.textContent = `Найдено: ${results.length}`;
+      updateUI();
+    });
+
+    eventSource.addEventListener('done', (event) => {
+      const data = JSON.parse(event.data || '{}');
+      completed = true;
+      statusText.textContent = `Найдено: ${results.length} компонентов`;
+      hideOverlay();
+      updateUI();
+      if (eventSource) {
+        eventSource.close();
+      }
+      if (data?.isRuToEn) {
+        statusBadge.classList.remove('hidden');
+      }
+    });
+
+    eventSource.addEventListener('error', (event) => {
+      console.error('SSE error:', event);
+      if (eventSource) {
+        eventSource.close();
+      }
+      hideOverlay();
+      if (results.length === 0) {
+        errorState.classList.remove('hidden');
+        errorMessage.textContent = 'Не удалось выполнить поиск. Попробуйте позже.';
+      }
+    });
+  }
+
+  startSearch();
+
+  window.addEventListener('beforeunload', () => {
+    if (eventSource && eventSource.readyState !== EventSource.CLOSED) {
+      eventSource.close();
+    }
+  });
+})();
+</script>

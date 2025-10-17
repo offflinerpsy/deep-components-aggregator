@@ -1,0 +1,1 @@
+{"ok":false,"error":"validation_error","errors":[{"field":"email","message":"must have required property 'email'","params":{"missingProperty":"email"}},{"field":"body","message":"must NOT have additional properties","params":{"additionalProperty":"username"}}]}

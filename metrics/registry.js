@@ -1,13 +1,17 @@
 // metrics/registry.js
 // Prometheus metrics registry for Deep Aggregator
 
-import { register, Counter, Gauge, Histogram } from 'prom-client';
+import { register, Counter, Gauge, Histogram, collectDefaultMetrics } from 'prom-client';
 
 // Configure default labels
 register.setDefaultLabels({
   app: 'deep-aggregator',
   version: '3.0.0'
 });
+
+// Collect default Node.js process metrics (CPU, memory, event loop, GC, etc.)
+// Exposed with standard prefixes (nodejs_*) in Prometheus
+collectDefaultMetrics({ register });
 
 // ==================== ORDERS METRICS ====================
 

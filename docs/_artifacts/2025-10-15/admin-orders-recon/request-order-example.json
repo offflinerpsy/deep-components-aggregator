@@ -1,0 +1,19 @@
+{
+  "customer": {
+    "name": "QA Bot",
+    "contact": {
+      "email": "qa@example.com"
+    }
+  },
+  "item": {
+    "mpn": "TEST123",
+    "manufacturer": "QA Inc",
+    "qty": 5
+  },
+  "pricing_snapshot": {
+    "base_price_rub": 1000,
+    "markup_percent": 0.2,
+    "markup_fixed_rub": 50,
+    "final_price_rub": 1250
+  }
+}

@@ -11,6 +11,12 @@
       "type": "string",
       "enum": ["pending", "processing", "completed", "cancelled"],
       "description": "Order status (pending → processing → completed/cancelled)"
+    },
+    "comment": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 500,
+      "description": "Optional status comment to send to customer"
     }
   }
 }

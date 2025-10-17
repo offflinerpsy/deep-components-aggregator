@@ -118,3 +118,6 @@ You should receive a `200 OK` response (assuming you have the correct credential
 - **403 Forbidden**: Check file permissions on the `.htpasswd` file. Nginx needs read access.
 - **Authentication Not Working**: Ensure the path to the `.htpasswd` file is correct and the file exists.
 - **Nginx Not Loading Configuration**: Check for syntax errors with `nginx -t`.
+
+
+

@@ -1,0 +1,21 @@
+{
+  "name": "my-v0-project",
+  "version": "0.1.0",
+  "framework": "next@14.2.16",
+  "react": "18",
+  "ui": ["radix-ui", "geist", "lucide-react", "tailwindcss@4"],
+  "forms": ["react-hook-form", "zod", "@hookform/resolvers"],
+  "charts": ["recharts"],
+  "analytics": ["@vercel/analytics"],
+  "images": {
+    "unoptimized": true,
+    "remotes": ["www.mouser.com", "www.digikey.com", "www.tme.eu", "uk.farnell.com"]
+  },
+  "rewrites": {
+    "beforeFiles": [
+      "/api/:path* -> http://127.0.0.1:9201/api/:path*",
+      "/auth/:path* -> http://127.0.0.1:9201/auth/:path*",
+      "/api/auth/:path* -> http://127.0.0.1:9201/auth/:path*"
+    ]
+  }
+}

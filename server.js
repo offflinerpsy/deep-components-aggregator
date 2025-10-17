@@ -19,6 +19,7 @@ import './src/bootstrap/proxy.mjs';
 import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { performance } from 'node:perf_hooks';
 
 // Database
 import { openDb, readCachedSearch, cacheSearch, readCachedProduct, cacheProduct } from './src/db/sql.mjs';
@@ -69,19 +70,17 @@ import {
 import { createOrderHandler } from './api/order.js';
 import { mountAdminRoutes } from './api/admin.orders.js';
 import { mountAdminSettingsRoutes } from './api/admin.settings.js';
+import { mountAdminNotificationsRoutes } from './api/admin.notifications.js';
+import { mountAdminPagesRoutes } from './api/admin.pages.mjs';
 import { mountAdminProductRoutes } from './api/admin.products.js';
+import { checkEmailHandler } from './api/auth-check.js';
+// Import static pages routes
+import staticPagesModule from './api/static-pages.mjs';
+const { mountStaticPagesRoutes } = staticPagesModule;
+import { mountSettingsRoutes } from './api/settings.js';
 
-// AdminJS Panel (dynamic import)
-let adminRouter;
-(async () => {
-  try {
-    const adminModule = await import('./src/admin/index-cjs.js');
-    adminRouter = adminModule.adminRouter;
-    console.log('✅ AdminJS loaded');
-  } catch (error) {
-    console.error('❌ Failed to load AdminJS:', error);
-  }
-})();
+import { adminRouter } from './src/admin/index.mjs'
+console.log('✅ AdminJS loaded')
 
 // AdminJS API Routes
 import {
@@ -168,15 +167,54 @@ app.use('/ui', express.static(path.join(__dirname, 'ui'), {
   }
 }));
 
-// Serve index.html for root
-app.get('/', (req, res) => {
-  res.setHeader('Content-Type', 'text/html; charset=utf-8');
-  res.sendFile(path.join(__dirname, 'ui', 'index.html'));
-});
+// =========================================
+// FRONTEND HTML ROUTES (EJS templates replacing Next.js)
+// =========================================
+import { mountFrontendRoutes } from './api/frontend.routes.mjs';
+mountFrontendRoutes(app, db);
 
 // Network diagnostics (admin only)
 import { diagnosticsHandler } from './api/diag.net.mjs';
 app.get('/api/diag/net', diagnosticsHandler);
+
+// Lightweight runtime diagnostics (CPU, memory, event loop)
+app.get('/api/diag/runtime', async (req, res) => {
+  const mem = process.memoryUsage();
+  const resource = process.resourceUsage ? process.resourceUsage() : null;
+  const cpu = process.cpuUsage();
+  const uptime = process.uptime();
+  const versions = process.versions;
+  const envProxy = {
+    HTTP_PROXY: process.env.HTTP_PROXY || null,
+    HTTPS_PROXY: process.env.HTTPS_PROXY || null,
+    NO_PROXY: process.env.NO_PROXY || null
+  };
+  const eventLoopDelayNs = (await import('node:perf_hooks')).performance?.eventLoopUtilization?.() || null;
+
+  res.json({
+    ts: Date.now(),
+    uptime_s: uptime,
+    pid: process.pid,
+    node: versions.node,
+    v8: versions.v8,
+    envProxy,
+    memory: {
+      rss: mem.rss,
+      heapTotal: mem.heapTotal,
+      heapUsed: mem.heapUsed,
+      external: mem.external,
+      arrayBuffers: mem.arrayBuffers
+    },
+    cpu: {
+      user_us: cpu.user,
+      system_us: cpu.system
+    },
+    resource,
+    eventLoop: {
+      utilization: eventLoopDelayNs || null
+    }
+  });
+});
 
 // Vitrine (cache-only browsing)
 import mountVitrine from './api/vitrine.mjs';
@@ -323,6 +361,48 @@ app.get('/api/health', async (req, res) => {
   });
 });
 
+// Lightweight runtime diagnostics (no secrets, guard-style, no try/catch)
+app.get('/api/diag/runtime', (req, res) => {
+  const mem = process.memoryUsage();
+  const cpu = process.cpuUsage();
+  const elu = performance && typeof performance.eventLoopUtilization === 'function'
+    ? performance.eventLoopUtilization()
+    : { idle: 0, active: 0, utilization: 0 };
+
+  const envProxy = {
+    HTTP_PROXY: process.env.HTTP_PROXY || null,
+    HTTPS_PROXY: process.env.HTTPS_PROXY || null,
+    NO_PROXY: process.env.NO_PROXY || null
+  };
+
+  const resource = typeof process.resourceUsage === 'function' ? process.resourceUsage() : null;
+
+  res.json({
+    ts: Date.now(),
+    pid: process.pid,
+    uptime_s: Math.round(process.uptime()),
+    versions: process.versions,
+    memory: {
+      rss: mem.rss,
+      heapTotal: mem.heapTotal,
+      heapUsed: mem.heapUsed,
+      external: mem.external,
+      arrayBuffers: mem.arrayBuffers
+    },
+    cpu: {
+      user_us: cpu.user,
+      system_us: cpu.system
+    },
+    event_loop: {
+      idle: elu.idle,
+      active: elu.active,
+      utilization: elu.utilization
+    },
+    resource,
+    envProxy
+  });
+});
+
 // Currency rates endpoint
 app.get('/api/currency/rates', (req, res) => {
   try {
@@ -367,6 +447,15 @@ app.get('/api/metrics', async (req, res) => {
 const authRateLimiter = createAuthRateLimiter();
 mountAuthRoutes(app, db, logger, authRateLimiter);
 
+// Aux auth routes
+app.post('/api/auth/check-email', checkEmailHandler(db, logger));
+
+// Static pages CMS routes
+mountStaticPagesRoutes(app, db);
+
+// Settings routes
+mountSettingsRoutes(app);
+
 // User order routes (requires authentication)
 mountUserOrderRoutes(app, db, logger);
 
@@ -381,17 +470,18 @@ app.get('/api/order/:id/stream', streamOrderStatus);
 // Admin API (protected by Nginx Basic Auth at proxy level)
 mountAdminRoutes(app, db, logger);
 mountAdminSettingsRoutes(app, db, logger);
+mountAdminNotificationsRoutes(app, db, logger);
+mountAdminPagesRoutes(app, db, logger);
 mountAdminProductRoutes(app, db, logger);
 // ============================================
 // AdminJS Panel Routes
 // ============================================
+app.get('/admin/health', (req, res) => {
+  res.json({ ok: Boolean(adminRouter) })
+})
 app.use('/admin', (req, res, next) => {
-  if (adminRouter) {
-    adminRouter(req, res, next);
-  } else {
-    res.status(503).send('Admin panel is loading...');
-  }
-});
+  return adminRouter ? adminRouter(req, res, next) : res.status(503).send('Admin panel is loading...')
+})
 
 // AdminJS API for frontend
 app.get('/api/static-pages', getStaticPages);
@@ -701,7 +791,7 @@ app.get('/api/product', async (req, res) => {
           const result = await mouserSearchByKeyword({ apiKey: keys.mouser, q: mpn, records: 1 });
           const responseTime = Date.now() - startTime;
           await updateApiHealth('mouser', true, responseTime);
-          
+
           const p = result?.data?.SearchResults?.Parts?.[0];
           if (!p) return null;
 

@@ -44,7 +44,7 @@ function initSearch() {
     e.preventDefault();
     const newQuery = input.value.trim();
     if (newQuery && newQuery !== query) {
-      window.location.href = `/search.html?q=${encodeURIComponent(newQuery)}`;
+  window.location.href = `/results?q=${encodeURIComponent(newQuery)}`;
     }
   });
 

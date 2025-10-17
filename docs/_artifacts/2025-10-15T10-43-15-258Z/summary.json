@@ -1,0 +1,36 @@
+{
+  "ts": "2025-10-15T10-43-15-258Z",
+  "host": "http://127.0.0.1:9201",
+  "results": [
+    {
+      "url": "http://127.0.0.1:9201/api/health",
+      "out": "health.json",
+      "ok": false,
+      "error": "fetch failed"
+    },
+    {
+      "url": "http://127.0.0.1:9201/api/health?probe=true",
+      "out": "health-probe.json",
+      "ok": false,
+      "error": "fetch failed"
+    },
+    {
+      "url": "http://127.0.0.1:9201/api/diag/net",
+      "out": "diag-net.json",
+      "ok": false,
+      "error": "fetch failed"
+    },
+    {
+      "url": "http://127.0.0.1:9201/api/diag/runtime",
+      "out": "diag-runtime.json",
+      "ok": false,
+      "error": "fetch failed"
+    },
+    {
+      "url": "http://127.0.0.1:9201/api/metrics",
+      "out": "metrics.prom",
+      "ok": false,
+      "error": "fetch failed"
+    }
+  ]
+}

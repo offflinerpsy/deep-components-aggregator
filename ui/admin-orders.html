@@ -338,7 +338,9 @@
     <div class="admin-header">
       <h1>🔧 Админ-панель: Заказы</h1>
       <div style="display:flex; gap:12px; align-items:center;">
+        <button id="notifBtn" title="Уведомления" style="background:none;border:1px solid var(--border);padding:8px 12px;border-radius:8px;color:var(--foreground);cursor:pointer;position:relative">🔔 <span id="notifCount" style="font-weight:600">0</span></button>
         <a href="/ui/admin-settings.html" style="color:#667eea; text-decoration:none; font-weight:600;">⚙️ Настройки</a>
+        <a href="/ui/admin-pages.html" style="color:#667eea; text-decoration:none; font-weight:600;">📄 Страницы</a>
         <a href="/ui/my-orders.html" style="color: var(--muted-foreground); text-decoration: none;">← Назад к заказам</a>
       </div>
     </div>
@@ -374,6 +376,7 @@
       <table>
         <thead>
           <tr>
+            <th>Код</th>
             <th>Дата</th>
             <th>Клиент</th>
             <th>MPN</th>
@@ -384,7 +387,7 @@
         </thead>
         <tbody id="ordersTableBody">
           <tr>
-            <td colspan="6" class="loading">Загрузка заказов...</td>
+            <td colspan="7" class="loading">Загрузка заказов...</td>
           </tr>
         </tbody>
       </table>
@@ -457,7 +460,7 @@
       } catch (error) {
         console.error('Error loading orders:', error);
         document.getElementById('ordersTableBody').innerHTML = `
-          <tr><td colspan="6" class="empty-state">
+          <tr><td colspan="7" class="empty-state">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
             </svg>
@@ -485,6 +488,7 @@
 
       tbody.innerHTML = currentOrders.map(order => `
         <tr onclick="viewOrder('${order.id}')">
+          <td><code>${order.order_code || order.id.slice(-8)}</code></td>
           <td>${formatDate(order.created_at)}</td>
           <td>${order.customer_name}</td>
           <td><strong>${order.mpn}</strong></td>
@@ -498,14 +502,17 @@
     // View order details
     const viewOrder = async (orderId) => {
       try {
-        const response = await fetch(`/api/admin/orders/${orderId}`);
-        const order = await response.json();
-
-        const pricing = JSON.parse(order.pricing_snapshot || '{}');
-        const meta = JSON.parse(order.meta || '{}');
+  const response = await fetch(`/api/admin/orders/${orderId}`);
+  const data = await response.json();
+  const order = data.order;
+  const pricing = order.pricing_snapshot || {};
+  const meta = order.meta || {};
 
         let modalHTML = `
           <div class="detail-grid">
+            <div class="detail-label">Код заказа:</div>
+            <div class="detail-value"><code>${order.order_code || order.id.slice(-8)}</code></div>
+
             <div class="detail-label">ID заказа:</div>
             <div class="detail-value"><code>${order.id}</code></div>
 
@@ -538,6 +545,18 @@
                 <a href="${link}" target="_blank" class="link-button">
                   🔗 ${new URL(link).hostname}
                 </a>
+              `).join('')}
+            </div>
+          `;
+        }
+
+        // Dealer links (explicit block)
+        if (order.dealer_links && order.dealer_links.length > 0) {
+          modalHTML += `
+            <div class="links-section">
+              <div class="detail-label" style="margin-bottom: 8px;">Dealer links:</div>
+              ${order.dealer_links.map(dl => `
+                <a href="${dl.url}" target="_blank" class="link-button">${dl.dealer}</a>
               `).join('')}
             </div>
           `;
@@ -613,6 +632,68 @@
 
     // Initial load
     loadOrders();
+
+    // Notifications fetch
+    async function loadNotifications() {
+      try {
+        const res = await fetch('/api/admin/notifications?limit=20', { credentials: 'include' })
+        if (!res.ok) return
+        const data = await res.json()
+        const unread = (data.items||[]).filter(x=>!x.read).length
+        document.getElementById('notifCount').textContent = String(unread)
+        renderNotifPanel(data.items||[])
+      } catch (e) {}
+    }
+    loadNotifications()
+    setInterval(loadNotifications, 15000)
+
+    // Notifications popover
+    const panel = document.createElement('div')
+    panel.id = 'notifPanel'
+    panel.style.position = 'absolute'
+    panel.style.top = '42px'
+    panel.style.right = '0'
+    panel.style.width = '360px'
+    panel.style.maxHeight = '60vh'
+    panel.style.overflow = 'auto'
+    panel.style.background = 'var(--surface)'
+    panel.style.border = '1px solid var(--border)'
+    panel.style.borderRadius = '12px'
+    panel.style.boxShadow = '0 12px 32px rgba(0,0,0,.35)'
+    panel.style.display = 'none'
+    panel.innerHTML = '<div style="padding:12px;font-weight:600">Уведомления</div><div id="notifItems" style="padding:8px 12px"></div>'
+    document.getElementById('notifBtn').appendChild(panel)
+
+    function renderNotifPanel(items){
+      const box = document.getElementById('notifItems')
+      if (!box) return
+      if (!items.length){ box.innerHTML = '<div style="color:var(--muted-foreground);padding:8px 0">Нет уведомлений</div>'; return }
+      box.innerHTML = items.map(n=>{
+        const p = n.payload || {}
+        const title = n.type === 'order_created' ? `Новый заказ ${p.order_code||''}` : n.type
+        const subtitle = p.mpn ? `${p.mpn} × ${p.qty} • ${p.customer_name||''}` : ''
+        const when = new Date(n.created_at).toLocaleString()
+        return `<div style="border-bottom:1px dashed var(--border);padding:8px 0;display:flex;gap:8px;align-items:flex-start">
+          <div>${n.read?'📨':'🆕'}</div>
+          <div style="flex:1">
+            <div style="font-weight:600">${title}</div>
+            <div style="color:var(--muted-foreground);font-size:12px">${subtitle}</div>
+            <div style="color:var(--muted-foreground);font-size:12px">${when}</div>
+            ${p.order_id?`<div style="margin-top:6px"><a class="link-button" href="#" onclick="viewOrder('${p.order_id}');document.getElementById('notifPanel').style.display='none';return false;">Открыть заказ</a> <a class="link-button" href="#" onclick="markRead('${n.id}');return false;">Отметить прочитанным</a></div>`:''}
+          </div>
+        </div>`
+      }).join('')
+    }
+
+    document.getElementById('notifBtn').addEventListener('click', ()=>{
+      const el = document.getElementById('notifPanel')
+      el.style.display = (el.style.display==='none'||!el.style.display)?'block':'none'
+    })
+
+    async function markRead(id){
+      const res = await fetch(`/api/admin/notifications/${id}/read`, { method:'PATCH', credentials:'include' })
+      if (res.ok){ loadNotifications() }
+    }
   </script>
 </body>
 </html>

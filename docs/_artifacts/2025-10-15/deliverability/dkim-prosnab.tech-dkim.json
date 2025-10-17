@@ -1,0 +1,10 @@
+{
+  "domain": "prosnab.tech",
+  "selector": "dkim",
+  "txt": "v=DKIM1; k=rsa; p=MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsFh3bPJcMMSk20y7HbMLHb/A7Kdo/3zhn0BRAE9+dibeEUOzcFEj5S6mw4ZFbUacKQ1aLtCYH4BAlc4JR+QryY5dQtUMPE3+mWA2aKZ/IOO45VHQgqPL7lDC5vbmE71rES9udHfrjmv7Y4xP3GaMKMgM9+e7mb34zFFprCzchuXklUmvmQmz/SwN7HucUOfq1UQyz4yLG1x451SZOEk5yQL22hZ2TTv88KVFSkPIfWe/zRSYKNU5tDDNNYDszilt+8XYh/865ZtsPLTyIeNHlxckD8cjc3NQwy0H91ecy6znNKxxGOw4E210TUStTE3bHc1Pn/8XkTedoxrhmZXqaQIDAQAB",
+  "dns": {
+    "host": "dkim._domainkey.prosnab.tech.",
+    "type": "TXT",
+    "value": "v=DKIM1; k=rsa; p=MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsFh3bPJcMMSk20y7HbMLHb/A7Kdo/3zhn0BRAE9+dibeEUOzcFEj5S6mw4ZFbUacKQ1aLtCYH4BAlc4JR+QryY5dQtUMPE3+mWA2aKZ/IOO45VHQgqPL7lDC5vbmE71rES9udHfrjmv7Y4xP3GaMKMgM9+e7mb34zFFprCzchuXklUmvmQmz/SwN7HucUOfq1UQyz4yLG1x451SZOEk5yQL22hZ2TTv88KVFSkPIfWe/zRSYKNU5tDDNNYDszilt+8XYh/865ZtsPLTyIeNHlxckD8cjc3NQwy0H91ecy6znNKxxGOw4E210TUStTE3bHc1Pn/8XkTedoxrhmZXqaQIDAQAB"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "name": "deep-agg-alpha",
+  "version": "3.1.0",
+  "runtime": {
+    "node": ">=18",
+    "processManager": "pm2"
+  },
+  "frameworks": ["express", "undici", "sequelize", "adminjs"],
+  "database": ["better-sqlite3", "sqlite3"],
+  "http": ["undici", "http-proxy-agent", "socks-proxy-agent"],
+  "auth": ["passport", "express-session", "argon2", "bcrypt"],
+  "validation": ["ajv", "ajv-formats"],
+  "email": ["nodemailer"],
+  "metrics": ["prom-client"],
+  "job-control": ["p-queue"],
+  "scripts": [
+    "dev", "test", "test:e2e", "smoke", "diag:live", "providers:check", "sse",
+    "notify:test", "rates:refresh", "deploy"
+  ]
+}

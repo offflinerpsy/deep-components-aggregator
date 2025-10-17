@@ -39,26 +39,26 @@ export async function getSetting(key, defaultValue = null, useCache = true) {
   if (!cacheInitialized && useCache) {
     await initSettingsCache();
   }
-  
+
   // Try to get from cache first
   if (useCache && settingsCache.has(key)) {
     return settingsCache.get(key);
   }
-  
+
   // Get from database
   try {
     const setting = await Setting.findOne({ where: { key } });
     if (!setting) {
       return defaultValue;
     }
-    
+
     const value = setting.getTypedValue();
-    
+
     // Update cache
     if (useCache) {
       settingsCache.set(key, value);
     }
-    
+
     return value;
   } catch (error) {
     console.error(`[settings] Error getting setting ${key}:`, error);
@@ -98,17 +98,17 @@ export async function setSetting(key, value, options = {}) {
       value = String(value);
     }
   }
-  
+
   // Convert value to string for storage
-  const stringValue = type === 'string' ? value : 
-                     (type === 'boolean' ? (value ? 'true' : 'false') : 
-                     (type === 'json' || type === 'array' ? (typeof value === 'string' ? value : JSON.stringify(value)) : 
+  const stringValue = type === 'string' ? value :
+                     (type === 'boolean' ? (value ? 'true' : 'false') :
+                     (type === 'json' || type === 'array' ? (typeof value === 'string' ? value : JSON.stringify(value)) :
                      String(value)));
-  
+
   try {
     // Find existing setting or create new one
     let setting = await Setting.findOne({ where: { key } });
-    
+
     if (setting) {
       // Update existing setting
       await setting.update({
@@ -129,12 +129,12 @@ export async function setSetting(key, value, options = {}) {
         is_public: options.is_public || false
       });
     }
-    
+
     // Update cache
     if (cacheInitialized) {
       settingsCache.set(key, setting.getTypedValue());
     }
-    
+
     return setting;
   } catch (error) {
     console.error(`[settings] Error setting ${key}:`, error);
@@ -150,12 +150,12 @@ export async function setSetting(key, value, options = {}) {
 export async function deleteSetting(key) {
   try {
     const result = await Setting.destroy({ where: { key } });
-    
+
     // Update cache
     if (cacheInitialized && result > 0) {
       settingsCache.delete(key);
     }
-    
+
     return result > 0;
   } catch (error) {
     console.error(`[settings] Error deleting setting ${key}:`, error);
@@ -171,11 +171,11 @@ export async function getPublicSettings() {
   try {
     const settings = await Setting.findAll({ where: { is_public: true } });
     const result = {};
-    
+
     settings.forEach(setting => {
       result[setting.key] = setting.getTypedValue();
     });
-    
+
     return result;
   } catch (error) {
     console.error('[settings] Error getting public settings:', error);
@@ -192,11 +192,11 @@ export async function getCategorySettings(category) {
   try {
     const settings = await Setting.findAll({ where: { category } });
     const result = {};
-    
+
     settings.forEach(setting => {
       result[setting.key] = setting.getTypedValue();
     });
-    
+
     return result;
   } catch (error) {
     console.error(`[settings] Error getting settings for category ${category}:`, error);
@@ -212,3 +212,6 @@ export default {
   getCategorySettings,
   initSettingsCache
 };
+
+
+

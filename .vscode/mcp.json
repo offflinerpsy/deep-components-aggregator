@@ -1,17 +1,32 @@
 {
-  "servers": {
-    "filesystem": {
-      "type": "stdio",
-      "command": "/usr/bin/npx",
-      "args": [
-        "-y",
-        "@modelcontextprotocol/server-filesystem",
-        "${workspaceFolder}"
-      ],
-      "env": {
-        "PATH": "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
-      }
-    }
-  },
-  "inputs": []
+	"servers": {
+		"filesystem": {
+			"type": "stdio",
+			"command": "/usr/bin/npx",
+			"args": [
+				"-y",
+				"@modelcontextprotocol/server-filesystem",
+				"${workspaceFolder}"
+			],
+			"env": {
+				"PATH": "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+			}
+		},
+		"v0": {
+			"type": "stdio",
+			"command": "/usr/bin/npx",
+			"args": [
+				"-y",
+				"mcp-remote",
+				"https://mcp.v0.dev",
+				"--header",
+				"Authorization: Bearer v1:K9pGKBuEBv92LouvTaPFUtD1:bWXtpg3uHFyV2SNcvgBiPG5x"
+			]
+		},
+		"my-mcp-server-3b833e7c": {
+			"url": "http://localhost:3000/",
+			"type": "http"
+		}
+	},
+	"inputs": []
 }

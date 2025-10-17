@@ -1,0 +1,15 @@
+{
+  "ok": true,
+  "messageId": "<f25c190c-7880-5205-8b35-01798753893b@prosnab.tech>",
+  "accepted": [
+    "enigma.vista.ru@yandex.ru"
+  ],
+  "rejected": [],
+  "response": "250 2.0.0 Ok: queued as 4D65512D2DD",
+  "envelope": {
+    "from": "alex@prosnab.tech",
+    "to": [
+      "enigma.vista.ru@yandex.ru"
+    ]
+  }
+}

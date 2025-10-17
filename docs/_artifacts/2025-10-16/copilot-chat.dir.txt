@@ -1,0 +1,1 @@
+COPILOT_DIR=/root/.vscode-server/extensions/github.copilot-chat-0.32.1

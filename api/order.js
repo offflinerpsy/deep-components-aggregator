@@ -3,9 +3,11 @@
 
 import Ajv from 'ajv';
 import addFormats from 'ajv-formats';
-import { randomUUID } from 'node:crypto';
+import { randomUUID, randomBytes } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import { ordersTotal, orderCreateDuration, updateOrdersByStatusGauge } from '../metrics/registry.js';
+import { sendOrderEmail } from '../src/lib/order-helpers.mjs';
+import { dispatchAdminNotification } from '../src/lib/notify-admin.mjs';
 
 // Initialize AJV with formats (email, etc.)
 const ajv = new Ajv({ allErrors: true, strict: true });
@@ -23,9 +25,8 @@ const validateOrderRequest = ajv.compile(orderRequestSchema);
  * @param {string} manufacturer - Manufacturer name
  * @returns {Array} Array of dealer links
  */
-function generateDealerLinks(mpn, manufacturer) {
+function generateDealerLinks(mpn, _manufacturer) {
   const encodedMpn = encodeURIComponent(mpn);
-  const encodedMfr = encodeURIComponent(manufacturer);
 
   return [
     {
@@ -106,7 +107,7 @@ export function createOrderHandler(db, logger) {
     const { customer, item, pricing_snapshot, meta } = req.body;
 
     // Guard: Check at least one contact method
-    const hasContact = customer.contact.email || customer.contact.phone || customer.contact.telegram;
+    const hasContact = customer.contact.email || customer.contact.phone;
     if (!hasContact) {
       ordersTotal.inc({ status: 'rejected' });
       logger.warn({ requestId }, 'No contact method provided');
@@ -118,8 +119,10 @@ export function createOrderHandler(db, logger) {
       });
     }
 
-    // Generate order ID
-    const orderId = randomUUID();
+  // Generate order ID and short code (base36 last 6 + checksum)
+  const orderId = randomUUID();
+  const shortPart = randomBytes(4).toString('hex').slice(-6).toUpperCase();
+  const code = `ORD-${shortPart}`;
     const now = Date.now();
 
     // Get pricing policy from settings (with fallback)
@@ -164,13 +167,15 @@ export function createOrderHandler(db, logger) {
       INSERT INTO orders (
         id, created_at, updated_at,
         user_id,
-        customer_name, customer_contact,
+        customer_name, customer_contact, customer_email,
         mpn, manufacturer, qty,
         pricing_snapshot, dealer_links,
-        status, meta
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        status, meta,
+        order_code
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `);
 
+    let insertedNotification = null;
     const insertTransaction = db.transaction(() => {
       insertStmt.run(
         orderId,
@@ -179,14 +184,35 @@ export function createOrderHandler(db, logger) {
         userId,
         customer.name,
         JSON.stringify(customer.contact),
+        (customer.contact && customer.contact.email) ? String(customer.contact.email).toLowerCase().trim() : null,
         item.mpn,
         item.manufacturer,
         item.qty,
         JSON.stringify(finalPricing),
         JSON.stringify(dealerLinks),
         'pending',
-        JSON.stringify(finalMeta)
+        JSON.stringify(finalMeta),
+        code
       );
+
+      // Insert admin notification for new order
+      const notifStmt = db.prepare(`
+        INSERT INTO admin_notifications (id, created_at, type, payload, read_at)
+        VALUES (?, ?, ?, ?, NULL)
+      `);
+      const notifPayload = JSON.stringify({
+        order_id: orderId,
+        order_code: code,
+        customer_name: customer.name,
+        mpn: item.mpn,
+        manufacturer: item.manufacturer,
+        qty: item.qty,
+        comment: meta && typeof meta === 'object' && meta.comment ? String(meta.comment).slice(0, 500) : null,
+        created_at: now
+      });
+      const notifId = randomUUID();
+      notifStmt.run(notifId, now, 'order_created', notifPayload);
+      insertedNotification = { id: notifId, created_at: now, type: 'order_created', payload: JSON.parse(notifPayload) };
     });
 
     insertTransaction();
@@ -210,11 +236,32 @@ export function createOrderHandler(db, logger) {
       durationMs: Math.round(durationSeconds * 1000)
     }, 'Order created successfully');
 
-    // Return order ID
-    res.status(201).json({
-      ok: true,
-      orderId
-    });
+    // Dispatch admin notifications to configured channels (email)
+    if (insertedNotification) {
+      await dispatchAdminNotification(db, logger, insertedNotification);
+    }
+
+    // Determine email type and queue confirmation (non-blocking semantics via queue inside helper)
+    const email = (customer.contact && customer.contact.email) ? String(customer.contact.email).toLowerCase().trim() : null;
+    if (email) {
+      const orderEnvelope = {
+        id: orderId,
+        created_at: now,
+        customer,
+        item,
+        pricing_snapshot: finalPricing
+      };
+      if (userId) {
+        // Existing authenticated user
+        await sendOrderEmail(db, orderEnvelope, 'existing');
+      } else {
+        // Guest order
+        await sendOrderEmail(db, orderEnvelope, 'guest');
+      }
+    }
+
+    // Return order ID and short code for UI
+    res.status(201).json({ ok: true, orderId, order_code: code });
   };
 }
 

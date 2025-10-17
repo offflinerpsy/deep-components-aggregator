@@ -1,0 +1,5 @@
+[{"id":"f8cea839-59d6-49e5-900a-6057a24d9dd0","created_at":1760557951007,"status":"pending","order_code":"ORD-AC968E","customer_email":"qa@example.com","mpn":"TEST123","manufacturer":"QA Inc","qty":5},
+{"id":"09c7c027-ec05-4f9c-b8da-97ec77270eea","created_at":1760557873933,"status":"pending","order_code":"ORD-D971D5","customer_email":"qa@example.com","mpn":"TEST123","manufacturer":"QA Inc","qty":5},
+{"id":"6d48363c-8e6a-44b7-bd37-6ecb503be109","created_at":1760428993750,"status":"pending","order_code":"ORD-3BE109","customer_email":"dmitry.k@yandex.ru","mpn":"1-826576-0","manufacturer":"TE Connectivity","qty":20},
+{"id":"832a0589-8857-4c05-bb34-6291cdefdd0d","created_at":1760428992730,"status":"pending","order_code":"ORD-EFDD0D","customer_email":"anna.e@protonmail.com","mpn":"GRM21BR71C106KE15L","manufacturer":"Murata","qty":50},
+{"id":"74ec2261-d85a-45cb-bdd4-eecf8e5f3387","created_at":1760428991707,"status":"pending","order_code":"ORD-5F3387","customer_email":"petr.sidorov@mail.ru","mpn":"ERJ-6ENF1002V","manufacturer":"Panasonic","qty":100}]

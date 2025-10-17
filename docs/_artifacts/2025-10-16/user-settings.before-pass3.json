@@ -1,0 +1,71 @@
+{
+  "github.copilot.enable": { "*": true },
+  "github.copilot.chat.confirmTools": false,
+  "github.copilot.chat.allowToolsWithoutConfirmation": true,
+  "github.copilot.chat.runCommand.enabled": true,
+  "github.copilot.chat.runCommand.allowList": ["*"],
+  "github.copilot.chat.executeCommand.enabled": true,
+  "github.copilot.chat.executeCommand.allowList": ["*"],
+  "github.copilot.chat.requestConfirmation": false,
+  "github.copilot.chat.confirmUseOutput": false,
+  "github.copilot.chat.autoApproveTerminalCommands": true,
+  "github.copilot.chat.autoExecuteCommands": true,
+  "github.copilot.chat.allowedCommands": ["*"],
+  "github.copilot.chat.trustedWorkspaces": ["*"],
+  "github.copilot.chat.experimental.allowRunningTerminalCommands": true,
+
+  "chat.commandCenter.enabled": true,
+  "terminal.integrated.confirmOnKill": "never",
+  "terminal.integrated.confirmOnExit": "never",
+  "terminal.integrated.enablePersistentSessions": false,
+  "terminal.integrated.commandsToSkipShell": [],
+  "terminal.integrated.allowChords": false,
+  "terminal.integrated.allowWorkspaceConfiguration": true,
+  "terminal.integrated.automationShell.linux": "/bin/bash",
+
+  "files.autoSave": "afterDelay",
+  "files.autoSaveDelay": 500,
+  "files.confirmDelete": false,
+  "files.confirmDragAndDrop": false,
+  "files.hotExit": "onExitAndWindowClose",
+
+  "explorer.confirmDelete": false,
+  "explorer.confirmDragAndDrop": false,
+
+  "security.workspace.trust.enabled": false,
+  "security.workspace.trust.untrustedFiles": "open",
+  "security.workspace.trust.banner": "never",
+  "security.workspace.trust.startupPrompt": "never",
+  "security.workspace.trust.emptyWindow": false,
+  "workbench.trustedDomains.prompt": false,
+  "workbench.trustedDomains": ["*"],
+
+  "extensions.ignoreRecommendations": true,
+  "workbench.enableExperiments": false,
+  "telemetry.telemetryLevel": "off",
+
+  "git.confirmSync": false,
+  "git.autofetch": false,
+  "git.confirmNoVerifyCommit": false,
+  "git.confirmEmptyCommits": false,
+  "git.confirmForcePush": false,
+  "git.confirmPushSynchronization": false,
+
+  "debug.confirmOnExit": "never",
+  "workbench.startupEditor": "none",
+  "window.confirmBeforeClose": "never",
+
+  "extensions.autoUpdate": true,
+  "extensions.autoCheckUpdates": false,
+  "extensions.confirmedCommands": ["*"],
+
+  "github.copilot.chat.experimental.codeGeneration.instructions": [],
+  "github.copilot.chat.experimental.codeGeneration.useInstructionFiles": false,
+
+  "chat.editor.wordWrap": "on",
+  "workbench.editorAssociations": {},
+
+  "task.allowAutomaticTasks": "on",
+  "update.mode": "none",
+  "update.showReleaseNotes": false
+}

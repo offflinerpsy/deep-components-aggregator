@@ -1,0 +1,6 @@
+{
+  "ok": true,
+  "email": "enigma.vista.ru@yandex.ru",
+  "verifyUrl": "http://localhost:9201/auth/verify?token=5918a66790a571cba40e14f9bc536fb114a0a3ef77a4fc0227536141b5f1cf5a",
+  "expires_at": 1760631477913
+}

@@ -11,10 +11,12 @@
 
 import Ajv from 'ajv';
 import addFormats from 'ajv-formats';
-import { randomUUID } from 'node:crypto';
+import { randomUUID, randomBytes } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import passport from 'passport';
 import { hashPassword } from '../config/passport.mjs';
+import { sendTemplatedMail } from '../src/lib/mailer.mjs';
+import { linkGuestOrders } from '../src/lib/order-helpers.mjs';
 
 // Initialize AJV with formats
 const ajv = new Ajv({ allErrors: true, strict: true });
@@ -38,9 +40,19 @@ const validateLogin = ajv.compile(loginSchema);
 export function registerHandler(db, logger) {
   return async (req, res) => {
     console.log('[REGISTER] Handler called, body:', JSON.stringify(req.body));
+
+    // Pre-normalize: accept `username` as alias for `email` from UI modal
+    // Remove unknown alias to satisfy additionalProperties:false in schema
+    const body = typeof req.body === 'object' && req.body ? { ...req.body } : {};
+    if (!body.email && typeof body.username === 'string') {
+      body.email = body.username;
+    }
+    if (Object.prototype.hasOwnProperty.call(body, 'username')) {
+      delete body.username;
+    }
     
     // Guard: Validate request body
-    const valid = validateRegister(req.body);
+    const valid = validateRegister(body);
     if (!valid) {
       logger.warn({ errors: validateRegister.errors }, 'Registration validation failed');
       
@@ -55,7 +67,7 @@ export function registerHandler(db, logger) {
       });
     }
     
-    const { email, password, confirmPassword, name } = req.body;
+  const { email, password, confirmPassword, name } = body;
     
     // Guard: Check password match
     if (password !== confirmPassword) {
@@ -69,8 +81,8 @@ export function registerHandler(db, logger) {
     // Normalize email
     const normalizedEmail = email.toLowerCase().trim();
     
-    // Guard: Check if email already exists
-    const existingUser = db.prepare('SELECT id FROM users WHERE email = ?').get(normalizedEmail);
+    // Guard: Check if email already exists (local users only)
+    const existingUser = db.prepare('SELECT id, email_verified FROM users WHERE email = ?').get(normalizedEmail);
     if (existingUser) {
       logger.info({ email: 'REDACTED' }, 'Registration attempt: email already exists');
       
@@ -95,14 +107,14 @@ export function registerHandler(db, logger) {
       });
     }
     
-    // Create user
+    // Create user (unverified)
     const now = Date.now();
     const userId = randomUUID();
     
     const insertTransaction = db.transaction(() => {
       db.prepare(`
-        INSERT INTO users (id, created_at, updated_at, email, password_hash, provider, provider_id, name)
-        VALUES (?, ?, ?, ?, ?, NULL, NULL, ?)
+        INSERT INTO users (id, created_at, updated_at, email, password_hash, provider, provider_id, name, email_verified)
+        VALUES (?, ?, ?, ?, ?, NULL, NULL, ?, 0)
       `).run(
         userId,
         now,
@@ -111,42 +123,144 @@ export function registerHandler(db, logger) {
         passwordHash,
         name || null
       );
+
+      // Create verification token valid for 24h
+      const token = randomBytes(32).toString('hex');
+      const ttlMs = 24 * 60 * 60 * 1000;
+      db.prepare(`
+        INSERT INTO email_verification_tokens (id, user_id, token, expires_at)
+        VALUES (?, ?, ?, ?)
+      `).run(randomUUID(), userId, token, now + ttlMs);
+
+      return { token };
     });
     
-    insertTransaction();
+  const { token } = insertTransaction();
     
-    logger.info({ userId }, 'User registered successfully');
-    
-    // Log in the new user immediately
-    const user = {
-      id: userId,
-      email: normalizedEmail,
-      name: name || null,
-      provider: null
-    };
-    
-    req.login(user, (err) => {
-      if (err) {
-        logger.error({ error: err.message, userId }, 'Auto-login after registration failed');
-        
-        // Return success anyway - user can log in manually
-        return res.status(201).json({
-          ok: true,
-          userId,
-          message: 'Registration successful. Please log in.'
-        });
+    logger.info({ userId }, 'User registered successfully (verification required)');
+
+    const baseUrl = process.env.BASE_URL || `http://localhost:${process.env.PORT || 9201}`;
+    const verifyUrl = `${baseUrl}/auth/verify?token=${token}`;
+    const mailResult = await sendTemplatedMail({
+      to: normalizedEmail,
+      subject: 'Подтвердите email — Deep Components',
+      templateName: 'email-verification',
+      data: {
+        userName: name || '',
+        verifyUrl
       }
-      
-      res.status(201).json({
-        ok: true,
-        userId,
-        user: {
-          id: user.id,
-          email: user.email,
-          name: user.name
-        }
-      });
     });
+
+    // 202 Accepted since verification pending
+    // In non-production, if SMTP is not configured, include verifyUrl for manual verification
+    const isProd = process.env.NODE_ENV === 'production';
+    const response = { ok: true, userId, message: 'Registration accepted. Please check your email to verify your account.' };
+    if (!isProd && mailResult && mailResult.ok === false) {
+      response.dev_verify_url = verifyUrl;
+      if (mailResult.artifactPath) {
+        response.dev_email_artifact = mailResult.artifactPath;
+      }
+    }
+    res.status(202).json(response);
+  };
+}
+
+/**
+ * GET /auth/verify?token=...
+ * Verifies email using single-use token
+ */
+export function verifyEmailHandler(db, logger) {
+  return (req, res) => {
+    const token = String(req.query.token || '').trim();
+    if (!token) {
+      return res.status(400).json({ ok: false, error: 'token_required' });
+    }
+
+    const now = Date.now();
+    const tokenRow = db.prepare('SELECT id, user_id, expires_at, used_at FROM email_verification_tokens WHERE token = ?').get(token);
+    if (!tokenRow) {
+      return res.status(400).json({ ok: false, error: 'invalid_token' });
+    }
+    if (tokenRow.used_at) {
+      return res.status(400).json({ ok: false, error: 'token_used' });
+    }
+    if (tokenRow.expires_at < now) {
+      return res.status(400).json({ ok: false, error: 'token_expired' });
+    }
+
+    const tx = db.transaction(() => {
+      db.prepare('UPDATE users SET email_verified = 1, updated_at = ? WHERE id = ?').run(now, tokenRow.user_id);
+      db.prepare('UPDATE email_verification_tokens SET used_at = ? WHERE id = ?').run(now, tokenRow.id);
+    });
+    tx();
+
+    // After verification: link guest orders by email (if any)
+    const userRow = db.prepare('SELECT email FROM users WHERE id = ?').get(tokenRow.user_id);
+    if (userRow && userRow.email) {
+      // Best-effort linking (no try/catch, helper uses transactions)
+      linkGuestOrders(db, tokenRow.user_id, String(userRow.email).toLowerCase().trim(), logger);
+    }
+
+    logger.info({ userId: tokenRow.user_id }, 'Email verified successfully');
+
+    // On success, either redirect to UI or return JSON
+    const redirect = String(req.query.redirect || '').trim();
+    if (redirect === '1') {
+      return res.redirect('/ui/my-orders.html?verified=1');
+    }
+    res.json({ ok: true });
+  };
+}
+
+/**
+ * POST /auth/resend-verification
+ * Resend verification email with rate limit (15 minutes per user)
+ * Body: { email }
+ */
+export function resendVerificationHandler(db, logger) {
+  return async (req, res) => {
+    const emailRaw = req.body?.email;
+    if (!emailRaw || typeof emailRaw !== 'string') {
+      return res.status(400).json({ ok: false, error: 'validation_error', message: 'email required' });
+    }
+
+    const email = emailRaw.toLowerCase().trim();
+    const user = db.prepare('SELECT id, name, email_verified FROM users WHERE email = ?').get(email);
+    if (!user) {
+      return res.status(404).json({ ok: false, error: 'not_found' });
+    }
+    if (Number(user.email_verified) === 1) {
+      return res.status(409).json({ ok: false, error: 'already_verified' });
+    }
+
+    const lastToken = db.prepare('SELECT token, expires_at FROM email_verification_tokens WHERE user_id = ? ORDER BY expires_at DESC LIMIT 1').get(user.id);
+    const now = Date.now();
+    if (lastToken && lastToken.expires_at) {
+      const ttlMs = 24 * 60 * 60 * 1000;
+      const createdAt = Number(lastToken.expires_at) - ttlMs;
+      const sinceMs = now - createdAt;
+      const limitMs = 15 * 60 * 1000; // 15 minutes
+      if (sinceMs < limitMs) {
+        return res.status(429).json({ ok: false, error: 'rate_limited', retry_in_sec: Math.ceil((limitMs - sinceMs)/1000) });
+      }
+    }
+
+    const token = randomBytes(32).toString('hex');
+    const ttlMs = 24 * 60 * 60 * 1000;
+    db.prepare('INSERT INTO email_verification_tokens (id, user_id, token, expires_at) VALUES (?, ?, ?, ?)')
+      .run(randomUUID(), user.id, token, now + ttlMs);
+
+    const baseUrl = process.env.BASE_URL || `http://localhost:${process.env.PORT || 9201}`;
+    const verifyUrl = `${baseUrl}/auth/verify?token=${token}`;
+    await sendTemplatedMail({
+      to: email,
+      subject: 'Подтвердите email — Deep Components',
+      templateName: 'email-verification',
+      data: { userName: user.name || '', verifyUrl }
+    });
+
+    logger.info({ userId: user.id }, 'Verification email resent');
+    res.status(202).json({ ok: true });
   };
 }
 
@@ -422,6 +536,8 @@ export function mountAuthRoutes(app, db, logger, authRateLimiter) {
   app.post('/auth/login', rateLimitMiddleware, loginHandler(db, logger));
   app.post('/auth/logout', logoutHandler(logger));
   app.get('/auth/me', meHandler());
+  app.get('/auth/verify', verifyEmailHandler(db, logger));
+  app.post('/auth/resend-verification', rateLimitMiddleware, resendVerificationHandler(db, logger));
   
   // Google OAuth
   app.get('/auth/google', googleAuthHandler());
@@ -441,6 +557,7 @@ export default {
   loginHandler,
   logoutHandler,
   meHandler,
+  verifyEmailHandler,
   googleAuthHandler,
   googleCallbackHandler,
   yandexAuthHandler,

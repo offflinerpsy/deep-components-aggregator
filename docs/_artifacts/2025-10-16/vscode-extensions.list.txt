@@ -1,0 +1,9 @@
+block.vscode-mcp-extension-0.2.0
+buildwithlayer.mcp-integration-expert-eligr-0.0.4
+dbaeumer.vscode-eslint-3.0.16
+editorconfig.editorconfig-0.17.4
+extensions.json
+github.copilot-1.372.0
+github.copilot-chat-0.32.1
+gjvar0.vsc-mcp-0.0.4
+sh0o0.project-mcp-0.0.2

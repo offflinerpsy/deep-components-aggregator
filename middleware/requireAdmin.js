@@ -9,10 +9,10 @@
 export function requireAdmin(req, res, next) {
   // Check if user is authenticated via Passport
   const passportAuth = req.isAuthenticated && req.isAuthenticated() && req.user;
-  
+
   // Check if user is authenticated via AdminJS
   const adminJsAuth = req.session && req.session.adminUser;
-  
+
   // Not authenticated through either method
   if (!passportAuth && !adminJsAuth) {
     // RFC 7235: 401 requires WWW-Authenticate header
@@ -24,7 +24,7 @@ export function requireAdmin(req, res, next) {
   }
 
   // Check if user has admin role (Passport) or is an admin (AdminJS)
-  if ((passportAuth && req.user.role !== 'admin') && 
+  if ((passportAuth && req.user.role !== 'admin') &&
       (!adminJsAuth || (adminJsAuth.role !== 'admin'))) {
     // RFC 7235: 403 means authenticated but forbidden (no WWW-Authenticate)
     return res.status(403).json({
@@ -55,9 +55,9 @@ export function requireAdmin(req, res, next) {
 export function checkAdmin(req, res, next) {
   const passportAdmin = req.isAuthenticated && req.isAuthenticated() && req.user && req.user.role === 'admin';
   const adminJsAdmin = req.session && req.session.adminUser && req.session.adminUser.role === 'admin';
-  
+
   req.isAdmin = passportAdmin || adminJsAdmin;
-  
+
   // If authenticated via AdminJS but not Passport, set user for consistency
   if (!passportAdmin && adminJsAdmin && !req.user) {
     req.user = {
@@ -67,6 +67,6 @@ export function checkAdmin(req, res, next) {
       role: req.session.adminUser.role
     };
   }
-  
+
   next();
 }

@@ -1,11 +1,11 @@
 // api/admin.products.js
 // Admin CRUD endpoints for products management
-// Protected by Nginx Basic Auth at proxy level
+// Protected by requireAdmin (session-based RBAC)
 
 import Ajv from 'ajv';
 import addFormats from 'ajv-formats';
 import { readFileSync } from 'node:fs';
-import { openDb } from '../src/db/sql.mjs';
+import { requireAdmin } from '../middleware/requireAdmin.js';
 
 // Initialize AJV with formats
 const ajv = new Ajv({ allErrors: true, strict: true });
@@ -25,17 +25,6 @@ const getCurrentUser = (req) => {
 // GET /api/admin/products - List all products (with pagination)
 const listProductsHandler = (db) => {
   return (req, res) => {
-    // Guard clause: Check authentication BEFORE any DB access
-    // HTTP 401 Unauthorized per RFC 7235 - authentication required
-    if (!req.user || !req.user.email) {
-      res.setHeader('WWW-Authenticate', 'Basic realm="Admin Access"');
-      return res.status(401).json({
-        ok: false,
-        error: 'unauthorized',
-        message: 'Authentication required to access admin products'
-      });
-    }
-
     const page = Number(req.query.page || 1);
     const limit = Math.min(Number(req.query.limit || 50), 100);
     const offset = (page - 1) * limit;
@@ -44,8 +33,8 @@ const listProductsHandler = (db) => {
     const featured = req.query.featured === '1' ? 1 : null;
     const active = req.query.active !== '0' ? 1 : null; // Default: show only active
 
-    let whereClause = [];
-    let params = [];
+    const whereClause = [];
+    const params = [];
 
     if (category) {
       whereClause.push('category = ?');
@@ -88,16 +77,6 @@ const listProductsHandler = (db) => {
 // GET /api/admin/products/:id - Get single product by ID
 const getProductHandler = (db) => {
   return (req, res) => {
-    // Guard clause: Check authentication
-    if (!req.user || !req.user.email) {
-      res.setHeader('WWW-Authenticate', 'Basic realm="Admin Access"');
-      return res.status(401).json({
-        ok: false,
-        error: 'unauthorized',
-        message: 'Authentication required to access admin products'
-      });
-    }
-
     const id = Number(req.params.id);
 
     if (!Number.isInteger(id) || id <= 0) {
@@ -110,15 +89,6 @@ const getProductHandler = (db) => {
       return res.status(404).json({ ok: false, error: 'Product not found' });
     }
 
-    // Parse JSON fields
-    if (product.price_breaks) {
-      try {
-        product.price_breaks = JSON.parse(product.price_breaks);
-      } catch (e) {
-        product.price_breaks = [];
-      }
-    }
-
     res.json({ ok: true, product });
   };
 };
@@ -126,16 +96,6 @@ const getProductHandler = (db) => {
 // POST /api/admin/products - Create new product
 const createProductHandler = (db, logger) => {
   return (req, res) => {
-    // Guard clause: Check authentication
-    if (!req.user || !req.user.email) {
-      res.setHeader('WWW-Authenticate', 'Basic realm="Admin Access"');
-      return res.status(401).json({
-        ok: false,
-        error: 'unauthorized',
-        message: 'Authentication required to create products'
-      });
-    }
-
     const valid = validateProduct(req.body);
 
     if (!valid) {
@@ -149,75 +109,59 @@ const createProductHandler = (db, logger) => {
 
     const data = req.body;
     const currentUser = getCurrentUser(req);
-
-    // Serialize price_breaks to JSON
     const priceBreaksJson = data.price_breaks ? JSON.stringify(data.price_breaks) : null;
 
-    try {
-      const stmt = db.prepare(`
-        INSERT INTO products (
-          mpn, manufacturer, category, title, description_short, description_long,
-          price_rub, price_breaks, stock, min_order_qty, packaging,
-          image_url, datasheet_url, provider, provider_url, provider_sku,
-          is_featured, is_active, created_by
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-      `);
+    const stmt = db.prepare(`
+      INSERT INTO products (
+        mpn, manufacturer, category, title, description_short, description_long,
+        price_rub, price_breaks, stock, min_order_qty, packaging,
+        image_url, datasheet_url, provider, provider_url, provider_sku,
+        is_featured, is_active, created_by
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `);
 
-      const result = stmt.run(
-        data.mpn,
-        data.manufacturer,
-        data.category || null,
-        data.title,
-        data.description_short || null,
-        data.description_long || null,
-        data.price_rub || null,
-        priceBreaksJson,
-        data.stock || 0,
-        data.min_order_qty || 1,
-        data.packaging || null,
-        data.image_url || null,
-        data.datasheet_url || null,
-        data.provider || null,
-        data.provider_url || null,
-        data.provider_sku || null,
-        data.is_featured ? 1 : 0,
-        data.is_active !== false ? 1 : 0,
-        currentUser
-      );
+    const result = stmt.run(
+      data.mpn,
+      data.manufacturer,
+      data.category || null,
+      data.title,
+      data.description_short || null,
+      data.description_long || null,
+      data.price_rub || null,
+      priceBreaksJson,
+      data.stock || 0,
+      data.min_order_qty || 1,
+      data.packaging || null,
+      data.image_url || null,
+      data.datasheet_url || null,
+      data.provider || null,
+      data.provider_url || null,
+      data.provider_sku || null,
+      data.is_featured ? 1 : 0,
+      data.is_active !== false ? 1 : 0,
+      currentUser
+    );
 
-      const product = db.prepare('SELECT * FROM products WHERE id = ?').get(result.lastInsertRowid);
-
-      logger.info('Product created', { id: product.id, mpn: product.mpn, user: currentUser });
-
-      res.status(201).json({ ok: true, product });
-    } catch (error) {
-      if (error.message.includes('UNIQUE constraint')) {
-        return res.status(409).json({
-          ok: false,
-          error: 'Product already exists',
-          details: 'A product with this MPN and manufacturer already exists'
-        });
-      }
-
-      logger.error('Failed to create product', { error: error.message });
-      res.status(500).json({ ok: false, error: 'Database error' });
+    if (result.changes === 0) {
+      logger.error('Failed to create product: no rows affected');
+      return res.status(500).json({ ok: false, error: 'Database error: no rows affected' });
     }
+
+    const product = db.prepare('SELECT * FROM products WHERE id = ?').get(result.lastInsertRowid);
+
+    if (!product) {
+      logger.error('Product created but not found after insert', { rowid: result.lastInsertRowid });
+      return res.status(500).json({ ok: false, error: 'Database error: product not retrievable' });
+    }
+
+    logger.info('Product created', { id: product.id, mpn: product.mpn, user: currentUser });
+    res.status(201).json({ ok: true, product });
   };
 };
 
 // PUT /api/admin/products/:id - Update existing product
 const updateProductHandler = (db, logger) => {
   return (req, res) => {
-    // Guard clause: Check authentication
-    if (!req.user || !req.user.email) {
-      res.setHeader('WWW-Authenticate', 'Basic realm="Admin Access"');
-      return res.status(401).json({
-        ok: false,
-        error: 'unauthorized',
-        message: 'Authentication required to update products'
-      });
-    }
-
     const id = Number(req.params.id);
 
     if (!Number.isInteger(id) || id <= 0) {
@@ -244,85 +188,71 @@ const updateProductHandler = (db, logger) => {
     const data = req.body;
     const priceBreaksJson = data.price_breaks ? JSON.stringify(data.price_breaks) : null;
 
-    try {
-      const stmt = db.prepare(`
-        UPDATE products SET
-          mpn = ?,
-          manufacturer = ?,
-          category = ?,
-          title = ?,
-          description_short = ?,
-          description_long = ?,
-          price_rub = ?,
-          price_breaks = ?,
-          stock = ?,
-          min_order_qty = ?,
-          packaging = ?,
-          image_url = ?,
-          datasheet_url = ?,
-          provider = ?,
-          provider_url = ?,
-          provider_sku = ?,
-          is_featured = ?,
-          is_active = ?
-        WHERE id = ?
-      `);
+    const stmt = db.prepare(`
+      UPDATE products SET
+        mpn = ?,
+        manufacturer = ?,
+        category = ?,
+        title = ?,
+        description_short = ?,
+        description_long = ?,
+        price_rub = ?,
+        price_breaks = ?,
+        stock = ?,
+        min_order_qty = ?,
+        packaging = ?,
+        image_url = ?,
+        datasheet_url = ?,
+        provider = ?,
+        provider_url = ?,
+        provider_sku = ?,
+        is_featured = ?,
+        is_active = ?
+      WHERE id = ?
+    `);
 
-      stmt.run(
-        data.mpn,
-        data.manufacturer,
-        data.category || null,
-        data.title,
-        data.description_short || null,
-        data.description_long || null,
-        data.price_rub || null,
-        priceBreaksJson,
-        data.stock || 0,
-        data.min_order_qty || 1,
-        data.packaging || null,
-        data.image_url || null,
-        data.datasheet_url || null,
-        data.provider || null,
-        data.provider_url || null,
-        data.provider_sku || null,
-        data.is_featured ? 1 : 0,
-        data.is_active !== false ? 1 : 0,
-        id
-      );
+    const result = stmt.run(
+      data.mpn,
+      data.manufacturer,
+      data.category || null,
+      data.title,
+      data.description_short || null,
+      data.description_long || null,
+      data.price_rub || null,
+      priceBreaksJson,
+      data.stock || 0,
+      data.min_order_qty || 1,
+      data.packaging || null,
+      data.image_url || null,
+      data.datasheet_url || null,
+      data.provider || null,
+      data.provider_url || null,
+      data.provider_sku || null,
+      data.is_featured ? 1 : 0,
+      data.is_active !== false ? 1 : 0,
+      id
+    );
 
-      const product = db.prepare('SELECT * FROM products WHERE id = ?').get(id);
-
-      logger.info('Product updated', { id, mpn: product.mpn });
-
-      res.json({ ok: true, product });
-    } catch (error) {
-      if (error.message.includes('UNIQUE constraint')) {
-        return res.status(409).json({
-          ok: false,
-          error: 'Product conflict',
-          details: 'A product with this MPN and manufacturer already exists'
-        });
-      }
-
-      logger.error('Failed to update product', { id, error: error.message });
-      res.status(500).json({ ok: false, error: 'Database error' });
+    if (result.changes === 0) {
+      logger.warn('Product update: no changes made', { id });
+      return res.status(304).json({ ok: false, error: 'No changes made' });
     }
+
+    const product = db.prepare('SELECT * FROM products WHERE id = ?').get(id);
+
+    if (!product) {
+      logger.error('Product not found after update', { id });
+      return res.status(500).json({ ok: false, error: 'Database error: product not retrievable' });
+    }
+
+    logger.info('Product updated', { id, mpn: product.mpn });
+    res.json({ ok: true, product });
   };
 };
 
 // DELETE /api/admin/products/:id - Delete product
 const deleteProductHandler = (db, logger) => {
   return (req, res) => {
-    // Guard clause: Check authentication
-    if (!req.user || !req.user.email) {
-      res.setHeader('WWW-Authenticate', 'Basic realm="Admin Access"');
-      return res.status(401).json({
-        ok: false,
-        error: 'unauthorized',
-        message: 'Authentication required to delete products'
-      });
-    }
-
     const id = Number(req.params.id);
 
     if (!Number.isInteger(id) || id <= 0) {
@@ -335,26 +265,25 @@ const deleteProductHandler = (db, logger) => {
       return res.status(404).json({ ok: false, error: 'Product not found' });
     }
 
-    try {
-      db.prepare('DELETE FROM products WHERE id = ?').run(id);
+    const result = db.prepare('DELETE FROM products WHERE id = ?').run(id);
 
-      logger.info('Product deleted', { id, mpn: product.mpn, manufacturer: product.manufacturer });
-
-      res.json({ ok: true, message: 'Product deleted successfully' });
-    } catch (error) {
-      logger.error('Failed to delete product', { id, error: error.message });
-      res.status(500).json({ ok: false, error: 'Database error' });
+    if (result.changes === 0) {
+      logger.warn('Product delete: no rows affected', { id });
+      return res.status(500).json({ ok: false, error: 'Database error: no rows deleted' });
     }
+
+    logger.info('Product deleted', { id, mpn: product.mpn, manufacturer: product.manufacturer });
+    res.json({ ok: true, message: 'Product deleted successfully' });
   };
 };
 
-// Mount all routes
+// Mount all routes with requireAdmin middleware
 export function mountAdminProductRoutes(app, db, logger) {
-  app.get('/api/admin/products', listProductsHandler(db));
-  app.get('/api/admin/products/:id', getProductHandler(db));
-  app.post('/api/admin/products', createProductHandler(db, logger));
-  app.put('/api/admin/products/:id', updateProductHandler(db, logger));
-  app.delete('/api/admin/products/:id', deleteProductHandler(db, logger));
+  app.get('/api/admin/products', requireAdmin, listProductsHandler(db));
+  app.get('/api/admin/products/:id', requireAdmin, getProductHandler(db));
+  app.post('/api/admin/products', requireAdmin, createProductHandler(db, logger));
+  app.put('/api/admin/products/:id', requireAdmin, updateProductHandler(db, logger));
+  app.delete('/api/admin/products/:id', requireAdmin, deleteProductHandler(db, logger));
 
   logger.info('Admin product routes mounted');
 }

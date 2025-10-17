@@ -1,0 +1,3 @@
+==== CURL HEALTH
+
+curl_exit=7

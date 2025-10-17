@@ -1,0 +1,292 @@
+<!-- v0 Product Page -->
+<div id="product-root" class="min-h-screen relative bg-background page-transition" data-mpn="<%= mpn %>">
+  <div id="product-loading" class="loading-overlay">
+    <div class="loader"></div>
+  </div>
+
+  <div id="product-error" class="hidden fixed inset-0 z-40 flex items-center justify-center px-4">
+    <div class="glass-card max-w-md w-full p-8 rounded-2xl text-center">
+      <h2 class="text-2xl font-semibold text-foreground mb-4" id="error-title">Продукт не найден</h2>
+      <p class="text-sm text-muted-foreground mb-6" id="error-message">Проверьте артикул или вернитесь к поиску.</p>
+      <a href="/" class="inline-flex items-center justify-center w-full px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-500/80 transition-colors">
+        На главную
+      </a>
+    </div>
+  </div>
+
+  <header class="glass sticky top-0 z-30 border-b border-border bg-background">
+    <div class="container mx-auto px-6 py-4 flex items-center justify-between">
+      <button type="button" class="logo" id="logo-home">
+        <div class="logo-chip">
+          <span class="logo-spark"></span>
+        </div>
+        <svg class="logo-text-svg" width="180" height="32" viewBox="0 0 180 32" fill="none">
+          <text x="0" y="24" font-family="Roboto" font-size="24" font-weight="300" letter-spacing="2" stroke="url(#logoGradient)" stroke-width="0.5" fill="url(#logoGradient)">
+            ДИПОНИКА
+          </text>
+          <defs>
+            <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#667eea" />
+              <stop offset="100%" stop-color="#764ba2" />
+            </linearGradient>
+          </defs>
+        </svg>
+      </button>
+
+      <div class="flex items-center gap-8">
+        <nav class="hidden md:flex items-center gap-8">
+          <button type="button" class="text-muted-foreground hover:text-foreground transition-colors" data-nav="home">Главная</button>
+          <button type="button" class="text-muted-foreground hover:text-foreground transition-colors" data-nav="search">Поиск</button>
+          <button type="button" class="text-muted-foreground hover:text-foreground transition-colors">О нас</button>
+        </nav>
+
+        <button type="button" id="theme-toggle" class="w-10 h-10 p-0 inline-flex items-center justify-center rounded-md border border-border hover:bg-muted transition-colors">
+          <span id="icon-moon" aria-hidden="true">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+            </svg>
+          </span>
+          <span id="icon-sun" class="hidden" aria-hidden="true">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+            </svg>
+          </span>
+          <span class="sr-only">Переключить тему</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="product-content" class="hidden container mx-auto px-6 py-12 max-w-7xl relative z-10">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
+      <div class="space-y-6">
+        <div class="glass-card p-6 rounded-xl relative">
+          <div class="image-slider mb-4">
+            <div id="main-image-container" class="w-full h-full flex items-center justify-center">
+              <div class="text-muted-foreground text-sm">Нет изображения</div>
+            </div>
+            <button type="button" class="slider-button prev" id="slider-prev">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+              </svg>
+            </button>
+            <button type="button" class="slider-button next" id="slider-next">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+              </svg>
+            </button>
+          </div>
+          <div id="thumbnails-container" class="flex flex-wrap gap-2"></div>
+        </div>
+
+        <div class="glass-card p-6 rounded-xl" id="datasheets-shell">
+          <h3 class="font-semibold text-lg mb-4">Документация</h3>
+          <div id="datasheets-container" class="space-y-3 hidden"></div>
+          <div id="datasheets-empty" class="text-sm text-muted-foreground">Документация появится позже</div>
+        </div>
+      </div>
+
+      <div class="lg:col-span-2 space-y-6">
+        <div class="glass-card p-8 rounded-xl">
+          <div class="flex flex-col gap-4">
+            <div>
+              <h1 id="product-title" class="text-3xl font-semibold mb-2 md:text-4xl"></h1>
+              <div id="product-meta" class="flex flex-wrap items-center gap-3 text-sm text-muted-foreground"></div>
+            </div>
+            <div id="stock-info" class="hidden flex items-center gap-2 rounded-lg border border-emerald-300/40 bg-emerald-500/10 px-3 py-2 text-sm text-emerald-600 dark:text-emerald-400"></div>
+            <div id="product-description-container" class="hidden text-sm leading-relaxed text-muted-foreground">
+              <div id="product-description"></div>
+              <button id="description-toggle" class="hidden mt-2 inline-flex items-center gap-1 text-sm font-medium text-primary transition-colors hover:text-primary/80">
+                <span id="toggle-text">Читать далее</span>
+                <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="lg:col-span-1">
+        <div class="glass-card p-6 rounded-xl lg:sticky lg:top-28">
+          <div class="flex flex-col gap-5">
+            <div>
+              <div class="text-xs uppercase tracking-wide text-muted-foreground">Лучшая цена</div>
+              <div id="best-price" class="mt-1 text-4xl font-semibold text-green-600 dark:text-green-400">—</div>
+              <div class="text-xs text-muted-foreground">за единицу</div>
+            </div>
+            <div id="stock-badge" class="hidden flex items-center gap-2 rounded-lg border border-emerald-300/50 bg-emerald-500/10 px-3 py-2 text-xs font-medium text-emerald-600 dark:text-emerald-300">
+              <svg class="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+              </svg>
+              <span id="stock-badge-text"></span>
+            </div>
+            <div>
+              <label class="mb-2 block text-sm font-medium text-foreground">Количество</label>
+              <div class="flex w-full max-w-[150px] items-center overflow-hidden rounded-lg border border-border/70">
+                <button id="qty-minus" type="button" class="flex h-10 w-10 items-center justify-center bg-muted transition-colors hover:bg-muted/80">
+                  <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M20 12H4" />
+                  </svg>
+                </button>
+                <input id="qty-input" class="h-10 w-16 border-x border-border/60 text-center text-sm font-semibold outline-none focus:ring-1 focus:ring-primary" type="number" min="1" value="1" />
+                <button id="qty-plus" type="button" class="flex h-10 w-10 items-center justify-center bg-muted transition-colors hover:bg-muted/80">
+                  <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+            <div class="border-t border-border/60 pt-3">
+              <div class="flex items-baseline justify-between text-sm text-muted-foreground">
+                <span>Итого:</span>
+                <span id="total-price" class="text-xl font-semibold text-foreground">—</span>
+              </div>
+            </div>
+            <button id="buy-button" type="button" class="w-full px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white rounded-lg font-semibold text-base transition-all duration-300 shadow-lg hover:shadow-xl hover:shadow-blue-500/30 transform hover:-translate-y-0.5">
+              Заказать
+            </button>
+            <a id="vendor-link" href="#" target="_blank" rel="noopener noreferrer" class="hidden w-full px-6 py-3 border border-border rounded-lg font-medium hover:bg-muted/50 transition-colors text-foreground text-center">
+              У поставщика
+            </a>
+            <ul id="benefits-list" class="space-y-2 text-xs text-muted-foreground">
+              <li class="flex items-center gap-2">
+                <svg class="h-3.5 w-3.5 text-emerald-500" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                </svg>
+                <span>Быстрая доставка</span>
+              </li>
+              <li class="flex items-center gap-2">
+                <svg class="h-3.5 w-3.5 text-emerald-500" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414л2 2a1 1 0 001.414 0л4-4z" clip-rule="evenodd" />
+                </svg>
+                <span>Гарантия качества</span>
+              </li>
+            </ul>
+            <div id="regions-container" class="hidden border-t border-border/60 pt-3"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="glass-card p-8 rounded-xl">
+      <div class="flex overflow-x-auto border-b border-border/60 text-sm">
+        <button id="tab-specs" type="button" class="flex-1 px-6 py-4 font-medium transition-colors border-b-2 border-primary bg-background text-primary">
+          Характеристики
+        </button>
+        <button id="tab-offers" type="button" class="flex-1 px-6 py-4 font-medium transition-colors text-muted-foreground hover:bg-muted/50 hover:text-foreground">
+          Предложения
+        </button>
+      </div>
+      <div class="pt-6">
+        <div id="specs-content">
+          <div id="specs-list" class="max-h-[600px] overflow-y-auto pr-2">
+            <div class="divide-y divide-border/50" id="specs-table"></div>
+          </div>
+          <div id="specs-empty" class="hidden flex h-full items-center justify-center text-sm text-muted-foreground">Данные временно недоступны</div>
+        </div>
+        <div id="offers-content" class="hidden">
+          <div id="offers-table-container" class="flex flex-col gap-4">
+            <div class="overflow-hidden rounded-xl border border-border/60">
+              <table class="min-w-full divide-y divide-border/60 text-sm">
+                <thead class="bg-muted/40">
+                  <tr>
+                    <th class="px-4 py-3 text-left font-medium text-muted-foreground">Регион</th>
+                    <th class="px-4 py-3 text-left font-medium text-muted-foreground">Цена (₽)</th>
+                    <th class="px-4 py-3 text-left font-medium text-muted-foreground">MOQ</th>
+                    <th class="px-4 py-3 text-left font-medium text-muted-foreground">ETA</th>
+                  </tr>
+                </thead>
+                <tbody id="offers-tbody" class="divide-y divide-border/60"></tbody>
+              </table>
+            </div>
+            <div id="offers-pagination" class="hidden flex items-center justify-end gap-3 text-sm"></div>
+          </div>
+          <div id="offers-empty" class="hidden flex h-full items-center justify-center text-sm text-muted-foreground">Данные временно недоступны</div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <div id="order-modal" class="hidden fixed inset-0 z-40 bg-black/50 flex items-center justify-center p-4">
+    <div class="glass-card max-w-md w-full p-6 rounded-2xl">
+      <h3 class="text-2xl font-semibold text-foreground mb-4">Оформить заказ</h3>
+      <form id="order-form" class="space-y-4">
+        <div>
+          <label class="block text-sm font-medium text-foreground mb-2">MPN</label>
+          <input type="text" id="order-mpn" class="w-full px-3 py-2 border border-border rounded-md bg-background text-foreground" readonly />
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-foreground mb-2">Количество</label>
+          <input type="number" id="order-quantity" class="w-full px-3 py-2 border border-border rounded-md bg-background text-foreground" min="1" value="1" />
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-foreground mb-2">Email</label>
+          <input type="email" id="order-email" class="w-full px-3 py-2 border border-border rounded-md bg-background text-foreground" placeholder="your@email.com" required />
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-foreground mb-2">Комментарий (необязательно)</label>
+          <textarea id="order-comment" class="w-full px-3 py-2 border border-border rounded-md bg-background text-foreground" rows="3"></textarea>
+        </div>
+        <div class="flex gap-3">
+          <button type="submit" class="flex-1 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-500/80 transition-colors">
+            Отправить заявку
+          </button>
+          <button type="button" id="modal-close" class="px-4 py-2 border border-border rounded-md hover:bg-muted/50 transition-colors">
+            Отмена
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  const htmlRoot = document.documentElement;
+  const themeToggle = document.getElementById('theme-toggle');
+  const iconMoon = document.getElementById('icon-moon');
+  const iconSun = document.getElementById('icon-sun');
+  const logoHome = document.getElementById('logo-home');
+  const navHome = document.querySelector('[data-nav="home"]');
+  const navSearch = document.querySelector('[data-nav="search"]');
+  const STORAGE_KEY = 'diponika-theme';
+
+  function applyTheme(theme) {
+    if (theme === 'dark') {
+      htmlRoot.classList.add('dark');
+      iconMoon?.classList.add('hidden');
+      iconSun?.classList.remove('hidden');
+    } else {
+      htmlRoot.classList.remove('dark');
+      iconSun?.classList.add('hidden');
+      iconMoon?.classList.remove('hidden');
+    }
+    localStorage.setItem(STORAGE_KEY, theme);
+  }
+
+  const storedTheme = localStorage.getItem(STORAGE_KEY);
+  applyTheme(storedTheme === 'dark' ? 'dark' : 'light');
+
+  themeToggle?.addEventListener('click', () => {
+    const nextTheme = htmlRoot.classList.contains('dark') ? 'light' : 'dark';
+    applyTheme(nextTheme);
+  });
+
+  logoHome?.addEventListener('click', () => {
+    window.location.href = '/';
+  });
+
+  navHome?.addEventListener('click', () => {
+    window.location.href = '/';
+  });
+
+  navSearch?.addEventListener('click', () => {
+    const mpn = document.getElementById('product-root')?.dataset.mpn || '';
+    const target = mpn ? `/results?q=${encodeURIComponent(mpn)}` : '/results';
+    window.location.href = target;
+  });
+})();
+</script>
+
+<script src="/ui/product-client.js?v=1"></script>

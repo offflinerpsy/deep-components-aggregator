@@ -1,0 +1,68 @@
+<mjml>
+  <mj-head>
+    <mj-title>Заказ оформлен - Deep Components</mj-title>
+    <mj-font name="Roboto" href="https://fonts.googleapis.com/css?family=Roboto" />
+    <mj-attributes>
+      <mj-all font-family="Roboto, Helvetica, sans-serif" />
+    </mj-attributes>
+  </mj-head>
+  <mj-body background-color="#f5f5f5">
+    <mj-section padding="20px">
+      <mj-column>
+        <mj-image width="200px" src="{{baseUrl}}/images/logo.png" alt="Deep Components" />
+      </mj-column>
+    </mj-section>
+
+    <mj-section background-color="white" padding="20px" border-radius="8px">
+      <mj-column>
+        <mj-text font-size="24px" font-weight="bold" color="#333">
+          Заказ оформлен!
+        </mj-text>
+        
+        <mj-text font-size="16px" color="#666" line-height="1.5">
+          Здравствуйте, {{customerName}}!<br/>
+          Спасибо за ваш заказ №{{orderId}}
+        </mj-text>
+
+        <mj-divider border-color="#eee" padding="20px 0" />
+
+        <mj-text font-size="18px" font-weight="bold" color="#333">
+          Детали заказа:
+        </mj-text>
+        
+        <mj-text font-size="16px" color="#666" line-height="1.5">
+          <strong>Компонент:</strong> {{mpn}}<br/>
+          <strong>Производитель:</strong> {{manufacturer}}<br/>
+          <strong>Количество:</strong> {{quantity}} шт.<br/>
+          <strong>Цена за единицу:</strong> {{pricePerUnit}} ₽<br/>
+          <strong>Общая сумма:</strong> {{totalAmount}} ₽<br/>
+          <strong>Статус:</strong> {{status}}
+        </mj-text>
+
+        <mj-divider border-color="#eee" padding="20px 0" />
+        
+        <mj-text font-size="16px" color="#666" line-height="1.5">
+          Отслеживайте статус вашего заказа в личном кабинете:
+        </mj-text>
+        
+        <mj-button background-color="#4CAF50" href="{{baseUrl}}/ui/my-orders.html">
+          Перейти в личный кабинет
+        </mj-button>
+
+        <mj-text font-size="14px" color="#999" line-height="1.5" padding-top="20px">
+          Если у вас есть вопросы, свяжитесь с нами:<br/>
+          Email: {{supportEmail}}<br/>
+          Телефон: {{supportPhone}}
+        </mj-text>
+      </mj-column>
+    </mj-section>
+
+    <mj-section padding="20px">
+      <mj-column>
+        <mj-text font-size="12px" color="#999" align="center">
+          © 2025 Deep Components. Все права защищены.
+        </mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

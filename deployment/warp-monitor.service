@@ -1,0 +1,13 @@
+[Unit]
+Description=WARP Monitor Service
+After=warp-tunnel.service
+Requires=warp-tunnel.service
+
+[Service]
+Type=simple
+ExecStart=/opt/deep-agg/deployment/monitor-warp.sh
+Restart=always
+RestartSec=1
+
+[Install]
+WantedBy=multi-user.target

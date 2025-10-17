@@ -5,7 +5,8 @@
 
 import { getSetting } from '../utils/settings.js';
 import { sendEmailNotification } from './channels/email.js';
-import { sendTelegramNotification } from './channels/telegram.js';
+// Telegram channel disabled by requirement
+// import { sendTelegramNotification } from './channels/telegram.js';
 import { createNotification } from '../utils/notifications.js';
 
 /**
@@ -26,7 +27,7 @@ export async function dispatchNotification(notification, options = {}) {
   try {
     const { storeInDb = true, channels: specificChannels, channelOptions = {} } = options;
     const results = { success: false, channels: {} };
-    
+
     // Store notification in database if requested
     if (storeInDb) {
       try {
@@ -37,7 +38,7 @@ export async function dispatchNotification(notification, options = {}) {
           payload: notification.payload || {},
           priority: notification.priority || 'normal'
         });
-        
+
         results.dbNotification = {
           id: dbNotification.id,
           success: true
@@ -50,13 +51,13 @@ export async function dispatchNotification(notification, options = {}) {
         };
       }
     }
-    
+
     // Determine which channels to use
     const channels = specificChannels || await getEnabledChannels(notification);
-    
+
     // Send through each enabled channel
     const channelPromises = [];
-    
+
     if (channels.includes('email')) {
       channelPromises.push(
         sendEmailNotification(notification, channelOptions.email || {})
@@ -66,23 +67,15 @@ export async function dispatchNotification(notification, options = {}) {
           })
       );
     }
-    
-    if (channels.includes('telegram')) {
-      channelPromises.push(
-        sendTelegramNotification(notification, channelOptions.telegram || {})
-          .then(result => {
-            results.channels.telegram = result;
-            return result;
-          })
-      );
-    }
-    
+
+    // Telegram disabled – no calls
+
     // Wait for all channels to complete
     if (channelPromises.length > 0) {
       const channelResults = await Promise.all(channelPromises);
       results.success = channelResults.some(result => result.success);
     }
-    
+
     return results;
   } catch (error) {
     console.error('Notification dispatch error:', error);
@@ -100,34 +93,17 @@ export async function dispatchNotification(notification, options = {}) {
  */
 async function getEnabledChannels(notification) {
   const enabledChannels = [];
-  
-  // Check if email notifications are enabled
+
+  // Only email remains enabled (controlled by settings)
   const emailEnabled = await getSetting('notifications_email_enabled', true);
   if (emailEnabled) {
     enabledChannels.push('email');
   }
-  
-  // Check if Telegram notifications are enabled
-  const telegramEnabled = await getSetting('notifications_telegram_enabled', false);
-  const telegramToken = await getSetting('telegram_bot_token', null);
-  const telegramChatId = await getSetting('telegram_chat_id', null);
-  
-  if (telegramEnabled && telegramToken && telegramChatId) {
-    // For high priority, always use Telegram if configured
-    if (notification.priority === 'high') {
-      enabledChannels.push('telegram');
-    } else {
-      // For other priorities, check type-specific settings
-      const telegramTypes = await getSetting('notifications_telegram_types', ['order', 'alert']);
-      if (Array.isArray(telegramTypes) && telegramTypes.includes(notification.type)) {
-        enabledChannels.push('telegram');
-      }
-    }
-  }
-  
+
   return enabledChannels;
 }
 
 export default {
   dispatchNotification
 };
+

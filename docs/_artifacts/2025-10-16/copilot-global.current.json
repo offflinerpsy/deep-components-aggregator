@@ -1,0 +1,20 @@
+{
+  "autoApprove": true,
+  "autoExecute": true,
+  "allowToolsWithoutConfirmation": true,
+  "requestConfirmation": false,
+  "confirmTools": false,
+  "confirmUseOutput": false,
+  "allowedCommands": ["*"],
+  "approvedCommands": ["*"],
+  "confirmedCommands": ["*"],
+  "trustedWorkspaces": ["*"],
+  "skipAllConfirmations": true,
+  "doNotAskAgain": true,
+  "terminal": {
+    "autoApproveTerminalCommands": true
+  },
+  "experimental": {
+    "allowRunningTerminalCommands": true
+  }
+}

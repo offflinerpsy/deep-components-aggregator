@@ -1,9 +1,83 @@
 import Database from 'better-sqlite3';
 import fs from 'fs';
 import path from 'path';
+import { fileURLToPath } from 'node:url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const DATA_DIR = process.env.DATA_DIR || './var';
 const DB_PATH = path.join(DATA_DIR, 'db', 'deepagg.sqlite');
+
+function tableExists(db, name) {
+  const row = db.prepare("SELECT name FROM sqlite_master WHERE type='table' AND name = ?").get(name);
+  return Boolean(row && row.name);
+}
+
+function columnExists(db, table, column) {
+  if (!tableExists(db, table)) {
+    return false;
+  }
+  const rows = db.prepare(`PRAGMA table_info(${table})`).all();
+  return rows.some((row) => row.name === column);
+}
+
+function ensureOrderColumns(db) {
+  if (!tableExists(db, 'orders')) {
+    return;
+  }
+
+  if (!columnExists(db, 'orders', 'customer_email')) {
+    db.exec('ALTER TABLE orders ADD COLUMN customer_email TEXT;');
+    db.exec('CREATE INDEX IF NOT EXISTS idx_orders_customer_email ON orders(customer_email);');
+    db.exec("UPDATE orders SET customer_email = json_extract(customer_contact, '$.email') WHERE customer_contact IS NOT NULL;");
+  }
+
+  if (!columnExists(db, 'orders', 'order_code')) {
+    db.exec('ALTER TABLE orders ADD COLUMN order_code TEXT;');
+    db.exec('CREATE INDEX IF NOT EXISTS idx_orders_order_code ON orders(order_code);');
+  }
+
+  if (!columnExists(db, 'orders', 'status_comment')) {
+    db.exec('ALTER TABLE orders ADD COLUMN status_comment TEXT;');
+  }
+
+  if (!columnExists(db, 'orders', 'status_history')) {
+    db.exec('ALTER TABLE orders ADD COLUMN status_history TEXT;');
+  }
+
+  const rows = db.prepare("SELECT id FROM orders WHERE order_code IS NULL OR order_code = ''").all();
+  if (rows.length === 0) {
+    return;
+  }
+  const update = db.prepare('UPDATE orders SET order_code = ? WHERE id = ?');
+  const tx = db.transaction((items) => {
+    for (const row of items) {
+      const compact = row.id ? String(row.id).replace(/-/g, '').toUpperCase() : '';
+      const suffix = compact.length >= 6 ? compact.slice(-6) : compact.padStart(6, '0');
+      const code = `ORD-${suffix}`;
+      update.run(code, row.id);
+    }
+  });
+  tx(rows);
+}
+
+function ensureAdminNotifications(db) {
+  if (tableExists(db, 'admin_notifications')) {
+    return;
+  }
+  db.exec(`
+    CREATE TABLE admin_notifications (
+      id TEXT PRIMARY KEY,
+      created_at INTEGER NOT NULL,
+      type TEXT NOT NULL,
+      payload TEXT NOT NULL,
+      read_at INTEGER
+    );
+  `);
+  db.exec('CREATE INDEX IF NOT EXISTS idx_admin_notifications_created ON admin_notifications(created_at DESC);');
+  db.exec('CREATE INDEX IF NOT EXISTS idx_admin_notifications_read ON admin_notifications(read_at);');
+}
 
 function ensureDirs(p) { const d = path.dirname(p); if (!fs.existsSync(d)) fs.mkdirSync(d, { recursive: true }); }
 
@@ -11,6 +85,8 @@ export function openDb() {
   ensureDirs(DB_PATH);
   const db = new Database(DB_PATH);
   db.pragma('journal_mode = WAL');
+  ensureOrderColumns(db);
+  ensureAdminNotifications(db);
   db.exec(`
     CREATE TABLE IF NOT EXISTS searches(
       q TEXT PRIMARY KEY,

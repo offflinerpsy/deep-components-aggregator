@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Pages</title>
+  <link rel="stylesheet" href="/styles/v0-theme.css" />
+  <style>
+    body{font-family:Roboto, sans-serif;background:var(--background);color:var(--foreground);margin:0;padding:24px}
+    .container{max-width:1000px;margin:0 auto}
+    .header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+    .card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:16px}
+    .list{display:grid;grid-template-columns: 50px 150px 1fr 100px 140px 100px;gap:8px;align-items:center}
+    .list .head{font-weight:600;color:var(--muted-foreground)}
+    .row{padding:8px 0;border-bottom:1px dashed var(--border)}
+    textarea{width:100%;height:300px;padding:12px;border:1px solid var(--border);border-radius:8px;background:var(--card-bg);color:var(--foreground);font-family:monospace}
+    input,select{width:100%;padding:8px;border:1px solid var(--border);border-radius:8px;background:var(--card-bg);color:var(--foreground)}
+    .grid{display:grid;grid-template-columns: 1fr; gap:12px;}
+    .actions{display:flex;gap:12px;margin-top:12px}
+    button{padding:10px 14px;border:1px solid var(--border);border-radius:8px;background:var(--muted);color:var(--foreground);cursor:pointer}
+    button:hover{background:var(--accent)}
+    .btn-danger{background:#e53e3e;color:#fff}
+    .btn-danger:hover{background:#c53030}
+    .btn-primary{background:#667eea;color:#fff}
+    .btn-primary:hover{background:#5a67d8}
+    a{color:#667eea;text-decoration:none}
+    a:hover{text-decoration:underline}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h2>Статические страницы</h2>
+      <div style="display:flex;gap:12px">
+        <button id="newPage" class="btn-primary">+ Новая страница</button>
+        <a href="/ui/admin-orders.html">← Заказы</a>
+      </div>
+    </div>
+
+    <div class="card" id="listCard">
+      <div class="list">
+        <div class="head">ID</div>
+        <div class="head">Slug</div>
+        <div class="head">Название</div>
+        <div class="head">Публик.</div>
+        <div class="head">Обновлено</div>
+        <div class="head"></div>
+      </div>
+      <div id="list"></div>
+    </div>
+
+    <div class="card" style="display:none" id="editCard">
+      <h3 id="editTitle">Редактировать страницу</h3>
+      <div class="grid">
+        <label>Slug (URL) <input id="slug" placeholder="about"/></label>
+        <label>Заголовок <input id="title" placeholder="О нас"/></label>
+        <label>Meta description <input id="meta" placeholder="Описание для поисковых систем"/></label>
+        <label>Содержимое (HTML) <textarea id="content" placeholder="<h1>Заголовок</h1><p>Текст...</p>"></textarea></label>
+        <label>Публиковать <select id="pub"><option value="1">Да</option><option value="0">Нет</option></select></label>
+        <div class="actions">
+          <button id="save" class="btn-primary">Сохранить</button>
+          <button id="cancel">Отмена</button>
+          <a id="preview" target="_blank" style="margin-left:auto"></a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let currentId = null
+    let isNewPage = false
+
+    async function loadList(){
+      const res = await fetch('/api/admin/pages',{credentials:'include'})
+      if(!res.ok){alert('Нет доступа или ошибка');return}
+      const data = await res.json()
+      const cont = document.getElementById('list')
+      cont.innerHTML = (data.pages||[]).map(p=>`
+        <div class="list row">
+          <div>${p.id}</div>
+          <div><code>${p.slug}</code></div>
+          <div><a href="#" onclick="edit(${p.id});return false">${p.title}</a></div>
+          <div>${p.is_published ? 'Да':'Нет'}</div>
+          <div>${new Date(p.updated_at).toLocaleString()}</div>
+          <div><button onclick="deletePage(${p.id},'${p.slug}');return false" class="btn-danger">Удалить</button></div>
+        </div>
+      `).join('')
+    }
+
+    async function edit(id){
+      isNewPage = false
+      currentId = id
+      document.getElementById('editTitle').textContent = 'Редактировать страницу'
+      document.getElementById('slug').disabled = true
+      const res = await fetch('/api/admin/pages/' + id,{credentials:'include'})
+      const d = await res.json()
+      const p = d.page
+      document.getElementById('slug').value = p.slug || ''
+      document.getElementById('title').value = p.title || ''
+      document.getElementById('meta').value = p.meta_description || ''
+      document.getElementById('content').value = p.content || ''
+      document.getElementById('pub').value = String(p.is_published)
+      const a = document.getElementById('preview')
+      a.href = '/page/' + p.slug
+      a.textContent = 'Открыть /page/' + p.slug + ' →'
+      document.getElementById('listCard').style.display = 'none'
+      document.getElementById('editCard').style.display = 'block'
+    }
+
+    async function save(){
+      if(isNewPage){
+        const body = {
+          slug: document.getElementById('slug').value,
+          title: document.getElementById('title').value,
+          meta_description: document.getElementById('meta').value,
+          content: document.getElementById('content').value,
+          is_published: parseInt(document.getElementById('pub').value,10)
+        }
+        if(!body.slug || !body.title || !body.content){
+          alert('Заполните обязательные поля: slug, заголовок, содержимое')
+          return
+        }
+        const res = await fetch('/api/admin/pages',{method:'POST',headers:{'Content-Type':'application/json'},credentials:'include',body:JSON.stringify(body)})
+        const d = await res.json()
+        if(!res.ok){alert(d.error||'Ошибка создания');return}
+        alert('Страница создана')
+        cancel()
+        await loadList()
+      } else {
+        if(!currentId) { alert('Выберите страницу'); return }
+        const body = {
+          title: document.getElementById('title').value,
+          meta_description: document.getElementById('meta').value,
+          content: document.getElementById('content').value,
+          is_published: parseInt(document.getElementById('pub').value,10)
+        }
+        const res = await fetch('/api/admin/pages/' + currentId,{method:'PATCH',headers:{'Content-Type':'application/json'},credentials:'include',body:JSON.stringify(body)})
+        const d = await res.json()
+        if(!res.ok){alert(d.error||'Ошибка сохранения');return}
+        alert('Сохранено')
+        cancel()
+        await loadList()
+      }
+    }
+
+    async function deletePage(id, slug){
+      if(!confirm('Удалить страницу "' + slug + '"?')) return
+      const res = await fetch('/api/admin/pages/' + id,{method:'DELETE',credentials:'include'})
+      const d = await res.json()
+      if(!res.ok){alert(d.error||'Ошибка удаления');return}
+      alert('Страница удалена')
+      await loadList()
+    }
+
+    function cancel(){
+      document.getElementById('listCard').style.display = 'block'
+      document.getElementById('editCard').style.display = 'none'
+      currentId = null
+      isNewPage = false
+      document.getElementById('slug').value = ''
+      document.getElementById('title').value = ''
+      document.getElementById('meta').value = ''
+      document.getElementById('content').value = ''
+      document.getElementById('pub').value = '1'
+    }
+
+    function newPage(){
+      isNewPage = true
+      currentId = null
+      document.getElementById('editTitle').textContent = 'Новая страница'
+      document.getElementById('slug').disabled = false
+      document.getElementById('slug').value = ''
+      document.getElementById('title').value = ''
+      document.getElementById('meta').value = ''
+      document.getElementById('content').value = ''
+      document.getElementById('pub').value = '1'
+      document.getElementById('preview').href = ''
+      document.getElementById('preview').textContent = ''
+      document.getElementById('listCard').style.display = 'none'
+      document.getElementById('editCard').style.display = 'block'
+    }
+
+    document.getElementById('save').addEventListener('click', save)
+    document.getElementById('cancel').addEventListener('click', cancel)
+    document.getElementById('newPage').addEventListener('click', newPage)
+    loadList()
+  </script>
+</body>
+</html>

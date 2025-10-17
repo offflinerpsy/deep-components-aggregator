@@ -3,11 +3,14 @@
  * This file wraps the ES modules for use in CommonJS server.js
  */
 
-import AdminJS from 'adminjs'
-import AdminJSExpress from '@adminjs/express'
-import AdminJSSequelize from '@adminjs/sequelize'
+// Use require instead of import for CommonJS compatibility
+const AdminJS = require('adminjs')
+const AdminJSExpress = require('@adminjs/express')
+const AdminJSSequelize = require('@adminjs/sequelize')
+const session = require('express-session')
 
-import {
+// Import models directly to avoid ESM issues
+const {
   sequelize,
   AdminUser,
   Order,
@@ -18,7 +21,7 @@ import {
   ProjectStat,
   AdminNotification,
   Setting
-} from '../db/models.js'
+} = require('../db/models')
 
 // Register Sequelize adapter
 AdminJS.registerAdapter({
@@ -33,11 +36,11 @@ const adminOptions = {
       resource: Setting,
       options: {
         navigation: { name: 'Система', icon: 'Sliders' },
-        listProperties: ['key', 'category', 'type', 'updated_at', 'is_public'],
-        showProperties: ['key', 'value', 'type', 'category', 'description', 'is_public', 'created_at', 'updated_at'],
-        editProperties: ['key', 'value', 'type', 'category', 'description', 'is_public'],
-        filterProperties: ['category', 'type', 'is_public'],
-        sort: { sortBy: 'category', direction: 'asc' },
+        listProperties: ['key', 'value', 'updated_at'],
+        showProperties: ['key', 'value', 'updated_at'],
+        editProperties: ['key', 'value'],
+        filterProperties: ['key'],
+        sort: { sortBy: 'key', direction: 'asc' },
         properties: {
           value: {
             type: 'textarea',
@@ -96,10 +99,10 @@ const adminOptions = {
       resource: AdminNotification,
       options: {
         navigation: { name: 'Уведомления', icon: 'Bell' },
-        listProperties: ['title', 'type', 'priority', 'created_at', 'read_at'],
-        showProperties: ['title', 'message', 'type', 'priority', 'payload', 'created_at', 'read_at'],
-        editProperties: ['title', 'message', 'type', 'priority', 'payload'],
-        filterProperties: ['type', 'priority', 'read_at'],
+        listProperties: ['id', 'type', 'created_at', 'read_at'],
+        showProperties: ['id', 'type', 'payload', 'created_at', 'read_at'],
+        editProperties: ['type', 'payload'],
+        filterProperties: ['type', 'read_at'],
         sort: { sortBy: 'created_at', direction: 'desc' },
         properties: {
           payload: { type: 'mixed' },
@@ -327,9 +330,9 @@ const adminOptions = {
       resource: StaticPage,
       options: {
         navigation: { name: 'Контент', icon: 'FileText' },
-        listProperties: ['title', 'slug', 'is_published', 'position', 'sort_order'],
-        showProperties: ['title', 'slug', 'content', 'meta_description', 'is_published', 'position', 'sort_order', 'created_at', 'updated_at'],
-        editProperties: ['title', 'slug', 'content', 'meta_description', 'is_published', 'position', 'sort_order'],
+        listProperties: ['title', 'slug', 'is_published', 'position', 'section', 'sort_order'],
+        showProperties: ['title', 'slug', 'content', 'meta_description', 'is_published', 'position', 'section', 'sort_order', 'created_at', 'updated_at'],
+        editProperties: ['title', 'slug', 'content', 'meta_description', 'is_published', 'position', 'section', 'sort_order'],
         properties: {
           content: {
             type: 'textarea',
@@ -342,6 +345,13 @@ const adminOptions = {
               { value: 'header', label: 'Шапка' },
               { value: 'footer', label: 'Подвал' },
               { value: 'both', label: 'Шапка и подвал' }
+            ]
+          },
+          section: {
+            availableValues: [
+              { value: 'about', label: 'О компании' },
+              { value: 'help', label: 'Помощь' },
+              { value: 'info', label: 'Информация' }
             ]
           }
         }
@@ -477,4 +487,4 @@ if (process.env.NODE_ENV === 'production') {
   }
 }
 
-export { adminJs, adminRouter, sequelize, AdminUser, Order, ApiHealth, ApiKey, StaticPage, ManualProduct, ProjectStat, AdminNotification, Setting }
+module.exports = { adminJs, adminRouter, sequelize, AdminUser, Order, ApiHealth, ApiKey, StaticPage, ManualProduct, ProjectStat, AdminNotification, Setting }

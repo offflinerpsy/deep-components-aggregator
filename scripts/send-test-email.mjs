@@ -27,11 +27,25 @@ const dir = join(process.cwd(), 'docs/_artifacts', new Date().toISOString().slic
 mkdirSync(dir, { recursive: true })
 const ts = new Date().toISOString().replace(/[:.]/g, '-')
 const artifactPath = join(dir, `smtp-send-${ts}.json`)
-const artifact = { to, subject, templateName, ok: !!result.ok, messageId: result.messageId || null, error: result.error || null }
+const artifact = {
+  to,
+  subject,
+  templateName,
+  ok: !!result.ok,
+  messageId: result.messageId || null,
+  error: result.error || null,
+  accepted: result.accepted || [],
+  rejected: result.rejected || [],
+  response: result.response || null,
+  envelope: result.envelope || null
+}
 writeFileSync(artifactPath, JSON.stringify(artifact, null, 2))
 
 if (result.ok) {
   console.log('SMTP_SEND_OK:' + result.messageId)
+  console.log('ACCEPTED:' + JSON.stringify(result.accepted || []))
+  console.log('REJECTED:' + JSON.stringify(result.rejected || []))
+  if (result.response) console.log('RESPONSE:' + result.response)
   console.log('ARTIFACT:' + artifactPath)
   process.exit(0)
 }

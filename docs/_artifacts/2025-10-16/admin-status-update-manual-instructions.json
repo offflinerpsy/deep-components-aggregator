@@ -1,0 +1,12 @@
+{
+  "test": "Admin Status Update",
+  "order_code": "ORD-E506C3",
+  "manual_steps": [
+    "1. Login to /admin",
+    "2. Navigate to Orders",
+    "3. Find order ORD-E506C3",
+    "4. Update status to \"processing\" with comment \"Тест e2e: заказ в обработке\"",
+    "5. Verify email sent to e2e-test@deep-agg.local"
+  ],
+  "automated_verification_note": "Full automation requires session management implementation"
+}

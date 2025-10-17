@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "last_updated": "2025-10-10T22:45:00Z",
+  "last_updated": "2025-10-16T00:00:00Z",
   "active_session": "2025-10-10-ui-wire-rx-v0-integration",
   "sessions": [
     {
@@ -30,6 +30,33 @@
         "Frontend redesign pending (awaiting v0.dev generation)"
       ],
       "next_action": "User to use v0.dev with V0-INTEGRATION-GUIDE.md"
+    },
+    {
+      "id": "2025-10-15-admin-and-search-normalization",
+      "title": "Admin Panel & Search Normalization",
+      "date": "2025-10-15",
+      "status": "documentation-complete",
+      "progress": "100%",
+      "path": "sessions/2025-10-15-admin-and-search-normalization",
+      "tags": [
+        "backend",
+        "admin",
+        "search",
+        "cache",
+        "normalization",
+        "diagnostics"
+      ],
+      "key_achievements": [
+        "Admin CRUD for static pages (API+UI)",
+        "Notifications settings with AJV email format",
+        "Orders UI shows order_code and dealer_links",
+        "Notifications popover with mark-as-read",
+        "Search RU→EN normalization on cache keys and orchestrator",
+        "Cache used only as technical fallback (no prices from cache)",
+        "Health checks and search runs recorded"
+      ],
+      "blockers": [],
+      "next_action": "Add E2E tests for admin CRUD and notifications popover"
     },
     {
       "id": "2025-10-07-tme-pricing-coverage",
@@ -79,8 +106,8 @@
     }
   ],
   "statistics": {
-    "total_sessions": 3,
+    "total_sessions": 4,
     "active_sessions": 1,
-    "completed_sessions": 0
+    "completed_sessions": 1
   }
 }

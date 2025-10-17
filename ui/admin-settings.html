@@ -19,7 +19,14 @@
 </head>
 <body>
   <div class="container">
-    <h2>Pricing Policy</h2>
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <h2>Pricing & Notifications</h2>
+      <div style="display:flex;gap:12px">
+        <a href="/ui/admin-orders.html" style="color:#667eea;text-decoration:none">← Заказы</a>
+        <a href="/ui/admin-pages.html" style="color:#667eea;text-decoration:none">Страницы</a>
+      </div>
+    </div>
+    <h3 style="margin-top:8px">Pricing Policy</h3>
     <div class="row">
       <label for="markup_percent">Markup Percent</label>
       <input id="markup_percent" type="number" step="0.01" min="0" max="10" placeholder="0.30" />
@@ -37,6 +44,27 @@
 
     <div id="calc" class="hint" style="margin-top:16px"></div>
     <div id="status" class="status"></div>
+
+    <hr style="border-color:#333;margin:24px 0"/>
+
+    <h3>Admin Notifications</h3>
+    <div class="row">
+      <label for="admin_notify_email">Admin Email</label>
+      <input id="admin_notify_email" type="email" placeholder="admin@example.com" />
+    </div>
+    <div class="row">
+      <label for="telegram_bot_token">Telegram Bot Token</label>
+      <input id="telegram_bot_token" type="text" placeholder="123456:ABC-DEF..." />
+    </div>
+    <div class="row">
+      <label for="telegram_chat_id">Telegram Chat ID</label>
+      <input id="telegram_chat_id" type="text" placeholder="@channelname or 123456789" />
+    </div>
+    <div class="actions">
+      <button id="notif_save">Save Notifications</button>
+      <button class="secondary" id="notif_reload">Reload</button>
+    </div>
+    <div id="notif_status" class="status"></div>
   </div>
 
   <script>
@@ -61,6 +89,18 @@
         $("status").textContent = `Loaded. Updated at: ${new Date(data.updated_at).toLocaleString()}`;
       } catch (e) {
         $("status").textContent = `Failed to load: ${e.message}`;
+      }
+
+      // Load notifications (no try/catch)
+      const resN = await fetch('/api/admin/settings/notifications', { credentials: 'include' });
+      if (!resN.ok) {
+        $("notif_status").textContent = `Failed to load: HTTP ${resN.status}`;
+      } else {
+        const dataN = await resN.json();
+        $("admin_notify_email").value = dataN.settings.admin_notify_email || '';
+        $("telegram_bot_token").value = dataN.settings.telegram_bot_token || '';
+        $("telegram_chat_id").value = dataN.settings.telegram_chat_id || '';
+        $("notif_status").textContent = `Loaded. Updated at: ${dataN.updated_at ? new Date(dataN.updated_at).toLocaleString() : 'never'}`;
       }
     }
 
@@ -88,6 +128,28 @@
     $("reload").addEventListener('click', load);
     $("markup_percent").addEventListener('input', exampleCalc);
     $("markup_fixed_rub").addEventListener('input', exampleCalc);
+
+    async function saveNotif(){
+      const body = {
+        admin_notify_email: $("admin_notify_email").value || null,
+        telegram_bot_token: $("telegram_bot_token").value || null,
+        telegram_chat_id: $("telegram_chat_id").value || null,
+      };
+      const res = await fetch('/api/admin/settings/notifications', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify(body)
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        $("notif_status").textContent = `Save failed: ${data.message || data.error || `HTTP ${res.status}`}`;
+        return;
+      }
+      $("notif_status").textContent = `Saved. New updated_at: ${new Date(data.updated_at).toLocaleString()}`;
+    }
+    $("notif_save").addEventListener('click', saveNotif)
+    $("notif_reload").addEventListener('click', load)
 
     load();
   </script>

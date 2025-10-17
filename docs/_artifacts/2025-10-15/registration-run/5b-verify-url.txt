@@ -1,0 +1,1 @@
+URL=http://localhost:9201/auth/verify?token=7c50fa0575d282d485841134bc46fdd12623eca03feb807b14c98a40e57d1938

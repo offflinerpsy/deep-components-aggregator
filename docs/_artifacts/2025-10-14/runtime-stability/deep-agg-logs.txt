@@ -1,0 +1,8 @@
+[deep-agg] last 120 lines (stderr+stdout)
+
+<BEGIN>
+Multiple AdminJS property warnings for Orders resource (non-fatal)
+MemoryStore warning observed before session store switch (non-fatal)
+ERR_MODULE_NOT_FOUND for src/config/session.mjs (transient during reboot), resolved after restart
+Server start banners repeated across restarts; latest run online
+</END>

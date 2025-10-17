@@ -1,0 +1,25 @@
+{
+  "ts": 1760613661551,
+  "type": "order_created",
+  "payload": {
+    "order_id": "3d2a002d-0488-43e4-99be-ea26920b965e",
+    "order_code": "ORD-F8C231",
+    "customer_name": "E2E Test User",
+    "mpn": "STM32F407VGT6",
+    "manufacturer": "STMicroelectronics",
+    "qty": 10,
+    "created_at": 1760613661545
+  },
+  "channels": [
+    {
+      "channel": "email",
+      "skipped": true,
+      "reason": "admin_notify_email not set"
+    },
+    {
+      "channel": "telegram",
+      "skipped": true,
+      "reason": "telegram_bot_token/chat_id not set"
+    }
+  ]
+}

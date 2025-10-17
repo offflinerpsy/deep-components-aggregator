@@ -63,9 +63,9 @@ const icons = {
 function renderComponents() {
   const grid = document.getElementById('componentsGrid');
   if (!grid) return;
-  
+
   grid.innerHTML = popularComponents.map(component => `
-    <a href="/search.html?q=${encodeURIComponent(component.id)}" class="component-card">
+  <a href="/results?q=${encodeURIComponent(component.id)}" class="component-card">
       <div class="component-icon">
         ${icons[component.icon] || icons.chip}
       </div>
@@ -80,9 +80,9 @@ function handleSearch(event) {
   event.preventDefault();
   const input = document.getElementById('searchInput');
   const query = input.value.trim();
-  
+
   if (query) {
-    window.location.href = `/search.html?q=${encodeURIComponent(query)}`;
+  window.location.href = `/results?q=${encodeURIComponent(query)}`;
   }
 }
 
@@ -92,19 +92,19 @@ function initTheme() {
   const sunIcon = document.getElementById('sun-icon');
   const moonIcon = document.getElementById('moon-icon');
   const html = document.documentElement;
-  
+
   // Check saved theme or default to light
   const savedTheme = localStorage.getItem('theme') || 'light';
-  
+
   if (savedTheme === 'dark') {
     html.classList.add('dark');
     sunIcon.style.display = 'none';
     moonIcon.style.display = 'block';
   }
-  
+
   toggle.addEventListener('click', () => {
     const isDark = html.classList.toggle('dark');
-    
+
     if (isDark) {
       sunIcon.style.display = 'none';
       moonIcon.style.display = 'block';
@@ -122,3 +122,8 @@ document.addEventListener('DOMContentLoaded', () => {
   initTheme();
   renderComponents();
 });
+
+// Expose for inline onsubmit handlers if present
+if (typeof window !== 'undefined') {
+  window.handleSearch = handleSearch;
+}

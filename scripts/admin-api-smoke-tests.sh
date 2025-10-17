@@ -24,14 +24,14 @@ run_test() {
   local name="$1"
   local command="$2"
   local expected_status="$3"
-  
+
   echo -e "\n${YELLOW}Running test: ${name}${NC}"
   echo "Command: $command"
-  
+
   # Run the command and capture output and status code
   output=$(eval $command 2>&1)
   status=$?
-  
+
   # Check if curl returned the expected HTTP status
   if echo "$output" | grep -q "HTTP/1.1 $expected_status"; then
     echo -e "${GREEN}✓ Test passed: Got expected status $expected_status${NC}"
@@ -41,9 +41,9 @@ run_test() {
     echo "Output: $output"
     TESTS_FAILED=$((TESTS_FAILED + 1))
   fi
-  
+
   TESTS_TOTAL=$((TESTS_TOTAL + 1))
-  
+
   # Return the output for further processing if needed
   echo "$output"
 }
@@ -78,11 +78,11 @@ page_id=$(echo "$create_output" | grep -o '"id":[0-9]*' | cut -d':' -f2)
 if [ -n "$page_id" ]; then
   # Test 5: Get Static Page by ID
   run_test "Get Static Page by ID" "curl -sI $AUTH $API_BASE/api/admin/pages/$page_id" "200"
-  
+
   # Test 6: Update Static Page
   update_data='{"title":"Updated Test Page","content":"This content has been updated"}'
   run_test "Update Static Page" "curl -sI $AUTH -X PATCH -H 'Content-Type: application/json' -d '$update_data' $API_BASE/api/admin/pages/$page_id" "200"
-  
+
   # Test 7: Delete Static Page
   run_test "Delete Static Page" "curl -sI $AUTH -X DELETE $API_BASE/api/admin/pages/$page_id" "200"
 else
@@ -111,3 +111,6 @@ else
   echo -e "\n${RED}Some tests failed!${NC}"
   exit 1
 fi
+
+
+

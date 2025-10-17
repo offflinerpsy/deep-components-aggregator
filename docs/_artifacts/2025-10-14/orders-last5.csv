@@ -1,0 +1,6 @@
+id,customer_name,mpn,manufacturer,qty,status,created
+82900d03-4bd2-464e-851a-34b5c7bc78a1,"олег",RC0402JR-0710KL,YAGEO,1,pending,"2025-10-14 10:26:19"
+ec3b61cf-018d-4ac2-bc6b-a1103197da2e,"Test User",RC0402FR-0710KL,YAGEO,1,pending,"2025-10-14 10:22:11"
+96aa49e6-955e-4566-80a0-4a9b8ead87b2,"Via Front",MMBT3904-TP,"Diodes Inc.",1,pending,"2025-10-14 10:06:38"
+8601aaba-b8a0-4cff-986e-636dae3aaf31,"Test User",MMBT3904-TP,"Diodes Inc.",1,pending,"2025-10-14 10:06:20"
+9cada38d-d0e7-4913-ad3f-7c47adee7aca,Alex,RC0402JR-0710KL,YAGEO,1,pending,"2025-10-14 09:41:23"

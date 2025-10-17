@@ -105,3 +105,6 @@ echo "ADMIN_SESSION_SECRET=$ADMIN_SESSION_SECRET" >> .env
 ```
 
 These secrets should be at least 32 characters long and randomly generated. They are used to secure the admin panel cookies and session data.
+
+
+

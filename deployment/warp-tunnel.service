@@ -1,0 +1,17 @@
+[Unit]
+Description=Cloudflare WARP Tunnel Service
+After=network.target
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+User=root
+Environment=DEBIAN_FRONTEND=noninteractive
+# Single long-lived shell to configure and hold session
+ExecStart=/bin/bash -c '/usr/bin/warp-cli --accept-tos mode proxy && /usr/bin/warp-cli --accept-tos proxy port 40000 && /usr/bin/warp-cli --accept-tos connect && echo "WARP proxy active on 40000" && tail -f /dev/null'
+ExecStop=/usr/bin/warp-cli --accept-tos disconnect
+Restart=on-failure
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target

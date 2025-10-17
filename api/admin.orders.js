@@ -270,14 +270,14 @@ export function updateOrderHandler(db, logger) {
         completed: 'Завершён',
         cancelled: 'Отменён'
       };
-      
+
       const statusLabel = statusLabels[status] || status;
       const title = `Заказ ${current?.order_code || id}: ${statusLabel}`;
       let message = `Статус заказа изменён на "${statusLabel}"`;
       if (comment) {
         message += `\nКомментарий: ${comment}`;
       }
-      
+
       // Create in-app notification
       const dbNotification = await createOrderNotification({
         orderId: id,
@@ -286,7 +286,7 @@ export function updateOrderHandler(db, logger) {
         message,
         priority: status === 'cancelled' ? 'high' : 'normal'
       });
-      
+
       // Dispatch notification to configured channels
       await dispatchNotification({
         title,

@@ -1,0 +1,52 @@
+DATE: Wed Oct 15 01:52:21 PM MSK 2025
+==== UPTIME
+ 13:52:21 up 2 days, 17:19,  0 user,  load average: 0.26, 0.26, 1.02
+==== WHOAMI/UNAME
+root
+Linux 5739319-zw86058 6.8.0-84-generic #84-Ubuntu SMP PREEMPT_DYNAMIC Fri Sep  5 22:36:38 UTC 2025 x86_64 x86_64 x86_64 GNU/Linux
+==== MEM (free -h)
+               total        used        free      shared  buff/cache   available
+Mem:           4.8Gi       4.3Gi       287Mi        22Mi       483Mi       478Mi
+Swap:             0B          0B          0B
+==== DISK (df -h)
+Filesystem      Size  Used Avail Use% Mounted on
+tmpfs           492M  2.3M  490M   1% /run
+/dev/sda1        40G   22G   18G  55% /
+tmpfs           2.5G     0  2.5G   0% /dev/shm
+tmpfs           5.0M     0  5.0M   0% /run/lock
+overlay          40G   22G   18G  55% /var/lib/docker/overlay2/4f7456ece856b8772be3ce38fb1d6e79f03d2df6919e1a76fc76b735e5968454/merged
+overlay          40G   22G   18G  55% /var/lib/docker/overlay2/98c46f2e65c6df138822dc5a508d5ce2c764af3d14f8202da67fe48a95c0da84/merged
+overlay          40G   22G   18G  55% /var/lib/docker/overlay2/a5ba0787fa6c8fe241fd09615dfb085ccbb01e436198ef19a7ae3bdf0ab250aa/merged
+overlay          40G   22G   18G  55% /var/lib/docker/overlay2/4b8394da92c7d011601c98c97de502855bffa99e1ce73455f0e23fbd246dbfde/merged
+overlay          40G   22G   18G  55% /var/lib/docker/overlay2/4717abc7dad8ce507a654c39cc16e34915955d2c192a45496dd323cfdfb899d9/merged
+overlay          40G   22G   18G  55% /var/lib/docker/overlay2/88564072d8c5ba4f32dc44216ae716491242c5775f00aacbb2b5bbe55bb2a430/merged
+overlay          40G   22G   18G  55% /var/lib/docker/overlay2/c924dc7036ff13c64e9895caf573ee93c7b25dc2b74a934cb94608722ae6a626/merged
+overlay          40G   22G   18G  55% /var/lib/docker/overlay2/26cb50079dfa259c0e15ac769d167cdbfc525b583717249b167a41b135230683/merged
+overlay          40G   22G   18G  55% /var/lib/docker/overlay2/9c67807456a1b52268d4c1c1400189bf6b215c046902ab68af7cf7077b2446c9/merged
+overlay          40G   22G   18G  55% /var/lib/docker/overlay2/75f7df3b2b14caa7c7d34c13eea08d7091508d9fe3112d1a2aec5f309f2b7e8a/merged
+overlay          40G   22G   18G  55% /var/lib/docker/overlay2/68b8074969b118daf48b94017183ee027530db8a4b351d0cade1755a38c2d69d/merged
+overlay          40G   22G   18G  55% /var/lib/docker/overlay2/cbe5bb67798239750f84059006535839009babb08a5d4f0765d0cbe3fc405443/merged
+overlay          40G   22G   18G  55% /var/lib/docker/overlay2/fc156573b88a4da6bd4d364d556b98f1e2ab6d149a40f328e6232adf2ad28ad4/merged
+overlay          40G   22G   18G  55% /var/lib/docker/overlay2/4bde9df4ee79c07fdfa05548133e80337a3edefdb2a02f922028d1ffd837c749/merged
+overlay          40G   22G   18G  55% /var/lib/docker/overlay2/20a8e8ce458248839964b711542003c352334066f40479c7bf6b34506ccf72f7/merged
+overlay          40G   22G   18G  55% /var/lib/docker/overlay2/c148c1cedf1e5f82a24f4a9b46f4a10e5df49d52d19eba4405d28cb5b3deef3f/merged
+overlay          40G   22G   18G  55% /var/lib/docker/overlay2/d00872e555a1ef4bb51b2e8b2a571dcb5c3d62c2b90ec2d44c99a47ee73cb2fb/merged
+overlay          40G   22G   18G  55% /var/lib/docker/overlay2/6aff4c9e5a4c6a83444a3b406d7dfacde9474c233c87d4ea802b0cbce1cc37ec/merged
+==== ULIMIT
+real-time non-blocking time  (microseconds, -R) unlimited
+core file size              (blocks, -c) 0
+data seg size               (kbytes, -d) unlimited
+scheduling priority                 (-e) 0
+file size                   (blocks, -f) unlimited
+pending signals                     (-i) 19458
+max locked memory           (kbytes, -l) 8192
+max memory size             (kbytes, -m) unlimited
+open files                          (-n) 524288
+pipe size                (512 bytes, -p) 8
+POSIX message queues         (bytes, -q) 819200
+real-time priority                  (-r) 0
+stack size                  (kbytes, -s) 8192
+cpu time                   (seconds, -t) unlimited
+max user processes                  (-u) 19458
+virtual memory              (kbytes, -v) unlimited
+file locks                          (-x) unlimited

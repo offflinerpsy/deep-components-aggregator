@@ -1,0 +1,303 @@
+<!-- v0 Home Page -->
+<div class="min-h-screen relative bg-background page-transition">
+  <header class="glass sticky top-0 z-50 border-b border-border bg-background">
+    <div class="container mx-auto px-6 py-4 flex items-center justify-between">
+      <button type="button" class="logo" id="logo-home">
+        <div class="logo-chip">
+          <span class="logo-spark"></span>
+        </div>
+        <svg class="logo-text-svg" width="180" height="32" viewBox="0 0 180 32" fill="none">
+          <text x="0" y="24" font-family="Roboto" font-size="24" font-weight="300" letter-spacing="2" stroke="url(#logoGradient)" stroke-width="0.5" fill="url(#logoGradient)">
+            ДИПОНИКА
+          </text>
+          <defs>
+            <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#667eea" />
+              <stop offset="100%" stop-color="#764ba2" />
+            </linearGradient>
+          </defs>
+        </svg>
+      </button>
+
+      <div class="flex items-center gap-8">
+        <nav class="hidden md:flex items-center gap-8">
+          <button type="button" class="text-muted-foreground hover:text-foreground transition-colors">Источники</button>
+          <button type="button" class="text-muted-foreground hover:text-foreground transition-colors">О нас</button>
+        </nav>
+
+        <button type="button" id="theme-toggle" class="w-10 h-10 p-0 inline-flex items-center justify-center rounded-md border border-border hover:bg-muted transition-colors">
+          <span id="icon-moon" aria-hidden="true">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+            </svg>
+          </span>
+          <span id="icon-sun" class="hidden" aria-hidden="true">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+            </svg>
+          </span>
+          <span class="sr-only">Переключить тему</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="pt-16 pb-24 px-6 relative z-10">
+    <div class="container mx-auto max-w-4xl">
+      <div class="text-center mb-16">
+        <h1 class="title-main fade-in">Поиск для <span class="gradient-text">Инженеров и Разработчиков</span></h1>
+        <p class="text-lg text-muted-foreground mb-8 fade-in" style="animation-delay: 0.2s">
+          Найдите нужные компоненты быстро и эффективно среди миллионов позиций от ведущих поставщиков
+        </p>
+      </div>
+
+      <div class="flex justify-center mb-12 fade-in" style="animation-delay: 0.4s">
+        <form class="search-box" id="home-search-form">
+          <input type="text" id="home-search-input" placeholder=" " autocomplete="off" />
+          <button type="reset" id="home-search-reset"></button>
+        </form>
+      </div>
+
+      <div class="text-center text-muted-foreground mb-12 text-sm">
+        Поддерживаем номер детали, часть названия, производителя
+      </div>
+
+      <div class="mb-16 fade-in" style="animation-delay: 0.6s">
+        <h2 class="text-2xl font-light text-center mb-8 text-foreground">ЧТО ИЩУТ ЛЮДИ</h2>
+        <div id="components-loading" class="text-center text-muted-foreground">Загрузка...</div>
+        <div id="components-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" hidden></div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script>
+(function() {
+  const root = document.documentElement;
+  const themeToggle = document.getElementById('theme-toggle');
+  const iconMoon = document.getElementById('icon-moon');
+  const iconSun = document.getElementById('icon-sun');
+  const logoHome = document.getElementById('logo-home');
+  const searchForm = document.getElementById('home-search-form');
+  const searchInput = document.getElementById('home-search-input');
+  const searchReset = document.getElementById('home-search-reset');
+  const loadingEl = document.getElementById('components-loading');
+  const gridEl = document.getElementById('components-grid');
+
+  const STORAGE_KEY = 'diponika-theme';
+
+  const icons = {
+    chip: `<svg class="w-12 h-12" viewBox="0 0 64 64" fill="none" stroke="#3498DB" stroke-width="1.5">
+      <rect x="20" y="20" width="24" height="24" rx="2" stroke-linecap="round" stroke-linejoin="round" />
+      <line x1="28" y1="26" x2="36" y2="26" />
+      <line x1="28" y1="30" x2="36" y2="30" />
+      <line x1="28" y1="34" x2="36" y2="34" />
+      <line x1="28" y1="38" x2="36" y2="38" />
+      <line x1="20" y1="24" x2="16" y2="24" />
+      <line x1="20" y1="28" x2="16" y2="28" />
+      <line x1="20" y1="32" x2="16" y2="32" />
+      <line x1="20" y1="36" x2="16" y2="36" />
+      <line x1="20" y1="40" x2="16" y2="40" />
+      <line x1="44" y1="24" x2="48" y2="24" />
+      <line x1="44" y1="28" x2="48" y2="28" />
+      <line x1="44" y1="32" x2="48" y2="32" />
+      <line x1="44" y1="36" x2="48" y2="36" />
+      <line x1="44" y1="40" x2="48" y2="40" />
+    </svg>`,
+    transistor: `<svg class="w-12 h-12" viewBox="0 0 64 64" fill="none" stroke="#3498DB" stroke-width="1.5">
+      <circle cx="32" cy="32" r="10" stroke-linecap="round" stroke-linejoin="round" />
+      <line x1="32" y1="16" x2="32" y2="22" />
+      <line x1="32" y1="42" x2="32" y2="48" />
+      <line x1="38" y1="28" x2="44" y2="22" />
+      <line x1="38" y1="36" x2="44" y2="42" />
+      <line x1="26" y1="32" x2="32" y2="32" />
+      <path d="M32 28 L36 32 L32 36" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+    </svg>`,
+    resistor: `<svg class="w-12 h-12" viewBox="0 0 64 64" fill="none" stroke="#3498DB" stroke-width="1.5">
+      <rect x="20" y="28" width="24" height="8" rx="1" stroke-linecap="round" stroke-linejoin="round" />
+      <line x1="12" y1="32" x2="20" y2="32" />
+      <line x1="44" y1="32" x2="52" y2="32" />
+      <line x1="26" y1="28" x2="26" y2="36" stroke="#E74C3C" stroke-width="2" />
+      <line x1="32" y1="28" x2="32" y2="36" stroke="#F39C12" stroke-width="2" />
+      <line x1="38" y1="28" x2="38" y2="36" stroke="#27AE60" stroke-width="2" />
+    </svg>`,
+    capacitor: `<svg class="w-12 h-12" viewBox="0 0 64 64" fill="none" stroke="#3498DB" stroke-width="1.5">
+      <ellipse cx="32" cy="24" rx="8" ry="4" />
+      <line x1="24" y1="24" x2="24" y2="40" />
+      <line x1="40" y1="24" x2="40" y2="40" />
+      <ellipse cx="32" cy="40" rx="8" ry="4" />
+      <line x1="32" y1="16" x2="32" y2="20" />
+      <line x1="32" y1="44" x2="32" y2="48" />
+      <line x1="28" y1="28" x2="36" y2="28" stroke-width="0.5" />
+      <line x1="28" y1="36" x2="36" y2="36" stroke-width="0.5" />
+    </svg>`,
+    diode: `<svg class="w-12 h-12" viewBox="0 0 64 64" fill="none" stroke="#3498DB" stroke-width="1.5">
+      <rect x="22" y="28" width="20" height="8" rx="1" stroke-linecap="round" stroke-linejoin="round" />
+      <line x1="12" y1="32" x2="22" y2="32" />
+      <line x1="42" y1="32" x2="52" y2="32" />
+      <line x1="38" y1="28" x2="38" y2="36" stroke-width="2" />
+      <path d="M28 28 L28 36 L34 32 Z" fill="#3498DB" stroke="none" />
+    </svg>`,
+    connector: `<svg class="w-12 h-12" viewBox="0 0 64 64" fill="none" stroke="#3498DB" stroke-width="1.5">
+      <rect x="22" y="16" width="20" height="32" rx="2" stroke-linecap="round" stroke-linejoin="round" />
+      <line x1="26" y1="22" x2="38" y2="22" />
+      <line x1="26" y1="26" x2="38" y2="26" />
+      <line x1="26" y1="30" x2="38" y2="30" />
+      <line x1="26" y1="34" x2="38" y2="34" />
+      <line x1="26" y1="38" x2="38" y2="38" />
+      <line x1="26" y1="42" x2="38" y2="42" />
+      <circle cx="28" cy="22" r="1" fill="#3498DB" />
+      <circle cx="36" cy="22" r="1" fill="#3498DB" />
+      <circle cx="28" cy="26" r="1" fill="#3498DB" />
+      <circle cx="36" cy="26" r="1" fill="#3498DB" />
+    </svg>`,
+    memory: `<svg class="w-12 h-12" viewBox="0 0 64 64" fill="none" stroke="#3498DB" stroke-width="1.5">
+      <rect x="18" y="18" width="28" height="28" rx="2" stroke-linecap="round" stroke-linejoin="round" />
+      <line x1="26" y1="18" x2="26" y2="46" stroke-width="0.5" />
+      <line x1="32" y1="18" x2="32" y2="46" stroke-width="0.5" />
+      <line x1="38" y1="18" x2="38" y2="46" stroke-width="0.5" />
+      <line x1="18" y1="26" x2="46" y2="26" stroke-width="0.5" />
+      <line x1="18" y1="32" x2="46" y2="32" stroke-width="0.5" />
+      <line x1="18" y1="38" x2="46" y2="38" stroke-width="0.5" />
+      <line x1="18" y1="22" x2="14" y2="22" />
+      <line x1="18" y1="28" x2="14" y2="28" />
+      <line x1="18" y1="34" x2="14" y2="34" />
+      <line x1="18" y1="40" x2="14" y2="40" />
+      <line x1="46" y1="22" x2="50" y2="22" />
+      <line x1="46" y1="28" x2="50" y2="28" />
+      <line x1="46" y1="34" x2="50" y2="34" />
+      <line x1="46" y1="40" x2="50" y2="40" />
+    </svg>`
+  };
+
+  const staticComponents = [
+    { mpn: 'LM317T', category: 'Power Circuits' },
+    { mpn: 'M83513/19-E01NW', category: 'Connectors' },
+    { mpn: '500C122T250BA2B', category: 'Capacitors' },
+    { mpn: 'FT232RL-REEL', category: 'Microcontrollers and Processors' },
+    { mpn: 'BSS138', category: 'Transistors' },
+    { mpn: 'CRCW06030000Z0EA', category: 'Resistors' }
+  ];
+
+  function applyTheme(theme) {
+    if (theme === 'dark') {
+      root.classList.add('dark');
+      iconMoon.classList.add('hidden');
+      iconSun.classList.remove('hidden');
+    } else {
+      root.classList.remove('dark');
+      iconSun.classList.add('hidden');
+      iconMoon.classList.remove('hidden');
+    }
+    localStorage.setItem(STORAGE_KEY, theme);
+  }
+
+  const storedTheme = localStorage.getItem(STORAGE_KEY);
+  if (storedTheme === 'dark') {
+    applyTheme('dark');
+  } else {
+    applyTheme('light');
+  }
+
+  themeToggle?.addEventListener('click', () => {
+    const nextTheme = root.classList.contains('dark') ? 'light' : 'dark';
+    applyTheme(nextTheme);
+  });
+
+  logoHome?.addEventListener('click', () => {
+    window.location.href = '/';
+  });
+
+  searchForm?.addEventListener('submit', (event) => {
+    event.preventDefault();
+    const value = (searchInput?.value || '').trim();
+    if (value) {
+      window.location.href = `/results?q=${encodeURIComponent(value)}`;
+    }
+  });
+
+  searchReset?.addEventListener('click', () => {
+    if (searchInput) {
+      searchInput.value = '';
+      searchInput.focus();
+    }
+  });
+
+  function getCategoryName(text) {
+    const normalized = (text || '').toLowerCase();
+    if (/transistor|mosfet|bjt|fet|2n\d+|bc\d+|bss\d+/i.test(normalized)) return 'Transistors';
+    if (/resistor|ohm|Ω/i.test(normalized)) return 'Resistors';
+    if (/capacitor|farad|µf|uf|pf|nf/i.test(normalized)) return 'Capacitors';
+    if (/diode|1n\d+/i.test(normalized)) return 'Diodes';
+    if (/connector|plug|socket|header/i.test(normalized)) return 'Connectors';
+    if (/memory|flash|eeprom|sram/i.test(normalized)) return 'Memory';
+    if (/processor|mcu|cpu|arm|avr|pic/i.test(normalized)) return 'Microcontrollers and Processors';
+    return 'Electronic Components';
+  }
+
+  function getIconForComponent(text) {
+    const normalized = (text || '').toLowerCase();
+    if (/transistor|mosfet|bjt|fet|2n\d+|bc\d+|bss\d+/i.test(normalized)) return icons.transistor;
+    if (/resistor|ohm|Ω/i.test(normalized)) return icons.resistor;
+    if (/capacitor|farad|µf|uf|pf|nf/i.test(normalized)) return icons.capacitor;
+    if (/diode|1n\d+/i.test(normalized)) return icons.diode;
+    if (/connector|plug|socket|header/i.test(normalized)) return icons.connector;
+    if (/memory|flash|eeprom|sram/i.test(normalized)) return icons.memory;
+    return icons.chip;
+  }
+
+  function renderComponents(items) {
+    if (!gridEl) return;
+    if (!items.length) {
+      loadingEl.textContent = 'Нет данных. Попробуйте выполнить поиск.';
+      return;
+    }
+
+    loadingEl.setAttribute('hidden', 'hidden');
+    gridEl.hidden = false;
+    gridEl.innerHTML = items.map((component, index) => {
+      const descriptor = `${component.mpn || ''} ${component.title || ''} ${component.description_short || ''}`;
+      const category = getCategoryName(descriptor);
+      const icon = getIconForComponent(descriptor);
+      const manufacturer = component.manufacturer || '';
+      const delay = (0.8 + index * 0.02).toFixed(2);
+
+      return `
+        <button type="button" class="component-card" style="animation-delay: ${delay}s" data-mpn="${encodeURIComponent(component.mpn)}">
+          <div class="component-icon">${icon}</div>
+          <div class="component-info">
+            <div class="component-id">${component.mpn}</div>
+            <div class="component-category">
+              ${manufacturer ? `<span class="font-medium">${manufacturer}</span>` : ''}
+              ${manufacturer ? '<span> · </span>' : ''}
+              ${category}
+            </div>
+          </div>
+        </button>`;
+    }).join('');
+
+    gridEl.querySelectorAll('button[data-mpn]').forEach((button) => {
+      button.addEventListener('click', () => {
+        const mpn = button.getAttribute('data-mpn');
+        if (mpn) {
+          window.location.href = `/product/${mpn}`;
+        }
+      });
+    });
+  }
+
+  fetch('/api/vitrine/list?limit=30&sort=stock_desc')
+    .then((response) => response.json())
+    .then((payload) => {
+      if (payload?.ok && Array.isArray(payload.rows) && payload.rows.length) {
+        renderComponents(payload.rows);
+      } else {
+        renderComponents(staticComponents);
+      }
+    })
+    .catch((error) => {
+      console.error('Failed to fetch vitrine list:', error);
+      renderComponents(staticComponents);
+    });
+})();
+</script>

@@ -357,12 +357,10 @@ const adminOptions = {
             props: { min: 0 }
           },
           image_url: {
-            components: { edit: AdminJS.bundle('./components/UrlWithUpload') },
-            props: { placeholder: 'https://example.com/image.jpg' }
+            props: { placeholder: 'https://example.com/image.jpg или нажмите "Загрузить" в CJS-режиме' }
           },
           datasheet_url: {
-            components: { edit: AdminJS.bundle('./components/UrlWithUpload') },
-            props: { placeholder: 'https://example.com/datasheet.pdf' }
+            props: { placeholder: 'https://example.com/datasheet.pdf или нажмите "Загрузить" в CJS-режиме' }
           },
           is_active: { type: 'boolean' },
           category: {
@@ -376,12 +374,9 @@ const adminOptions = {
             ]
           },
           technical_specs: {
-            type: 'mixed',
-            components: {
-              edit: AdminJS.bundle('./components/TechnicalSpecsEditor'),
-              show: AdminJS.bundle('./components/TechnicalSpecsViewer')
-            },
-            description: 'Добавляйте произвольные поля (Название → Значение) — как в обычном товарном редакторе'
+            type: 'textarea',
+            props: { rows: 8 },
+            description: 'Технические характеристики в формате JSON: {"Resistance":"10kΩ","Tolerance":"±1%"}. Табличный редактор доступен в CJS-режиме.'
           }
         }
       }

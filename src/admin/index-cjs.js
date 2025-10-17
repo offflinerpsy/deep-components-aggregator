@@ -360,13 +360,150 @@ const adminOptions = {
     {
       resource: ManualProduct,
       options: {
-        navigation: { name: 'Товары', icon: 'Package' },
+        navigation: { name: 'Собственные товары', icon: 'Package' },
         listProperties: ['mpn', 'manufacturer', 'price', 'stock', 'is_active', 'created_at'],
-        showProperties: ['mpn', 'manufacturer', 'description', 'price', 'currency', 'region', 'stock', 'image_url', 'datasheet_url', 'is_active', 'category'],
-        editProperties: ['mpn', 'manufacturer', 'description', 'price', 'currency', 'region', 'stock', 'image_url', 'datasheet_url', 'is_active', 'category'],
+        showProperties: ['mpn', 'manufacturer', 'description', 'price', 'currency', 'region', 'stock', 'image_url', 'datasheet_url', 'is_active', 'category', 'technical_specs', 'images', 'datasheets', 'pricing', 'availability', 'regions', 'package', 'packaging', 'vendor_url', 'source'],
+        editProperties: ['mpn', 'manufacturer', 'description', 'price', 'currency', 'region', 'stock', 'image_url', 'datasheet_url', 'is_active', 'category', 'technical_specs', 'images', 'datasheets', 'pricing', 'availability', 'regions', 'package', 'packaging', 'vendor_url', 'source'],
         sort: {
           sortBy: 'created_at',
           direction: 'desc'
+        },
+        properties: {
+          mpn: {
+            type: 'string',
+            isRequired: true
+          },
+          manufacturer: {
+            type: 'string',
+            isRequired: true
+          },
+          description: {
+            type: 'textarea',
+            props: {
+              rows: 3
+            }
+          },
+          price: {
+            type: 'number',
+            props: {
+              step: 0.01
+            }
+          },
+          currency: {
+            type: 'string',
+            availableValues: [
+              { value: 'RUB', label: 'Рубль (RUB)' },
+              { value: 'USD', label: 'Доллар (USD)' },
+              { value: 'EUR', label: 'Евро (EUR)' }
+            ]
+          },
+          region: {
+            type: 'string',
+            availableValues: [
+              { value: 'RU', label: 'Россия' },
+              { value: 'US', label: 'США' },
+              { value: 'EU', label: 'Европа' },
+              { value: 'GLOBAL', label: 'Глобально' }
+            ]
+          },
+          stock: {
+            type: 'number',
+            props: {
+              min: 0
+            }
+          },
+          image_url: {
+            type: 'string',
+            props: {
+              placeholder: 'https://example.com/image.jpg'
+            }
+          },
+          datasheet_url: {
+            type: 'string',
+            props: {
+              placeholder: 'https://example.com/datasheet.pdf'
+            }
+          },
+          is_active: {
+            type: 'boolean'
+          },
+          category: {
+            type: 'string',
+            availableValues: [
+              { value: 'Resistors', label: 'Резисторы' },
+              { value: 'Capacitors', label: 'Конденсаторы' },
+              { value: 'Transistors', label: 'Транзисторы' },
+              { value: 'ICs', label: 'Микросхемы' },
+              { value: 'Connectors', label: 'Разъемы' },
+              { value: 'Other', label: 'Прочее' }
+            ]
+          },
+          technical_specs: {
+            type: 'textarea',
+            props: {
+              rows: 5,
+              placeholder: '{"Resistance": "10kΩ", "Tolerance": "±1%", "Power": "0.25W"}'
+            }
+          },
+          images: {
+            type: 'textarea',
+            props: {
+              rows: 3,
+              placeholder: '["https://example.com/image1.jpg", "https://example.com/image2.jpg"]'
+            }
+          },
+          datasheets: {
+            type: 'textarea',
+            props: {
+              rows: 3,
+              placeholder: '["https://example.com/datasheet1.pdf", "https://example.com/datasheet2.pdf"]'
+            }
+          },
+          pricing: {
+            type: 'textarea',
+            props: {
+              rows: 4,
+              placeholder: '[{"qty": 1, "price": 15.50, "currency": "RUB"}, {"qty": 100, "price": 12.00, "currency": "RUB"}]'
+            }
+          },
+          availability: {
+            type: 'textarea',
+            props: {
+              rows: 3,
+              placeholder: '{"inStock": 1000, "leadTime": "1-2 недели"}'
+            }
+          },
+          regions: {
+            type: 'textarea',
+            props: {
+              rows: 2,
+              placeholder: '["RU", "US", "EU"]'
+            }
+          },
+          package: {
+            type: 'string',
+            props: {
+              placeholder: 'SOT-23, DIP-8, etc.'
+            }
+          },
+          packaging: {
+            type: 'string',
+            props: {
+              placeholder: 'Cut Tape, Reel, Tube, etc.'
+            }
+          },
+          vendor_url: {
+            type: 'string',
+            props: {
+              placeholder: 'https://example.com/product-page'
+            }
+          },
+          source: {
+            type: 'string',
+            props: {
+              placeholder: 'manual, custom, etc.'
+            }
+          }
         }
       }
     },

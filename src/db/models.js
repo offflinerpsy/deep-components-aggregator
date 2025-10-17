@@ -389,6 +389,46 @@ const ManualProduct = sequelize.define('ManualProduct', {
   category: {
     type: DataTypes.STRING,
     comment: 'Product category (optional)'
+  },
+  technical_specs: {
+    type: DataTypes.TEXT,
+    comment: 'JSON string with technical specifications'
+  },
+  images: {
+    type: DataTypes.TEXT,
+    comment: 'JSON array of image URLs'
+  },
+  datasheets: {
+    type: DataTypes.TEXT,
+    comment: 'JSON array of datasheet URLs'
+  },
+  pricing: {
+    type: DataTypes.TEXT,
+    comment: 'JSON array of pricing breaks'
+  },
+  availability: {
+    type: DataTypes.TEXT,
+    comment: 'JSON object with availability info'
+  },
+  regions: {
+    type: DataTypes.TEXT,
+    comment: 'JSON array of regions'
+  },
+  package: {
+    type: DataTypes.STRING,
+    comment: 'Package type'
+  },
+  packaging: {
+    type: DataTypes.STRING,
+    comment: 'Packaging type'
+  },
+  vendor_url: {
+    type: DataTypes.STRING,
+    comment: 'Vendor product page URL'
+  },
+  source: {
+    type: DataTypes.STRING,
+    comment: 'Source/provider name'
   }
 }, {
   tableName: 'manual_products',

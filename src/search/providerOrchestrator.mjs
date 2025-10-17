@@ -7,6 +7,7 @@ import { tmeSearchProducts, tmeGetProduct } from '../integrations/tme/client.mjs
 import { normTME } from '../integrations/tme/normalize.mjs';
 import { farnellByKeyword } from '../integrations/farnell/client.mjs';
 import { normFarnell } from '../integrations/farnell/normalize.mjs';
+import { searchManualProducts } from './manualProducts.mjs';
 import PQueue from 'p-queue';
 import { apiCallsTotal, apiCallDuration } from '../../metrics/registry.js';
 
@@ -385,6 +386,21 @@ export async function orchestrateProviderSearch(query, keys) {
       providerSummaries.push(summarizeError(provider, result.reason));
     }
   });
+
+  // Add manual products to search results
+  const manualProducts = searchManualProducts(trimmed);
+  aggregatedRows = aggregatedRows.concat(manualProducts);
+  
+  // Add manual products provider summary
+  if (manualProducts.length > 0) {
+    providerSummaries.push({
+      provider: 'manual',
+      status: 'ok',
+      total: manualProducts.length,
+      elapsed_ms: 0,
+      variants: 1
+    });
+  }
 
   const deduped = dedupeRows(aggregatedRows).slice(0, 60);
   const ranked = rankRows(deduped, trimmed);

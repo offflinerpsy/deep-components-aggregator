@@ -24,6 +24,9 @@ import { performance } from 'node:perf_hooks';
 // Database
 import { openDb, readCachedSearch, cacheSearch, readCachedProduct, cacheProduct } from './src/db/sql.mjs';
 
+// Manual Products
+import { getManualProduct } from './src/search/manualProducts.mjs';
+
 // Mouser
 import { mouserSearchByKeyword, mouserSearchByPartNumber } from './src/integrations/mouser/client.mjs';
 
@@ -768,6 +771,13 @@ app.get('/api/product', async (req, res) => {
 
     if (!mpn) {
       return res.status(400).json({ ok: false, code: 'bad_params', message: 'Missing mpn parameter' });
+    }
+
+    // Check manual products first
+    const manualProduct = getManualProduct(mpn);
+    if (manualProduct) {
+      console.log('   📦 Manual Product: Found');
+      return res.json({ ok: true, product: manualProduct, meta: { cached: false, source: 'manual' } });
     }
 
     // Check cache (use mpn as key regardless of source)

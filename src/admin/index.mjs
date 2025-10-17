@@ -313,7 +313,77 @@ const adminOptions = {
         listProperties: ['mpn', 'manufacturer', 'price', 'stock', 'is_active', 'created_at'],
         showProperties: ['mpn', 'manufacturer', 'description', 'price', 'currency', 'region', 'stock', 'image_url', 'datasheet_url', 'is_active', 'category', 'technical_specs'],
         editProperties: ['mpn', 'manufacturer', 'description', 'price', 'currency', 'region', 'stock', 'image_url', 'datasheet_url', 'is_active', 'category', 'technical_specs'],
-        sort: { sortBy: 'created_at', direction: 'desc' }
+        sort: { sortBy: 'created_at', direction: 'desc' },
+        properties: {
+          mpn: {
+            isRequired: true,
+            description: 'Номер детали производителя (Manufacturer Part Number). Должен быть уникальным. Пример: CRCW040210K0FKED'
+          },
+          manufacturer: {
+            isRequired: true,
+            description: 'Название производителя. Пример: Vishay, Texas Instruments, STMicroelectronics'
+          },
+          description: {
+            type: 'textarea',
+            props: { rows: 3 },
+            description: 'Подробное описание товара. Будет отображаться в карточке товара'
+          },
+          price: {
+            type: 'number',
+            props: { step: 0.01 },
+            description: 'Цена за единицу товара. Используется для отображения в результатах поиска'
+          },
+          currency: {
+            availableValues: [
+              { value: 'RUB', label: 'Рубль (RUB)' },
+              { value: 'USD', label: 'Доллар (USD)' },
+              { value: 'EUR', label: 'Евро (EUR)' },
+              { value: 'GBP', label: 'Фунт стерлингов (GBP)' },
+              { value: 'CNY', label: 'Юань (CNY)' },
+              { value: 'JPY', label: 'Иена (JPY)' }
+            ],
+            description: 'Валюта цены товара'
+          },
+          region: {
+            availableValues: [
+              { value: 'RU', label: 'Россия' },
+              { value: 'US', label: 'США' },
+              { value: 'EU', label: 'Европа' },
+              { value: 'GLOBAL', label: 'Глобально' }
+            ]
+          },
+          stock: {
+            type: 'number',
+            props: { min: 0 }
+          },
+          image_url: {
+            components: { edit: AdminJS.bundle('./components/UrlWithUpload') },
+            props: { placeholder: 'https://example.com/image.jpg' }
+          },
+          datasheet_url: {
+            components: { edit: AdminJS.bundle('./components/UrlWithUpload') },
+            props: { placeholder: 'https://example.com/datasheet.pdf' }
+          },
+          is_active: { type: 'boolean' },
+          category: {
+            availableValues: [
+              { value: 'Resistors', label: 'Резисторы' },
+              { value: 'Capacitors', label: 'Конденсаторы' },
+              { value: 'Transistors', label: 'Транзисторы' },
+              { value: 'ICs', label: 'Микросхемы' },
+              { value: 'Connectors', label: 'Разъемы' },
+              { value: 'Other', label: 'Прочее' }
+            ]
+          },
+          technical_specs: {
+            type: 'mixed',
+            components: {
+              edit: AdminJS.bundle('./components/TechnicalSpecsEditor'),
+              show: AdminJS.bundle('./components/TechnicalSpecsViewer')
+            },
+            description: 'Добавляйте произвольные поля (Название → Значение) — как в обычном товарном редакторе'
+          }
+        }
       }
     },
     {

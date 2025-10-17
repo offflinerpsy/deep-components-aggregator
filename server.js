@@ -77,6 +77,7 @@ import { mountAdminNotificationsRoutes } from './api/admin.notifications.js';
 import { mountAdminPagesRoutes } from './api/admin.pages.mjs';
 import { mountAdminProductRoutes } from './api/admin.products.js';
 import { mountAdminMarkupRoutes } from './api/admin.markup.js';
+import { mountAdminUploadRoutes } from './api/admin.upload.js';
 import { requireAdmin } from './middleware/requireAdmin.js';
 import { checkEmailHandler } from './api/auth-check.js';
 // Import static pages routes
@@ -171,6 +172,8 @@ app.use('/ui', express.static(path.join(__dirname, 'ui'), {
     }
   }
 }));
+// Serve uploads directory
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // =========================================
 // FRONTEND HTML ROUTES (EJS templates replacing Next.js)
@@ -479,6 +482,7 @@ mountAdminNotificationsRoutes(app, db, logger);
 mountAdminPagesRoutes(app, db, logger);
 mountAdminProductRoutes(app, db, logger);
 mountAdminMarkupRoutes(app, { db, logger, requireAdmin });
+mountAdminUploadRoutes(app, process.env.BASE_URL || 'http://localhost:9201');
 // ============================================
 // AdminJS Panel Routes
 // ============================================

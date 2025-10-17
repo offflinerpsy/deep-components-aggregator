@@ -111,19 +111,6 @@ const adminOptions = {
         sort: { sortBy: 'created_at', direction: 'desc' },
         properties: {
           payload: { type: 'mixed' },
-          message: {
-            type: 'textarea',
-            props: {
-              rows: 3
-            }
-          },
-          priority: {
-            availableValues: [
-              { value: 'low', label: 'Низкий' },
-              { value: 'normal', label: 'Обычный' },
-              { value: 'high', label: 'Высокий' }
-            ]
-          },
           type: {
             availableValues: [
               { value: 'order', label: 'Заказ' },
@@ -143,7 +130,7 @@ const adminOptions = {
             handler: async (request, response, context) => {
               const { record } = context
               if (record) {
-                await record.update({ read_at: new Date() })
+                await record.update({ read_at: Date.now() })
                 return {
                   record: record.toJSON(context.currentAdmin),
                   notice: { message: 'Отмечено как прочитанное', type: 'success' }
@@ -374,148 +361,13 @@ const adminOptions = {
           direction: 'desc'
         },
         properties: {
-          mpn: {
-            type: 'string',
-            isRequired: true,
-            description: 'Номер детали производителя (Manufacturer Part Number). Должен быть уникальным. Пример: CRCW040210K0FKED'
-          },
-          manufacturer: {
-            type: 'string',
-            isRequired: true,
-            description: 'Название производителя. Пример: Vishay, Texas Instruments, STMicroelectronics'
-          },
-          description: {
-            type: 'textarea',
-            props: {
-              rows: 3
-            },
-            description: 'Подробное описание товара. Будет отображаться в карточке товара'
-          },
-          price: {
-            type: 'number',
-            props: {
-              step: 0.01
-            },
-            description: 'Цена за единицу товара. Используется для отображения в результатах поиска'
-          },
-          currency: {
-            type: 'string',
-            availableValues: [
-              { value: 'RUB', label: 'Рубль (RUB)' },
-              { value: 'USD', label: 'Доллар (USD)' },
-              { value: 'EUR', label: 'Евро (EUR)' },
-              { value: 'GBP', label: 'Фунт стерлингов (GBP)' },
-              { value: 'CNY', label: 'Юань (CNY)' },
-              { value: 'JPY', label: 'Иена (JPY)' }
-            ],
-            description: 'Валюта цены товара'
-          },
-          region: {
-            type: 'string',
-            availableValues: [
-              { value: 'RU', label: 'Россия' },
-              { value: 'US', label: 'США' },
-              { value: 'EU', label: 'Европа' },
-              { value: 'GLOBAL', label: 'Глобально' }
-            ]
-          },
-          stock: {
-            type: 'number',
-            props: {
-              min: 0
-            }
-          },
-          image_url: {
-            type: 'string',
-            props: {
-              placeholder: 'https://example.com/image.jpg'
-            }
-          },
-          datasheet_url: {
-            type: 'string',
-            props: {
-              placeholder: 'https://example.com/datasheet.pdf'
-            }
-          },
-          is_active: {
-            type: 'boolean'
-          },
-          category: {
-            type: 'string',
-            availableValues: [
-              { value: 'Resistors', label: 'Резисторы' },
-              { value: 'Capacitors', label: 'Конденсаторы' },
-              { value: 'Transistors', label: 'Транзисторы' },
-              { value: 'ICs', label: 'Микросхемы' },
-              { value: 'Connectors', label: 'Разъемы' },
-              { value: 'Other', label: 'Прочее' }
-            ]
-          },
           technical_specs: {
-            type: 'textarea',
-            props: {
-              rows: 5,
-              placeholder: '{"Resistance": "10kΩ", "Tolerance": "±1%", "Power": "0.25W"}'
-            }
-          },
-          images: {
-            type: 'textarea',
-            props: {
-              rows: 3,
-              placeholder: '["https://example.com/image1.jpg", "https://example.com/image2.jpg"]'
-            }
-          },
-          datasheets: {
-            type: 'textarea',
-            props: {
-              rows: 3,
-              placeholder: '["https://example.com/datasheet1.pdf", "https://example.com/datasheet2.pdf"]'
-            }
-          },
-          pricing: {
-            type: 'textarea',
-            props: {
-              rows: 4,
-              placeholder: '[{"qty": 1, "price": 15.50, "currency": "RUB"}, {"qty": 100, "price": 12.00, "currency": "RUB"}]'
-            }
-          },
-          availability: {
-            type: 'textarea',
-            props: {
-              rows: 3,
-              placeholder: '{"inStock": 1000, "leadTime": "1-2 недели"}'
-            }
-          },
-          regions: {
-            type: 'textarea',
-            props: {
-              rows: 2,
-              placeholder: '["RU", "US", "EU"]'
-            }
-          },
-          package: {
-            type: 'string',
-            props: {
-              placeholder: 'SOT-23, DIP-8, etc.'
-            }
-          },
-          packaging: {
-            type: 'string',
-            props: {
-              placeholder: 'Cut Tape, Reel, Tube, etc.'
-            }
-          },
-          vendor_url: {
-            type: 'string',
-            props: {
-              placeholder: 'https://example.com/product-page'
-            }
-          },
-          source: {
-            type: 'string',
-            props: {
-              placeholder: 'manual, custom, etc.'
-            }
+            type: 'mixed',
+            components: {
+              edit: AdminJS.bundle('../components/TechnicalSpecsEditor'),
+              show: AdminJS.bundle('../components/TechnicalSpecsViewer')
+            },
+            description: 'Добавляйте произвольные поля (Название → Значение) — как в обычном товарном редакторе'
           }
         }
       }
@@ -523,43 +375,10 @@ const adminOptions = {
     {
       resource: ManualProductField,
       options: {
-        navigation: { name: 'Товары', icon: 'Package' },
+        navigation: null,
         listProperties: ['product_id', 'field_name', 'field_value', 'field_type'],
         showProperties: ['product_id', 'field_name', 'field_value', 'field_type', 'created_at', 'updated_at'],
-        editProperties: ['product_id', 'field_name', 'field_value', 'field_type'],
-        sort: {
-          sortBy: 'product_id',
-          direction: 'asc'
-        },
-        properties: {
-          product_id: {
-            type: 'number',
-            isRequired: true,
-            description: 'ID товара из таблицы Manual Products. Найдите ID в списке товаров'
-          },
-          field_name: {
-            type: 'string',
-            isRequired: true,
-            description: 'Название поля. Примеры: Packaging, RoHS Status, Power (Watts), Lead Time, Minimum Order Quantity, Operating Temperature, Package / Case, Size / Dimension'
-          },
-          field_value: {
-            type: 'textarea',
-            props: {
-              rows: 2
-            },
-            description: 'Значение поля. Для boolean: true/false, yes/no. Для number: только числа. Для string: любой текст'
-          },
-          field_type: {
-            type: 'string',
-            availableValues: [
-              { value: 'string', label: 'Строка' },
-              { value: 'number', label: 'Число' },
-              { value: 'boolean', label: 'Логическое' },
-              { value: 'json', label: 'JSON' }
-            ],
-            description: 'Тип данных поля. string - текст, number - числа, boolean - да/нет, json - сложные структуры'
-          }
-        }
+        editProperties: ['product_id', 'field_name', 'field_value', 'field_type']
       }
     },
     {

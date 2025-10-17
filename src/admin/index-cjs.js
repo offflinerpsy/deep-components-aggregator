@@ -191,12 +191,12 @@ const adminOptions = {
           dealer_links: {
             type: 'mixed',
             components: {
-              show: AdminJS.bundle('../components/dealer-links-component')
+              show: AdminJS.bundle('./components/dealer-links-component')
             }
           },
           mpn: {
             components: {
-              show: AdminJS.bundle('../components/mpn-link-component')
+              show: AdminJS.bundle('./components/mpn-link-component')
             }
           },
           customer_contact: { type: 'mixed' },
@@ -361,11 +361,21 @@ const adminOptions = {
           direction: 'desc'
         },
         properties: {
+          image_url: {
+            type: 'string',
+            components: { edit: AdminJS.bundle('./components/UrlWithUpload') },
+            props: { placeholder: 'https://example.com/image.jpg' }
+          },
+          datasheet_url: {
+            type: 'string',
+            components: { edit: AdminJS.bundle('./components/UrlWithUpload') },
+            props: { placeholder: 'https://example.com/datasheet.pdf' }
+          },
           technical_specs: {
             type: 'mixed',
             components: {
-              edit: AdminJS.bundle('../components/TechnicalSpecsEditor'),
-              show: AdminJS.bundle('../components/TechnicalSpecsViewer')
+              edit: AdminJS.bundle('./components/TechnicalSpecsEditor'),
+              show: AdminJS.bundle('./components/TechnicalSpecsViewer')
             },
             description: 'Добавляйте произвольные поля (Название → Значение) — как в обычном товарном редакторе'
           }

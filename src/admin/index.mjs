@@ -91,21 +91,13 @@ const adminOptions = {
       resource: AdminNotification,
       options: {
         navigation: { name: 'Уведомления', icon: 'Bell' },
-        listProperties: ['title', 'type', 'priority', 'created_at', 'read_at'],
-        showProperties: ['title', 'message', 'type', 'priority', 'payload', 'created_at', 'read_at'],
-        editProperties: ['title', 'message', 'type', 'priority', 'payload'],
-        filterProperties: ['type', 'priority', 'read_at'],
+        listProperties: ['id', 'type', 'created_at', 'read_at'],
+        showProperties: ['id', 'type', 'payload', 'created_at', 'read_at'],
+        editProperties: ['type', 'payload'],
+        filterProperties: ['type', 'read_at'],
         sort: { sortBy: 'created_at', direction: 'desc' },
         properties: {
           payload: { type: 'mixed' },
-          message: { type: 'textarea', props: { rows: 3 } },
-          priority: {
-            availableValues: [
-              { value: 'low', label: 'Низкий' },
-              { value: 'normal', label: 'Обычный' },
-              { value: 'high', label: 'Высокий' }
-            ]
-          },
           type: {
             availableValues: [
               { value: 'order', label: 'Заказ' },
@@ -125,7 +117,7 @@ const adminOptions = {
             handler: async (request, response, context) => {
               const { record } = context
               if (record) {
-                await record.update({ read_at: new Date() })
+                await record.update({ read_at: Date.now() })
                 return {
                   record: record.toJSON(context.currentAdmin),
                   notice: { message: 'Отмечено как прочитанное', type: 'success' }
@@ -160,7 +152,7 @@ const adminOptions = {
             handler: async (request, response, context) => {
               const { records } = context
               if (records && records.length) {
-                await Promise.all(records.map(record => record.update({ read_at: new Date() })))
+                await Promise.all(records.map(record => record.update({ read_at: Date.now() })))
                 return {
                   records: records.map(record => record.toJSON(context.currentAdmin)),
                   notice: { message: `${records.length} уведомлений отмечено как прочитанные`, type: 'success' }
@@ -319,8 +311,8 @@ const adminOptions = {
       options: {
         navigation: { name: 'Товары', icon: 'Package' },
         listProperties: ['mpn', 'manufacturer', 'price', 'stock', 'is_active', 'created_at'],
-        showProperties: ['mpn', 'manufacturer', 'description', 'price', 'currency', 'region', 'stock', 'image_url', 'datasheet_url', 'is_active', 'category'],
-        editProperties: ['mpn', 'manufacturer', 'description', 'price', 'currency', 'region', 'stock', 'image_url', 'datasheet_url', 'is_active', 'category'],
+        showProperties: ['mpn', 'manufacturer', 'description', 'price', 'currency', 'region', 'stock', 'image_url', 'datasheet_url', 'is_active', 'category', 'technical_specs'],
+        editProperties: ['mpn', 'manufacturer', 'description', 'price', 'currency', 'region', 'stock', 'image_url', 'datasheet_url', 'is_active', 'category', 'technical_specs'],
         sort: { sortBy: 'created_at', direction: 'desc' }
       }
     },

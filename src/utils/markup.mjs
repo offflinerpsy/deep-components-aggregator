@@ -11,17 +11,17 @@ import { openDb } from '../db/sql.mjs';
  */
 export function getMarkupPercentage() {
   const db = openDb();
-  
+
   try {
     const row = db.prepare(`
-      SELECT value FROM settings 
+      SELECT value FROM settings
       WHERE key = 'markup_percentage'
     `).get();
-    
+
     if (!row) {
       return 0; // По умолчанию без наценки
     }
-    
+
     const markup = parseFloat(row.value);
     return isNaN(markup) ? 0 : markup;
   } catch (error) {
@@ -40,12 +40,12 @@ export function applyMarkup(originalPrice, currency = 'RUB') {
   if (!originalPrice || originalPrice <= 0) {
     return originalPrice;
   }
-  
+
   const markupPercent = getMarkupPercentage();
   if (markupPercent <= 0) {
     return originalPrice;
   }
-  
+
   const markupMultiplier = 1 + (markupPercent / 100);
   return Math.round(originalPrice * markupMultiplier * 100) / 100; // Округляем до копеек
 }
@@ -59,24 +59,24 @@ export function applyMarkupToProducts(products) {
   if (!Array.isArray(products)) {
     return products;
   }
-  
+
   const markupPercent = getMarkupPercentage();
   if (markupPercent <= 0) {
     return products;
   }
-  
+
   return products.map(product => {
     const updatedProduct = { ...product };
-    
+
     // Применяем наценку к основной цене
     if (product.min_price && product.min_price > 0) {
       updatedProduct.min_price = applyMarkup(product.min_price, product.min_currency);
     }
-    
+
     if (product.min_price_rub && product.min_price_rub > 0) {
       updatedProduct.min_price_rub = applyMarkup(product.min_price_rub, 'RUB');
     }
-    
+
     // Применяем наценку к ценовым уровням
     if (product.pricing && Array.isArray(product.pricing)) {
       updatedProduct.pricing = product.pricing.map(tier => ({
@@ -85,7 +85,7 @@ export function applyMarkupToProducts(products) {
         price_rub: tier.price_rub ? applyMarkup(tier.price_rub, 'RUB') : tier.price_rub
       }));
     }
-    
+
     return updatedProduct;
   });
 }
@@ -97,29 +97,29 @@ export function applyMarkupToProducts(products) {
  */
 export function updateMarkupPercentage(percentage) {
   const db = openDb();
-  
+
   try {
     const normalizedPercentage = Math.max(0, Math.min(1000, percentage)); // Ограничиваем от 0 до 1000%
     const now = Date.now();
-    
+
     const update = db.prepare(`
-      UPDATE settings 
+      UPDATE settings
       SET value = ?, updated_at = ?
       WHERE key = 'markup_percentage'
     `);
-    
+
     const insert = db.prepare(`
       INSERT INTO settings (key, value, updated_at, category, type, description, is_public)
       VALUES ('markup_percentage', ?, ?, 'pricing', 'number', 'Глобальная наценка в процентах на все товары', 0)
     `);
-    
+
     const tx = db.transaction(() => {
       const info = update.run(normalizedPercentage.toString(), now);
       if (info.changes === 0) {
         insert.run(normalizedPercentage.toString(), now);
       }
     });
-    
+
     tx();
     return true;
   } catch (error) {

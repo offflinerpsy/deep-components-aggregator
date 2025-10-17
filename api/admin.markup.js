@@ -28,7 +28,7 @@ export function mountAdminMarkupRoutes(app, { db, logger, requireAdmin }) {
   app.post('/api/admin/markup', requireAdmin, async (req, res) => {
     try {
       const { markup_percentage } = req.body;
-      
+
       if (typeof markup_percentage !== 'number' || markup_percentage < 0 || markup_percentage > 1000) {
         return res.status(400).json({
           ok: false,
@@ -37,7 +37,7 @@ export function mountAdminMarkupRoutes(app, { db, logger, requireAdmin }) {
       }
 
       const success = updateMarkupPercentage(markup_percentage);
-      
+
       if (success) {
         res.json({
           ok: true,

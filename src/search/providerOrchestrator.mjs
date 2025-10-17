@@ -128,28 +128,28 @@ const withTimeout = async (providerName, fn, timeoutMs = PROVIDER_TIMEOUT) => {
   const timer = apiCallDuration.startTimer({ source: providerName });
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
-  
+
   try {
     const result = await fn(controller.signal);
     clearTimeout(timeoutId);
-    
+
     const elapsed = Date.now() - startTime;
     timer();
     apiCallsTotal.inc({ source: providerName, status: 'success' });
-    
+
     console.log(`[${providerName}] ✅ Success (${elapsed}ms)`);
     return result;
   } catch (error) {
     clearTimeout(timeoutId);
     timer();
     apiCallsTotal.inc({ source: providerName, status: 'error' });
-    
+
     const elapsed = Date.now() - startTime;
     if (error.name === 'AbortError' || error.name === 'TimeoutError') {
       console.log(`[${providerName}] ⏱️  Timeout after ${elapsed}ms`);
       throw new Error(`Provider timeout after ${timeoutMs}ms`);
     }
-    
+
     console.log(`[${providerName}] ❌ Error: ${error.message} (${elapsed}ms)`);
     throw error;
   }
@@ -366,7 +366,7 @@ export async function orchestrateProviderSearch(query, keys) {
   console.log(`[Orchestrator] Running ${providerConfigs.length} providers (concurrency=${CONCURRENCY}, timeout=${PROVIDER_TIMEOUT}ms)`);
 
   // Queue all provider tasks
-  const tasks = providerConfigs.map(config => 
+  const tasks = providerConfigs.map(config =>
     queue.add(() => config.fn()).then(
       result => ({ status: 'fulfilled', value: result, provider: config.name }),
       error => ({ status: 'rejected', reason: error, provider: config.name })
@@ -391,7 +391,7 @@ export async function orchestrateProviderSearch(query, keys) {
   // Add manual products to search results (at the beginning for priority)
   const manualProducts = searchManualProducts(trimmed);
   aggregatedRows = manualProducts.concat(aggregatedRows);
-  
+
   // Add manual products provider summary
   if (manualProducts.length > 0) {
     providerSummaries.push({
@@ -405,7 +405,7 @@ export async function orchestrateProviderSearch(query, keys) {
 
         const deduped = dedupeRows(aggregatedRows).slice(0, 60);
         const ranked = rankRows(deduped, trimmed);
-        
+
         // Применяем наценку ко всем товарам
         const productsWithMarkup = applyMarkupToProducts(ranked);
 

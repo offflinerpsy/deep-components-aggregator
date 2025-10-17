@@ -42,6 +42,9 @@ const AdminUser = sequelize.define('AdminUser', {
   }
 }, {
   tableName: 'admin_users',
+  timestamps: true,
+  createdAt: 'created_at',
+  updatedAt: 'updated_at',
   indexes: [
     { fields: ['email'], unique: true }
   ]
@@ -484,52 +487,39 @@ const ProjectStat = sequelize.define('ProjectStat', {
 // ============================================
 const AdminNotification = sequelize.define('AdminNotification', {
   id: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.TEXT,
     primaryKey: true,
-    autoIncrement: true
+    comment: 'UUID/string identifier'
   },
   type: {
     type: DataTypes.STRING,
-    allowNull: false,
-    comment: 'Notification type (e.g., "order", "system", "alert")'
-  },
-  title: {
-    type: DataTypes.STRING,
-    allowNull: false
-  },
-  message: {
-    type: DataTypes.TEXT,
     allowNull: false
   },
   payload: {
     type: DataTypes.TEXT,
+    allowNull: false,
     get() {
-      const raw = this.getDataValue('payload');
-      return raw ? JSON.parse(raw) : null;
+      const raw = this.getDataValue('payload')
+      return raw ? JSON.parse(raw) : null
     },
     set(value) {
-      this.setDataValue('payload', JSON.stringify(value));
-    },
-    comment: 'Additional JSON data related to the notification'
+      this.setDataValue('payload', JSON.stringify(value ?? null))
+    }
+  },
+  created_at: {
+    type: DataTypes.BIGINT,
+    allowNull: false
   },
   read_at: {
-    type: DataTypes.DATE,
+    type: DataTypes.BIGINT,
     allowNull: true
-  },
-  priority: {
-    type: DataTypes.ENUM('low', 'normal', 'high'),
-    defaultValue: 'normal'
   }
 }, {
   tableName: 'admin_notifications',
-  timestamps: true,
-  createdAt: 'created_at',
-  updatedAt: 'updated_at',
+  timestamps: false,
   indexes: [
-    { fields: ['type'] },
-    { fields: ['read_at'] },
-    { fields: ['priority'] },
-    { fields: ['created_at'] }
+    { fields: ['created_at'] },
+    { fields: ['read_at'] }
   ]
 })
 

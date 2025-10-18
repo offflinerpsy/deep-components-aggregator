@@ -1,0 +1,7 @@
+Test file created at 2025-10-17 to verify VS Code Copilot auto-approve settings.
+
+If you see this file without clicking "Allow" dialog — settings work! 🎉
+
+Timestamp: $(date)
+Workspace: /opt/deep-agg
+Branch: feat/dynamic-specs-upload

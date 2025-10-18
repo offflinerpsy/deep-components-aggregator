@@ -1,7 +1,5 @@
 {
-  "github.copilot.enable": {
-    "*": true
-  },
+  "github.copilot.enable": { "*": true },
   "github.copilot.advanced": {},
   "github.copilot.chat.confirmTools": false,
   "github.copilot.chat.allowToolsWithoutConfirmation": true,
@@ -22,6 +20,8 @@
   "chat.promptFiles": true,
   "chat.mcp.autostart": true,
   "chat.commandCenter.enabled": true,
+  "chat.experimental.offerQuickChat": false,
+  "chat.experimental.implicitContext": true,
   "terminal.integrated.confirmOnKill": "never",
   "terminal.integrated.confirmOnExit": "never",
   "terminal.integrated.enablePersistentSessions": false,
@@ -132,7 +132,6 @@
     "github.copilot.tests.fixTestFailure",
     "github.copilot.tests.fixTestFailure.fromInline"
   ],
-  "github.copilot.chat.experimental.codeGeneration.instructions": [],
   "github.copilot.chat.experimental.codeGeneration.useInstructionFiles": false,
   "chat.editor.wordWrap": "on",
   "workbench.editorAssociations": {},
@@ -157,5 +156,8 @@
         "copilot/gpt-5-codex"
       ]
     }
-  }
+  },
+  "github.copilot.chat.codeGeneration.instructions": [],
+  "github.copilot.chat.toolConfirmation.skip": true,
+  "github.copilot.chat.toolConfirmation.alwaysAllow": true
 }

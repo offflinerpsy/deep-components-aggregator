@@ -61,7 +61,7 @@
     "passport-local": "^1.0.0",
     "passport-vkontakte": "^0.3.3",
     "passport-yandex": "^0.0.5",
-    "pino": "^8.16.0",
+    "pino": "^10.1.0",
     "prom-client": "^15.0.0",
     "sequelize": "^6.37.7",
     "socks-proxy-agent": "^8.0.5",

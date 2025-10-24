@@ -1,0 +1,26 @@
+{
+  "ts": 1761297476793,
+  "type": "order_created",
+  "payload": {
+    "order_id": "8762bc70-b4ce-488f-bc03-d2d971de88f2",
+    "order_code": "ORD-B99DD8",
+    "customer_name": "Дмитрий Н",
+    "mpn": "CRCW040210K0FKED",
+    "manufacturer": "Vishay",
+    "qty": 1,
+    "comment": "Арбузы есть? Почем?",
+    "created_at": 1761297476789
+  },
+  "channels": [
+    {
+      "channel": "email",
+      "skipped": true,
+      "reason": "admin_notify_email not set"
+    },
+    {
+      "channel": "telegram",
+      "skipped": true,
+      "reason": "telegram_bot_token/chat_id not set"
+    }
+  ]
+}

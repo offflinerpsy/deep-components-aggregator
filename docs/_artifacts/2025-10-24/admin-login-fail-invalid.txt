@@ -1,0 +1,9 @@
+Admin login POST failure (invalid credentials) now returns clean error state
+Date: 2025-10-24T09:58:41Z
+
+HTTP/2 200
+... (login page HTML)
+Embedded state:
+window.__APP_STATE__ = {"action":"/admin/login","errorMessage":"invalidCredentials"};
+
+Note: Confirms previous error "date.includes is not a function" is resolved; invalid creds path behaves normally.

@@ -436,16 +436,27 @@ const adminOptions = {
     component: false
   },
   branding: { companyName: 'Deep Components Aggregator', logo: false, softwareBrothers: false, theme: { colors: { primary100: '#1976d2' } } },
-  locale: { language: 'ru' }
+  // Switch to English locale to avoid missing i18n resources causing runtime issues on login
+  locale: { language: 'en' }
 }
 
 export const adminJs = new AdminJS(adminOptions)
 
 const authenticate = async (email, password) => {
+  // lightweight debug for login flow
+  console.log('[admin/auth] login attempt', { email })
   const user = await AdminUser.findOne({ where: { email, is_active: true } })
-  if (user && await user.verifyPassword(password)) {
+  console.log('[admin/auth] user lookup', { found: !!user })
+  if (!user) {
+    console.warn('[admin/auth] user not found or inactive', { email })
+    return null
+  }
+  const ok = await user.verifyPassword(password)
+  if (ok) {
+    console.log('[admin/auth] login success', { email })
     return { email: user.email, name: user.name, role: user.role }
   }
+  console.warn('[admin/auth] invalid password', { email })
   return null
 }
 

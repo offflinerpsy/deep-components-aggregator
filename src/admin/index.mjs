@@ -382,20 +382,21 @@ const adminOptions = {
         }
       }
     },
-    {
-      resource: ProjectStat,
-      options: {
-        navigation: { name: 'Статистика', icon: 'TrendingUp' },
-        listProperties: ['date', 'total_searches', 'cache_hits', 'live_searches', 'total_orders', 'avg_response_time_ms'],
-        actions: { new: { isVisible: false }, edit: { isVisible: false }, delete: { isVisible: false } },
-        sort: { sortBy: 'date', direction: 'desc' },
-        // Важно: фильтр по полю date отключаем, чтобы избежать client-side ошибок .includes на нестроковых значениях
-        filterProperties: ['total_searches', 'cache_hits', 'live_searches', 'total_orders', 'avg_response_time_ms'],
-        properties: {
-          date: { type: 'date', isVisible: { list: true, filter: false, show: true, edit: false } }
-        }
-      }
-    },
+    // TEMP: disable ProjectStat resource to confirm it is not causing login error "date.includes is not a function"
+    // {
+    //   resource: ProjectStat,
+    //   options: {
+    //     navigation: { name: 'Статистика', icon: 'TrendingUp' },
+    //     listProperties: ['date', 'total_searches', 'cache_hits', 'live_searches', 'total_orders', 'avg_response_time_ms'],
+    //     actions: { new: { isVisible: false }, edit: { isVisible: false }, delete: { isVisible: false } },
+    //     sort: { sortBy: 'date', direction: 'desc' },
+    //     // Важно: фильтр по полю date отключаем, чтобы избежать client-side ошибок .includes на нестроковых значениях
+    //     filterProperties: ['total_searches', 'cache_hits', 'live_searches', 'total_orders', 'avg_response_time_ms'],
+    //     properties: {
+    //       date: { type: 'date', isVisible: { list: true, filter: false, show: true, edit: false } }
+    //     }
+    //   }
+    // },
     {
       resource: AdminUser,
       options: {

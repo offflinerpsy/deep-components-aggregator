@@ -446,7 +446,13 @@ export const adminJs = new AdminJS(adminOptions)
 const authenticate = async (email, password) => {
   // lightweight debug for login flow
   console.log('[admin/auth] login attempt', { email })
-  const user = await AdminUser.findOne({ where: { email, is_active: true } })
+  const user = await AdminUser
+    .findOne({ where: { email, is_active: true } })
+    .catch((err) => {
+      const msg = err && (err.message || String(err))
+      console.warn('[admin/auth] user lookup error', { error: msg })
+      return null
+    })
   console.log('[admin/auth] user lookup', { found: !!user })
   if (!user) {
     console.warn('[admin/auth] user not found or inactive', { email })

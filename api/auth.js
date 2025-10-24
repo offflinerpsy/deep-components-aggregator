@@ -107,61 +107,33 @@ export function registerHandler(db, logger) {
       });
     }
     
-    // Create user (unverified)
+    // ВРЕМЕННО: Create user (auto-verified, email check disabled)
+    // ROLLBACK: git revert HEAD или восстановить из api/auth.js.backup-before-disable-email-verification
     const now = Date.now();
     const userId = randomUUID();
     
-    const insertTransaction = db.transaction(() => {
-      db.prepare(`
-        INSERT INTO users (id, created_at, updated_at, email, password_hash, provider, provider_id, name, email_verified)
-        VALUES (?, ?, ?, ?, ?, NULL, NULL, ?, 0)
-      `).run(
-        userId,
-        now,
-        now,
-        normalizedEmail,
-        passwordHash,
-        name || null
-      );
-
-      // Create verification token valid for 24h
-      const token = randomBytes(32).toString('hex');
-      const ttlMs = 24 * 60 * 60 * 1000;
-      db.prepare(`
-        INSERT INTO email_verification_tokens (id, user_id, token, expires_at)
-        VALUES (?, ?, ?, ?)
-      `).run(randomUUID(), userId, token, now + ttlMs);
-
-      return { token };
-    });
+    db.prepare(`
+      INSERT INTO users (id, created_at, updated_at, email, password_hash, provider, provider_id, name, email_verified)
+      VALUES (?, ?, ?, ?, ?, NULL, NULL, ?, 1)
+    `).run(
+      userId,
+      now,
+      now,
+      normalizedEmail,
+      passwordHash,
+      name || null
+    );
     
-  const { token } = insertTransaction();
+    logger.info({ userId }, 'User registered successfully (AUTO-VERIFIED - email verification temporarily disabled)');
+
+    // ВРЕМЕННО ОТКЛЮЧЕНО: Email verification flow
+    // const token = randomBytes(32).toString('hex');
+    // const ttlMs = 24 * 60 * 60 * 1000;
+    // db.prepare(`INSERT INTO email_verification_tokens ...`).run(...);
+    // const mailResult = await sendTemplatedMail({ ... });
     
-    logger.info({ userId }, 'User registered successfully (verification required)');
-
-    const baseUrl = process.env.BASE_URL || `http://localhost:${process.env.PORT || 9201}`;
-    const verifyUrl = `${baseUrl}/auth/verify?token=${token}`;
-    const mailResult = await sendTemplatedMail({
-      to: normalizedEmail,
-      subject: 'Подтвердите email — Deep Components',
-      templateName: 'email-verification',
-      data: {
-        userName: name || '',
-        verifyUrl
-      }
-    });
-
-    // 202 Accepted since verification pending
-    // In non-production, if SMTP is not configured, include verifyUrl for manual verification
-    const isProd = process.env.NODE_ENV === 'production';
-    const response = { ok: true, userId, message: 'Registration accepted. Please check your email to verify your account.' };
-    if (!isProd && mailResult && mailResult.ok === false) {
-      response.dev_verify_url = verifyUrl;
-      if (mailResult.artifactPath) {
-        response.dev_email_artifact = mailResult.artifactPath;
-      }
-    }
-    res.status(202).json(response);
+    const response = { ok: true, userId, message: 'Registration successful. You can now login.' };
+    res.status(200).json(response);
   };
 }
 

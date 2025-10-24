@@ -447,7 +447,11 @@ const authenticate = async (email, password) => {
   // lightweight debug for login flow
   console.log('[admin/auth] login attempt', { email })
   const user = await AdminUser
-    .findOne({ where: { email, is_active: true } })
+    .findOne({
+      where: { email, is_active: true },
+      // avoid fetching DATETIME columns to bypass sqlite DATE.parse bug (date.includes)
+      attributes: ['email', 'password_hash', 'name', 'role']
+    })
     .catch((err) => {
       const msg = err && (err.message || String(err))
       console.warn('[admin/auth] user lookup error', { error: msg })

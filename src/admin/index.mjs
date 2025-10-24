@@ -94,7 +94,7 @@ const adminOptions = {
         listProperties: ['id', 'type', 'created_at', 'read_at'],
         showProperties: ['id', 'type', 'payload', 'created_at', 'read_at'],
         editProperties: ['type', 'payload'],
-        filterProperties: ['type', 'read_at'],
+        filterProperties: ['type'],
         sort: { sortBy: 'created_at', direction: 'desc' },
         properties: {
           payload: { type: 'mixed' },

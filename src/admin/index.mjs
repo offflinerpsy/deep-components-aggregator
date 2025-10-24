@@ -36,7 +36,7 @@ const adminOptions = {
       options: {
         navigation: { name: 'Система', icon: 'Sliders' },
         listProperties: ['key', 'category', 'type', 'updated_at', 'is_public'],
-        showProperties: ['key', 'value', 'type', 'category', 'description', 'is_public', 'created_at', 'updated_at'],
+        showProperties: ['key', 'value', 'type', 'category', 'description', 'is_public', 'updated_at'],
         editProperties: ['key', 'value', 'type', 'category', 'description', 'is_public'],
         filterProperties: ['category', 'type', 'is_public'],
         sort: { sortBy: 'category', direction: 'asc' },
@@ -169,7 +169,7 @@ const adminOptions = {
       options: {
         navigation: { name: 'Управление', icon: 'ShoppingCart' },
         listProperties: ['order_code', 'mpn', 'created_at', 'qty', 'customer_name', 'status'],
-        showProperties: ['order_code', 'created_at', 'customer_name', 'customer_email', 'customer_contact', 'mpn', 'manufacturer', 'qty', 'pricing_snapshot', 'dealer_links', 'status', 'status_comment', 'status_history'],
+        showProperties: ['order_code', 'created_at', 'customer_name', 'customer_email', 'customer_contact', 'mpn', 'manufacturer', 'qty', 'pricing_snapshot', 'dealer_links', 'status', 'status_comment', 'status_history', 'meta'],
         editProperties: ['status', 'status_comment'],
         filterProperties: ['order_code', 'customer_email', 'mpn', 'status'],
         sort: { sortBy: 'created_at', direction: 'desc' },
@@ -179,6 +179,7 @@ const adminOptions = {
           mpn: {},
           customer_contact: { type: 'mixed' },
           status_history: { type: 'mixed' },
+          meta: { type: 'mixed', components: { show: false } },
           status: {
             availableValues: [
               { value: 'pending', label: 'Новый' },

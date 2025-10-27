@@ -42,7 +42,7 @@ jobs:
         echo "::endgroup::"
 
     - name: Upload audit report
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v5
       with:
         name: security-audit-report
         path: audit-report.json
@@ -145,7 +145,7 @@ jobs:
 
     - name: Upload test results
       if: always()
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v5
       with:
         name: playwright-results-${{ matrix.browser }}
         path: |
@@ -156,7 +156,7 @@ jobs:
 
     - name: Upload trace files
       if: failure()
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v5
       with:
         name: playwright-traces-${{ matrix.browser }}
         path: test-results-${{ matrix.browser }}/**/*.zip
@@ -164,7 +164,7 @@ jobs:
 
     - name: Upload source HTML files
       if: always()
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v5
       with:
         name: scraped-sources-${{ matrix.browser }}
         path: reports/sources/
@@ -172,7 +172,7 @@ jobs:
 
     - name: Upload smoke test results
       if: always()
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v5
       with:
         name: smoke-test-results-${{ matrix.browser }}
         path: |
@@ -233,7 +233,7 @@ jobs:
 
     - name: Upload smoke test results
       if: always()
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v5
       with:
         name: smoke-20-results
         path: |

@@ -1,8 +1,8 @@
 # Session Summary (2025-10-29)
 
-- FRONT: not running
-- BACK: not running
-- Rewrites: mismatch
+ - FRONT: v0-components-aggregator-page@3001
+ - BACK: .@9201
+ - Rewrites: ok
 
 ## Artifacts
 - Inventory: docs/_artifacts/autodetect-2025-10-29/REPO-INVENTORY.md

@@ -1,0 +1,42 @@
+[
+  {"sample":1,"latencyMs":2097,"providersHit":"tme,mouser","suggestionsCount":10}
+,
+  {"sample":2,"latencyMs":1675,"providersHit":"tme,mouser","suggestionsCount":10}
+,
+  {"sample":3,"latencyMs":1570,"providersHit":"tme,mouser","suggestionsCount":10}
+,
+  {"sample":4,"latencyMs":1723,"providersHit":"tme,mouser","suggestionsCount":10}
+,
+  {"sample":5,"latencyMs":1590,"providersHit":"tme,mouser","suggestionsCount":10}
+,
+  {"sample":6,"latencyMs":1571,"providersHit":"tme,mouser","suggestionsCount":10}
+,
+  {"sample":7,"latencyMs":1600,"providersHit":"tme,mouser","suggestionsCount":10}
+,
+  {"sample":8,"latencyMs":1569,"providersHit":"tme,mouser","suggestionsCount":10}
+,
+  {"sample":9,"latencyMs":1635,"providersHit":"tme,mouser","suggestionsCount":10}
+,
+  {"sample":10,"latencyMs":1563,"providersHit":"tme,mouser","suggestionsCount":10}
+,
+  {"sample":11,"latencyMs":1561,"providersHit":"tme,mouser","suggestionsCount":10}
+,
+  {"sample":12,"latencyMs":1575,"providersHit":"tme,mouser","suggestionsCount":10}
+,
+  {"sample":13,"latencyMs":1584,"providersHit":"tme,mouser","suggestionsCount":10}
+,
+  {"sample":14,"latencyMs":1613,"providersHit":"tme,mouser","suggestionsCount":10}
+,
+  {"sample":15,"latencyMs":1643,"providersHit":"tme,mouser","suggestionsCount":10}
+,
+  {"sample":16,"latencyMs":1551,"providersHit":"tme,mouser","suggestionsCount":10}
+,
+  {"sample":17,"latencyMs":1801,"providersHit":"tme,mouser","suggestionsCount":10}
+,
+  {"sample":18,"latencyMs":1575,"providersHit":"tme,mouser","suggestionsCount":10}
+,
+  {"sample":19,"latencyMs":1609,"providersHit":"tme,mouser","suggestionsCount":10}
+,
+  {"sample":20,"latencyMs":1577,"providersHit":"tme,mouser","suggestionsCount":10}
+
+]

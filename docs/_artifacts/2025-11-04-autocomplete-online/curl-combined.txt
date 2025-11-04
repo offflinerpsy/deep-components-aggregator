@@ -1,0 +1,72 @@
+{
+    "suggestions": [
+        {
+            "mpn": "LM317T",
+            "title": "IC: voltage regulator; linear,adjustable; 1.2\u00f737V; 1.5A; TO220AB",
+            "manufacturer": "STMicroelectronics",
+            "source": "tme"
+        },
+        {
+            "mpn": "LM317BT",
+            "title": "IC: voltage regulator; linear,adjustable; 1.2\u00f737V; 1.5A; TO220AB",
+            "manufacturer": "STMicroelectronics",
+            "source": "tme"
+        },
+        {
+            "mpn": "LM317D2T-TR",
+            "title": "IC: voltage regulator; linear,adjustable; 1.2\u00f737V; 1.5A; D2PAK",
+            "manufacturer": "STMicroelectronics",
+            "source": "tme"
+        },
+        {
+            "mpn": "ZSM-NE054",
+            "title": "Adjustable power supply; 1.2\u00f724V; IC: LM317; 24VAC",
+            "manufacturer": "Nord Elektronik Plus",
+            "source": "tme"
+        },
+        {
+            "mpn": "MIKROE-2443",
+            "title": "Click board; prototype board; voltage regulator; 3.3VDC,5VDC",
+            "manufacturer": "MIKROE",
+            "source": "tme"
+        },
+        {
+            "mpn": "595-LM317LID",
+            "title": "Linear Voltage Regulators 8Pin 100mA Adj Vltg Reg A 595-LM317LIDR",
+            "manufacturer": "Texas Instruments",
+            "source": "mouser"
+        },
+        {
+            "mpn": "595-LM317LCD",
+            "title": "Linear Voltage Regulators 3-Trm 100mA Adj Pos Voltage Regulator A 595-LM317LCDR",
+            "manufacturer": "Texas Instruments",
+            "source": "mouser"
+        },
+        {
+            "mpn": "863-LM317D2TR4G",
+            "title": "Linear Voltage Regulators 1.5A ADJ 1.2-37V Positive",
+            "manufacturer": "onsemi",
+            "source": "mouser"
+        },
+        {
+            "mpn": "863-LM317MBSTT3G",
+            "title": "Linear Voltage Regulators 500mA ADJ 1.2-37V Positive",
+            "manufacturer": "onsemi",
+            "source": "mouser"
+        },
+        {
+            "mpn": "595-LM317LCLPRE3",
+            "title": "Linear Voltage Regulators 3-Trm 100mA Adj Pos Voltage Regulator",
+            "manufacturer": "Texas Instruments",
+            "source": "mouser"
+        }
+    ],
+    "meta": {
+        "q": "LM317",
+        "latencyMs": 2730,
+        "providersHit": [
+            "tme",
+            "mouser"
+        ]
+    }
+}

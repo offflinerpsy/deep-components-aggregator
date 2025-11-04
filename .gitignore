@@ -29,8 +29,16 @@ docs/configs/*keys*
 *.bak
 *.swp
 *.swo
+*.old
+*.backup
+*.backup-*
+.backup-*/
+temp/
+tmp/
 cache.json
 cookies.txt
+test-*.sh
+*test*.txt
 
 # Отчеты и артефакты
 test-results/

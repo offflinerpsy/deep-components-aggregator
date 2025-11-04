@@ -443,10 +443,9 @@
     showOverlay();
     emptyState.classList.add('hidden');
     errorState.classList.add('hidden');
-    tableContainer.hidden = true;
-    cardsContainer.hidden = true;
-    statusText.textContent = 'Поиск...';
-    statusBadge.classList.add('hidden');
+    tableContainer.setAttribute('hidden', '');
+    cardsContainer.setAttribute('hidden', '');
+
     if (hasCyrillic(query)) {
       statusBadge.classList.remove('hidden');
     }
@@ -454,6 +453,11 @@
     completed = false;
     hasLiveResults = false;
 
+    // Get category from URL params
+    const urlParams = new URLSearchParams(window.location.search);
+    const category = urlParams.get('category') || '';
+
+    // Cache request (без category фильтра — кэш полный)
     fetch(`/api/search?q=${encodeURIComponent(query)}`)
       .then((response) => response.json())
       .then((payload) => {
@@ -467,7 +471,14 @@
         console.warn('Cache request failed:', error);
       });
 
-    eventSource = new EventSource(`/api/live/search?q=${encodeURIComponent(query)}`);
+    // Live SSE with category filter and limit=20
+    let sseUrl = `/api/live/search?q=${encodeURIComponent(query)}&limit=20`;
+    if (category) {
+      sseUrl += `&category=${encodeURIComponent(category)}`;
+      statusText.textContent = `Поиск по категории: ${category}...`;
+    }
+
+    eventSource = new EventSource(sseUrl);
 
     // Сервер шлёт 'search:start' при открытии потока
     eventSource.addEventListener('search:start', (event) => {

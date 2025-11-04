@@ -599,6 +599,8 @@ app.get('/api/autocomplete', autocompleteRateLimiter, async (req, res) => {
 // SSE Live Search endpoint (with heartbeat, AbortController, no-buffering)
 app.get('/api/live/search', async (req, res) => {
   const q = String(req.query.q || '').trim();
+  const category = String(req.query.category || '').trim(); // NEW: category filter
+  const limit = parseInt(req.query.limit || '20', 10); // NEW: result limit (default 20)
 
   if (!q) {
     return res.status(400).json({ ok: false, error: 'Missing query parameter: q' });
@@ -622,7 +624,7 @@ app.get('/api/live/search', async (req, res) => {
   }, 15_000);
 
   // Send start event
-  sse.send(res, 'search:start', { query: q, timestamp: Date.now() });
+  sse.send(res, 'search:start', { query: q, category: category || null, timestamp: Date.now() });
 
   const aggregated = await orchestrateProviderSearch(q, keys);
 
@@ -643,14 +645,38 @@ app.get('/api/live/search', async (req, res) => {
     }
   }
 
+  // Sort by price (min_price_rub) and limit to top 20 best deals
+  let rows = aggregated.rows;
+  
+  // Filter by category if provided (case-insensitive partial match)
+  if (category) {
+    const categoryLower = category.toLowerCase();
+    rows = rows.filter(r => {
+      const cat = String(r.category || '').toLowerCase();
+      return cat.includes(categoryLower);
+    });
+  }
+
+  // Sort by price (cheapest first) and limit
+  rows.sort((a, b) => {
+    const priceA = Number(a.min_price_rub) || Infinity;
+    const priceB = Number(b.min_price_rub) || Infinity;
+    return priceA - priceB;
+  });
+  
+  rows = rows.slice(0, limit);
+
   // Send final results with currency
   const ratesData = loadRates();
   const ratesDate = new Date(ratesData.timestamp).toISOString().split('T')[0];
 
   sse.send(res, 'result', {
-    rows: aggregated.rows,
+    rows,
     meta: {
-      total: aggregated.rows.length,
+      total: rows.length,
+      total_before_limit: aggregated.rows.length,
+      category_filter: category || null,
+      limit,
       providers: aggregated.providers,
       currency: {
         rates: { USD: ratesData.rates.USD, EUR: ratesData.rates.EUR },

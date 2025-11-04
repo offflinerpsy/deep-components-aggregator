@@ -23,10 +23,7 @@
 				"Authorization: Bearer v1:K9pGKBuEBv92LouvTaPFUtD1:bWXtpg3uHFyV2SNcvgBiPG5x"
 			]
 		},
-		"my-mcp-server-3b833e7c": {
-			"url": "http://localhost:3000/",
-			"type": "http"
-		}
+		
 	},
 	"inputs": []
 }

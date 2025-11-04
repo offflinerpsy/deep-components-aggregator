@@ -687,7 +687,7 @@ app.get('/api/live/search', async (req, res) => {
   });
 
   clearInterval(heartbeatTimer);
-  sse.done(res);
+  sse.done(res, { completed: true, timestamp: Date.now() });
   res.end();
 });
 

@@ -1,12 +1,0 @@
-  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
-                                 Dload  Upload   Total   Spent    Left  Speed
-  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0event: search:start
-data: {"query":"1N4148","timestamp":1759914089130}
-
-event: result
-data: {"rows":[],"meta":{"total":0,"providers":[],"currency":{"rates":{"USD":81.9349,"EUR":95.6722},"date":"2025-10-08","source":"ЦБ РФ"}}}
-
-event: done
-data: 
-
-100   251    0   251    0     0  37490      0 --:--:-- --:--:-- --:--:-- 41833

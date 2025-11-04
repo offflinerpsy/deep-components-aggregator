@@ -1,2 +1,0 @@
-logs/out.log
-logs/err.log

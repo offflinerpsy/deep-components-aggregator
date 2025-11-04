@@ -1,6 +1,0 @@
-=== /api/admin/products ===
-HTTP Code: 500
-=== /api/admin/orders ===
-HTTP Code: 401
-=== /api/admin/settings/pricing ===
-HTTP Code: 401

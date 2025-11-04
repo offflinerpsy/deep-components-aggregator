@@ -1,0 +1,14 @@
+Admin login POST success (HTTP 302 -> /admin) without bypass
+Date: 2025-10-24T10:14:47Z
+
+HTTP/2 302
+server: nginx/1.24.0 (Ubuntu)
+location: /admin
+set-cookie: deep_agg_sid=...; HttpOnly; Secure; SameSite=None
+
+Follow-up GET /admin:
+HTTP/2 200 content-length: 161316
+
+Notes:
+- Root cause was Sequelize SQLite DATE.parse expecting string and calling includes on non-string for DATETIME columns.
+- Fix: select explicit attributes (exclude DATETIME) in AdminUser.findOne during login.

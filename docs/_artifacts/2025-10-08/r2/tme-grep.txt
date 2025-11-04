@@ -1,4 +1,0 @@
-src/currency/searchIntegration.js:11:            ['tme', 'EUR'],
-src/currency/searchIntegration.js:114:            if (product.url.includes('farnell.') || product.url.includes('tme.')) {
-src/workers/dealer-collector.js:76:  'STM32F103', 'ATMEGA328P', 'ESP32', 'ESP8266', 'ARDUINO', 'RASPBERRY',
-src/workers/parser-tester.js:12:  'LM2596S-ADJ', 'XL4015E1', 'STM32F103C8T6', 'ATMEGA328P-PU',

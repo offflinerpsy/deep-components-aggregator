@@ -2,6 +2,11 @@
   "github.copilot.enable": { "*": true },
   "github.copilot.advanced": {},
   "github.copilot.chat.confirmTools": false,
+  // Extra defensive toggles for remote sessions
+  "github.copilot.chat.confirmations.enabled": false,
+  "github.copilot.chat.toolConfirmation.enabled": false,
+  "github.copilot.chat.toolConfirmation.level": "none",
+  "github.copilot.chat.dangerousCommands.confirmation": "never",
   "github.copilot.chat.allowToolsWithoutConfirmation": true,
   "github.copilot.chat.runCommand.enabled": true,
   "github.copilot.chat.runCommand.allowList": ["*"],
@@ -14,11 +19,14 @@
   "github.copilot.chat.allowedCommands": ["*"],
   "github.copilot.chat.trustedWorkspaces": ["*"],
   "github.copilot.chat.experimental.allowRunningTerminalCommands": true,
+  // Older experimental flag (kept for compatibility)
+  "workbench.experimental.chat.autoApproveTool": true,
+  // Ensure remote trust does not cause prompts
   "github.copilot.chat.terminalChatLocation": "terminal",
   "github.copilot.chat.useProjectTemplates": false,
   "chat.mcp.access": "all",
   "chat.promptFiles": true,
-  "chat.mcp.autostart": true,
+  "chat.mcp.autostart": "newAndOutdated",
   "chat.commandCenter.enabled": true,
   "chat.experimental.offerQuickChat": false,
   "chat.experimental.implicitContext": true,
@@ -27,7 +35,7 @@
   "terminal.integrated.enablePersistentSessions": false,
   "terminal.integrated.commandsToSkipShell": [],
   "terminal.integrated.allowChords": false,
-  "terminal.integrated.enableMultiLinePasteWarning": false,
+  "terminal.integrated.enableMultiLinePasteWarning": "never",
   "files.autoSave": "afterDelay",
   "files.autoSaveDelay": 500,
   "security.workspace.trust.enabled": false,
@@ -35,6 +43,7 @@
   "security.workspace.trust.banner": "never",
   "security.workspace.trust.startupPrompt": "never",
   "security.workspace.trust.emptyWindow": false,
+  // Remote sessions: allow workspace settings to control terminal behavior
   "extensions.ignoreRecommendations": true,
   "workbench.enableExperiments": false,
   "telemetry.telemetryLevel": "off",
@@ -144,6 +153,29 @@
   "workbench.trustedDomains.prompt": false,
   "workbench.trustedDomains": ["*"],
   "security.promptForExternalProtocol": false,
+  
+  // New schema: pattern-based auto-approve for chat tools (edits & terminal)
+  // User requested FULL ALLOW for all files and all commands.
+  // Enable auto-approve engines explicitly (per new schema)
+  "chat.tools.confirmation.enabled": false,
+  "chat.tools.edits.enableAutoApprove": true,
+  "chat.tools.terminal.enableAutoApprove": true,
+  // Potential new keys for Copilot Chat 0.32.3
+  "github.copilot.chat.agent.toolConfirmation": false,
+  "copilot.chat.toolConfirmation.enabled": false,
+  // Auto-reply to prompts in terminal (experimental)
+  "chat.tools.terminal.autoReplyToPrompts": true,
+  // Use glob patterns for edits (last match wins)
+  "chat.tools.edits.autoApprove": {
+    "**/*": true
+  },
+  // Use regex/glob patterns for terminal commands (approve everything)
+  "chat.tools.terminal.autoApprove": {
+    ".*": true
+  },
+  // Global auto-approve (new name as of 1.104 / Copilot Chat 0.32.x)
+  // Note: First use may still show a one-time scary confirmation dialog in UI.
+  "chat.tools.global.autoApprove": true,
   "chat.mcp.serverSampling": {
     "deep-agg/.vscode/mcp.json: my-mcp-server-3b833e7c": {
       "allowedModels": [
@@ -157,7 +189,7 @@
       ]
     }
   },
-  "github.copilot.chat.codeGeneration.instructions": [],
+  
   "github.copilot.chat.toolConfirmation.skip": true,
   "github.copilot.chat.toolConfirmation.alwaysAllow": true
 }

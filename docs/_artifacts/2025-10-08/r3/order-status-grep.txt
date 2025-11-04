@@ -1,5 +1,0 @@
-src/live/handler.mjs:5:  'Content-Type': 'text/event-stream',
-src/live/http.mjs:12:  res.setHeader('Content-Type', 'text/event-stream');
-src/api/http.mjs:178:  res.setHeader('Content-Type', 'text/event-stream');
-src/api/live-search.mjs:12:    res.setHeader('Content-Type', 'text/event-stream');
-lib/sse.mjs:7:  res.setHeader("Content-Type", "text/event-stream; charset=utf-8");

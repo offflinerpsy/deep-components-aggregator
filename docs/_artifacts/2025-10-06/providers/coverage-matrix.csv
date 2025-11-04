@@ -1,5 +1,0 @@
-Provider,Status,PriceBreaks,Currency,Stock,Package,Description,Regions,Notes
-DigiKey,✅ OK,❌ Empty,❌ N/A,✅ Yes,❌ null,❌ null,✅ Yes,"Only active provider; pricing array empty; mpn/title/description null"
-Mouser,❌ FAIL,—,—,—,—,—,—,Missing API key
-TME,❌ FAIL,—,—,—,—,—,—,Missing credentials
-Farnell,❌ FAIL,—,—,—,—,—,—,Missing API key

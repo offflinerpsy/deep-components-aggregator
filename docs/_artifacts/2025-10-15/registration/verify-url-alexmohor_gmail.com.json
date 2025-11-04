@@ -1,6 +1,0 @@
-{
-  "ok": true,
-  "email": "alexmohor@gmail.com",
-  "verifyUrl": "http://localhost:9201/auth/verify?token=c682f1996f1b36cda4ff2c1ab18fd3e4e9a08bd1c042d9cc197e516969500042",
-  "expires_at": 1760631135173
-}

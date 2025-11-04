@@ -1,6 +1,0 @@
-warp-cli 2025.7.176.0
-Success
-Success
-Success
-Status update: Disconnected
-Reason: Manual Disconnection

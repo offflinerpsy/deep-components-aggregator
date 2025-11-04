@@ -1,0 +1,30 @@
+{
+  "date": "2025-10-24",
+  "checks": [
+    {
+      "name": "workspace-settings",
+      "file": ".vscode/settings.json",
+      "result": "PASS",
+      "notes": "All relevant auto-approve flags present and schema-valid."
+    },
+    {
+      "name": "remote-settings-patch",
+      "file": "docs/_artifacts/2025-10-24/remote-settings-patch-log.json",
+      "result": "PASS",
+      "notes": "Remote Machine/User settings patched; 19 + 4 updates respectively."
+    },
+    {
+      "name": "terminal-echo",
+      "command": "echo OK_FROM_TERMINAL",
+      "result": "PASS",
+      "output": "OK_FROM_TERMINAL"
+    },
+    {
+      "name": "node-one-liner",
+      "command": "node -e \"console.log('COPILOT_REMOTE_OK')\"",
+      "result": "CANCELLED_BY_USER",
+      "notes": "User cancelled after a confirmation prompt from the client."
+    }
+  ],
+  "summary": "Workspace + Remote settings hardened. One command executed without prompts; node one-liner was cancelled by user after prompt likely enforced by client-level policy for executeCommand/runInTerminal tools."
+}

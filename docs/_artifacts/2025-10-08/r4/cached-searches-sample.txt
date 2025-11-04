@@ -1,5 +1,0 @@
-2n3904|providers|36|1
-bc547|providers|48|1
-1n4007|providers|60|1
-ds1307|providers|47|1
-lm358|providers|60|1

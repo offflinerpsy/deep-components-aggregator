@@ -1,8 +1,0 @@
-{
-  "provider": "mailgun_api",
-  "target": "test@example.com",
-  "result": {
-    "ok": false,
-    "error": "mailgun_env_missing"
-  }
-}

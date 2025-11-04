@@ -179,7 +179,8 @@ const adminOptions = {
           mpn: {},
           customer_contact: { type: 'mixed' },
           status_history: { type: 'mixed' },
-          meta: { type: 'mixed', components: { show: false } },
+          // Show raw meta JSON so admin can see user-submitted comment and other details
+          meta: { type: 'mixed' },
           status: {
             availableValues: [
               { value: 'pending', label: 'Новый' },

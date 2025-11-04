@@ -1,8 +1,0 @@
-{
-  "provider": "brevo_api",
-  "target": "test@example.com",
-  "result": {
-    "ok": false,
-    "error": "brevo_env_missing"
-  }
-}

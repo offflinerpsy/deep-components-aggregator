@@ -1,0 +1,27 @@
+{
+  "ok": true,
+  "candidates": [
+    "/root/.vscode-server/data/Machine/settings.json",
+    "/root/.vscode-server/data/User/settings.json",
+    "/root/.vscode-server-insiders/data/Machine/settings.json",
+    "/root/.vscode-server-insiders/data/User/settings.json",
+    "/root/.vscode-remote/data/Machine/settings.json",
+    "/root/.local/share/code-server/User/settings.json",
+    "/root/.config/Code/User/settings.json"
+  ],
+  "results": [
+    {
+      "path": "/root/.vscode-server/data/Machine/settings.json",
+      "existed": true,
+      "beforeKeys": 21,
+      "updated": 5
+    },
+    {
+      "path": "/root/.vscode-server/data/User/settings.json",
+      "existed": true,
+      "beforeKeys": 72,
+      "updated": 5
+    }
+  ],
+  "createdPrimary": false
+}

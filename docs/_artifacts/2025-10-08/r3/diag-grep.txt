@@ -1,3 +1,0 @@
-api/diag.net.mjs:2:// GET /api/diag/net - Network diagnostics for admin dashboard
-server.js:146:import { diagnosticsHandler } from './api/diag.net.mjs';
-server.js:147:app.get('/api/diag/net', diagnosticsHandler);

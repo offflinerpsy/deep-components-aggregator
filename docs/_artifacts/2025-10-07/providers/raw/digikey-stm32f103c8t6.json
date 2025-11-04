@@ -1,7 +1,0 @@
-{
-  "provider": "digikey",
-  "mpn": "STM32F103C8T6",
-  "fetchedAt": "2025-10-06T23:16:13.366Z",
-  "ok": false,
-  "error": "Missing Digi-Key credentials"
-}

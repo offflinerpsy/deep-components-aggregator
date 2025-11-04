@@ -1,7 +1,0 @@
-{
-  "provider": "tme",
-  "mpn": "2N3904",
-  "fetchedAt": "2025-10-06T23:16:13.366Z",
-  "ok": false,
-  "error": "Missing TME credentials"
-}

@@ -1,14 +1,0 @@
-  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
-                                 Dload  Upload   Total   Spent    Left  Speed
-  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100    96  100    96    0     0  18457      0 --:--:-- --:--:-- --:--:-- 19200
-HTTP/1.1 401 Unauthorized
-X-Powered-By: Express
-WWW-Authenticate: Basic realm="Admin Access"
-Content-Type: application/json; charset=utf-8
-Content-Length: 96
-ETag: W/"60-X6mZZ7HwvNoD5enZ+6SoHyFS2qY"
-Date: Wed, 08 Oct 2025 20:35:36 GMT
-Connection: keep-alive
-Keep-Alive: timeout=5
-
-{"ok":false,"error":"unauthorized","message":"Authentication required to access admin products"}

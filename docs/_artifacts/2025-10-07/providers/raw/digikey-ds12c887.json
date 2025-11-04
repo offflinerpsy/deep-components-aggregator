@@ -1,7 +1,0 @@
-{
-  "provider": "digikey",
-  "mpn": "DS12C887+",
-  "fetchedAt": "2025-10-06T23:16:13.362Z",
-  "ok": false,
-  "error": "Missing Digi-Key credentials"
-}

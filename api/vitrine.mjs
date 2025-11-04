@@ -88,15 +88,22 @@ function getList(req, res) {
 
     allRows = ftsResults.map(r => ({ ...r.row, _fts_rank: r.rank }));
   } else {
-    // Step 1b: No text search — get all cached search queries
+    // Step 1b: No text search — get vitrine products first, then other cached searches
     let searchQueries;
     if (section) {
       searchQueries = db.prepare(`
-        SELECT q FROM searches WHERE source = ? ORDER BY ts DESC
+        SELECT q FROM searches 
+        WHERE source = ? 
+        ORDER BY 
+          CASE WHEN q LIKE 'vitrine:%' THEN 0 ELSE 1 END,
+          ts DESC
       `).all(section);
     } else {
       searchQueries = db.prepare(`
-        SELECT q FROM searches ORDER BY ts DESC
+        SELECT q FROM searches 
+        ORDER BY 
+          CASE WHEN q LIKE 'vitrine:%' THEN 0 ELSE 1 END,
+          ts DESC
       `).all();
     }
 

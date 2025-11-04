@@ -1,5 +1,0 @@
-src/api/http.mjs:175:// /api/live/search - полноценный LIVE-поток с SSE
-src/api/http.mjs:176:router.get('/live/search', (req, res) => {
-src/api/live-search.mjs:11:  app.get('/api/live/search', (req, res) => {
-server.js:399:app.get('/api/live/search', async (req, res) => {
-api/live-search.mjs:16:  app.get("/api/live/search", (req, res) => {

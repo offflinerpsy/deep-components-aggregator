@@ -1,0 +1,31 @@
+ECHO: TEST_ECHO
+NODE: NODE_OK
+MK: OK
+RM: OK
+{
+  "ok": true,
+  "candidates": [
+    "/root/.vscode-server/data/Machine/settings.json",
+    "/root/.vscode-server/data/User/settings.json",
+    "/root/.vscode-server-insiders/data/Machine/settings.json",
+    "/root/.vscode-server-insiders/data/User/settings.json",
+    "/root/.vscode-remote/data/Machine/settings.json",
+    "/root/.local/share/code-server/User/settings.json",
+    "/root/.config/Code/User/settings.json"
+  ],
+  "results": [
+    {
+      "path": "/root/.vscode-server/data/Machine/settings.json",
+      "existed": true,
+      "beforeKeys": 24,
+      "updated": 2
+    },
+    {
+      "path": "/root/.vscode-server/data/User/settings.json",
+      "existed": true,
+      "beforeKeys": 75,
+      "updated": 2
+    }
+  ],
+  "createdPrimary": false
+}

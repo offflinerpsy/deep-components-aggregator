@@ -100,6 +100,11 @@ export function mountFrontendRoutes(app, db) {
   app.get('/results', resultsHandler());
   app.get('/product/:mpn', productHandler(db));
   app.get('/page/:slug', staticPageHandler(db));
+  
+  // Catalog test page (standalone HTML)
+  app.get('/catalog-test', (req, res) => {
+    res.sendFile(join(viewsPath, 'pages/catalog-test.html'));
+  });
 
   console.log('✅ Frontend routes mounted (EJS)');
 }

@@ -181,6 +181,10 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 import { mountFrontendRoutes } from './api/frontend.routes.mjs';
 mountFrontendRoutes(app, db);
 
+// Catalog API (DigiKey category tree)
+import mountCatalogRoutes from './api/catalog.mjs';
+mountCatalogRoutes(app);
+
 // Network diagnostics (admin only)
 import { diagnosticsHandler } from './api/diag.net.mjs';
 app.get('/api/diag/net', diagnosticsHandler);

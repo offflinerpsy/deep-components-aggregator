@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Каталог компонентов – Deep Aggregator</title>
+  <link rel="stylesheet" href="/styles/main.css">
+  <style>
+    .catalog-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+      padding: 20px;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    .category-card {
+      background: white;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      padding: 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-decoration: none;
+      color: inherit;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+    .category-card:hover {
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      transform: translateY(-2px);
+      border-color: #2563eb;
+    }
+    .category-icon {
+      width: 64px;
+      height: 64px;
+      background: #f3f4f6;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+    }
+    .category-name {
+      font-size: 16px;
+      font-weight: 500;
+      color: #1f2937;
+      line-height: 1.4;
+    }
+    .breadcrumb {
+      padding: 16px 20px;
+      background: #f9fafb;
+      border-bottom: 1px solid #e5e7eb;
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      font-size: 14px;
+    }
+    .breadcrumb a {
+      color: #2563eb;
+      text-decoration: none;
+    }
+    .breadcrumb a:hover {
+      text-decoration: underline;
+    }
+    .breadcrumb-separator {
+      color: #9ca3af;
+    }
+    .header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 40px 20px;
+      text-align: center;
+    }
+    .header h1 {
+      margin: 0;
+      font-size: 32px;
+      font-weight: 600;
+    }
+    .header p {
+      margin: 12px 0 0;
+      opacity: 0.9;
+      font-size: 16px;
+    }
+    .loading {
+      text-align: center;
+      padding: 60px 20px;
+      color: #6b7280;
+    }
+    .error {
+      background: #fee2e2;
+      color: #991b1b;
+      padding: 20px;
+      margin: 20px;
+      border-radius: 8px;
+      border: 1px solid #fecaca;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>📦 Каталог компонентов</h1>
+    <p>DigiKey категории — 1193+ категории электронных компонентов</p>
+  </div>
+
+  <nav class="breadcrumb" id="breadcrumb" style="display: none;">
+    <a href="/catalog-test">🏠 Главная</a>
+  </nav>
+
+  <div id="content">
+    <div class="loading">⏳ Загрузка категорий...</div>
+  </div>
+
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const categorySlug = urlParams.get('category');
+
+    async function loadCategories() {
+      const contentEl = document.getElementById('content');
+      const breadcrumbEl = document.getElementById('breadcrumb');
+
+      try {
+        let url = '/api/catalog/categories';
+        let breadcrumbUrl = null;
+
+        // If category specified – load subcategories
+        if (categorySlug) {
+          url = `/api/catalog/categories/${encodeURIComponent(categorySlug)}`;
+          breadcrumbUrl = `/api/catalog/breadcrumb/${encodeURIComponent(categorySlug)}`;
+        }
+
+        // Load category data
+        const response = await fetch(url);
+        const data = await response.json();
+
+        if (!data.ok) {
+          throw new Error(data.error || 'Failed to load categories');
+        }
+
+        // If leaf category – redirect to search
+        if (data.category && data.category.is_leaf) {
+          window.location.href = `/results?q=${encodeURIComponent(data.category.name)}&category=${encodeURIComponent(data.category.path)}`;
+          return;
+        }
+
+        // Show breadcrumb if not root
+        if (categorySlug && breadcrumbUrl) {
+          const breadcrumbResponse = await fetch(breadcrumbUrl);
+          const breadcrumbData = await breadcrumbResponse.json();
+
+          if (breadcrumbData.ok && breadcrumbData.breadcrumb) {
+            renderBreadcrumb(breadcrumbData.breadcrumb);
+            breadcrumbEl.style.display = 'flex';
+          }
+        }
+
+        // Render categories
+        const categories = categorySlug ? data.subcategories : data.categories;
+        renderCategories(categories);
+
+      } catch (err) {
+        contentEl.innerHTML = `
+          <div class="error">
+            ❌ Ошибка загрузки: ${err.message}
+          </div>
+        `;
+      }
+    }
+
+    function renderBreadcrumb(breadcrumb) {
+      const breadcrumbEl = document.getElementById('breadcrumb');
+      const html = `
+        <a href="/catalog-test">🏠 Главная</a>
+        ${breadcrumb.map((item, idx) => {
+          const isLast = idx === breadcrumb.length - 1;
+          const link = isLast 
+            ? `<span class="breadcrumb-current">${item.name}</span>`
+            : `<a href="/catalog-test?category=${encodeURIComponent(item.slug)}">${item.name}</a>`;
+          return `<span class="breadcrumb-separator">›</span>${link}`;
+        }).join('')}
+      `;
+      breadcrumbEl.innerHTML = html;
+    }
+
+    function renderCategories(categories) {
+      const contentEl = document.getElementById('content');
+
+      if (!categories || categories.length === 0) {
+        contentEl.innerHTML = '<div class="loading">Нет подкатегорий</div>';
+        return;
+      }
+
+      const html = `
+        <div class="catalog-grid">
+          ${categories.map(cat => {
+            const icon = getIconForCategory(cat.name);
+            const href = cat.is_leaf 
+              ? `/results?q=${encodeURIComponent(cat.name)}&category=${encodeURIComponent(cat.path)}`
+              : `/catalog-test?category=${encodeURIComponent(cat.slug)}`;
+            
+            return `
+              <a href="${href}" class="category-card">
+                <div class="category-icon">${icon}</div>
+                <div class="category-name">${cat.name}</div>
+              </a>
+            `;
+          }).join('')}
+        </div>
+      `;
+
+      contentEl.innerHTML = html;
+    }
+
+    function getIconForCategory(name) {
+      const lower = name.toLowerCase();
+      
+      if (lower.includes('capacitor')) return '🔋';
+      if (lower.includes('resistor')) return '🔌';
+      if (lower.includes('transistor') || lower.includes('mosfet') || lower.includes('diode')) return '⚡';
+      if (lower.includes('connector') || lower.includes('cable')) return '🔗';
+      if (lower.includes('integrated circuit') || lower.includes('ic') || lower.includes('processor')) return '🖥️';
+      if (lower.includes('memory')) return '💾';
+      if (lower.includes('sensor')) return '🌡️';
+      if (lower.includes('led') || lower.includes('light')) return '💡';
+      if (lower.includes('battery')) return '🔋';
+      if (lower.includes('audio') || lower.includes('speaker')) return '🔊';
+      if (lower.includes('display') || lower.includes('lcd')) return '📺';
+      if (lower.includes('switch') || lower.includes('button')) return '🔘';
+      if (lower.includes('relay')) return '⚙️';
+      if (lower.includes('crystal') || lower.includes('oscillator')) return '⏱️';
+      if (lower.includes('filter')) return '🎛️';
+      if (lower.includes('inductor') || lower.includes('coil')) return '🧲';
+      if (lower.includes('power') || lower.includes('supply')) return '⚡';
+      if (lower.includes('motor')) return '🔄';
+      if (lower.includes('box') || lower.includes('enclosure')) return '📦';
+      if (lower.includes('tool')) return '🔧';
+      if (lower.includes('thermal')) return '🌡️';
+      
+      return '📂'; // Default folder icon
+    }
+
+    // Initialize
+    loadCategories();
+  </script>
+</body>
+</html>

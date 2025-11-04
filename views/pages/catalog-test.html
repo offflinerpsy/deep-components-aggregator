@@ -140,9 +140,9 @@
           throw new Error(data.error || 'Failed to load categories');
         }
 
-        // If leaf category – redirect to search
+        // If leaf category – show search form instead of redirect
         if (data.category && data.category.is_leaf) {
-          window.location.href = `/results?q=${encodeURIComponent(data.category.name)}&category=${encodeURIComponent(data.category.path)}`;
+          renderSearchForm(data.category);
           return;
         }
 
@@ -197,8 +197,9 @@
         <div class="catalog-grid">
           ${categories.map(cat => {
             const icon = getIconForCategory(cat.name);
+            // Leaf categories open in same page with search form
             const href = cat.is_leaf 
-              ? `/results?q=${encodeURIComponent(cat.name)}&category=${encodeURIComponent(cat.path)}`
+              ? `/catalog-test?category=${encodeURIComponent(cat.slug)}`
               : `/catalog-test?category=${encodeURIComponent(cat.slug)}`;
             
             return `
@@ -212,6 +213,49 @@
       `;
 
       contentEl.innerHTML = html;
+    }
+
+    function renderSearchForm(category) {
+      const contentEl = document.getElementById('content');
+      const breadcrumbEl = document.getElementById('breadcrumb');
+
+      // Show breadcrumb
+      breadcrumbEl.style.display = 'flex';
+      
+      contentEl.innerHTML = `
+        <div style="max-width: 800px; margin: 40px auto; padding: 20px;">
+          <h2 style="text-align: center; margin-bottom: 30px; color: #1f2937;">
+            🔍 Поиск в категории: ${category.name}
+          </h2>
+          
+          <form action="/results" method="GET" style="display: flex; gap: 12px; margin-bottom: 30px;">
+            <input 
+              type="text" 
+              name="q" 
+              placeholder="Введите запрос для поиска..."
+              style="flex: 1; padding: 16px 20px; font-size: 16px; border: 2px solid #e0e0e0; border-radius: 8px; outline: none;"
+              onfocus="this.style.borderColor='#2563eb'"
+              onblur="this.style.borderColor='#e0e0e0'"
+              required
+            />
+            <input type="hidden" name="category" value="${category.path}" />
+            <button 
+              type="submit"
+              style="padding: 16px 32px; font-size: 16px; font-weight: 500; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 8px; cursor: pointer; transition: transform 0.2s;"
+              onmouseover="this.style.transform='scale(1.05)'"
+              onmouseout="this.style.transform='scale(1)'"
+            >
+              Искать
+            </button>
+          </form>
+
+          <div style="background: #f9fafb; padding: 20px; border-radius: 8px; border-left: 4px solid #2563eb;">
+            <p style="margin: 0; color: #6b7280; font-size: 14px;">
+              💡 <strong>Подсказка:</strong> Введите название компонента, номер модели или характеристики для поиска в этой категории.
+            </p>
+          </div>
+        </div>
+      `;
     }
 
     function getIconForCategory(name) {

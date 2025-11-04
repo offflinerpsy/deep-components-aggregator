@@ -571,6 +571,24 @@ app.get('/api/digikey/selftest', async (req, res) => {
   }
 });
 
+// Autocomplete endpoint (online provider suggestions)
+import { orchestrateAutocomplete } from './src/search/autocompleteOrchestrator.mjs';
+import { autocompleteRateLimiter } from './middleware/autocompleteRateLimiter.mjs';
+
+app.get('/api/autocomplete', autocompleteRateLimiter, async (req, res) => {
+  const q = String(req.query.q || '').trim();
+
+  // Guard: короткий запрос
+  if (!q || q.length < 2) {
+    return res.json({ suggestions: [], meta: { q, latencyMs: 0, providersHit: [] } });
+  }
+
+  res.setHeader('Cache-Control', 'no-store');
+
+  const result = await orchestrateAutocomplete(q);
+  res.json(result);
+});
+
 // SSE Live Search endpoint (with heartbeat, AbortController, no-buffering)
 app.get('/api/live/search', async (req, res) => {
   const q = String(req.query.q || '').trim();

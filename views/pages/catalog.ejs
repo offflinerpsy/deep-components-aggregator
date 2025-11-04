@@ -1,0 +1,291 @@
+<div class="min-h-screen relative bg-background page-transition">
+  <main class="pt-16 pb-24 px-6 relative z-10">
+    <div class="container mx-auto max-w-6xl">
+      <!-- Hero section -->
+      <div class="text-center mb-12 fade-in">
+        <h1 class="title-main mb-3">
+          <span class="gradient-text">Каталог</span> Компонентов
+        </h1>
+        <p class="text-foreground/70 text-base">
+          DigiKey категории — 1193+ категории электронных компонентов
+        </p>
+      </div>
+
+      <!-- Breadcrumb navigation -->
+      <nav class="mb-8" id="breadcrumb" style="display: none;">
+        <div class="flex items-center gap-2 text-sm text-foreground/60">
+          <a href="/catalog-test" class="hover:text-foreground transition-colors">
+            <svg class="w-4 h-4 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+            </svg>
+            Главная
+          </a>
+          <span id="breadcrumb-items"></span>
+        </div>
+      </nav>
+
+      <!-- Categories grid / Search form -->
+      <div id="content">
+        <div class="text-center py-12 text-foreground/50">
+          <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-foreground/30 mb-3"></div>
+          <p>Загрузка категорий...</p>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script>
+  const urlParams = new URLSearchParams(window.location.search);
+  const categorySlug = urlParams.get('category');
+  const contentEl = document.getElementById('content');
+  const breadcrumbEl = document.getElementById('breadcrumb');
+  const breadcrumbItemsEl = document.getElementById('breadcrumb-items');
+
+  // SVG icons (from home.ejs)
+  const icons = {
+    chip: `<svg class="w-12 h-12" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.5">
+      <rect x="20" y="20" width="24" height="24" rx="2" />
+      <line x1="28" y1="26" x2="36" y2="26" />
+      <line x1="28" y1="30" x2="36" y2="30" />
+      <line x1="28" y1="34" x2="36" y2="34" />
+      <line x1="28" y1="38" x2="36" y2="38" />
+      <line x1="20" y1="24" x2="16" y2="24" />
+      <line x1="20" y1="28" x2="16" y2="28" />
+      <line x1="20" y1="32" x2="16" y2="32" />
+      <line x1="20" y1="36" x2="16" y2="36" />
+      <line x1="20" y1="40" x2="16" y2="40" />
+      <line x1="44" y1="24" x2="48" y2="24" />
+      <line x1="44" y1="28" x2="48" y2="28" />
+      <line x1="44" y1="32" x2="48" y2="32" />
+      <line x1="44" y1="36" x2="48" y2="36" />
+      <line x1="44" y1="40" x2="48" y2="40" />
+    </svg>`,
+    transistor: `<svg class="w-12 h-12" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.5">
+      <circle cx="32" cy="32" r="10" />
+      <line x1="32" y1="16" x2="32" y2="22" />
+      <line x1="32" y1="42" x2="32" y2="48" />
+      <line x1="38" y1="28" x2="44" y2="22" />
+      <line x1="38" y1="36" x2="44" y2="42" />
+      <line x1="26" y1="32" x2="32" y2="32" />
+      <path d="M32 28 L36 32 L32 36" fill="none" />
+    </svg>`,
+    resistor: `<svg class="w-12 h-12" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.5">
+      <rect x="20" y="28" width="24" height="8" rx="1" />
+      <line x1="12" y1="32" x2="20" y2="32" />
+      <line x1="44" y1="32" x2="52" y2="32" />
+    </svg>`,
+    connector: `<svg class="w-12 h-12" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.5">
+      <rect x="22" y="16" width="20" height="32" rx="2" />
+      <line x1="26" y1="22" x2="38" y2="22" />
+      <line x1="26" y1="26" x2="38" y2="26" />
+      <line x1="26" y1="30" x2="38" y2="30" />
+      <line x1="26" y1="34" x2="38" y2="34" />
+    </svg>`,
+    memory: `<svg class="w-12 h-12" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.5">
+      <rect x="18" y="18" width="28" height="28" rx="2" />
+      <line x1="26" y1="18" x2="26" y2="46" stroke-width="0.5" />
+      <line x1="32" y1="18" x2="32" y2="46" stroke-width="0.5" />
+      <line x1="38" y1="18" x2="38" y2="46" stroke-width="0.5" />
+    </svg>`,
+    default: `<svg class="w-12 h-12" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.5">
+      <rect x="16" y="16" width="32" height="32" rx="4" />
+      <line x1="24" y1="28" x2="40" y2="28" />
+      <line x1="24" y1="36" x2="40" y2="36" />
+    </svg>`
+  };
+
+  function getCategoryIcon(name) {
+    const normalized = (name || '').toLowerCase();
+    if (/ic|chip|processor|controller|microcontroller/.test(normalized)) return icons.chip;
+    if (/transistor|mosfet|bjt|fet/.test(normalized)) return icons.transistor;
+    if (/resistor|ohm/.test(normalized)) return icons.resistor;
+    if (/connector|jack|plug|socket/.test(normalized)) return icons.connector;
+    if (/memory|ram|rom|flash/.test(normalized)) return icons.memory;
+    return icons.default;
+  }
+
+  async function loadCategories() {
+    try {
+      let url = '/api/catalog/categories';
+      let breadcrumbUrl = null;
+
+      if (categorySlug) {
+        url = `/api/catalog/categories/${encodeURIComponent(categorySlug)}`;
+        breadcrumbUrl = `/api/catalog/breadcrumb/${encodeURIComponent(categorySlug)}`;
+      }
+
+      const [dataRes, breadcrumbRes] = await Promise.all([
+        fetch(url),
+        breadcrumbUrl ? fetch(breadcrumbUrl) : Promise.resolve(null)
+      ]);
+
+      if (!dataRes.ok) {
+        throw new Error(dataRes.status === 404 ? 'Категория не найдена' : `HTTP ${dataRes.status}`);
+      }
+
+      const data = await dataRes.json();
+      
+      if (!data.ok) {
+        throw new Error(data.error || 'Ошибка API');
+      }
+
+      // Breadcrumb rendering
+      if (breadcrumbRes && breadcrumbRes.ok) {
+        const breadcrumbData = await breadcrumbRes.json();
+        if (breadcrumbData.ok && breadcrumbData.breadcrumb) {
+          renderBreadcrumb(breadcrumbData.breadcrumb);
+          breadcrumbEl.style.display = 'block';
+        }
+      }
+
+      // Check if this is a leaf category (show search form)
+      if (data.category && data.category.is_leaf) {
+        renderSearchForm(data.category);
+        return;
+      }
+
+      // Render categories
+      const categories = categorySlug ? data.subcategories : data.categories;
+      renderCategories(categories);
+
+    } catch (err) {
+      contentEl.innerHTML = `
+        <div class="glass p-6 border border-border rounded-lg max-w-md mx-auto text-center">
+          <svg class="w-12 h-12 mx-auto mb-3 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <h3 class="text-lg font-medium mb-2">Ошибка загрузки</h3>
+          <p class="text-foreground/70">${err.message}</p>
+          <a href="/catalog-test" class="inline-block mt-4 px-4 py-2 bg-primary text-white rounded hover:bg-primary/90 transition-colors">
+            Вернуться к каталогу
+          </a>
+        </div>
+      `;
+    }
+  }
+
+  function renderBreadcrumb(breadcrumb) {
+    const items = breadcrumb.map((item, idx) => {
+      const isLast = idx === breadcrumb.length - 1;
+      if (isLast) {
+        return `<span class="text-foreground">${escapeHtml(item.name)}</span>`;
+      }
+      return `
+        <svg class="w-4 h-4 inline text-foreground/30" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+        </svg>
+        <a href="/catalog-test?category=${encodeURIComponent(item.slug)}" class="hover:text-foreground transition-colors">
+          ${escapeHtml(item.name)}
+        </a>
+      `;
+    }).join('');
+    breadcrumbItemsEl.innerHTML = items;
+  }
+
+  function renderCategories(categories) {
+    if (!categories || categories.length === 0) {
+      contentEl.innerHTML = `
+        <div class="text-center py-12 text-foreground/50">
+          <p>Нет подкатегорий</p>
+        </div>
+      `;
+      return;
+    }
+
+    const html = `
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        ${categories.map(cat => `
+          <a href="/catalog-test?category=${encodeURIComponent(cat.slug)}" 
+             class="component-card glass border border-border rounded-lg p-6 hover:border-primary/50 transition-all group cursor-pointer">
+            <div class="flex items-start gap-4">
+              <div class="flex-shrink-0 text-primary/80 group-hover:text-primary transition-colors">
+                ${getCategoryIcon(cat.name)}
+              </div>
+              <div class="flex-1 min-w-0">
+                <h3 class="text-lg font-medium mb-1 group-hover:text-primary transition-colors">
+                  ${escapeHtml(cat.name)}
+                </h3>
+                ${cat.path ? `<p class="text-sm text-foreground/50 truncate">${escapeHtml(cat.path)}</p>` : ''}
+              </div>
+            </div>
+          </a>
+        `).join('')}
+      </div>
+    `;
+    contentEl.innerHTML = html;
+  }
+
+  function renderSearchForm(category) {
+    const html = `
+      <div class="max-w-2xl mx-auto fade-in">
+        <div class="glass border border-border rounded-lg p-8">
+          <div class="text-center mb-6">
+            <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 mb-4">
+              ${getCategoryIcon(category.name)}
+            </div>
+            <h2 class="text-2xl font-medium mb-2">
+              ${escapeHtml(category.name)}
+            </h2>
+            <p class="text-foreground/70">
+              Конечная категория — введите запрос для поиска компонентов
+            </p>
+          </div>
+
+          <form id="search-form" class="space-y-4">
+            <div>
+              <input 
+                type="text" 
+                id="search-input"
+                placeholder="Введите MPN или характеристики..."
+                class="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
+                autofocus
+              />
+            </div>
+            <div class="flex gap-3">
+              <button 
+                type="submit"
+                class="flex-1 px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors font-medium"
+              >
+                Искать компоненты
+              </button>
+              <a 
+                href="/catalog-test?category=${encodeURIComponent(category.slug.split('-').slice(0, -1).join('-') || '')}"
+                class="px-6 py-3 border border-border rounded-lg hover:bg-foreground/5 transition-colors"
+              >
+                Назад
+              </a>
+            </div>
+          </form>
+        </div>
+
+        <div class="mt-6 text-center text-sm text-foreground/50">
+          <p>💡 Совет: используйте категорию "${escapeHtml(category.name)}" в фильтрах результатов</p>
+        </div>
+      </div>
+    `;
+    
+    contentEl.innerHTML = html;
+
+    // Attach search handler
+    const form = document.getElementById('search-form');
+    const input = document.getElementById('search-input');
+    
+    form?.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const query = (input?.value || '').trim();
+      if (query) {
+        window.location.href = `/results?q=${encodeURIComponent(query)}&category=${encodeURIComponent(category.name)}`;
+      }
+    });
+  }
+
+  function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+  }
+
+  // Load on page load
+  loadCategories();
+</script>

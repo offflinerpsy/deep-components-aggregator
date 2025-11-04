@@ -102,8 +102,17 @@ export function mountFrontendRoutes(app, db) {
   app.get('/page/:slug', staticPageHandler(db));
   
   // Catalog test page (standalone HTML)
+  // GET /catalog-test - Catalog browser (EJS)
   app.get('/catalog-test', (req, res) => {
-    res.sendFile(join(viewsPath, 'pages/catalog-test.html'));
+    renderPage('catalog.ejs', {
+      title: 'Каталог Компонентов - ДИПОНИКА',
+      description: 'DigiKey категории электронных компонентов'
+    })
+      .then((html) => res.send(html))
+      .catch((err) => {
+        console.error('[EJS] catalog render failed:', err?.message || err);
+        res.status(500).send('<h1>Ошибка рендеринга</h1>');
+      });
   });
 
   console.log('✅ Frontend routes mounted (EJS)');

@@ -572,8 +572,11 @@ app.get('/api/digikey/selftest', async (req, res) => {
 });
 
 // Autocomplete endpoint (online provider suggestions)
-import { orchestrateAutocomplete } from './src/search/autocompleteOrchestrator.mjs';
+import { orchestrateAutocomplete, initAutocompleteDb } from './src/search/autocompleteOrchestrator.mjs';
 import { autocompleteRateLimiter } from './middleware/autocompleteRateLimiter.mjs';
+
+// Initialize autocomplete cache DB
+initAutocompleteDb(db);
 
 app.get('/api/autocomplete', autocompleteRateLimiter, async (req, res) => {
   const q = String(req.query.q || '').trim();

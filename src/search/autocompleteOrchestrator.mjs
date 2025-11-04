@@ -1,11 +1,76 @@
 // src/search/autocompleteOrchestrator.mjs
 // Оркестратор подсказок от всех провайдеров
-// Нормализация, параллельные вызовы, дедупликация, сортировка
+// Нормализация, параллельные вызовы, дедупликация, сортировка, кэширование
 
 import { mouserSuggest } from '../integrations/suggest/mouser.suggest.mjs';
 import { digikeySuggest } from '../integrations/suggest/digikey.suggest.mjs';
 import { farnellSuggest } from '../integrations/suggest/farnell.suggest.mjs';
 import { tmeSuggest } from '../integrations/suggest/tme.suggest.mjs';
+
+let dbInstance = null;
+
+/**
+ * Инициализация DB (вызывается из server.js)
+ * @param {import('better-sqlite3').Database} db
+ */
+export function initAutocompleteDb(db) {
+  dbInstance = db;
+}
+
+/**
+ * Читает из кэша autocomplete
+ * @param {string} query - нормализованный запрос
+ * @returns {SuggestRow[] | null} - массив подсказок или null если не найдено/протухло
+ */
+function readFromCache(query) {
+  if (!dbInstance) return null;
+
+  try {
+    const row = dbInstance.prepare(
+      'SELECT results, created_at, ttl FROM autocomplete_cache WHERE query = ?'
+    ).get(query);
+
+    if (!row) return null;
+
+    const now = Date.now();
+    const expiryTime = row.created_at + (row.ttl * 1000);
+
+    // Протухло?
+    if (now > expiryTime) {
+      // Удаляем протухшую запись
+      dbInstance.prepare('DELETE FROM autocomplete_cache WHERE query = ?').run(query);
+      return null;
+    }
+
+    // Парсим JSON
+    return JSON.parse(row.results);
+  } catch (e) {
+    console.error('[autocomplete-cache] Read error:', e);
+    return null;
+  }
+}
+
+/**
+ * Сохраняет в кэш autocomplete
+ * @param {string} query - нормализованный запрос
+ * @param {SuggestRow[]} suggestions - массив подсказок
+ * @param {number} ttl - TTL в секундах (по умолчанию 3600 = 1 час)
+ */
+function writeToCache(query, suggestions, ttl = 3600) {
+  if (!dbInstance) return;
+
+  try {
+    const results = JSON.stringify(suggestions);
+    const created_at = Date.now();
+
+    dbInstance.prepare(`
+      INSERT OR REPLACE INTO autocomplete_cache (query, results, created_at, ttl)
+      VALUES (?, ?, ?, ?)
+    `).run(query, results, created_at, ttl);
+  } catch (e) {
+    console.error('[autocomplete-cache] Write error:', e);
+  }
+}
 
 /**
  * @typedef {Object} SuggestRow
@@ -13,6 +78,7 @@ import { tmeSuggest } from '../integrations/suggest/tme.suggest.mjs';
  * @property {string} [title]
  * @property {string} [manufacturer]
  * @property {'mouser'|'digikey'|'farnell'|'tme'} source
+ * @property {number} [min_price_rub] - Минимальная цена с наценкой (опционально, если провайдер вернул)
  */
 
 /**
@@ -131,13 +197,31 @@ export async function orchestrateAutocomplete(q) {
       meta: {
         q,
         latencyMs: 0,
-        providersHit: []
+        providersHit: [],
+        cached: false
       }
     };
   }
 
   // Нормализация
   const normalized = normalizeQuery(q);
+
+  // Проверка кэша
+  const cached = readFromCache(normalized);
+  if (cached) {
+    const latencyMs = Date.now() - startTime;
+    const providersHit = [...new Set(cached.map(r => r.source))];
+    
+    return {
+      suggestions: cached,
+      meta: {
+        q: normalized,
+        latencyMs,
+        providersHit,
+        cached: true
+      }
+    };
+  }
 
   // Fetch от провайдеров
   const allResults = await fetchFromProviders(normalized);
@@ -151,6 +235,9 @@ export async function orchestrateAutocomplete(q) {
   // Первые 20
   const top20 = sorted.slice(0, 20);
 
+  // Сохраняем в кэш (TTL 1 час)
+  writeToCache(normalized, top20, 3600);
+
   const latencyMs = Date.now() - startTime;
 
   // Провайдеры, которые вернули результаты
@@ -161,7 +248,8 @@ export async function orchestrateAutocomplete(q) {
     meta: {
       q: normalized,
       latencyMs,
-      providersHit
+      providersHit,
+      cached: false
     }
   };
 }

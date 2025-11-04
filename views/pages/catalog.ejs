@@ -233,14 +233,16 @@
           </div>
 
           <form id="search-form" class="space-y-4">
-            <div>
+            <div class="relative">
               <input 
                 type="text" 
                 id="search-input"
                 placeholder="Введите MPN или характеристики..."
                 class="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
+                autocomplete="off"
                 autofocus
               />
+              <div id="autocomplete-results" class="hidden absolute top-full left-0 right-0 mt-1 max-h-80 overflow-y-auto bg-background border border-border rounded-lg shadow-lg z-50"></div>
             </div>
             <div class="flex gap-3">
               <button 
@@ -270,6 +272,68 @@
     // Attach search handler
     const form = document.getElementById('search-form');
     const input = document.getElementById('search-input');
+    const autocompleteEl = document.getElementById('autocomplete-results');
+    
+    // Autocomplete logic
+    let debounceTimer;
+    let currentResults = [];
+    
+    input?.addEventListener('input', (e) => {
+      clearTimeout(debounceTimer);
+      const query = (e.target.value || '').trim();
+      
+      if (query.length < 2) {
+        autocompleteEl.classList.add('hidden');
+        autocompleteEl.innerHTML = '';
+        return;
+      }
+      
+      debounceTimer = setTimeout(async () => {
+        try {
+          const res = await fetch(`/api/autocomplete?q=${encodeURIComponent(query)}`);
+          const data = await res.json();
+          
+          if (data.ok && data.suggestions && data.suggestions.length > 0) {
+            currentResults = data.suggestions;
+            renderAutocomplete(data.suggestions);
+          } else {
+            autocompleteEl.classList.add('hidden');
+          }
+        } catch (err) {
+          console.error('Autocomplete error:', err);
+        }
+      }, 300);
+    });
+    
+    function renderAutocomplete(suggestions) {
+      const html = suggestions.slice(0, 8).map((item, idx) => `
+        <div class="autocomplete-item px-4 py-3 hover:bg-foreground/5 cursor-pointer border-b border-border/50 last:border-0" data-index="${idx}">
+          <div class="font-medium text-sm">${escapeHtml(item.mpn)}</div>
+          <div class="text-xs text-foreground/60 truncate">${escapeHtml(item.title || item.manufacturer || '')}</div>
+        </div>
+      `).join('');
+      
+      autocompleteEl.innerHTML = html;
+      autocompleteEl.classList.remove('hidden');
+      
+      // Click handlers
+      autocompleteEl.querySelectorAll('.autocomplete-item').forEach(el => {
+        el.addEventListener('click', () => {
+          const idx = parseInt(el.dataset.index);
+          const item = currentResults[idx];
+          if (item) {
+            window.location.href = `/product/${encodeURIComponent(item.mpn)}`;
+          }
+        });
+      });
+    }
+    
+    // Close autocomplete on outside click
+    document.addEventListener('click', (e) => {
+      if (!input?.contains(e.target) && !autocompleteEl?.contains(e.target)) {
+        autocompleteEl?.classList.add('hidden');
+      }
+    });
     
     form?.addEventListener('submit', (e) => {
       e.preventDefault();

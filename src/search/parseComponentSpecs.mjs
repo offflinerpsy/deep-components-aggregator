@@ -99,6 +99,17 @@ function parseResistance(token) {
       value *= multipliers[mult.toLowerCase()] || 1;
     }
     
+    // Не распознаём голые числа < 1Ω как сопротивление (скорее всего это размер/высота)
+    if (value < 1 && !match[2] && !token.match(/ω|ohm/i)) {
+      return null;
+    }
+    
+    // Игнорируем малые значения без явных единиц (скорее всего это height/width/другой параметр)
+    // Пример: "0.22" без "Ω" или "ohm" не считаем сопротивлением
+    if (value < 1 && !token.match(/ω|ohm/i)) {
+      return null;
+    }
+    
     return { value, unit: 'Ω', type: 'resistance' };
   }
   

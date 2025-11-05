@@ -6,6 +6,8 @@ import { mouserSuggest } from '../integrations/suggest/mouser.suggest.mjs';
 import { digikeySuggest } from '../integrations/suggest/digikey.suggest.mjs';
 import { farnellSuggest } from '../integrations/suggest/farnell.suggest.mjs';
 import { tmeSuggest } from '../integrations/suggest/tme.suggest.mjs';
+import { parseComponentSpecs, isSpecsSearch, specsToSearchQuery } from './parseComponentSpecs.mjs';
+import { mouserSearchByKeyword } from '../integrations/mouser/client.mjs';
 
 let dbInstance = null;
 
@@ -151,9 +153,15 @@ function sortSuggestions(rows, q) {
  * Параллельный вызов провайдеров с троттлингом
  * Максимум 3 провайдера параллельно
  * @param {string} q
+ * @param {boolean} isSpecs - Поиск по характеристикам?
  * @returns {Promise<SuggestRow[]>}
  */
-async function fetchFromProviders(q) {
+async function fetchFromProviders(q, isSpecs = false) {
+  // Если поиск по характеристикам — используем keyword search вместо suggest
+  if (isSpecs) {
+    return fetchByKeywordSearch(q);
+  }
+
   // Приоритет: Mouser > Farnell > TME > DigiKey (DK — тяжелый из-за OAuth)
   const providers = [
     { name: 'mouser', fn: mouserSuggest },
@@ -183,6 +191,43 @@ async function fetchFromProviders(q) {
 }
 
 /**
+ * Поиск по характеристикам через keyword search
+ * Возвращает только Mouser (у него лучший keyword search)
+ * @param {string} q - Нормализованный запрос
+ * @returns {Promise<SuggestRow[]>}
+ */
+async function fetchByKeywordSearch(q) {
+  const apiKey = process.env.MOUSER_API_KEY;
+  if (!apiKey) return [];
+
+  try {
+    const response = await mouserSearchByKeyword({ 
+      apiKey, 
+      q, 
+      records: 10,  // Топ-10 для автодополнения
+      startingRecord: 0 
+    });
+
+    const parts = response?.data?.SearchResults?.Parts;
+    if (!Array.isArray(parts) || parts.length === 0) {
+      return [];
+    }
+
+    // Мапим в SuggestRow формат
+    return parts.slice(0, 10).map(part => ({
+      mpn: part.MouserPartNumber || part.ManufacturerPartNumber || '',
+      title: part.Description || '',
+      manufacturer: part.Manufacturer || '',
+      source: 'mouser'
+    })).filter(r => r.mpn);
+
+  } catch (err) {
+    console.error('[autocomplete-specs] Mouser keyword search error:', err.message);
+    return [];
+  }
+}
+
+/**
  * Главная функция оркестратора
  * @param {string} q - Поисковый запрос
  * @returns {Promise<{suggestions: SuggestRow[], meta: Object}>}
@@ -198,13 +243,21 @@ export async function orchestrateAutocomplete(q) {
         q,
         latencyMs: 0,
         providersHit: [],
-        cached: false
+        cached: false,
+        specsDetected: false
       }
     };
   }
 
-  // Нормализация
-  const normalized = normalizeQuery(q);
+  // Парсим характеристики
+  const specs = parseComponentSpecs(q);
+  const isSpecs = isSpecsSearch(specs);
+
+  // Если это поиск по характеристикам — преобразуем в keyword запрос
+  let normalized = normalizeQuery(q);
+  if (isSpecs) {
+    normalized = specsToSearchQuery(specs);
+  }
 
   // Проверка кэша
   const cached = readFromCache(normalized);
@@ -216,15 +269,18 @@ export async function orchestrateAutocomplete(q) {
       suggestions: cached,
       meta: {
         q: normalized,
+        originalQuery: q,
         latencyMs,
         providersHit,
-        cached: true
+        cached: true,
+        specsDetected: isSpecs,
+        specs: isSpecs ? specs : undefined
       }
     };
   }
 
   // Fetch от провайдеров
-  const allResults = await fetchFromProviders(normalized);
+  const allResults = await fetchFromProviders(normalized, isSpecs);
 
   // Дедупликация
   const deduplicated = deduplicateByMpn(allResults);
@@ -247,9 +303,12 @@ export async function orchestrateAutocomplete(q) {
     suggestions: top20,
     meta: {
       q: normalized,
+      originalQuery: q,
       latencyMs,
       providersHit,
-      cached: false
+      cached: false,
+      specsDetected: isSpecs,
+      specs: isSpecs ? specs : undefined
     }
   };
 }

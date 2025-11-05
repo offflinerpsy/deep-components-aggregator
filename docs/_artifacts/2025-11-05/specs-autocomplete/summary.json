@@ -1,0 +1,23 @@
+{
+  "specsDetected": true,
+  "specs": {
+    "package": "0603",
+    "resistance": {
+      "value": 100000,
+      "unit": "Ω",
+      "type": "resistance"
+    },
+    "capacitance": null,
+    "voltage": null,
+    "tolerance": null,
+    "power": null,
+    "componentType": null,
+    "material": null,
+    "transistorType": null,
+    "tokens": [],
+    "raw": "0603 100k"
+  },
+  "suggestionsCount": 10,
+  "cached": true,
+  "latency": 0
+}

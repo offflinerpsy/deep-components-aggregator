@@ -277,6 +277,7 @@
     // Autocomplete logic
     let debounceTimer;
     let currentResults = [];
+    let currentMeta = null;
     
     input?.addEventListener('input', (e) => {
       clearTimeout(debounceTimer);
@@ -285,6 +286,7 @@
       if (query.length < 2) {
         autocompleteEl.classList.add('hidden');
         autocompleteEl.innerHTML = '';
+        currentMeta = null;
         return;
       }
       
@@ -293,9 +295,10 @@
           const res = await fetch(`/api/autocomplete?q=${encodeURIComponent(query)}`);
           const data = await res.json();
           
-          if (data.ok && data.suggestions && data.suggestions.length > 0) {
+          if (data.suggestions && data.suggestions.length > 0) {
             currentResults = data.suggestions;
-            renderAutocomplete(data.suggestions);
+            currentMeta = data.meta || null;
+            renderAutocomplete(data.suggestions, currentMeta);
           } else {
             autocompleteEl.classList.add('hidden');
           }
@@ -305,15 +308,35 @@
       }, 300);
     });
     
-    function renderAutocomplete(suggestions) {
-      const html = suggestions.slice(0, 8).map((item, idx) => `
-        <div class="autocomplete-item px-4 py-3 hover:bg-foreground/5 cursor-pointer border-b border-border/50 last:border-0" data-index="${idx}">
-          <div class="font-medium text-sm">${escapeHtml(item.mpn)}</div>
-          <div class="text-xs text-foreground/60 truncate">${escapeHtml(item.title || item.manufacturer || '')}</div>
-        </div>
-      `).join('');
+    function renderAutocomplete(suggestions, meta) {
+      let headerHtml = '';
+      if (meta && meta.specsDetected) {
+        headerHtml = `<div class="px-4 py-2 bg-primary/10 border-b border-border/50 text-xs text-foreground/70">🔍 Поиск по характеристикам</div>`;
+      }
       
-      autocompleteEl.innerHTML = html;
+      const itemsHtml = suggestions.slice(0, 8).map((item, idx) => {
+        let specsHtml = '';
+        if (meta && meta.specsDetected && meta.specs) {
+          const badges = [];
+          const s = meta.specs;
+          if (s.package) badges.push(`<span class="inline-block px-2 py-0.5 text-xs rounded bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-200">${escapeHtml(s.package)}</span>`);
+          if (s.resistance) badges.push(`<span class="inline-block px-2 py-0.5 text-xs rounded bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-200">${formatResistance(s.resistance)}</span>`);
+          if (s.capacitance) badges.push(`<span class="inline-block px-2 py-0.5 text-xs rounded bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-200">${formatCapacitance(s.capacitance)}</span>`);
+          if (s.voltage) badges.push(`<span class="inline-block px-2 py-0.5 text-xs rounded bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-200">${s.voltage.value}${s.voltage.unit || 'V'}</span>`);
+          if (s.tolerance) badges.push(`<span class="inline-block px-2 py-0.5 text-xs rounded bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-200">±${s.tolerance.value}%</span>`);
+          if (badges.length > 0) specsHtml = `<div class="mt-1 flex flex-wrap gap-1">${badges.join('')}</div>`;
+        }
+        
+        return `
+          <div class="autocomplete-item px-4 py-3 hover:bg-foreground/5 cursor-pointer border-b border-border/50 last:border-0" data-index="${idx}">
+            <div class="font-medium text-sm">${escapeHtml(item.mpn)}</div>
+            <div class="text-xs text-foreground/60 truncate">${escapeHtml(item.title || item.manufacturer || '')}</div>
+            ${specsHtml}
+          </div>
+        `;
+      }).join('');
+      
+      autocompleteEl.innerHTML = headerHtml + itemsHtml;
       autocompleteEl.classList.remove('hidden');
       
       // Click handlers
@@ -325,7 +348,154 @@
             window.location.href = `/product/${encodeURIComponent(item.mpn)}`;
           }
         });
+        
+        // Hover preview
+        let hoverTimer;
+        let previewEl;
+        
+        el.addEventListener('mouseenter', (e) => {
+          const idx = parseInt(el.dataset.index);
+          const item = currentResults[idx];
+          if (!item) return;
+          
+          hoverTimer = setTimeout(async () => {
+            try {
+              const res = await fetch(`/api/product?mpn=${encodeURIComponent(item.mpn)}`);
+              const data = await res.json();
+              
+              if (data.ok && data.product) {
+                const product = data.product;
+                previewEl = showPreviewPopover(el, product);
+              }
+            } catch (err) {
+              console.error('Preview fetch error:', err);
+            }
+          }, 500); // 500ms delay before showing preview
+        });
+        
+        el.addEventListener('mouseleave', () => {
+          clearTimeout(hoverTimer);
+          // Delay closing to allow moving mouse to preview
+          setTimeout(() => {
+            if (previewEl && !previewEl.matches(':hover')) {
+              previewEl.remove();
+              previewEl = null;
+            }
+          }, 200);
+        });
+        
+        // Keep preview open when hovering over it
+        document.addEventListener('mouseover', (e) => {
+          if (previewEl && previewEl.contains(e.target)) {
+            clearTimeout(hoverTimer);
+          }
+        });
       });
+    }
+    
+    function showPreviewPopover(anchorEl, product) {
+      // Remove existing preview
+      const existing = document.getElementById('product-preview-popover');
+      if (existing) existing.remove();
+      
+      const popover = document.createElement('div');
+      popover.id = 'product-preview-popover';
+      popover.className = 'fixed bg-background border border-border rounded-lg shadow-xl z-[100] w-80 p-4';
+      
+      // Position adjacent to anchor element
+      const rect = anchorEl.getBoundingClientRect();
+      const isRightSpace = window.innerWidth - rect.right > 340;
+      if (isRightSpace) {
+        popover.style.left = `${rect.right + 10}px`;
+        popover.style.top = `${rect.top}px`;
+      } else {
+        popover.style.right = `${window.innerWidth - rect.left + 10}px`;
+        popover.style.top = `${rect.top}px`;
+      }
+      
+      // Get top 5 specs
+      const specs = product.technical_specs || {};
+      const specKeys = Object.keys(specs).slice(0, 5);
+      const specsHtml = specKeys.length > 0
+        ? `<div class="mt-3 space-y-1 text-xs">
+             ${specKeys.map(key => `
+               <div class="flex justify-between">
+                 <span class="text-foreground/60">${escapeHtml(key)}:</span>
+                 <span class="font-medium">${escapeHtml(String(specs[key]))}</span>
+               </div>
+             `).join('')}
+           </div>`
+        : '<div class="mt-3 text-xs text-foreground/50">Характеристики отсутствуют</div>';
+      
+      // Get price/stock from offers
+      const offers = product.offers || [];
+      const bestOffer = offers.length > 0 ? offers[0] : null;
+      const priceHtml = bestOffer
+        ? `<div class="mt-3 pt-3 border-t border-border/50 text-sm">
+             <div class="flex justify-between items-center">
+               <span class="text-foreground/60">Цена:</span>
+               <span class="font-bold text-primary">${bestOffer.price} ${bestOffer.currency || 'USD'}</span>
+             </div>
+             <div class="flex justify-between items-center mt-1">
+               <span class="text-foreground/60">Наличие:</span>
+               <span class="text-green-600">${bestOffer.stock || 0} шт</span>
+             </div>
+           </div>`
+        : '';
+      
+      popover.innerHTML = `
+        <div class="flex items-start gap-3">
+          <div class="w-16 h-16 bg-foreground/5 rounded flex-shrink-0 flex items-center justify-center">
+            ${product.images && product.images[0]
+              ? `<img src="${escapeHtml(product.images[0])}" alt="${escapeHtml(product.mpn)}" class="max-w-full max-h-full object-contain" />`
+              : '<span class="text-2xl text-foreground/30">📦</span>'
+            }
+          </div>
+          <div class="flex-1 min-w-0">
+            <div class="font-bold text-sm truncate">${escapeHtml(product.mpn)}</div>
+            <div class="text-xs text-foreground/60 truncate">${escapeHtml(product.manufacturer || '')}</div>
+          </div>
+        </div>
+        ${specsHtml}
+        ${priceHtml}
+        <div class="mt-3 pt-3 border-t border-border/50">
+          <a 
+            href="/product/${encodeURIComponent(product.mpn)}" 
+            class="block w-full px-4 py-2 bg-primary text-white text-center rounded hover:bg-primary/90 transition-colors text-sm font-medium"
+          >
+            Подробнее →
+          </a>
+        </div>
+      `;
+      
+      document.body.appendChild(popover);
+      
+      // Close on mouseleave
+      popover.addEventListener('mouseleave', () => {
+        setTimeout(() => {
+          if (!popover.matches(':hover')) {
+            popover.remove();
+          }
+        }, 200);
+      });
+      
+      return popover;
+    }
+    
+    function formatResistance(r) {
+      if (!r || !r.value) return '';
+      const val = r.value;
+      if (val >= 1e6) return `${(val / 1e6).toFixed(1)}MΩ`;
+      if (val >= 1e3) return `${(val / 1e3).toFixed(1)}kΩ`;
+      return `${val}Ω`;
+    }
+    
+    function formatCapacitance(c) {
+      if (!c || !c.value) return '';
+      const val = c.value;
+      if (val >= 1e-6) return `${(val * 1e6).toFixed(1)}μF`;
+      if (val >= 1e-9) return `${(val * 1e9).toFixed(1)}nF`;
+      return `${(val * 1e12).toFixed(1)}pF`;
     }
     
     // Close autocomplete on outside click

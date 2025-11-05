@@ -8,6 +8,7 @@ import { farnellSuggest } from '../integrations/suggest/farnell.suggest.mjs';
 import { tmeSuggest } from '../integrations/suggest/tme.suggest.mjs';
 import { parseComponentSpecs, isSpecsSearch, specsToSearchQuery } from './parseComponentSpecs.mjs';
 import { mouserSearchByKeyword } from '../integrations/mouser/client.mjs';
+import { hasCyrillic, transliterateRuToEn } from './normalizeQuery.mjs';
 
 let dbInstance = null;
 
@@ -93,6 +94,11 @@ function normalizeQuery(q) {
   
   // Трим
   q = q.trim();
+  
+  // Транслитерация кириллицы → латиница
+  if (hasCyrillic(q)) {
+    q = transliterateRuToEn(q);
+  }
   
   // Если выглядит как MPN (только латиница/цифры/дефисы) → uppercase
   if (/^[A-Za-z0-9\-_.]{2,}$/.test(q)) {

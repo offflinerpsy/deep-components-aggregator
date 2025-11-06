@@ -338,7 +338,7 @@
         </div>
 
         <div class="mt-6 text-center text-sm text-foreground/50">
-          <p>� Поиск ведётся только в категории "<span class="text-primary font-medium">${escapeHtml(category.name)}</span>"</p>
+          <p>🔍 Поиск ведётся <span class="font-medium">по всем поставщикам</span> (DigiKey, Mouser, TME, Farnell). Для навигации по категориям используйте дерево слева.</p>
         </div>
       </div>
     `;
@@ -633,13 +633,14 @@
       searchEventSource.close();
     }
     
-    const searchUrl = `/api/search-stream?q=${encodeURIComponent(query)}&category=${encodeURIComponent(category.slug)}`;
+    const searchUrl = `/api/live/search?q=${encodeURIComponent(query)}&limit=999`;
     searchEventSource = new EventSource(searchUrl);
     
-    searchEventSource.addEventListener('item', (event) => {
+    searchEventSource.addEventListener('result', (event) => {
       try {
-        const item = JSON.parse(event.data);
-        searchResults.push(item);
+        const data = JSON.parse(event.data);
+        // SSE sends all results in one 'result' event with data.rows array
+        searchResults = data.rows || [];
         updateSearchResults();
       } catch (err) {
         console.error('Parse error:', err);

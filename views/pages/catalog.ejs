@@ -76,6 +76,20 @@
         <!-- Results Cards (mobile) -->
         <div class="md:hidden space-y-4" id="results-cards"></div>
 
+        <!-- Load More Button -->
+        <div id="load-more-btn" class="hidden text-center py-6">
+          <button 
+            type="button"
+            class="px-8 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors font-medium inline-flex items-center gap-2"
+            onclick="window.loadMoreResults()"
+          >
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+            Показать ещё <span class="load-more-count">20</span>
+          </button>
+        </div>
+
         <!-- Empty State -->
         <div id="results-empty" class="hidden text-center py-12">
           <div class="glass border border-border rounded-lg p-8 max-w-md mx-auto">
@@ -324,7 +338,7 @@
         </div>
 
         <div class="mt-6 text-center text-sm text-foreground/50">
-          <p>💡 Совет: используйте категорию "${escapeHtml(category.name)}" в фильтрах результатов</p>
+          <p>� Поиск ведётся только в категории "<span class="text-primary font-medium">${escapeHtml(category.name)}</span>"</p>
         </div>
       </div>
     `;
@@ -407,7 +421,10 @@
           const idx = parseInt(el.dataset.index);
           const item = currentResults[idx];
           if (item) {
-            window.location.href = `/product/${encodeURIComponent(item.mpn)}`;
+            // Fill input and trigger search (not redirect to product page)
+            input.value = item.mpn;
+            autocompleteEl.classList.add('hidden');
+            startCatalogSearch(item.mpn, category);
           }
         });
         
@@ -582,6 +599,7 @@
   // ========== SEARCH RESULTS FUNCTIONS ==========
   
   let searchResults = [];
+  let displayedCount = 20; // Pagination: show 20 at a time
   let searchCompleted = false;
   let searchEventSource = null;
 
@@ -601,6 +619,7 @@
     
     // Reset state
     searchResults = [];
+    displayedCount = 20;
     searchCompleted = false;
     document.getElementById('results-tbody').innerHTML = '';
     document.getElementById('results-cards').innerHTML = '';
@@ -609,12 +628,12 @@
     document.getElementById('results-table-wrapper').style.display = 'none';
     document.getElementById('results-count').textContent = '0';
     
-    // Start SSE search
+    // Start SSE search with category filter
     if (searchEventSource) {
       searchEventSource.close();
     }
     
-    const searchUrl = `/api/search-stream?q=${encodeURIComponent(query)}`;
+    const searchUrl = `/api/search-stream?q=${encodeURIComponent(query)}&category=${encodeURIComponent(category.slug)}`;
     searchEventSource = new EventSource(searchUrl);
     
     searchEventSource.addEventListener('item', (event) => {
@@ -650,16 +669,30 @@
   function updateSearchResults() {
     const tbody = document.getElementById('results-tbody');
     const cardsContainer = document.getElementById('results-cards');
+    const loadMoreBtn = document.getElementById('load-more-btn');
     
     if (searchResults.length > 0) {
       document.getElementById('results-table-wrapper').style.display = 'block';
       document.getElementById('results-count').textContent = searchResults.length;
       
+      // Render only displayed items (pagination)
+      const itemsToShow = searchResults.slice(0, displayedCount);
+      
       // Render table rows (desktop)
-      tbody.innerHTML = searchResults.map(item => renderTableRow(item)).join('');
+      tbody.innerHTML = itemsToShow.map(item => renderTableRow(item)).join('');
       
       // Render cards (mobile)
-      cardsContainer.innerHTML = searchResults.map(item => renderCard(item)).join('');
+      cardsContainer.innerHTML = itemsToShow.map(item => renderCard(item)).join('');
+      
+      // Show/hide "Load More" button
+      if (loadMoreBtn) {
+        if (displayedCount < searchResults.length) {
+          loadMoreBtn.style.display = 'block';
+          loadMoreBtn.querySelector('.load-more-count').textContent = Math.min(20, searchResults.length - displayedCount);
+        } else {
+          loadMoreBtn.style.display = 'none';
+        }
+      }
       
       // Attach click handlers
       tbody.querySelectorAll('tr[data-mpn]').forEach(row => {
@@ -779,6 +812,12 @@
       searchEventSource = null;
     }
   });
+  
+  // Load more handler (global function for onclick)
+  window.loadMoreResults = function() {
+    displayedCount += 20;
+    updateSearchResults();
+  };
 
   function escapeHtml(text) {
     const div = document.createElement('div');

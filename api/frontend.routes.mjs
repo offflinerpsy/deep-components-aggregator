@@ -13,47 +13,11 @@ async function renderPage(pagePath, data = {}) {
   return ejs.renderFile(layoutPath, { ...data, body: pageContent });
 }
 
-// Helper: render standalone page (no layout wrapper)
-async function renderStandalonePage(pagePath, data = {}) {
-  return ejs.renderFile(join(viewsPath, 'pages', pagePath), data);
-}
+// Standalone rendering removed - migrated to Next.js
 
-// GET / - Home page
-export function homeHandler() {
-  return (req, res) => {
-    renderStandalonePage('home.ejs', {
-      title: 'Components Aggregator - Поиск электронных компонентов',
-      description: 'Поиск электронных компонентов по всем источникам'
-    })
-      .then((html) => res.send(html))
-      .catch((err) => {
-        console.error('[EJS] home render failed:', err?.message || err);
-        res.status(500).send('<h1>Ошибка рендеринга</h1>');
-      });
-  };
-}
+// Home removed - migrated to Next.js /
 
-// GET /results - Search results
-export function resultsHandler() {
-  return (req, res) => {
-    const query = req.query.q || '';
-
-    if (!query) {
-      return res.redirect('/');
-    }
-
-    renderStandalonePage('results.ejs', {
-      title: `Поиск: ${query}`,
-      description: `Результаты поиска: ${query}`,
-      query
-    })
-      .then((html) => res.send(html))
-      .catch((err) => {
-        console.error('[EJS] results render failed:', err?.message || err);
-        res.status(500).send('<h1>Ошибка рендеринга</h1>');
-      });
-  };
-}
+// Results removed - migrated to Next.js /results
 
 // GET /product/:mpn - Product page
 export function productHandler(_db) {
@@ -99,26 +63,11 @@ export function staticPageHandler(db) {
   };
 }
 
-// Mount all frontend routes
+// Mount remaining frontend routes (/, /results, /catalog → Next.js)
 export function mountFrontendRoutes(app, db) {
-  app.get('/', homeHandler());
-  app.get('/results', resultsHandler());
   app.get('/product/:mpn', productHandler(db));
   app.get('/page/:slug', staticPageHandler(db));
   
-  // Catalog test page (standalone HTML)
-  // GET /catalog-test - Catalog browser (EJS)
-  app.get('/catalog-test', (req, res) => {
-    renderStandalonePage('catalog.ejs', {
-      title: 'Каталог Компонентов - ДИПОНИКА',
-      description: 'DigiKey категории электронных компонентов'
-    })
-      .then((html) => res.send(html))
-      .catch((err) => {
-        console.error('[EJS] catalog render failed:', err?.message || err);
-        res.status(500).send('<h1>Ошибка рендеринга</h1>');
-      });
-  });
-
-  console.log('✅ Frontend routes mounted (EJS)');
+  console.log('✅ Frontend routes mounted (Express legacy only)');
+  console.log('ℹ️  Main routes (/, /results, /catalog) served by Next.js:3000');
 }

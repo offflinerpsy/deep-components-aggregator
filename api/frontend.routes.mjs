@@ -13,10 +13,15 @@ async function renderPage(pagePath, data = {}) {
   return ejs.renderFile(layoutPath, { ...data, body: pageContent });
 }
 
+// Helper: render standalone page (no layout wrapper)
+async function renderStandalonePage(pagePath, data = {}) {
+  return ejs.renderFile(join(viewsPath, 'pages', pagePath), data);
+}
+
 // GET / - Home page
 export function homeHandler() {
   return (req, res) => {
-    renderPage('home.ejs', {
+    renderStandalonePage('home.ejs', {
       title: 'Components Aggregator - Поиск электронных компонентов',
       description: 'Поиск электронных компонентов по всем источникам'
     })
@@ -37,7 +42,7 @@ export function resultsHandler() {
       return res.redirect('/');
     }
 
-    renderPage('results.ejs', {
+    renderStandalonePage('results.ejs', {
       title: `Поиск: ${query}`,
       description: `Результаты поиска: ${query}`,
       query
@@ -104,7 +109,7 @@ export function mountFrontendRoutes(app, db) {
   // Catalog test page (standalone HTML)
   // GET /catalog-test - Catalog browser (EJS)
   app.get('/catalog-test', (req, res) => {
-    renderPage('catalog.ejs', {
+    renderStandalonePage('catalog.ejs', {
       title: 'Каталог Компонентов - ДИПОНИКА',
       description: 'DigiKey категории электронных компонентов'
     })

@@ -1,5 +1,21 @@
 <!-- v0 Results Page -->
-<div class="min-h-screen relative bg-background page-transition" id="results-root" data-query="<%= encodeURIComponent(query) %>">
+<!-- v0 Results Page -->
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= title || 'Результаты поиска' %></title>
+  <meta name="description" content="<%= description || 'Результаты поиска электронных компонентов' %>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles/v0-compiled.css?v=3">
+  <link rel="stylesheet" href="/styles/v0-theme.css?v=1">
+</head>
+<body>
+
+<div class="min-h-screen relative bg-background page-transition">
   <div id="loading-overlay" class="loading-overlay hidden">
     <div class="loader"></div>
   </div>
@@ -549,3 +565,6 @@
   });
 })();
 </script>
+
+</body>
+</html>

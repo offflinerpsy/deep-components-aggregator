@@ -1,35 +1,126 @@
+<!-- v0 Catalog Page -->
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= title || 'Каталог Компонентов - ДИПОНИКА' %></title>
+  <meta name="description" content="<%= description || 'DigiKey категории электронных компонентов' %>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            border: 'hsl(var(--border))',
+            background: 'hsl(var(--background))',
+            foreground: 'hsl(var(--foreground))',
+            muted: {
+              DEFAULT: 'hsl(var(--muted))',
+              foreground: 'hsl(var(--muted-foreground))'
+            },
+            accent: {
+              DEFAULT: 'hsl(var(--accent))',
+              foreground: 'hsl(var(--accent-foreground))'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    :root {
+      --background: 0 0% 100%;
+      --foreground: 222.2 84% 4.9%;
+      --muted: 210 40% 96.1%;
+      --muted-foreground: 215.4 16.3% 46.9%;
+      --border: 214.3 31.8% 91.4%;
+      --accent: 210 40% 96.1%;
+      --accent-foreground: 222.2 47.4% 11.2%;
+    }
+    .dark {
+      --background: 222.2 84% 4.9%;
+      --foreground: 210 40% 98%;
+      --muted: 217.2 32.6% 17.5%;
+      --muted-foreground: 215 20.2% 65.1%;
+      --border: 217.2 32.6% 17.5%;
+      --accent: 217.2 32.6% 17.5%;
+      --accent-foreground: 210 40% 98%;
+    }
+    .gradient-text {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .glass {
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+    .dark .glass {
+      background: rgba(0, 0, 0, 0.5);
+    }
+  </style>
+</head>
+<body>
+
 <div class="min-h-screen relative bg-background page-transition">
-  <div id="loading-overlay" class="loading-overlay hidden">
-    <div class="loader"></div>
-  </div>
-
   <header class="glass sticky top-0 z-50 border-b border-border bg-background">
-    <div class="container mx-auto px-6 py-4 flex items-center justify-between">
-      <button type="button" class="logo" id="logo-home">
-        <div class="logo-chip">
-          <span class="logo-spark"></span>
-        </div>
-        <svg class="logo-text-svg" width="180" height="32" viewBox="0 0 180 32" fill="none">
-          <text x="0" y="24" font-family="Roboto" font-size="24" font-weight="300" letter-spacing="2" stroke="url(#logoGradient)" stroke-width="0.5" fill="url(#logoGradient)">
-            ДИПОНИКА
-          </text>
-          <defs>
-            <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stop-color="#667eea" />
-              <stop offset="100%" stop-color="#764ba2" />
-            </linearGradient>
-          </defs>
-        </svg>
-      </button>
+    <div class="container mx-auto px-6 py-6 flex items-center justify-between">
+      <div class="logo">
+        <a href="/">
+          <svg class="w-10 h-10" viewBox="0 0 100 100" fill="none">
+            <defs>
+              <linearGradient id="chipGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#3B82F6" />
+                <stop offset="50%" stop-color="#8B5CF6" />
+                <stop offset="100%" stop-color="#EC4899" />
+              </linearGradient>
+            </defs>
+            <!-- Chip body -->
+            <rect x="25" y="25" width="50" height="50" rx="4" stroke="url(#chipGradient)" stroke-width="3" fill="none" />
+            <rect x="35" y="35" width="30" height="30" rx="2" stroke="url(#chipGradient)" stroke-width="2" fill="none" />
+            <!-- Pins - Top -->
+            <line x1="35" y1="25" x2="35" y2="15" stroke="url(#chipGradient)" stroke-width="2" />
+            <circle cx="35" cy="12" r="3" fill="url(#chipGradient)" />
+            <line x1="50" y1="25" x2="50" y2="15" stroke="url(#chipGradient)" stroke-width="2" />
+            <circle cx="50" cy="12" r="3" fill="url(#chipGradient)" />
+            <line x1="65" y1="25" x2="65" y2="15" stroke="url(#chipGradient)" stroke-width="2" />
+            <circle cx="65" cy="12" r="3" fill="url(#chipGradient)" />
+            <!-- Pins - Right -->
+            <line x1="75" y1="35" x2="85" y2="35" stroke="url(#chipGradient)" stroke-width="2" />
+            <circle cx="88" cy="35" r="3" fill="url(#chipGradient)" />
+            <line x1="75" y1="50" x2="85" y2="50" stroke="url(#chipGradient)" stroke-width="2" />
+            <circle cx="88" cy="50" r="3" fill="url(#chipGradient)" />
+            <line x1="75" y1="65" x2="85" y2="65" stroke="url(#chipGradient)" stroke-width="2" />
+            <circle cx="88" cy="65" r="3" fill="url(#chipGradient)" />
+            <!-- Pins - Bottom -->
+            <line x1="65" y1="75" x2="65" y2="85" stroke="url(#chipGradient)" stroke-width="2" />
+            <circle cx="65" cy="88" r="3" fill="url(#chipGradient)" />
+            <line x1="50" y1="75" x2="50" y2="85" stroke="url(#chipGradient)" stroke-width="2" />
+            <circle cx="50" cy="88" r="3" fill="url(#chipGradient)" />
+            <line x1="35" y1="75" x2="35" y2="85" stroke="url(#chipGradient)" stroke-width="2" />
+            <circle cx="35" cy="88" r="3" fill="url(#chipGradient)" />
+            <!-- Pins - Left -->
+            <line x1="25" y1="65" x2="15" y2="65" stroke="url(#chipGradient)" stroke-width="2" />
+            <circle cx="12" cy="65" r="3" fill="url(#chipGradient)" />
+            <line x1="25" y1="50" x2="15" y2="50" stroke="url(#chipGradient)" stroke-width="2" />
+            <circle cx="12" cy="50" r="3" fill="url(#chipGradient)" />
+            <line x1="25" y1="35" x2="15" y2="35" stroke="url(#chipGradient)" stroke-width="2" />
+            <circle cx="12" cy="35" r="3" fill="url(#chipGradient)" />
+          </svg>
+        </a>
+      </div>
 
-      <div class="flex items-center gap-8">
-        <nav class="hidden md:flex items-center gap-8">
-          <button type="button" class="text-muted-foreground hover:text-foreground transition-colors" data-nav="home">Главная</button>
-          <button type="button" class="text-muted-foreground hover:text-foreground transition-colors">Источники</button>
-          <button type="button" class="text-muted-foreground hover:text-foreground transition-colors">О нас</button>
-        </nav>
+      <div class="flex items-center gap-4">
+        <nav class="hidden md:flex items-center gap-8"></nav>
 
-        <button type="button" id="theme-toggle" class="w-10 h-10 p-0 inline-flex items-center justify-center rounded-md border border-border hover:bg-muted transition-colors">
+        <button type="button" id="theme-toggle" class="w-10 h-10 p-0 inline-flex items-center justify-center rounded-md hover:bg-accent transition-colors">
           <span id="icon-moon" aria-hidden="true">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
@@ -83,7 +174,7 @@
       <div id="search-results-container" class="hidden">
         <div class="mb-6 flex items-center justify-between">
           <div>
-            <h2 class="text-2xl font-medium mb-2 text-foreground">
+            <h2 class="text-2xl font-medium mb-2">
               Результаты поиска: <span class="gradient-text" id="search-query-display"></span>
             </h2>
             <p class="text-muted-foreground text-sm">
@@ -94,28 +185,28 @@
           <button 
             type="button"
             id="back-to-catalog"
-            class="px-4 py-2 border border-border rounded-lg hover:bg-muted transition-colors text-muted-foreground hover:text-foreground"
+            class="px-4 py-2 border border-border rounded-lg hover:bg-accent transition-colors"
           >
             ← Назад к каталогу
           </button>
         </div>
 
         <!-- Results Table (desktop) -->
-        <div class="glass-card rounded-xl overflow-hidden" id="results-table-wrapper">
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm overflow-hidden md:block hidden" id="results-table-wrapper">
           <div class="overflow-x-auto">
             <table class="w-full">
-              <thead class="bg-white/30 dark:bg-black/30">
+              <thead class="bg-gray-50 dark:bg-gray-900 border-b border-border">
                 <tr>
-                  <th class="px-6 py-4 text-left text-xs font-semibold text-muted-foreground uppercase tracking-wider">Фото</th>
-                  <th class="px-6 py-4 text-left text-xs font-semibold text-muted-foreground uppercase tracking-wider">Производитель</th>
-                  <th class="px-6 py-4 text-left text-xs font-semibold text-muted-foreground uppercase tracking-wider">MPN</th>
-                  <th class="px-6 py-4 text-left text-xs font-semibold text-muted-foreground uppercase tracking-wider">Описание</th>
-                  <th class="px-6 py-4 text-center text-xs font-semibold text-muted-foreground uppercase tracking-wider">Регион</th>
-                  <th class="px-6 py-4 text-right text-xs font-semibold text-muted-foreground uppercase tracking-wider">Цена за шт.</th>
-                  <th class="px-6 py-4 text-center text-xs font-semibold text-muted-foreground uppercase tracking-wider">Действие</th>
+                  <th class="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Фото</th>
+                  <th class="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Производитель</th>
+                  <th class="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">MPN</th>
+                  <th class="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Описание</th>
+                  <th class="px-4 py-3 text-center text-xs font-medium text-muted-foreground uppercase tracking-wider">Регион</th>
+                  <th class="px-4 py-3 text-right text-xs font-medium text-muted-foreground uppercase tracking-wider">Цена за шт.</th>
+                  <th class="px-4 py-3 text-center text-xs font-medium text-muted-foreground uppercase tracking-wider">Действие</th>
                 </tr>
               </thead>
-              <tbody id="results-tbody" class="divide-y divide-border/50"></tbody>
+              <tbody id="results-tbody" class="divide-y divide-border"></tbody>
             </table>
           </div>
         </div>
@@ -139,17 +230,17 @@
 
         <!-- Empty State -->
         <div id="results-empty" class="hidden text-center py-12">
-          <div class="glass-card max-w-md mx-auto">
-            <svg class="w-16 h-16 mx-auto mb-4 text-muted-foreground/30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div class="glass border border-border rounded-lg p-8 max-w-md mx-auto">
+            <svg class="w-16 h-16 mx-auto mb-4 text-foreground/30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
-            <h3 class="text-lg font-medium mb-2 text-foreground">Ничего не найдено</h3>
-            <p class="text-muted-foreground text-sm">Попробуйте изменить запрос или уточнить MPN</p>
+            <h3 class="text-lg font-medium mb-2">Ничего не найдено</h3>
+            <p class="text-foreground/70">Попробуйте изменить запрос или уточнить MPN</p>
           </div>
         </div>
 
         <!-- Loading indicator for live search -->
-        <div id="search-loading" class="text-center py-8 text-muted-foreground">
+        <div id="search-loading" class="text-center py-8 text-foreground/50">
           <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-primary mb-3"></div>
           <p id="search-status-text">Поиск компонентов...</p>
         </div>
@@ -199,7 +290,7 @@
 </div>
 
 <script>
-  // Theme Toggle (from home.ejs)
+  // Theme Toggle
   const root = document.documentElement;
   const themeToggle = document.getElementById('theme-toggle');
   const iconMoon = document.getElementById('icon-moon');
@@ -253,7 +344,6 @@
     });
   });
 
-  // Catalog Logic
   const urlParams = new URLSearchParams(window.location.search);
   const categorySlug = urlParams.get('category');
   const contentEl = document.getElementById('content');
@@ -880,27 +970,27 @@
       ? regions.map(r => `<span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-500/20 text-blue-600 dark:text-blue-300 border border-blue-500/30">${r}</span>`).join(' ')
       : '<span class="text-foreground/50">—</span>';
     
-    return `<tr class="cursor-pointer hover:bg-foreground/5 transition-colors" data-mpn="${encodeURIComponent(mpn)}">
+    return `<tr class="cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-900/50 transition-colors" data-mpn="${encodeURIComponent(mpn)}">
       <td class="px-4 py-4">${imageHtml}</td>
       <td class="px-4 py-4">
-        <div class="font-medium">${escapeHtml(manufacturer)}</div>
-        <div class="text-xs text-foreground/50 mt-1">${item?.source ? item.source.toUpperCase() : ''}</div>
+        <div class="font-medium text-sm">${escapeHtml(manufacturer)}</div>
+        <div class="text-xs text-muted-foreground mt-1">${item?.source ? item.source.toUpperCase() : ''}</div>
       </td>
       <td class="px-4 py-4">
-        <div class="font-mono text-sm text-foreground/70">${escapeHtml(mpn)}</div>
+        <div class="font-mono text-sm text-blue-600 dark:text-blue-400">${escapeHtml(mpn)}</div>
       </td>
       <td class="px-4 py-4">
-        <div class="text-sm text-foreground/70 max-w-md line-clamp-2">${escapeHtml(description)}</div>
+        <div class="text-sm text-muted-foreground max-w-md line-clamp-2">${escapeHtml(description)}</div>
       </td>
       <td class="px-4 py-4 text-center">
         <div class="flex flex-wrap gap-1 justify-center">${regionsHtml}</div>
       </td>
       <td class="px-4 py-4 text-right">
-        <div class="font-bold text-green-600 dark:text-green-400">${priceText}</div>
+        <div class="text-sm font-medium text-green-600 dark:text-green-400">${priceText}</div>
       </td>
       <td class="px-4 py-4 text-center">
-        <button type="button" class="px-4 py-2 bg-primary/20 hover:bg-primary text-primary hover:text-white border border-primary/50 rounded-lg text-sm font-medium transition-colors" data-cta="${encodeURIComponent(mpn)}">
-          Подробнее
+        <button type="button" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium transition-colors shadow-sm" data-cta="${encodeURIComponent(mpn)}">
+          Купить
         </button>
       </td>
     </tr>`;
@@ -971,3 +1061,6 @@
   // Load on page load
   loadCategories();
 </script>
+
+</body>
+</html>

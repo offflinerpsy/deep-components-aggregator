@@ -1,0 +1,1066 @@
+<!-- v0 Catalog Page -->
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= title || 'Каталог Компонентов - ДИПОНИКА' %></title>
+  <meta name="description" content="<%= description || 'DigiKey категории электронных компонентов' %>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            border: 'hsl(var(--border))',
+            background: 'hsl(var(--background))',
+            foreground: 'hsl(var(--foreground))',
+            muted: {
+              DEFAULT: 'hsl(var(--muted))',
+              foreground: 'hsl(var(--muted-foreground))'
+            },
+            accent: {
+              DEFAULT: 'hsl(var(--accent))',
+              foreground: 'hsl(var(--accent-foreground))'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    :root {
+      --background: 0 0% 100%;
+      --foreground: 222.2 84% 4.9%;
+      --muted: 210 40% 96.1%;
+      --muted-foreground: 215.4 16.3% 46.9%;
+      --border: 214.3 31.8% 91.4%;
+      --accent: 210 40% 96.1%;
+      --accent-foreground: 222.2 47.4% 11.2%;
+    }
+    .dark {
+      --background: 222.2 84% 4.9%;
+      --foreground: 210 40% 98%;
+      --muted: 217.2 32.6% 17.5%;
+      --muted-foreground: 215 20.2% 65.1%;
+      --border: 217.2 32.6% 17.5%;
+      --accent: 217.2 32.6% 17.5%;
+      --accent-foreground: 210 40% 98%;
+    }
+    .gradient-text {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .glass {
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+    .dark .glass {
+      background: rgba(0, 0, 0, 0.5);
+    }
+  </style>
+</head>
+<body>
+
+<div class="min-h-screen relative bg-background page-transition">
+  <header class="glass sticky top-0 z-50 border-b border-border bg-background">
+    <div class="container mx-auto px-6 py-6 flex items-center justify-between">
+      <div class="logo">
+        <a href="/">
+          <svg class="w-10 h-10" viewBox="0 0 100 100" fill="none">
+            <defs>
+              <linearGradient id="chipGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#3B82F6" />
+                <stop offset="50%" stop-color="#8B5CF6" />
+                <stop offset="100%" stop-color="#EC4899" />
+              </linearGradient>
+            </defs>
+            <!-- Chip body -->
+            <rect x="25" y="25" width="50" height="50" rx="4" stroke="url(#chipGradient)" stroke-width="3" fill="none" />
+            <rect x="35" y="35" width="30" height="30" rx="2" stroke="url(#chipGradient)" stroke-width="2" fill="none" />
+            <!-- Pins - Top -->
+            <line x1="35" y1="25" x2="35" y2="15" stroke="url(#chipGradient)" stroke-width="2" />
+            <circle cx="35" cy="12" r="3" fill="url(#chipGradient)" />
+            <line x1="50" y1="25" x2="50" y2="15" stroke="url(#chipGradient)" stroke-width="2" />
+            <circle cx="50" cy="12" r="3" fill="url(#chipGradient)" />
+            <line x1="65" y1="25" x2="65" y2="15" stroke="url(#chipGradient)" stroke-width="2" />
+            <circle cx="65" cy="12" r="3" fill="url(#chipGradient)" />
+            <!-- Pins - Right -->
+            <line x1="75" y1="35" x2="85" y2="35" stroke="url(#chipGradient)" stroke-width="2" />
+            <circle cx="88" cy="35" r="3" fill="url(#chipGradient)" />
+            <line x1="75" y1="50" x2="85" y2="50" stroke="url(#chipGradient)" stroke-width="2" />
+            <circle cx="88" cy="50" r="3" fill="url(#chipGradient)" />
+            <line x1="75" y1="65" x2="85" y2="65" stroke="url(#chipGradient)" stroke-width="2" />
+            <circle cx="88" cy="65" r="3" fill="url(#chipGradient)" />
+            <!-- Pins - Bottom -->
+            <line x1="65" y1="75" x2="65" y2="85" stroke="url(#chipGradient)" stroke-width="2" />
+            <circle cx="65" cy="88" r="3" fill="url(#chipGradient)" />
+            <line x1="50" y1="75" x2="50" y2="85" stroke="url(#chipGradient)" stroke-width="2" />
+            <circle cx="50" cy="88" r="3" fill="url(#chipGradient)" />
+            <line x1="35" y1="75" x2="35" y2="85" stroke="url(#chipGradient)" stroke-width="2" />
+            <circle cx="35" cy="88" r="3" fill="url(#chipGradient)" />
+            <!-- Pins - Left -->
+            <line x1="25" y1="65" x2="15" y2="65" stroke="url(#chipGradient)" stroke-width="2" />
+            <circle cx="12" cy="65" r="3" fill="url(#chipGradient)" />
+            <line x1="25" y1="50" x2="15" y2="50" stroke="url(#chipGradient)" stroke-width="2" />
+            <circle cx="12" cy="50" r="3" fill="url(#chipGradient)" />
+            <line x1="25" y1="35" x2="15" y2="35" stroke="url(#chipGradient)" stroke-width="2" />
+            <circle cx="12" cy="35" r="3" fill="url(#chipGradient)" />
+          </svg>
+        </a>
+      </div>
+
+      <div class="flex items-center gap-4">
+        <nav class="hidden md:flex items-center gap-8"></nav>
+
+        <button type="button" id="theme-toggle" class="w-10 h-10 p-0 inline-flex items-center justify-center rounded-md hover:bg-accent transition-colors">
+          <span id="icon-moon" aria-hidden="true">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+            </svg>
+          </span>
+          <span id="icon-sun" class="hidden" aria-hidden="true">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+            </svg>
+          </span>
+          <span class="sr-only">Переключить тему</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container mx-auto px-6 py-12 relative z-10">
+    <div class="container mx-auto max-w-6xl">
+      <!-- Hero section -->
+      <div class="text-center mb-12 fade-in">
+        <h1 class="title-main mb-3">
+          <span class="gradient-text">Каталог</span> Компонентов
+        </h1>
+        <p class="text-muted-foreground text-base">
+          DigiKey категории — 1193+ категории электронных компонентов
+        </p>
+      </div>
+
+      <!-- Breadcrumb navigation -->
+      <nav class="mb-8" id="breadcrumb" style="display: none;">
+        <div class="flex items-center gap-2 text-sm text-muted-foreground">
+          <a href="/catalog-test" class="hover:text-foreground transition-colors">
+            <svg class="w-4 h-4 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+            </svg>
+            Главная
+          </a>
+          <span id="breadcrumb-items"></span>
+        </div>
+      </nav>
+
+      <!-- Categories grid / Search form -->
+      <div id="content">
+        <div class="text-center py-12 text-muted-foreground">
+          <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-muted-foreground/30 mb-3"></div>
+          <p>Загрузка категорий...</p>
+        </div>
+      </div>
+
+      <!-- Search Results (hidden by default, shown after search) -->
+      <div id="search-results-container" class="hidden">
+        <div class="mb-6 flex items-center justify-between">
+          <div>
+            <h2 class="text-2xl font-medium mb-2">
+              Результаты поиска: <span class="gradient-text" id="search-query-display"></span>
+            </h2>
+            <p class="text-muted-foreground text-sm">
+              <span id="results-count">0</span> компонентов найдено
+              <span id="category-filter-badge" class="ml-2"></span>
+            </p>
+          </div>
+          <button 
+            type="button"
+            id="back-to-catalog"
+            class="px-4 py-2 border border-border rounded-lg hover:bg-accent transition-colors"
+          >
+            ← Назад к каталогу
+          </button>
+        </div>
+
+        <!-- Results Table (desktop) -->
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm overflow-hidden md:block hidden" id="results-table-wrapper">
+          <div class="overflow-x-auto">
+            <table class="w-full">
+              <thead class="bg-gray-50 dark:bg-gray-900 border-b border-border">
+                <tr>
+                  <th class="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Фото</th>
+                  <th class="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Производитель</th>
+                  <th class="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">MPN</th>
+                  <th class="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Описание</th>
+                  <th class="px-4 py-3 text-center text-xs font-medium text-muted-foreground uppercase tracking-wider">Регион</th>
+                  <th class="px-4 py-3 text-right text-xs font-medium text-muted-foreground uppercase tracking-wider">Цена за шт.</th>
+                  <th class="px-4 py-3 text-center text-xs font-medium text-muted-foreground uppercase tracking-wider">Действие</th>
+                </tr>
+              </thead>
+              <tbody id="results-tbody" class="divide-y divide-border"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Results Cards (mobile) -->
+        <div class="md:hidden space-y-4" id="results-cards"></div>
+
+        <!-- Load More Button -->
+        <div id="load-more-btn" class="hidden text-center py-6">
+          <button 
+            type="button"
+            class="px-8 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors font-medium inline-flex items-center gap-2"
+            onclick="window.loadMoreResults()"
+          >
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+            Показать ещё <span class="load-more-count">20</span>
+          </button>
+        </div>
+
+        <!-- Empty State -->
+        <div id="results-empty" class="hidden text-center py-12">
+          <div class="glass border border-border rounded-lg p-8 max-w-md mx-auto">
+            <svg class="w-16 h-16 mx-auto mb-4 text-foreground/30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <h3 class="text-lg font-medium mb-2">Ничего не найдено</h3>
+            <p class="text-foreground/70">Попробуйте изменить запрос или уточнить MPN</p>
+          </div>
+        </div>
+
+        <!-- Loading indicator for live search -->
+        <div id="search-loading" class="text-center py-8 text-foreground/50">
+          <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-primary mb-3"></div>
+          <p id="search-status-text">Поиск компонентов...</p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container mx-auto px-6">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+        <div>
+          <h3 class="font-semibold text-lg mb-4">О компании</h3>
+          <ul class="space-y-2 text-sm text-muted-foreground">
+            <li><a href="#" class="hover:text-foreground transition-colors">О нас</a></li>
+            <li><a href="#" class="hover:text-foreground transition-colors">Контакты</a></li>
+            <li><a href="#" class="hover:text-foreground transition-colors">Вакансии</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="font-semibold text-lg mb-4">Помощь</h3>
+          <ul class="space-y-2 text-sm text-muted-foreground">
+            <li><a href="#" class="hover:text-foreground transition-colors">FAQ</a></li>
+            <li><a href="#" class="hover:text-foreground transition-colors">Доставка</a></li>
+            <li><a href="#" class="hover:text-foreground transition-colors">Возврат</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="font-semibold text-lg mb-4">Информация</h3>
+          <ul class="space-y-2 text-sm text-muted-foreground">
+            <li><a href="#" class="hover:text-foreground transition-colors">Политика конфиденциальности</a></li>
+            <li><a href="#" class="hover:text-foreground transition-colors">Условия использования</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="font-semibold text-lg mb-4">Контакты</h3>
+          <ul class="space-y-2 text-sm text-muted-foreground">
+            <li>Email: info@diponika.ru</li>
+            <li>Тел: +7 (495) 123-45-67</li>
+          </ul>
+        </div>
+      </div>
+      <div class="border-t border-border pt-6 text-center text-sm text-muted-foreground">
+        <p>© 2025 ДИПОНИКА. Все права защищены.</p>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<script>
+  // Theme Toggle
+  const root = document.documentElement;
+  const themeToggle = document.getElementById('theme-toggle');
+  const iconMoon = document.getElementById('icon-moon');
+  const iconSun = document.getElementById('icon-sun');
+  const logoHome = document.getElementById('logo-home');
+  const STORAGE_KEY = 'diponika-theme';
+
+  function applyTheme(theme) {
+    if (theme === 'dark') {
+      root.classList.add('dark');
+      iconMoon?.classList.add('hidden');
+      iconSun?.classList.remove('hidden');
+    } else {
+      root.classList.remove('dark');
+      iconMoon?.classList.remove('hidden');
+      iconSun?.classList.add('hidden');
+    }
+    try {
+      localStorage.setItem(STORAGE_KEY, theme);
+    } catch (err) {
+      console.warn('Failed to save theme:', err);
+    }
+  }
+
+  // Initialize theme
+  try {
+    const savedTheme = localStorage.getItem(STORAGE_KEY);
+    const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    applyTheme(savedTheme || (prefersDark ? 'dark' : 'light'));
+  } catch (err) {
+    applyTheme('light');
+  }
+
+  themeToggle?.addEventListener('click', () => {
+    const nextTheme = root.classList.contains('dark') ? 'light' : 'dark';
+    applyTheme(nextTheme);
+  });
+
+  logoHome?.addEventListener('click', () => {
+    window.location.href = '/';
+  });
+
+  // Navigation
+  const navButtons = document.querySelectorAll('[data-nav]');
+  navButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const nav = btn.getAttribute('data-nav');
+      if (nav === 'home') {
+        window.location.href = '/';
+      }
+    });
+  });
+
+  const urlParams = new URLSearchParams(window.location.search);
+  const categorySlug = urlParams.get('category');
+  const contentEl = document.getElementById('content');
+  const breadcrumbEl = document.getElementById('breadcrumb');
+  const breadcrumbItemsEl = document.getElementById('breadcrumb-items');
+
+  // SVG icons (from home.ejs)
+  const icons = {
+    chip: `<svg class="w-12 h-12" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.5">
+      <rect x="20" y="20" width="24" height="24" rx="2" />
+      <line x1="28" y1="26" x2="36" y2="26" />
+      <line x1="28" y1="30" x2="36" y2="30" />
+      <line x1="28" y1="34" x2="36" y2="34" />
+      <line x1="28" y1="38" x2="36" y2="38" />
+      <line x1="20" y1="24" x2="16" y2="24" />
+      <line x1="20" y1="28" x2="16" y2="28" />
+      <line x1="20" y1="32" x2="16" y2="32" />
+      <line x1="20" y1="36" x2="16" y2="36" />
+      <line x1="20" y1="40" x2="16" y2="40" />
+      <line x1="44" y1="24" x2="48" y2="24" />
+      <line x1="44" y1="28" x2="48" y2="28" />
+      <line x1="44" y1="32" x2="48" y2="32" />
+      <line x1="44" y1="36" x2="48" y2="36" />
+      <line x1="44" y1="40" x2="48" y2="40" />
+    </svg>`,
+    transistor: `<svg class="w-12 h-12" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.5">
+      <circle cx="32" cy="32" r="10" />
+      <line x1="32" y1="16" x2="32" y2="22" />
+      <line x1="32" y1="42" x2="32" y2="48" />
+      <line x1="38" y1="28" x2="44" y2="22" />
+      <line x1="38" y1="36" x2="44" y2="42" />
+      <line x1="26" y1="32" x2="32" y2="32" />
+      <path d="M32 28 L36 32 L32 36" fill="none" />
+    </svg>`,
+    resistor: `<svg class="w-12 h-12" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.5">
+      <rect x="20" y="28" width="24" height="8" rx="1" />
+      <line x1="12" y1="32" x2="20" y2="32" />
+      <line x1="44" y1="32" x2="52" y2="32" />
+    </svg>`,
+    connector: `<svg class="w-12 h-12" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.5">
+      <rect x="22" y="16" width="20" height="32" rx="2" />
+      <line x1="26" y1="22" x2="38" y2="22" />
+      <line x1="26" y1="26" x2="38" y2="26" />
+      <line x1="26" y1="30" x2="38" y2="30" />
+      <line x1="26" y1="34" x2="38" y2="34" />
+    </svg>`,
+    memory: `<svg class="w-12 h-12" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.5">
+      <rect x="18" y="18" width="28" height="28" rx="2" />
+      <line x1="26" y1="18" x2="26" y2="46" stroke-width="0.5" />
+      <line x1="32" y1="18" x2="32" y2="46" stroke-width="0.5" />
+      <line x1="38" y1="18" x2="38" y2="46" stroke-width="0.5" />
+    </svg>`,
+    default: `<svg class="w-12 h-12" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.5">
+      <rect x="16" y="16" width="32" height="32" rx="4" />
+      <line x1="24" y1="28" x2="40" y2="28" />
+      <line x1="24" y1="36" x2="40" y2="36" />
+    </svg>`
+  };
+
+  function getCategoryIcon(name) {
+    const normalized = (name || '').toLowerCase();
+    if (/ic|chip|processor|controller|microcontroller/.test(normalized)) return icons.chip;
+    if (/transistor|mosfet|bjt|fet/.test(normalized)) return icons.transistor;
+    if (/resistor|ohm/.test(normalized)) return icons.resistor;
+    if (/connector|jack|plug|socket/.test(normalized)) return icons.connector;
+    if (/memory|ram|rom|flash/.test(normalized)) return icons.memory;
+    return icons.default;
+  }
+
+  async function loadCategories() {
+    try {
+      let url = '/api/catalog/categories';
+      let breadcrumbUrl = null;
+
+      if (categorySlug) {
+        url = `/api/catalog/categories/${encodeURIComponent(categorySlug)}`;
+        breadcrumbUrl = `/api/catalog/breadcrumb/${encodeURIComponent(categorySlug)}`;
+      }
+
+      const [dataRes, breadcrumbRes] = await Promise.all([
+        fetch(url),
+        breadcrumbUrl ? fetch(breadcrumbUrl) : Promise.resolve(null)
+      ]);
+
+      if (!dataRes.ok) {
+        throw new Error(dataRes.status === 404 ? 'Категория не найдена' : `HTTP ${dataRes.status}`);
+      }
+
+      const data = await dataRes.json();
+      
+      if (!data.ok) {
+        throw new Error(data.error || 'Ошибка API');
+      }
+
+      // Breadcrumb rendering
+      if (breadcrumbRes && breadcrumbRes.ok) {
+        const breadcrumbData = await breadcrumbRes.json();
+        if (breadcrumbData.ok && breadcrumbData.breadcrumb) {
+          renderBreadcrumb(breadcrumbData.breadcrumb);
+          breadcrumbEl.style.display = 'block';
+        }
+      }
+
+      // Check if this is a leaf category (show search form)
+      if (data.category && data.category.is_leaf) {
+        renderSearchForm(data.category);
+        return;
+      }
+
+      // Render categories
+      const categories = categorySlug ? data.subcategories : data.categories;
+      renderCategories(categories);
+
+    } catch (err) {
+      contentEl.innerHTML = `
+        <div class="glass p-6 border border-border rounded-lg max-w-md mx-auto text-center">
+          <svg class="w-12 h-12 mx-auto mb-3 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <h3 class="text-lg font-medium mb-2">Ошибка загрузки</h3>
+          <p class="text-foreground/70">${err.message}</p>
+          <a href="/catalog-test" class="inline-block mt-4 px-4 py-2 bg-primary text-white rounded hover:bg-primary/90 transition-colors">
+            Вернуться к каталогу
+          </a>
+        </div>
+      `;
+    }
+  }
+
+  function renderBreadcrumb(breadcrumb) {
+    const items = breadcrumb.map((item, idx) => {
+      const isLast = idx === breadcrumb.length - 1;
+      if (isLast) {
+        return `<span class="text-foreground">${escapeHtml(item.name)}</span>`;
+      }
+      return `
+        <svg class="w-4 h-4 inline text-foreground/30" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+        </svg>
+        <a href="/catalog-test?category=${encodeURIComponent(item.slug)}" class="hover:text-foreground transition-colors">
+          ${escapeHtml(item.name)}
+        </a>
+      `;
+    }).join('');
+    breadcrumbItemsEl.innerHTML = items;
+  }
+
+  function renderCategories(categories) {
+    if (!categories || categories.length === 0) {
+      contentEl.innerHTML = `
+        <div class="text-center py-12 text-foreground/50">
+          <p>Нет подкатегорий</p>
+        </div>
+      `;
+      return;
+    }
+
+    const html = `
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        ${categories.map(cat => `
+          <a href="/catalog-test?category=${encodeURIComponent(cat.slug)}" 
+             class="component-card glass border border-border rounded-lg p-6 hover:border-primary/50 transition-all group cursor-pointer">
+            <div class="flex items-start gap-4">
+              <div class="flex-shrink-0 text-primary/80 group-hover:text-primary transition-colors">
+                ${getCategoryIcon(cat.name)}
+              </div>
+              <div class="flex-1 min-w-0">
+                <h3 class="text-lg font-medium mb-1 group-hover:text-primary transition-colors">
+                  ${escapeHtml(cat.name)}
+                </h3>
+                ${cat.path ? `<p class="text-sm text-foreground/50 truncate">${escapeHtml(cat.path)}</p>` : ''}
+              </div>
+            </div>
+          </a>
+        `).join('')}
+      </div>
+    `;
+    contentEl.innerHTML = html;
+  }
+
+  function renderSearchForm(category) {
+    const html = `
+      <div class="max-w-2xl mx-auto fade-in">
+        <div class="glass border border-border rounded-lg p-8">
+          <div class="text-center mb-6">
+            <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 mb-4">
+              ${getCategoryIcon(category.name)}
+            </div>
+            <h2 class="text-2xl font-medium mb-2">
+              ${escapeHtml(category.name)}
+            </h2>
+            <p class="text-foreground/70">
+              Конечная категория — введите запрос для поиска компонентов
+            </p>
+          </div>
+
+          <form id="search-form" class="space-y-4">
+            <div class="relative">
+              <input 
+                type="text" 
+                id="search-input"
+                placeholder="Введите MPN или характеристики..."
+                class="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
+                autocomplete="off"
+                autofocus
+              />
+              <div id="autocomplete-results" class="hidden absolute top-full left-0 right-0 mt-1 max-h-80 overflow-y-auto bg-background border border-border rounded-lg shadow-lg z-50"></div>
+            </div>
+            <div class="flex gap-3">
+              <button 
+                type="submit"
+                class="flex-1 px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors font-medium"
+              >
+                Искать компоненты
+              </button>
+              <a 
+                href="/catalog-test?category=${encodeURIComponent(category.slug.split('-').slice(0, -1).join('-') || '')}"
+                class="px-6 py-3 border border-border rounded-lg hover:bg-foreground/5 transition-colors"
+              >
+                Назад
+              </a>
+            </div>
+          </form>
+        </div>
+
+        <div class="mt-6 text-center text-sm text-foreground/50">
+          <p>🔍 Поиск ведётся <span class="font-medium">по всем поставщикам</span> (DigiKey, Mouser, TME, Farnell). Для навигации по категориям используйте дерево слева.</p>
+        </div>
+      </div>
+    `;
+    
+    contentEl.innerHTML = html;
+
+    // Attach search handler
+    const form = document.getElementById('search-form');
+    const input = document.getElementById('search-input');
+    const autocompleteEl = document.getElementById('autocomplete-results');
+    
+    // Autocomplete logic
+    let debounceTimer;
+    let currentResults = [];
+    let currentMeta = null;
+    
+    input?.addEventListener('input', (e) => {
+      clearTimeout(debounceTimer);
+      const query = (e.target.value || '').trim();
+      
+      if (query.length < 2) {
+        autocompleteEl.classList.add('hidden');
+        autocompleteEl.innerHTML = '';
+        currentMeta = null;
+        return;
+      }
+      
+      debounceTimer = setTimeout(async () => {
+        try {
+          const res = await fetch(`/api/autocomplete?q=${encodeURIComponent(query)}`);
+          const data = await res.json();
+          
+          if (data.suggestions && data.suggestions.length > 0) {
+            currentResults = data.suggestions;
+            currentMeta = data.meta || null;
+            renderAutocomplete(data.suggestions, currentMeta);
+          } else {
+            autocompleteEl.classList.add('hidden');
+          }
+        } catch (err) {
+          console.error('Autocomplete error:', err);
+        }
+      }, 300);
+    });
+    
+    function renderAutocomplete(suggestions, meta) {
+      let headerHtml = '';
+      if (meta && meta.specsDetected) {
+        headerHtml = `<div class="px-4 py-2 bg-primary/10 border-b border-border/50 text-xs text-foreground/70">🔍 Поиск по характеристикам</div>`;
+      }
+      
+      const itemsHtml = suggestions.slice(0, 8).map((item, idx) => {
+        let specsHtml = '';
+        if (meta && meta.specsDetected && meta.specs) {
+          const badges = [];
+          const s = meta.specs;
+          if (s.package) badges.push(`<span class="inline-block px-2 py-0.5 text-xs rounded bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-200">${escapeHtml(s.package)}</span>`);
+          if (s.resistance) badges.push(`<span class="inline-block px-2 py-0.5 text-xs rounded bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-200">${formatResistance(s.resistance)}</span>`);
+          if (s.capacitance) badges.push(`<span class="inline-block px-2 py-0.5 text-xs rounded bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-200">${formatCapacitance(s.capacitance)}</span>`);
+          if (s.voltage) badges.push(`<span class="inline-block px-2 py-0.5 text-xs rounded bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-200">${s.voltage.value}${s.voltage.unit || 'V'}</span>`);
+          if (s.tolerance) badges.push(`<span class="inline-block px-2 py-0.5 text-xs rounded bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-200">±${s.tolerance.value}%</span>`);
+          if (badges.length > 0) specsHtml = `<div class="mt-1 flex flex-wrap gap-1">${badges.join('')}</div>`;
+        }
+        
+        return `
+          <div class="autocomplete-item px-4 py-3 hover:bg-foreground/5 cursor-pointer border-b border-border/50 last:border-0" data-index="${idx}">
+            <div class="font-medium text-sm">${escapeHtml(item.mpn)}</div>
+            <div class="text-xs text-foreground/60 truncate">${escapeHtml(item.title || item.manufacturer || '')}</div>
+            ${specsHtml}
+          </div>
+        `;
+      }).join('');
+      
+      autocompleteEl.innerHTML = headerHtml + itemsHtml;
+      autocompleteEl.classList.remove('hidden');
+      
+      // Click handlers
+      autocompleteEl.querySelectorAll('.autocomplete-item').forEach(el => {
+        el.addEventListener('click', () => {
+          const idx = parseInt(el.dataset.index);
+          const item = currentResults[idx];
+          if (item) {
+            // Fill input and trigger search (not redirect to product page)
+            input.value = item.mpn;
+            autocompleteEl.classList.add('hidden');
+            startCatalogSearch(item.mpn, category);
+          }
+        });
+        
+        // Hover preview
+        let hoverTimer;
+        let previewEl;
+        
+        el.addEventListener('mouseenter', (e) => {
+          const idx = parseInt(el.dataset.index);
+          const item = currentResults[idx];
+          if (!item) return;
+          
+          hoverTimer = setTimeout(async () => {
+            try {
+              const res = await fetch(`/api/product?mpn=${encodeURIComponent(item.mpn)}`);
+              const data = await res.json();
+              
+              if (data.ok && data.product) {
+                const product = data.product;
+                previewEl = showPreviewPopover(el, product);
+              }
+            } catch (err) {
+              console.error('Preview fetch error:', err);
+            }
+          }, 500); // 500ms delay before showing preview
+        });
+        
+        el.addEventListener('mouseleave', () => {
+          clearTimeout(hoverTimer);
+          // Delay closing to allow moving mouse to preview
+          setTimeout(() => {
+            if (previewEl && !previewEl.matches(':hover')) {
+              previewEl.remove();
+              previewEl = null;
+            }
+          }, 200);
+        });
+        
+        // Keep preview open when hovering over it
+        document.addEventListener('mouseover', (e) => {
+          if (previewEl && previewEl.contains(e.target)) {
+            clearTimeout(hoverTimer);
+          }
+        });
+      });
+    }
+    
+    function showPreviewPopover(anchorEl, product) {
+      // Remove existing preview
+      const existing = document.getElementById('product-preview-popover');
+      if (existing) existing.remove();
+      
+      const popover = document.createElement('div');
+      popover.id = 'product-preview-popover';
+      popover.className = 'fixed bg-background border border-border rounded-lg shadow-xl z-[100] w-80 p-4';
+      
+      // Position adjacent to anchor element
+      const rect = anchorEl.getBoundingClientRect();
+      const isRightSpace = window.innerWidth - rect.right > 340;
+      if (isRightSpace) {
+        popover.style.left = `${rect.right + 10}px`;
+        popover.style.top = `${rect.top}px`;
+      } else {
+        popover.style.right = `${window.innerWidth - rect.left + 10}px`;
+        popover.style.top = `${rect.top}px`;
+      }
+      
+      // Get top 5 specs
+      const specs = product.technical_specs || {};
+      const specKeys = Object.keys(specs).slice(0, 5);
+      const specsHtml = specKeys.length > 0
+        ? `<div class="mt-3 space-y-1 text-xs">
+             ${specKeys.map(key => `
+               <div class="flex justify-between">
+                 <span class="text-foreground/60">${escapeHtml(key)}:</span>
+                 <span class="font-medium">${escapeHtml(String(specs[key]))}</span>
+               </div>
+             `).join('')}
+           </div>`
+        : '<div class="mt-3 text-xs text-foreground/50">Характеристики отсутствуют</div>';
+      
+      // Get price/stock from offers
+      const offers = product.offers || [];
+      const bestOffer = offers.length > 0 ? offers[0] : null;
+      const priceHtml = bestOffer
+        ? `<div class="mt-3 pt-3 border-t border-border/50 text-sm">
+             <div class="flex justify-between items-center">
+               <span class="text-foreground/60">Цена:</span>
+               <span class="font-bold text-primary">${bestOffer.price} ${bestOffer.currency || 'USD'}</span>
+             </div>
+             <div class="flex justify-between items-center mt-1">
+               <span class="text-foreground/60">Наличие:</span>
+               <span class="text-green-600">${bestOffer.stock || 0} шт</span>
+             </div>
+           </div>`
+        : '';
+      
+      popover.innerHTML = `
+        <div class="flex items-start gap-3">
+          <div class="w-16 h-16 bg-foreground/5 rounded flex-shrink-0 flex items-center justify-center">
+            ${product.images && product.images[0]
+              ? `<img src="${escapeHtml(product.images[0])}" alt="${escapeHtml(product.mpn)}" class="max-w-full max-h-full object-contain" />`
+              : '<span class="text-2xl text-foreground/30">📦</span>'
+            }
+          </div>
+          <div class="flex-1 min-w-0">
+            <div class="font-bold text-sm truncate">${escapeHtml(product.mpn)}</div>
+            <div class="text-xs text-foreground/60 truncate">${escapeHtml(product.manufacturer || '')}</div>
+          </div>
+        </div>
+        ${specsHtml}
+        ${priceHtml}
+        <div class="mt-3 pt-3 border-t border-border/50">
+          <a 
+            href="/product/${encodeURIComponent(product.mpn)}" 
+            class="block w-full px-4 py-2 bg-primary text-white text-center rounded hover:bg-primary/90 transition-colors text-sm font-medium"
+          >
+            Подробнее →
+          </a>
+        </div>
+      `;
+      
+      document.body.appendChild(popover);
+      
+      // Close on mouseleave
+      popover.addEventListener('mouseleave', () => {
+        setTimeout(() => {
+          if (!popover.matches(':hover')) {
+            popover.remove();
+          }
+        }, 200);
+      });
+      
+      return popover;
+    }
+    
+    function formatResistance(r) {
+      if (!r || !r.value) return '';
+      const val = r.value;
+      if (val >= 1e6) return `${(val / 1e6).toFixed(1)}MΩ`;
+      if (val >= 1e3) return `${(val / 1e3).toFixed(1)}kΩ`;
+      return `${val}Ω`;
+    }
+    
+    function formatCapacitance(c) {
+      if (!c || !c.value) return '';
+      const val = c.value;
+      if (val >= 1e-6) return `${(val * 1e6).toFixed(1)}μF`;
+      if (val >= 1e-9) return `${(val * 1e9).toFixed(1)}nF`;
+      return `${(val * 1e12).toFixed(1)}pF`;
+    }
+    
+    // Close autocomplete on outside click
+    document.addEventListener('click', (e) => {
+      if (!input?.contains(e.target) && !autocompleteEl?.contains(e.target)) {
+        autocompleteEl?.classList.add('hidden');
+      }
+    });
+    
+    form?.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const query = (input?.value || '').trim();
+      if (query) {
+        // Store category context and start search on this page
+        window.currentCategoryContext = category;
+        startCatalogSearch(query, category);
+      }
+    });
+  }
+
+  
+  // ========== SEARCH RESULTS FUNCTIONS ==========
+  
+  let searchResults = [];
+  let displayedCount = 20; // Pagination: show 20 at a time
+  let searchCompleted = false;
+  let searchEventSource = null;
+
+  function startCatalogSearch(query, category) {
+    // Hide catalog content, show results container
+    contentEl.style.display = 'none';
+    const resultsContainer = document.getElementById('search-results-container');
+    resultsContainer.classList.remove('hidden');
+    
+    // Update UI
+    document.getElementById('search-query-display').textContent = query;
+    document.getElementById('category-filter-badge').innerHTML = `
+      <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-500/20 text-blue-600 dark:text-blue-300 border border-blue-500/30">
+        📁 ${escapeHtml(category.name)}
+      </span>
+    `;
+    
+    // Reset state
+    searchResults = [];
+    displayedCount = 20;
+    searchCompleted = false;
+    document.getElementById('results-tbody').innerHTML = '';
+    document.getElementById('results-cards').innerHTML = '';
+    document.getElementById('results-empty').classList.add('hidden');
+    document.getElementById('search-loading').style.display = 'block';
+    document.getElementById('results-table-wrapper').style.display = 'none';
+    document.getElementById('results-count').textContent = '0';
+    
+    // Start SSE search with category filter
+    if (searchEventSource) {
+      searchEventSource.close();
+    }
+    
+    const searchUrl = `/api/live/search?q=${encodeURIComponent(query)}&limit=999`;
+    searchEventSource = new EventSource(searchUrl);
+    
+    searchEventSource.addEventListener('result', (event) => {
+      try {
+        const data = JSON.parse(event.data);
+        // SSE sends all results in one 'result' event with data.rows array
+        searchResults = data.rows || [];
+        updateSearchResults();
+      } catch (err) {
+        console.error('Parse error:', err);
+      }
+    });
+    
+    searchEventSource.addEventListener('done', () => {
+      searchCompleted = true;
+      searchEventSource.close();
+      searchEventSource = null;
+      document.getElementById('search-loading').style.display = 'none';
+      
+      if (searchResults.length === 0) {
+        document.getElementById('results-empty').classList.remove('hidden');
+      }
+    });
+    
+    searchEventSource.onerror = (err) => {
+      console.error('SSE error:', err);
+      searchEventSource?.close();
+      searchEventSource = null;
+      document.getElementById('search-loading').style.display = 'none';
+      document.getElementById('search-status-text').textContent = 'Ошибка поиска';
+    };
+  }
+  
+  function updateSearchResults() {
+    const tbody = document.getElementById('results-tbody');
+    const cardsContainer = document.getElementById('results-cards');
+    const loadMoreBtn = document.getElementById('load-more-btn');
+    
+    if (searchResults.length > 0) {
+      document.getElementById('results-table-wrapper').style.display = 'block';
+      document.getElementById('results-count').textContent = searchResults.length;
+      
+      // Render only displayed items (pagination)
+      const itemsToShow = searchResults.slice(0, displayedCount);
+      
+      // Render table rows (desktop)
+      tbody.innerHTML = itemsToShow.map(item => renderTableRow(item)).join('');
+      
+      // Render cards (mobile)
+      cardsContainer.innerHTML = itemsToShow.map(item => renderCard(item)).join('');
+      
+      // Show/hide "Load More" button
+      if (loadMoreBtn) {
+        if (displayedCount < searchResults.length) {
+          loadMoreBtn.style.display = 'block';
+          loadMoreBtn.querySelector('.load-more-count').textContent = Math.min(20, searchResults.length - displayedCount);
+        } else {
+          loadMoreBtn.style.display = 'none';
+        }
+      }
+      
+      // Attach click handlers
+      tbody.querySelectorAll('tr[data-mpn]').forEach(row => {
+        row.addEventListener('click', () => {
+          const mpn = row.getAttribute('data-mpn');
+          if (mpn) window.location.href = `/product/${mpn}`;
+        });
+      });
+      
+      document.querySelectorAll('[data-cta]').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const mpn = btn.getAttribute('data-cta');
+          if (mpn) window.location.href = `/product/${mpn}`;
+        });
+      });
+    }
+  }
+  
+  function renderTableRow(item) {
+    const imageUrl = item?.image_url || item?.photo || '';
+    const manufacturer = item?.manufacturer || '—';
+    const mpn = item?.mpn || '—';
+    const description = item?.description_short || item?.title || '—';
+    const regions = item?.regions || (item?.region ? [item?.region] : []);
+    const price = item?.min_price_rub || item?.min_price || null;
+    const currency = item?.min_price_rub ? 'RUB' : (item?.min_currency || 'USD');
+    const priceText = price ? `${price.toLocaleString('ru-RU')} ${currency === 'RUB' ? '₽' : currency}` : '—';
+    
+    const imageHtml = imageUrl
+      ? `<img src="${imageUrl}" alt="${mpn}" class="w-16 h-16 object-contain rounded-lg border border-border bg-foreground/5" />`
+      : `<div class="w-16 h-16 rounded-lg bg-foreground/5 flex items-center justify-center border border-border">
+           <svg class="w-8 h-8 text-foreground/30" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+             <rect x="4" y="4" width="16" height="16" rx="2" />
+             <line x1="8" y1="8" x2="16" y2="8" />
+             <line x1="8" y1="12" x2="16" y2="12" />
+             <line x1="8" y1="16" x2="16" y2="16" />
+           </svg>
+         </div>`;
+    
+    const regionsHtml = regions.length > 0
+      ? regions.map(r => `<span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-500/20 text-blue-600 dark:text-blue-300 border border-blue-500/30">${r}</span>`).join(' ')
+      : '<span class="text-foreground/50">—</span>';
+    
+    return `<tr class="cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-900/50 transition-colors" data-mpn="${encodeURIComponent(mpn)}">
+      <td class="px-4 py-4">${imageHtml}</td>
+      <td class="px-4 py-4">
+        <div class="font-medium text-sm">${escapeHtml(manufacturer)}</div>
+        <div class="text-xs text-muted-foreground mt-1">${item?.source ? item.source.toUpperCase() : ''}</div>
+      </td>
+      <td class="px-4 py-4">
+        <div class="font-mono text-sm text-blue-600 dark:text-blue-400">${escapeHtml(mpn)}</div>
+      </td>
+      <td class="px-4 py-4">
+        <div class="text-sm text-muted-foreground max-w-md line-clamp-2">${escapeHtml(description)}</div>
+      </td>
+      <td class="px-4 py-4 text-center">
+        <div class="flex flex-wrap gap-1 justify-center">${regionsHtml}</div>
+      </td>
+      <td class="px-4 py-4 text-right">
+        <div class="text-sm font-medium text-green-600 dark:text-green-400">${priceText}</div>
+      </td>
+      <td class="px-4 py-4 text-center">
+        <button type="button" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium transition-colors shadow-sm" data-cta="${encodeURIComponent(mpn)}">
+          Купить
+        </button>
+      </td>
+    </tr>`;
+  }
+  
+  function renderCard(item) {
+    const imageUrl = item?.image_url || item?.photo || '';
+    const manufacturer = item?.manufacturer || '—';
+    const mpn = item?.mpn || '—';
+    const description = item?.description_short || item?.title || '—';
+    const price = item?.min_price_rub || item?.min_price || null;
+    const currency = item?.min_price_rub ? 'RUB' : (item?.min_currency || 'USD');
+    const priceText = price ? `${price.toLocaleString('ru-RU')} ${currency === 'RUB' ? '₽' : currency}` : '—';
+    
+    const imageHtml = imageUrl
+      ? `<img src="${imageUrl}" alt="${mpn}" class="w-16 h-16 object-contain rounded-lg border border-border bg-foreground/5" />`
+      : `<div class="w-16 h-16 rounded-lg bg-foreground/5 flex items-center justify-center border border-border">
+           <svg class="w-8 h-8 text-foreground/30" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+             <rect x="4" y="4" width="16" height="16" rx="2" />
+             <line x1="8" y1="8" x2="16" y2="8" />
+             <line x1="8" y1="12" x2="16" y2="12" />
+             <line x1="8" y1="16" x2="16" y2="16" />
+           </svg>
+         </div>`;
+    
+    return `<div class="glass border border-border rounded-lg p-4 hover:border-primary/50 transition-all cursor-pointer" data-mpn="${encodeURIComponent(mpn)}">
+      <div class="flex items-start gap-4 mb-4">
+        <div class="shrink-0">${imageHtml}</div>
+        <div class="flex-1 min-w-0">
+          <div class="font-bold text-primary mb-1">${escapeHtml(mpn)}</div>
+          <div class="text-sm text-foreground mb-1">${escapeHtml(manufacturer)}</div>
+          <div class="text-xs text-foreground/60 line-clamp-2">${escapeHtml(description)}</div>
+        </div>
+      </div>
+      <div class="flex items-center justify-between">
+        <div class="font-bold text-green-600 dark:text-green-400">${priceText}</div>
+        <button type="button" class="px-4 py-2 bg-primary text-white rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors" data-cta="${encodeURIComponent(mpn)}">
+          Подробнее
+        </button>
+      </div>
+    </div>`;
+  }
+  
+  // Back to catalog handler
+  document.getElementById('back-to-catalog')?.addEventListener('click', () => {
+    document.getElementById('search-results-container').classList.add('hidden');
+    contentEl.style.display = 'block';
+    
+    // Close SSE if active
+    if (searchEventSource) {
+      searchEventSource.close();
+      searchEventSource = null;
+    }
+  });
+  
+  // Load more handler (global function for onclick)
+  window.loadMoreResults = function() {
+    displayedCount += 20;
+    updateSearchResults();
+  };
+
+  function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+  }
+
+  // Load on page load
+  loadCategories();
+</script>
+
+</body>
+</html>

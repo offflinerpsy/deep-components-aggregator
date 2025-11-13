@@ -154,6 +154,7 @@
   "workbench.trustedDomains": ["*"],
   "security.promptForExternalProtocol": false,
   
+  
   // New schema: pattern-based auto-approve for chat tools (edits & terminal)
   // User requested FULL ALLOW for all files and all commands.
   // Enable auto-approve engines explicitly (per new schema)
@@ -173,9 +174,6 @@
   "chat.tools.terminal.autoApprove": {
     ".*": true
   },
-  // Global auto-approve (new name as of 1.104 / Copilot Chat 0.32.x)
-  // Note: First use may still show a one-time scary confirmation dialog in UI.
-  "chat.tools.global.autoApprove": true,
   "chat.mcp.serverSampling": {
     "deep-agg/.vscode/mcp.json: my-mcp-server-3b833e7c": {
       "allowedModels": [

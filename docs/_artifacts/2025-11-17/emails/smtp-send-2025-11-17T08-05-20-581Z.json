@@ -1,0 +1,19 @@
+{
+  "to": "alex@prosnab.tech",
+  "subject": "DeepAgg: Тестовое письмо (SMTP)",
+  "templateName": "email-verification",
+  "ok": true,
+  "messageId": "<cd6e5542-7b33-a704-a152-78d133ac18ab@prosnab.tech>",
+  "error": null,
+  "accepted": [
+    "alex@prosnab.tech"
+  ],
+  "rejected": [],
+  "response": "250 OK id=1vKuEi-00000005JKb-1o4U",
+  "envelope": {
+    "from": "alex@prosnab.tech",
+    "to": [
+      "alex@prosnab.tech"
+    ]
+  }
+}

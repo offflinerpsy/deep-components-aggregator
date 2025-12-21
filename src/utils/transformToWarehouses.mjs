@@ -53,8 +53,9 @@ const LEAKED_SPEC_FIELDS = new Set([
  * Фильтрует и очищает technical_specs от leak'ов и мусора
  * @param {Object} specs - Raw technical_specs
  * @returns {Object} Cleaned specs without leak fields and [object Object]
+ * @export - экспортируем для использования в server.js при чтении кэша
  */
-function cleanTechnicalSpecs(specs) {
+export function cleanTechnicalSpecs(specs) {
   if (!specs || typeof specs !== 'object') return {};
   
   const cleaned = {};

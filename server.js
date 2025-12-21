@@ -824,7 +824,12 @@ app.get('/api/product', async (req, res) => {
     const manualProduct = getManualProduct(mpn);
     if (manualProduct) {
       console.log('   📦 Manual Product: Found');
-      return res.json({ ok: true, product: manualProduct, meta: { cached: false, source: 'manual' } });
+      
+      // ВАЖНО: Transform manual products too (если есть pricing/availability)
+      const { transformToWarehouses } = await import('./src/utils/transformToWarehouses.mjs');
+      const transformed = manualProduct.pricing ? transformToWarehouses(manualProduct) : manualProduct;
+      
+      return res.json({ ok: true, product: transformed, meta: { cached: false, source: 'manual' } });
     }
 
     // Check cache (use mpn as key regardless of source)
@@ -832,6 +837,7 @@ app.get('/api/product', async (req, res) => {
     const cached = readCachedProduct(db, 'merged', mpn, TTL);
     if (cached) {
       console.log('   📦 Cache HIT');
+      // Кэш уже содержит transformed data
       return res.json({ ok: true, product: cached, meta: { cached: true } });
     }
 
@@ -1294,15 +1300,21 @@ app.get('/api/product', async (req, res) => {
 
     console.log(`   ✅ Merged product with ${Object.keys(product.technical_specs || {}).length} specs`);
 
-    // Cache merged result
-    cacheProduct(db, 'merged', mpn, product);
+    // ВАЖНО: Transform to warehouse format (hide supplier sources)
+    const { transformToWarehouses } = await import('./src/utils/transformToWarehouses.mjs');
+    const transformedProduct = transformToWarehouses(product);
+
+    console.log(`   🏢 Transformed to ${transformedProduct.warehouseCount} warehouses, total stock: ${transformedProduct.totalStock}`);
+
+    // Cache transformed result
+    cacheProduct(db, 'merged', mpn, transformedProduct);
 
     res.json({
       ok: true,
-      product,
+      product: transformedProduct,
       meta: {
-        cached: false,
-        sources: product.sources
+        cached: false
+        // УДАЛЕНО: sources (leak поставщиков)
       }
     });
   } catch (error) {

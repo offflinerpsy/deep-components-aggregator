@@ -87,8 +87,9 @@ export async function mouserSuggest(q) {
   }
 
   // Маппинг в SuggestRow
+  // ВАЖНО: используем ManufacturerPartNumber (реальный MPN), НЕ MouserPartNumber (префикс 217-)
   return parts.slice(0, 5).map(part => ({
-    mpn: part.MouserPartNumber || part.ManufacturerPartNumber || '',
+    mpn: part.ManufacturerPartNumber || part.MouserPartNumber || '',
     title: part.Description || '',
     manufacturer: part.Manufacturer || '',
     source: 'mouser'

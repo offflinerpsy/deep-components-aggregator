@@ -89,7 +89,9 @@ const truncate = (value, limit = 200) => {
 };
 
 export function normMouser(part) {
-  const mpn = clean(part?.ManufacturerPartNumber || part?.MouserPartNumber);
+  // ВАЖНО: используем ТОЛЬКО ManufacturerPartNumber (реальный MPN производителя)
+  // MouserPartNumber — это внутренний ID Mouser с префиксом типа "217-", НЕ использовать!
+  const mpn = clean(part?.ManufacturerPartNumber);
   if (!mpn) {
     return null;
   }

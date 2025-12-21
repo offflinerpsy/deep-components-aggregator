@@ -1,0 +1,49 @@
+{
+  "ok": true,
+  "product": {
+    "mpn": "P0804",
+    "manufacturer": "Terasic Technologies",
+    "title": "Programmable Logic IC Development Tools DE25-Nano Development and Education Board",
+    "description": "Programmable Logic IC Development Tools DE25-Nano Development and Education Board",
+    "photo": "https://mm.digikey.com/Volume0/opasdata/d220001/medias/images/6530/MFG_CP080-4065.jpg",
+    "images": [
+      "https://www.mouser.com/images/terasictechnologies/images/P0804_SPL.jpg",
+      "https://mm.digikey.com/Volume0/opasdata/d220001/medias/images/6530/MFG_CP080-4065.jpg"
+    ],
+    "datasheets": [
+      "https://www.sameskydevices.com/product/resource/cp080-4065.pdf"
+    ],
+    "technical_specs": {
+      "Packaging": "Bulk",
+      "Product Category": "Fans, Blowers, Thermal Management",
+      "Description": "Programmable Logic IC Development Tools DE25-Nano Development and Education Board",
+      "RoHS Status": "RoHS Compliant",
+      "Lifecycle Status": "New Product",
+      "Type": "TEC (Thermoelectric Cooler)",
+      "Size / Dimension": "Square - 40.00mm L x 40.00mm W",
+      "Qmax @ Th": "77.4W @ 27°C",
+      "Delta Tmax @ Th": "90.2°C @ 27°C",
+      "Number of Stages": "2",
+      "Current - Max": "8 A",
+      "Voltage - Max": "23.9 V",
+      "Resistance": "2.8 Ohms",
+      "Operating Temperature": "101.3°C",
+      "Features": "Lead Wires, Sealed - Silicone RTV"
+    },
+    "package": "",
+    "packaging": "",
+    "totalStock": 0,
+    "warehouseCount": 0,
+    "minETA": "Уточняйте",
+    "bestPrice": null,
+    "priceBreaks": [],
+    "warehouses": [],
+    "availability": {
+      "inStock": 0
+    },
+    "pricing": []
+  },
+  "meta": {
+    "cached": true
+  }
+}

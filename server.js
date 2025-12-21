@@ -837,8 +837,11 @@ app.get('/api/product', async (req, res) => {
     const cached = readCachedProduct(db, 'merged', mpn, TTL);
     if (cached) {
       console.log('   📦 Cache HIT');
-      // Кэш уже содержит transformed data
-      return res.json({ ok: true, product: cached, meta: { cached: true } });
+      // ВАЖНО: Применяем transformToWarehouses к кэшированным данным
+      // чтобы фильтровать leak'и даже для старого кэша
+      const { transformToWarehouses } = await import('./src/utils/transformToWarehouses.mjs');
+      const transformed = transformToWarehouses(cached);
+      return res.json({ ok: true, product: transformed, meta: { cached: true } });
     }
 
     const clean = s => (s || '').toString().trim();

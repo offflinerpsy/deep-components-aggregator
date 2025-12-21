@@ -6,6 +6,106 @@ import { toRUB } from '../currency/toRUB.mjs';
 const clean = s => (s || '').toString().trim();
 
 /**
+ * ПОЛЯ КОТОРЫЕ НУЖНО УДАЛИТЬ ИЗ technical_specs
+ * Это leak'и поставщиков или мусорные данные
+ */
+const LEAKED_SPEC_FIELDS = new Set([
+  // LEAK ПОСТАВЩИКОВ
+  'Product URL',
+  'ProductUrl',
+  'product_url',
+  'Mouser Part Number',
+  'MouserPartNumber',
+  'Datasheet URL',
+  'DatasheetUrl',
+  'DataSheetUrl',
+  
+  // Мусорные поля (обычно содержат [object Object] или бесполезную инфу)
+  'Unit Weight',
+  'UnitWeight',
+  'Standard Pack Qty',
+  'StandardPackQty',
+  'Order Multiple',
+  'OrderMultiple',
+  'Minimum Order Quantity',
+  'MinimumOrderQuantity',
+  'In Stock',
+  'InStock',
+  'Availability',
+  'Lead Time',
+  'LeadTime',
+  'Manufacturer Lead Weeks',
+  'ManufacturerLeadWeeks',
+  'Normally Stocking',
+  'NormallyStocking',
+  'ECCN',
+  'CAHTS',
+  'MXHTS',
+  'USHTS',
+  
+  // Дублирующие поля
+  'Manufacturer Part Number',
+  'ManufacturerPartNumber',
+  'Manufacturer',
+]);
+
+/**
+ * Фильтрует и очищает technical_specs от leak'ов и мусора
+ * @param {Object} specs - Raw technical_specs
+ * @returns {Object} Cleaned specs without leak fields and [object Object]
+ */
+function cleanTechnicalSpecs(specs) {
+  if (!specs || typeof specs !== 'object') return {};
+  
+  const cleaned = {};
+  
+  for (const [key, value] of Object.entries(specs)) {
+    // Пропускаем leak'и
+    if (LEAKED_SPEC_FIELDS.has(key)) continue;
+    
+    // Пропускаем поля начинающиеся с URL
+    if (key.toLowerCase().includes('url')) continue;
+    
+    // Пропускаем null/undefined
+    if (value === null || value === undefined) continue;
+    
+    // Конвертируем значение в строку
+    let strValue;
+    
+    if (typeof value === 'object') {
+      // Если объект — пробуем извлечь значение
+      if (Array.isArray(value)) {
+        strValue = value.map(v => clean(v)).filter(Boolean).join(', ');
+      } else if (value.value !== undefined) {
+        strValue = clean(value.value);
+      } else if (value.name !== undefined) {
+        strValue = clean(value.name);
+      } else {
+        // Пробуем JSON stringify, если не пустой объект
+        const str = JSON.stringify(value);
+        if (str === '{}' || str === '[]') continue;
+        strValue = str;
+      }
+    } else {
+      strValue = clean(value);
+    }
+    
+    // Пропускаем пустые значения
+    if (!strValue || strValue === '-' || strValue === 'N/A' || strValue === 'null' || strValue === 'undefined') continue;
+    
+    // Пропускаем если значение содержит [object Object]
+    if (strValue.includes('[object Object]')) continue;
+    
+    // Пропускаем Yes/No без контекста
+    if ((strValue === 'Yes' || strValue === 'No') && !key.toLowerCase().includes('rohs')) continue;
+    
+    cleaned[key] = strValue;
+  }
+  
+  return cleaned;
+}
+
+/**
  * Calculate ETA (срок доставки) without revealing supplier source
  * @param {string} source - Internal source (mouser/digikey/tme/farnell)
  * @param {number} stock - Stock available
@@ -160,6 +260,12 @@ export function transformToWarehouses(product) {
     ? Math.min(...warehouses.map(wh => wh.minPrice)) 
     : null;
   
+  // DEBUG: Проверим что получаем
+  const originalSpecsCount = Object.keys(product.technical_specs || {}).length;
+  const cleanedSpecs = cleanTechnicalSpecs(product.technical_specs);
+  const cleanedSpecsCount = Object.keys(cleanedSpecs).length;
+  console.log(`   🧹 cleanTechnicalSpecs: ${originalSpecsCount} -> ${cleanedSpecsCount} specs`);
+  
   return {
     mpn: product.mpn,
     manufacturer: product.manufacturer,
@@ -168,7 +274,8 @@ export function transformToWarehouses(product) {
     photo: product.photo,
     images: product.images || [],
     datasheets: product.datasheets || [],
-    technical_specs: product.technical_specs || {},
+    // ВАЖНО: Используем ОЧИЩЕННЫЕ specs
+    technical_specs: cleanedSpecs,
     package: product.package || '',
     packaging: product.packaging || '',
     

@@ -1,0 +1,923 @@
+#!/usr/bin/env node
+/**
+ * Catalog Translation Script v3 - Aggressive term replacement
+ * Translates all English terms to Russian, keeping technical abbreviations
+ */
+import Database from 'better-sqlite3';
+import { readFileSync } from 'fs';
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const DB_PATH = join(__dirname, '../var/db/deepagg.sqlite');
+const TRANSLATIONS_PATH = join(__dirname, 'catalog-translations.json');
+
+// Load exact translations from JSON
+const translations = JSON.parse(readFileSync(TRANSLATIONS_PATH, 'utf8'));
+const exactTranslations = translations.exact;
+
+// Comprehensive term dictionary - sorted by length for proper replacement
+const termDict = {
+  // ===== Long compound phrases first =====
+  'Factory Assembled': 'Заводская сборка',
+  'Heavy Duty': 'Усиленные',
+  'Surface Conditioning': 'Обработка поверхности',
+  'Clean Room': 'Чистые комнаты',
+  'Direct Wire': 'Прямой провод',
+  'Special Purpose': 'Специального назначения',
+  'Board to Board': 'Плата-Плата',
+  'Wire to Board': 'Провод-Плата',
+  'Cable to Board': 'Кабель-Плата',
+  'Edge Type': 'Краевого типа',
+  'Floor Markings': 'Напольная разметка',
+  'Power Adapters': 'Адаптеры питания',
+  'Power Adapter': 'Адаптер питания',
+  'Power Supply': 'Блок питания',
+  'Power Supplies': 'Блоки питания',
+  'Tool Kits': 'Наборы инструментов',
+  'Analog to Digital': 'Аналого-цифровой',
+  'Digital to Analog': 'Цифро-аналоговый',
+  'Position Measuring': 'Измерение положения',
+  'Bar Code': 'Штрих-код',
+  'Clip Contacts': 'Контактные зажимы',
+  'Flat Ribbon': 'Плоский ленточный',
+  'Field Programmable': 'Программируемые в поле',
+  'Application Specific': 'Специализированный',
+  'Non-Rechargeable': 'Неперезаряжаемые',
+  'Non Rechargeable': 'Неперезаряжаемые',
+  'Rechargeable': 'Перезаряжаемые',
+  'Pre-Biased': 'С предусмотрением',
+  'Over Voltage': 'Перенапряжение',
+  'Under Voltage': 'Пониженное напряжение',
+  'In Wall': 'Встраиваемый',
+  'On Wall': 'Настенный',
+  'In Floor': 'Напольный',
+  
+  // Multi-word terms
+  'Air Compressor': 'Воздушный компрессор',
+  'Air Conditioners': 'Кондиционеры',
+  'Air Conditioner': 'Кондиционер',
+  'Air Curtain': 'Воздушная завеса',
+  'Air Filters': 'Воздушные фильтры',
+  'Air Filter': 'Воздушный фильтр',
+  'Air Handlers': 'Вентиляционные установки',
+  'Air Purifiers': 'Очистители воздуха',
+  'Audio Kits': 'Аудио наборы',
+  'Audio Cables': 'Аудио кабели',
+  'Audio Cable': 'Аудио кабель',
+  'Beam Expanders': 'Расширители пучка',
+  'Binding Posts': 'Клеммные посты',
+  'Cable Clamps': 'Кабельные зажимы',
+  'Cable Clamp': 'Кабельный зажим',
+  'Floor Dryers': 'Сушилки для полов',
+  'Board Spacers': 'Стойки для плат',
+  
+  // ===== Common categories =====
+  '3D Printers': '3D принтеры',
+  '3D Printer': '3D принтер',
+  '3D Printing': '3D печать',
+  'Abrasives': 'Абразивы',
+  'Absorbents': 'Абсорбенты',
+  'Accelerometers': 'Акселерометры',
+  'Accelerometer': 'Акселерометр',
+  'Accessories': 'Аксессуары',
+  'Accessory': 'Аксессуар',
+  'Actuators': 'Актуаторы',
+  'Actuator': 'Актуатор',
+  'Adapter': 'Адаптер',
+  'Adapters': 'Адаптеры',
+  'Adhesives': 'Клеящие материалы',
+  'Adhesive': 'Клей',
+  'Adjustable': 'Регулируемый',
+  'Agricultural': 'Сельскохозяйственный',
+  'Alarms': 'Сигнализаторы',
+  'Alarm': 'Сигнализатор',
+  'Alligator': 'Типа "крокодил"',
+  'Ambient': 'Окружающей среды',
+  'Amplifier': 'Усилитель',
+  'Amplifiers': 'Усилители',
+  'Analog': 'Аналоговый',
+  'Analyzers': 'Анализаторы',
+  'Analyzer': 'Анализатор',
+  'Angle': 'Угловой',
+  'Antennas': 'Антенны',
+  'Antenna': 'Антенна',
+  'Applicators': 'Аппликаторы',
+  'ARINC': 'ARINC',
+  'Arms': 'Держатели',
+  'Arrays': 'Сборки',
+  'Array': 'Сборка',
+  'Assorted': 'Разные',
+  'Attenuators': 'Аттенюаторы',
+  'Attenuator': 'Аттенюатор',
+  
+  // B
+  'BNC': 'BNC',
+  'Backplane': 'Бэкплейн',
+  'Backplanes': 'Бэкплейны',
+  'Backshells': 'Корпуса',
+  'Backshell': 'Корпус',
+  'Bags': 'Пакеты',
+  'Bag': 'Пакет',
+  'Ballasts': 'Балласты',
+  'Ballast': 'Балласт',
+  'Balun': 'Симметрирующий трансформатор',
+  'Banana': 'Банановые',
+  'Barrel': 'Цилиндрические',
+  'Barriers': 'Барьеры',
+  'Barrier': 'Барьер',
+  'Barricades': 'Ограждения',
+  'Batteries': 'Батареи',
+  'Battery': 'Батарея',
+  'Beamsplitters': 'Светоделители',
+  'Beamsplitter': 'Светоделитель',
+  'Bearings': 'Подшипники',
+  'Bearing': 'Подшипник',
+  'Between': 'Между',
+  'Series': 'Серии',
+  'Bikes': 'Велосипеды',
+  'Bipolar': 'Биполярный',
+  'Blade': 'Ножевой',
+  'Blocks': 'Блоки',
+  'Block': 'Блок',
+  'Blowers': 'Воздуходувки',
+  'Blower': 'Воздуходувка',
+  'Board': 'Плата',
+  'Boards': 'Платы',
+  'Boots': 'Защитные чехлы',
+  'Boot': 'Чехол',
+  'Breakout': 'Отладочные',
+  'Bridge': 'Мост',
+  'Bridges': 'Мосты',
+  'Buffers': 'Буферы',
+  'Buffer': 'Буфер',
+  'Bullet': 'Пулевые',
+  'Bus': 'Шина',
+  'Buzzers': 'Зуммеры',
+  'Buzzer': 'Зуммер',
+  
+  // C
+  'Cable': 'Кабель',
+  'Cables': 'Кабели',
+  'Cabling': 'Прокладка кабелей',
+  'Capacitor': 'Конденсатор',
+  'Capacitors': 'Конденсаторы',
+  'Caps': 'Крышки',
+  'Cap': 'Крышка',
+  'Cards': 'Карты',
+  'Card': 'Карта',
+  'Ceiling': 'Потолочный',
+  'Ceramic': 'Керамический',
+  'Chains': 'Цепи',
+  'Chain': 'Цепь',
+  'Chassis': 'Шасси',
+  'Chip': 'Чип',
+  'Chips': 'Чипы',
+  'Circuit': 'Схема',
+  'Circuits': 'Схемы',
+  'Circular': 'Круглый',
+  'Clamps': 'Зажимы',
+  'Clamp': 'Зажим',
+  'Cleaners': 'Очистители',
+  'Cleaner': 'Очиститель',
+  'Cleaning': 'Очистка',
+  'Clips': 'Зажимы',
+  'Clip': 'Зажим',
+  'Clock': 'Тактовый',
+  'Clocks': 'Часы',
+  'Clothing': 'Одежда',
+  'Coaxial': 'Коаксиальный',
+  'Coils': 'Катушки',
+  'Coil': 'Катушка',
+  'Components': 'Компоненты',
+  'Component': 'Компонент',
+  'Compressors': 'Компрессоры',
+  'Compressor': 'Компрессор',
+  'Computer': 'Компьютер',
+  'Computers': 'Компьютеры',
+  'Computing': 'Вычисления',
+  'Conditioners': 'Кондиционеры',
+  'Conditioner': 'Кондиционер',
+  'Conductors': 'Проводники',
+  'Conductor': 'Проводник',
+  'Configurable': 'Конфигурируемый',
+  'Connector': 'Разъём',
+  'Connectors': 'Разъёмы',
+  'Contact': 'Контакт',
+  'Contacts': 'Контакты',
+  'Containers': 'Контейнеры',
+  'Container': 'Контейнер',
+  'Controller': 'Контроллер',
+  'Controllers': 'Контроллеры',
+  'Converter': 'Преобразователь',
+  'Converters': 'Преобразователи',
+  'Cooling': 'Охлаждение',
+  'Cords': 'Шнуры',
+  'Cord': 'Шнур',
+  'Counters': 'Счётчики',
+  'Counter': 'Счётчик',
+  'Covers': 'Крышки',
+  'Cover': 'Крышка',
+  'Crimpers': 'Обжимные инструменты',
+  'Crimper': 'Обжимной инструмент',
+  'Crocodile': 'Крокодил',
+  'Current': 'Ток',
+  'Cutters': 'Резаки',
+  'Cutter': 'Резак',
+  'Cylilnders': 'Цилиндры',  // with typo as in DB
+  'Cylinders': 'Цилиндры',
+  
+  // D
+  'Data': 'Данные',
+  'Decoders': 'Декодеры',
+  'Decoder': 'Декодер',
+  'Dehumidifiers': 'Осушители',
+  'Dehumidifier': 'Осушитель',
+  'Delay': 'Задержка',
+  'Desktop': 'Настольный',
+  'Detectors': 'Детекторы',
+  'Detector': 'Детектор',
+  'Development': 'Разработка',
+  'Devices': 'Устройства',
+  'Device': 'Устройство',
+  'Dials': 'Шкалы',
+  'Dial': 'Шкала',
+  'Digital': 'Цифровой',
+  'Diode': 'Диод',
+  'Diodes': 'Диоды',
+  'Direct': 'Прямой',
+  'Discrete': 'Дискретный',
+  'Dispensers': 'Диспенсеры',
+  'Dispenser': 'Диспенсер',
+  'Display': 'Дисплей',
+  'Displays': 'Дисплеи',
+  'Distribution': 'Распределение',
+  'Dividers': 'Делители',
+  'Divider': 'Делитель',
+  'Dock': 'Док',
+  'Doors': 'Двери',
+  'Door': 'Дверь',
+  'Driver': 'Драйвер',
+  'Drivers': 'Драйверы',
+  'Drives': 'Приводы',
+  'Drive': 'Привод',
+  'Dual': 'Двойной',
+  'Duct': 'Канал',
+  'Ducts': 'Каналы',
+  'Duty': 'Режим',
+  
+  // E
+  'Edge': 'Краевой',
+  'Educational': 'Образовательный',
+  'Electric': 'Электрический',
+  'Electrical': 'Электрический',
+  'Electronic': 'Электронный',
+  'Electronics': 'Электроника',
+  'Embedded': 'Встраиваемый',
+  'Emitters': 'Излучатели',
+  'Emitter': 'Излучатель',
+  'Encoders': 'Энкодеры',
+  'Encoder': 'Энкодер',
+  'Enclosures': 'Корпуса',
+  'Enclosure': 'Корпус',
+  'Engines': 'Модули',
+  'Engine': 'Модуль',
+  'Epoxies': 'Эпоксидные',
+  'Equipment': 'Оборудование',
+  'ESD': 'ESD',
+  'Evaluation': 'Оценочный',
+  'Exhaust': 'Вытяжной',
+  'Expanders': 'Расширители',
+  'Expander': 'Расширитель',
+  'Extension': 'Удлинитель',
+  'Extensions': 'Удлинители',
+  'External': 'Внешний',
+  
+  // F
+  'Fans': 'Вентиляторы',
+  'Fan': 'Вентилятор',
+  'Fasteners': 'Крепёж',
+  'Fastener': 'Крепёж',
+  'Fiber': 'Волоконный',
+  'Fibers': 'Волокна',
+  'Film': 'Плёночный',
+  'Filter': 'Фильтр',
+  'Filters': 'Фильтры',
+  'Fixed': 'Фиксированный',
+  'Flat': 'Плоский',
+  'Flex': 'Гибкий',
+  'Floor': 'Напольный',
+  'Flow': 'Поток',
+  'Frequency': 'Частота',
+  'Front': 'Фронтальный',
+  'Fuse': 'Предохранитель',
+  'Fuses': 'Предохранители',
+  'Fuseholders': 'Держатели предохранителей',
+  'Furnaces': 'Печи',
+  'Furnace': 'Печь',
+  
+  // G
+  'Gas': 'Газ',
+  'Gate': 'Затвор',
+  'Gates': 'Затворы',
+  'Gauges': 'Измерители',
+  'Gauge': 'Измеритель',
+  'General': 'Общего назначения',
+  'Generator': 'Генератор',
+  'Generators': 'Генераторы',
+  'Glass': 'Стекло',
+  'Greases': 'Смазки',
+  'Grease': 'Смазка',
+  'Grommets': 'Втулки',
+  'Grommet': 'Втулка',
+  'Grounding': 'Заземление',
+  
+  // H
+  'Handlers': 'Устройства',
+  'Handler': 'Устройство',
+  'Hardware': 'Комплектующие',
+  'Headers': 'Разъёмы',
+  'Header': 'Разъём',
+  'Heat': 'Тепло',
+  'Heaters': 'Нагреватели',
+  'Heater': 'Нагреватель',
+  'Heatsinks': 'Радиаторы',
+  'Heatsink': 'Радиатор',
+  'Hex': 'Шестигранный',
+  'High': 'Высокий',
+  'Holders': 'Держатели',
+  'Holder': 'Держатель',
+  'Housings': 'Корпуса',
+  'Housing': 'Корпус',
+  'Humidifiers': 'Увлажнители',
+  'Humidifier': 'Увлажнитель',
+  'Humidity': 'Влажность',
+  
+  // I
+  'IC': 'ИС',
+  'ICs': 'ИС',
+  'Identification': 'Идентификация',
+  'Indicators': 'Индикаторы',
+  'Indicator': 'Индикатор',
+  'Indoor': 'Внутренний',
+  'Industrial': 'Промышленный',
+  'Inductors': 'Индуктивности',
+  'Inductor': 'Индуктивность',
+  'Infrared': 'Инфракрасный',
+  'Input': 'Вход',
+  'Inserts': 'Вставки',
+  'Insert': 'Вставка',
+  'Inspection': 'Контроль',
+  'Instruments': 'Инструменты',
+  'Instrument': 'Инструмент',
+  'Insulators': 'Изоляторы',
+  'Insulator': 'Изолятор',
+  'Integrated': 'Интегральный',
+  'Interface': 'Интерфейс',
+  'Internal': 'Внутренний',
+  'Inverters': 'Инверторы',
+  'Inverter': 'Инвертор',
+  'Isolation': 'Изоляция',
+  'Isolators': 'Изоляторы',
+  'Isolator': 'Изолятор',
+  
+  // J
+  'Jacks': 'Гнёзда',
+  'Jack': 'Гнездо',
+  'Joysticks': 'Джойстики',
+  'Joystick': 'Джойстик',
+  'Jumpers': 'Джамперы',
+  'Jumper': 'Джампер',
+  
+  // K
+  'Keyboard': 'Клавиатура',
+  'Keyboards': 'Клавиатуры',
+  'Kits': 'Наборы',
+  'Kit': 'Набор',
+  
+  // L
+  'Labels': 'Этикетки',
+  'Label': 'Этикетка',
+  'Lamps': 'Лампы',
+  'Lamp': 'Лампа',
+  'Laser': 'Лазер',
+  'Lasers': 'Лазеры',
+  'Latches': 'Защёлки',
+  'Latch': 'Защёлка',
+  'LED': 'LED',
+  'LEDs': 'LED',
+  'Lenses': 'Линзы',
+  'Lens': 'Линза',
+  'Level': 'Уровень',
+  'Light': 'Свет',
+  'Lighting': 'Освещение',
+  'Limiters': 'Ограничители',
+  'Limiter': 'Ограничитель',
+  'Line': 'Линия',
+  'Linear': 'Линейный',
+  'Lines': 'Линии',
+  'Loads': 'Нагрузки',
+  'Load': 'Нагрузка',
+  'Locks': 'Замки',
+  'Lock': 'Замок',
+  'Logic': 'Логика',
+  'Low': 'Низкий',
+  
+  // M
+  'Machine': 'Машина',
+  'Machines': 'Машины',
+  'Magnetic': 'Магнитный',
+  'Magnetics': 'Магнитные',
+  'Male': 'Штырь',
+  'Management': 'Управление',
+  'Markers': 'Маркеры',
+  'Marker': 'Маркер',
+  'Materials': 'Материалы',
+  'Material': 'Материал',
+  'Mats': 'Коврики',
+  'Mat': 'Коврик',
+  'Measurement': 'Измерение',
+  'Mechanical': 'Механический',
+  'Memory': 'Память',
+  'Meters': 'Измерители',
+  'Meter': 'Измеритель',
+  'Mezzanine': 'Мезонинный',
+  'Micro': 'Микро',
+  'Microcontroller': 'Микроконтроллер',
+  'Microcontrollers': 'Микроконтроллеры',
+  'Microphones': 'Микрофоны',
+  'Microphone': 'Микрофон',
+  'Microprocessor': 'Микропроцессор',
+  'Microprocessors': 'Микропроцессоры',
+  'Mixer': 'Смеситель',
+  'Mixers': 'Смесители',
+  'Mobile': 'Мобильный',
+  'Modems': 'Модемы',
+  'Modem': 'Модем',
+  'Modular': 'Модульный',
+  'Module': 'Модуль',
+  'Modules': 'Модули',
+  'Monitors': 'Мониторы',
+  'Monitor': 'Монитор',
+  'Motion': 'Движение',
+  'Motor': 'Двигатель',
+  'Motors': 'Двигатели',
+  'Mount': 'Монтаж',
+  'Mounting': 'Монтаж',
+  'Mounts': 'Крепления',
+  'Multimeters': 'Мультиметры',
+  'Multimeter': 'Мультиметр',
+  'Multiplexers': 'Мультиплексоры',
+  'Multiplexer': 'Мультиплексор',
+  'Multipliers': 'Умножители',
+  'Multiplier': 'Умножитель',
+  
+  // N
+  'Network': 'Сеть',
+  'Networking': 'Сетевой',
+  'Networks': 'Сети',
+  'Noise': 'Шум',
+  'Nuts': 'Гайки',
+  'Nut': 'Гайка',
+  
+  // O
+  'Offline': 'Автономный',
+  'Optical': 'Оптический',
+  'Optics': 'Оптика',
+  'Optoelectronics': 'Оптоэлектроника',
+  'Oscillator': 'Генератор',
+  'Oscillators': 'Генераторы',
+  'Oscilloscopes': 'Осциллографы',
+  'Oscilloscope': 'Осциллограф',
+  'Outdoor': 'Наружный',
+  'Output': 'Выход',
+  'Outputs': 'Выходы',
+  
+  // P
+  'Packs': 'Блоки',
+  'Pack': 'Блок',
+  'Panels': 'Панели',
+  'Panel': 'Панель',
+  'Parts': 'Детали',
+  'Part': 'Деталь',
+  'Passive': 'Пассивный',
+  'Pastes': 'Пасты',
+  'Paste': 'Паста',
+  'PCB': 'PCB',
+  'Photo': 'Фото',
+  'Piezo': 'Пьезо',
+  'Pins': 'Штырьки',
+  'Pin': 'Штырь',
+  'Plates': 'Пластины',
+  'Plate': 'Пластина',
+  'Plugs': 'Вилки',
+  'Plug': 'Вилка',
+  'Portable': 'Портативный',
+  'Position': 'Позиция',
+  'Posts': 'Стойки',
+  'Post': 'Стойка',
+  'Potentiometer': 'Потенциометр',
+  'Potentiometers': 'Потенциометры',
+  'Power': 'Питание',
+  'Precision': 'Прецизионный',
+  'Pressure': 'Давление',
+  'Primary': 'Первичный',
+  'Printers': 'Принтеры',
+  'Printer': 'Принтер',
+  'Printing': 'Печать',
+  'Probe': 'Щуп',
+  'Probes': 'Щупы',
+  'Processor': 'Процессор',
+  'Processors': 'Процессоры',
+  'Products': 'Продукция',
+  'Product': 'Продукт',
+  'Professional': 'Профессиональный',
+  'Programmable': 'Программируемый',
+  'Programmer': 'Программатор',
+  'Programmers': 'Программаторы',
+  'Programming': 'Программирование',
+  'Protection': 'Защита',
+  'Protectors': 'Защитные',
+  'Protector': 'Защитный',
+  'Prototyping': 'Прототипирование',
+  'Proximity': 'Приближение',
+  'Purifiers': 'Очистители',
+  'Purifier': 'Очиститель',
+  'Purpose': 'Назначение',
+  
+  // Q
+  'Quad': 'Четвертной',
+  
+  // R
+  'Racks': 'Стойки',
+  'Rack': 'Стойка',
+  'Radio': 'Радио',
+  'Readers': 'Считыватели',
+  'Reader': 'Считыватель',
+  'Real': 'Реальный',
+  'Receiver': 'Приёмник',
+  'Receivers': 'Приёмники',
+  'Receptacles': 'Гнёзда',
+  'Receptacle': 'Гнездо',
+  'Rectangular': 'Прямоугольный',
+  'Rectifier': 'Выпрямитель',
+  'Rectifiers': 'Выпрямители',
+  'Reference': 'Опорный',
+  'Reflective': 'Отражательный',
+  'Regulator': 'Стабилизатор',
+  'Regulators': 'Стабилизаторы',
+  'Relay': 'Реле',
+  'Relays': 'Реле',
+  'Remote': 'Дистанционный',
+  'Repair': 'Ремонт',
+  'Resistor': 'Резистор',
+  'Resistors': 'Резисторы',
+  'Resonator': 'Резонатор',
+  'Resonators': 'Резонаторы',
+  'RF': 'РЧ',
+  'Ribbon': 'Ленточный',
+  'Rings': 'Кольца',
+  'Ring': 'Кольцо',
+  'Robots': 'Роботы',
+  'Robot': 'Робот',
+  'Robotics': 'Робототехника',
+  'Rotary': 'Поворотный',
+  
+  // S
+  'Safety': 'Безопасность',
+  'Scale': 'Шкала',
+  'Screws': 'Винты',
+  'Screw': 'Винт',
+  'Seals': 'Уплотнители',
+  'Seal': 'Уплотнитель',
+  'Secondary': 'Вторичный',
+  'Semiconductor': 'Полупроводник',
+  'Semiconductors': 'Полупроводники',
+  'Sensor': 'Датчик',
+  'Sensors': 'Датчики',
+  'Serial': 'Последовательный',
+  'Server': 'Сервер',
+  'Servers': 'Серверы',
+  'Shield': 'Экран',
+  'Shields': 'Экраны',
+  'Shunt': 'Шунт',
+  'Shunts': 'Шунты',
+  'Signal': 'Сигнал',
+  'Signals': 'Сигналы',
+  'Signs': 'Знаки',
+  'Sign': 'Знак',
+  'Silicon': 'Кремниевый',
+  'Single': 'Одиночный',
+  'Sinks': 'Радиаторы',
+  'Sink': 'Радиатор',
+  'Sirens': 'Сирены',
+  'Siren': 'Сирена',
+  'Slide': 'Ползунковый',
+  'SMD': 'SMD',
+  'Socket': 'Разъём',
+  'Sockets': 'Разъёмы',
+  'Software': 'ПО',
+  'Solar': 'Солнечный',
+  'Solder': 'Припой',
+  'Soldering': 'Пайка',
+  'Solenoids': 'Соленоиды',
+  'Solenoid': 'Соленоид',
+  'Solid': 'Твёрдотельный',
+  'Solutions': 'Решения',
+  'Solution': 'Решение',
+  'Sound': 'Звук',
+  'Spacers': 'Стойки',
+  'Spacer': 'Стойка',
+  'Speakers': 'Динамики',
+  'Speaker': 'Динамик',
+  'Special': 'Специальный',
+  'Specialized': 'Специализированный',
+  'Specialty': 'Специальные',
+  'Stackers': 'Укладчики',
+  'Stacker': 'Укладчик',
+  'Standard': 'Стандартный',
+  'Standoffs': 'Стойки',
+  'Standoff': 'Стойка',
+  'Stands': 'Подставки',
+  'Stand': 'Подставка',
+  'State': 'Состояние',
+  'Static': 'Статический',
+  'Station': 'Станция',
+  'Stations': 'Станции',
+  'Storage': 'Хранение',
+  'Straps': 'Ремни',
+  'Strap': 'Ремень',
+  'Strippers': 'Стрипперы',
+  'Stripper': 'Стриппер',
+  'Strips': 'Ленты',
+  'Strip': 'Лента',
+  'Structures': 'Конструкции',
+  'Structure': 'Конструкция',
+  'Supplies': 'Материалы',
+  'Supply': 'Питание',
+  'Suppressors': 'Подавители',
+  'Suppressor': 'Подавитель',
+  'Surface': 'Поверхностный',
+  'Surge': 'Импульсный',
+  'Switch': 'Переключатель',
+  'Switches': 'Переключатели',
+  'Switching': 'Импульсный',
+  'System': 'Система',
+  'Systems': 'Системы',
+  
+  // T
+  'Tapes': 'Ленты',
+  'Tape': 'Лента',
+  'Temperature': 'Температура',
+  'Terminal': 'Клемма',
+  'Terminals': 'Клеммы',
+  'Test': 'Тест',
+  'Testing': 'Тестирование',
+  'Thermal': 'Термо',
+  'Thermistors': 'Термисторы',
+  'Thermistor': 'Термистор',
+  'Thermocouples': 'Термопары',
+  'Thermocouple': 'Термопара',
+  'Thick': 'Толстоплёночный',
+  'Thin': 'Тонкоплёночный',
+  'Through': 'Выводной',
+  'Time': 'Время',
+  'Timer': 'Таймер',
+  'Timers': 'Таймеры',
+  'Timing': 'Синхронизация',
+  'Tip': 'Наконечник',
+  'Tips': 'Наконечники',
+  'Tools': 'Инструменты',
+  'Tool': 'Инструмент',
+  'Touch': 'Сенсорный',
+  'Transceiver': 'Трансивер',
+  'Transceivers': 'Трансиверы',
+  'Transducers': 'Преобразователи',
+  'Transducer': 'Преобразователь',
+  'Transformer': 'Трансформатор',
+  'Transformers': 'Трансформаторы',
+  'Transistor': 'Транзистор',
+  'Transistors': 'Транзисторы',
+  'Transmitter': 'Передатчик',
+  'Transmitters': 'Передатчики',
+  'Trays': 'Лотки',
+  'Tray': 'Лоток',
+  'Trigger': 'Триггер',
+  'Triggers': 'Триггеры',
+  'Trimmers': 'Подстроечные',
+  'Trimmer': 'Подстроечный',
+  'Triple': 'Тройной',
+  'Tubes': 'Трубки',
+  'Tube': 'Трубка',
+  'Tuners': 'Тюнеры',
+  'Tuner': 'Тюнер',
+  'Tuning': 'Настройка',
+  'Type': 'Тип',
+  
+  // U
+  'Ultrasonic': 'Ультразвуковой',
+  'Universal': 'Универсальный',
+  'USB': 'USB',
+  'UV': 'УФ',
+  
+  // V
+  'Variable': 'Переменный',
+  'Video': 'Видео',
+  'Voltage': 'Напряжение',
+  
+  // W
+  'Wall': 'Настенный',
+  'Washers': 'Шайбы',
+  'Washer': 'Шайба',
+  'White': 'Белый',
+  'Wire': 'Провод',
+  'Wires': 'Провода',
+  'Wireless': 'Беспроводной',
+  'Wiring': 'Монтаж',
+  'Wrenches': 'Ключи',
+  'Wrench': 'Ключ',
+  
+  // Conjunctions and prepositions
+  'and': 'и',
+  'or': 'или',
+  'with': 'с',
+  'for': 'для',
+  'to': 'к',
+  'from': 'от',
+  'of': '',
+  'by': 'по',
+  'in': 'в',
+  'on': 'на',
+  'up to': 'до',
+  'over': 'свыше',
+  
+  // Technical abbreviations (keep as-is)
+  'AC': 'AC',
+  'DC': 'DC',
+  'IR': 'ИК',
+  'ADC': 'АЦП',
+  'DAC': 'ЦАП',
+  'AFE': 'AFE',
+  'BJT': 'BJT',
+  'FET': 'FET',
+  'MOSFET': 'MOSFET',
+  'IGBT': 'IGBT',
+  'JFET': 'JFET',
+  'SCR': 'SCR',
+  'TRIAC': 'TRIAC',
+  'PTC': 'PTC',
+  'NTC': 'NTC',
+  'RTD': 'RTD',
+  'PMIC': 'PMIC',
+  'LDO': 'LDO',
+  'PoE': 'PoE',
+  'PFC': 'PFC',
+  'RMS': 'RMS',
+  'FPGA': 'FPGA',
+  'CPLD': 'CPLD',
+  'DSP': 'DSP',
+  'MPU': 'MPU',
+  'MCU': 'MCU',
+  'SoC': 'SoC',
+  'UART': 'UART',
+  'USART': 'USART',
+  'SPI': 'SPI',
+  'I2C': 'I2C',
+  'CAN': 'CAN',
+  'LIN': 'LIN',
+  'FIFO': 'FIFO',
+  'PLL': 'PLL',
+  'VCO': 'VCO',
+  'DVI': 'DVI',
+  'HDMI': 'HDMI',
+  'FFC': 'FFC',
+  'FPC': 'FPC',
+  'DIN': 'DIN',
+  'EMI': 'EMI',
+  'EMC': 'EMC',
+  'ESD': 'ESD',
+  'TVS': 'TVS',
+  'GDT': 'GDT',
+  'ICL': 'ICL',
+  'COB': 'COB',
+  'RGB': 'RGB',
+  'GPS': 'GPS',
+  'NFC': 'NFC',
+  'RFID': 'RFID',
+  'WiFi': 'WiFi',
+  'LoRa': 'LoRa',
+  'LCR': 'LCR',
+  'Op': 'ОУ',
+  'Amps': 'А',
+  'Amp': 'А',
+  'DC/DC': 'DC/DC',
+  'AC/DC': 'AC/DC'
+};
+
+// Open database
+const db = new Database(DB_PATH);
+
+// Ensure name_ru column exists
+try {
+  db.exec('ALTER TABLE catalog_categories ADD COLUMN name_ru TEXT');
+  console.log('✓ Added name_ru column');
+} catch (e) {
+  // Column already exists
+}
+
+// Get all categories
+const categories = db.prepare('SELECT id, name FROM catalog_categories').all();
+console.log(`Found ${categories.length} categories to translate\n`);
+
+// Build regex patterns sorted by length (longest first)
+const sortedTerms = Object.keys(termDict).sort((a, b) => b.length - a.length);
+const termPatterns = sortedTerms.map(term => ({
+  regex: new RegExp(`\\b${term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'gi'),
+  replacement: termDict[term]
+}));
+
+// Translation function
+function translate(name) {
+  // 1. Check exact match in JSON dictionary
+  if (exactTranslations[name]) {
+    return exactTranslations[name];
+  }
+  
+  // 2. Apply term-by-term translation
+  let translated = name;
+  
+  for (const { regex, replacement } of termPatterns) {
+    translated = translated.replace(regex, replacement);
+  }
+  
+  // 3. Clean up double spaces and trim
+  translated = translated.replace(/\s+/g, ' ').trim();
+  
+  // 4. Clean up empty "()" 
+  translated = translated.replace(/\(\s*\)/g, '').trim();
+  
+  // 5. Clean up "- -" and similar artifacts
+  translated = translated.replace(/\s*-\s*-\s*/g, ' — ').trim();
+  translated = translated.replace(/\s*,\s*,\s*/g, ', ').trim();
+  
+  return translated;
+}
+
+// Update translations
+const updateStmt = db.prepare('UPDATE catalog_categories SET name_ru = ? WHERE id = ?');
+let exactMatches = 0;
+let termTranslated = 0;
+let hasEnglishRemaining = 0;
+
+for (const cat of categories) {
+  const translated = translate(cat.name);
+  
+  if (exactTranslations[cat.name]) {
+    exactMatches++;
+  } else if (translated !== cat.name) {
+    termTranslated++;
+    // Check if still has significant English
+    if (/[a-zA-Z]{4,}/.test(translated)) {
+      hasEnglishRemaining++;
+    }
+  }
+  
+  updateStmt.run(translated, cat.id);
+}
+
+db.close();
+
+console.log('=== Translation Results ===');
+console.log(`Exact matches (JSON): ${exactMatches}`);
+console.log(`Term translations:    ${termTranslated}`);
+console.log(`Still has English:    ${hasEnglishRemaining}`);
+console.log(`Total:                ${categories.length}`);
+
+// Show samples
+console.log('\n=== Sample translations: ===');
+const db2 = new Database(DB_PATH);
+const samples = db2.prepare(`
+  SELECT name, name_ru FROM catalog_categories 
+  WHERE name != name_ru 
+  ORDER BY RANDOM() 
+  LIMIT 20
+`).all();
+
+samples.forEach((s, i) => {
+  console.log(`${i + 1}. "${s.name}" → "${s.name_ru}"`);
+});
+
+// Show categories still with English
+console.log('\n=== Categories still with English (first 30): ===');
+const withEnglish = db2.prepare(`
+  SELECT name, name_ru FROM catalog_categories 
+  WHERE name_ru GLOB '*[a-zA-Z][a-zA-Z][a-zA-Z][a-zA-Z]*'
+  ORDER BY name
+  LIMIT 30
+`).all();
+
+withEnglish.forEach((s, i) => {
+  console.log(`${i + 1}. "${s.name}" → "${s.name_ru}"`);
+});
+
+db2.close();

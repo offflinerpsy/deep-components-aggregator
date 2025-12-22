@@ -22,7 +22,7 @@ export function listRootCategories(req, res) {
   const db = getDb();
   
   const categories = db.prepare(`
-    SELECT id, name, slug, path, icon_url
+    SELECT id, name, name_ru, slug, path, icon_url
     FROM catalog_categories
     WHERE is_root = 1
     ORDER BY name ASC
@@ -47,7 +47,7 @@ export function getCategoryBySlug(req, res) {
 
   // Find category by slug
   const category = db.prepare(`
-    SELECT id, name, slug, parent_id, path, is_root, is_leaf, icon_url
+    SELECT id, name, name_ru, slug, parent_id, path, is_root, is_leaf, icon_url
     FROM catalog_categories
     WHERE slug = ?
   `).get(slug);
@@ -70,7 +70,7 @@ export function getCategoryBySlug(req, res) {
 
   // Otherwise get subcategories
   const subcategories = db.prepare(`
-    SELECT id, name, slug, path, is_leaf, icon_url
+    SELECT id, name, name_ru, slug, path, is_leaf, icon_url
     FROM catalog_categories
     WHERE parent_id = ?
     ORDER BY name ASC
@@ -91,7 +91,7 @@ export function getBreadcrumb(req, res) {
   const db = getDb();
 
   const category = db.prepare(`
-    SELECT id, name, slug, parent_id, path
+    SELECT id, name, name_ru, slug, parent_id, path
     FROM catalog_categories
     WHERE slug = ?
   `).get(slug);
@@ -109,7 +109,7 @@ export function getBreadcrumb(req, res) {
 
   while (currentParentId) {
     const parent = db.prepare(`
-      SELECT id, name, slug, parent_id
+      SELECT id, name, name_ru, slug, parent_id
       FROM catalog_categories
       WHERE id = ?
     `).get(currentParentId);

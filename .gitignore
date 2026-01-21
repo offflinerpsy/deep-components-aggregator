@@ -19,6 +19,8 @@ data/rates.json
 data/db/*.sqlite
 data/db/*.sqlite-*
 data/db/products/
+var/db/*.sqlite-wal
+var/db/*.sqlite-shm
 logs/**
 *.log
 docs/configs/*keys*

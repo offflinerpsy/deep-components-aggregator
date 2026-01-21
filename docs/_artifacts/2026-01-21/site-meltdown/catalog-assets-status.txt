@@ -1,0 +1,35 @@
+# /catalog assets
+ - href="/_next/static/css/8d0026e74c38e768.css"
+ - href="/_next/static/css/7c472c888ea7217f.css"
+ - href="/_next/static/chunks/webpack-07fade296a0c126d.js"
+ - src="/_next/static/chunks/fd9d1056-0695158323f273ad.js"
+ - src="/_next/static/chunks/117-bb4218a33581a7ee.js"
+ - src="/_next/static/chunks/main-app-e7e153a4287676ba.js"
+ - src="/_next/static/chunks/841-57992d1411007a64.js"
+ - src="/_next/static/chunks/972-e288ac261cafa9b8.js"
+ - src="/_next/static/chunks/551-e69a6c4f0491377e.js"
+ - src="/_next/static/chunks/892-e3cba3d2c4f61690.js"
+ - src="/_next/static/chunks/710-69672ecf5495f8ac.js"
+ - src="/_next/static/chunks/app/layout-85552f71fe3cd26b.js"
+ - src="/_next/static/chunks/app/loading-0f2ba3536c96fd4f.js"
+ - src="/_next/static/chunks/polyfills-42372ed130431b0a.js"
+ - src="/_next/static/chunks/webpack-07fade296a0c126d.js"
+ - src="/_next/static/chunks/app/catalog/page-5e451c6380b6f0e6.js"
+
+# Check 404/400 for first 30 assets
+200 /_next/static/css/8d0026e74c38e768.css
+200 /_next/static/css/7c472c888ea7217f.css
+200 /_next/static/chunks/webpack-07fade296a0c126d.js
+200 /_next/static/chunks/fd9d1056-0695158323f273ad.js
+200 /_next/static/chunks/117-bb4218a33581a7ee.js
+200 /_next/static/chunks/main-app-e7e153a4287676ba.js
+200 /_next/static/chunks/841-57992d1411007a64.js
+200 /_next/static/chunks/972-e288ac261cafa9b8.js
+200 /_next/static/chunks/551-e69a6c4f0491377e.js
+200 /_next/static/chunks/892-e3cba3d2c4f61690.js
+200 /_next/static/chunks/710-69672ecf5495f8ac.js
+400 /_next/static/chunks/app/layout-85552f71fe3cd26b.js
+200 /_next/static/chunks/app/loading-0f2ba3536c96fd4f.js
+200 /_next/static/chunks/polyfills-42372ed130431b0a.js
+200 /_next/static/chunks/webpack-07fade296a0c126d.js
+200 /_next/static/chunks/app/catalog/page-5e451c6380b6f0e6.js

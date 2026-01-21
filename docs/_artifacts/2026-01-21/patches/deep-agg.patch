@@ -1,0 +1,19 @@
+diff --git a/.gitignore b/.gitignore
+index b2268cd..0b15f96 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -19,6 +19,8 @@ data/rates.json
+ data/db/*.sqlite
+ data/db/*.sqlite-*
+ data/db/products/
++var/db/*.sqlite-wal
++var/db/*.sqlite-shm
+ logs/**
+ *.log
+ docs/configs/*keys*
+diff --git a/v0-components-aggregator-page b/v0-components-aggregator-page
+--- a/v0-components-aggregator-page
++++ b/v0-components-aggregator-page
+@@ -1 +1 @@
+-Subproject commit 4cb14b92936d5d048f8abd117ca52d34a31e80ed
++Subproject commit 4cb14b92936d5d048f8abd117ca52d34a31e80ed-dirty

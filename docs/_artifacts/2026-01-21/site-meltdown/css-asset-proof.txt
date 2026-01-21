@@ -1,0 +1,21 @@
+# CSS assets referenced by /catalog
+ - href="/_next/static/css/8d0026e74c38e768.css"
+ - href="/_next/static/css/7c472c888ea7217f.css"
+
+# .next/static/css on disk
+7c472c888ea7217f.css
+8d0026e74c38e768.css
+
+# HEAD for main css
+HTTP/1.1 200 OK
+Cache-Control: public, max-age=31536000, immutable
+Accept-Ranges: bytes
+Last-Modified: Wed, 21 Jan 2026 07:14:03 GMT
+ETag: W/"23097-19bdf673d8a"
+Content-Type: text/css; charset=UTF-8
+Content-Length: 143511
+Vary: Accept-Encoding
+Date: Wed, 21 Jan 2026 07:25:30 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+

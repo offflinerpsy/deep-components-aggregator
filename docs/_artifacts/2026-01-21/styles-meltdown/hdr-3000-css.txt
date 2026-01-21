@@ -1,0 +1,12 @@
+HTTP/1.1 200 OK
+Cache-Control: public, max-age=31536000, immutable
+Accept-Ranges: bytes
+Last-Modified: Wed, 21 Jan 2026 15:32:21 GMT
+ETag: W/"6c0e-19be12f731e"
+Content-Type: text/css; charset=UTF-8
+Content-Length: 27662
+Vary: Accept-Encoding
+Date: Wed, 21 Jan 2026 15:33:12 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+

@@ -1,0 +1,12 @@
+HTTP/2 200 
+server: nginx/1.24.0 (Ubuntu)
+date: Wed, 21 Jan 2026 15:33:12 GMT
+content-type: text/html; charset=utf-8
+content-length: 27624
+vary: Accept-Encoding
+vary: RSC, Next-Router-State-Tree, Next-Router-Prefetch, Accept-Encoding
+x-nextjs-cache: HIT
+x-powered-by: Next.js
+cache-control: s-maxage=31536000, stale-while-revalidate
+etag: "6ua6maxfrikt4"
+

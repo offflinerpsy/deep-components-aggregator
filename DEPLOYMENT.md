@@ -9,7 +9,7 @@
 ## Architecture Overview
 
 ```
-Internet → nginx:443 (SSL) → Next.js:3001 → Express:9201 → SQLite + External APIs
+Internet → nginx:443 (SSL) → Next.js:3000 → Express:9201 → SQLite + External APIs
 ```
 
 ---
@@ -173,7 +173,7 @@ module.exports = {
     {
       name: 'deep-v0',
       script: 'npm',
-      args: 'start -- -p 3001',
+      args: 'start -- -p 3000',
       cwd: '/opt/deep-agg/v0-components-aggregator-page',
       instances: 1
     }
@@ -229,7 +229,7 @@ server {
     
     # Proxy to Next.js
     location / {
-        proxy_pass http://127.0.0.1:3001;
+        proxy_pass http://127.0.0.1:3000;
         proxy_http_version 1.1;
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection 'upgrade';
@@ -249,7 +249,7 @@ server {
     
     # Static files (Next.js _next/)
     location /_next/static {
-        proxy_pass http://127.0.0.1:3001;
+        proxy_pass http://127.0.0.1:3000;
         add_header Cache-Control "public, max-age=31536000, immutable";
     }
 }

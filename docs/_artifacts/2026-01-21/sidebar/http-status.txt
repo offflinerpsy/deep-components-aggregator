@@ -1,0 +1,3 @@
+]633;E;cd /opt/deep-agg && cat docs/_artifacts/2025-12-25/catalog-desktop-hover-state.json | head -n 80;817e9770-16c4-4f6f-b33d-e93121af90fd]633;CGET / => 200
+GET /catalog => 200
+GET /results?q=resistor => 200

@@ -1,0 +1,12 @@
+HTTP/1.1 200 OK
+Vary: RSC, Next-Router-State-Tree, Next-Router-Prefetch, Accept-Encoding
+x-nextjs-cache: HIT
+X-Powered-By: Next.js
+Cache-Control: s-maxage=31536000, stale-while-revalidate
+ETag: "6ua6maxfrikt4"
+Content-Type: text/html; charset=utf-8
+Content-Length: 27624
+Date: Wed, 21 Jan 2026 15:33:12 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+

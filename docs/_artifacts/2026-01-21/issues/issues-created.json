@@ -1,0 +1,16 @@
+{
+  "repo": "offflinerpsy/deep-components-aggregator",
+  "createdAt": "2026-01-21",
+  "issues": [
+    {
+      "number": 36,
+      "title": "feat(catalog): 10 cached items + assistant + anti-spam",
+      "url": "https://github.com/offflinerpsy/deep-components-aggregator/issues/36"
+    },
+    {
+      "number": 37,
+      "title": "chore(git): ignore SQLite WAL/SHM",
+      "url": "https://github.com/offflinerpsy/deep-components-aggregator/issues/37"
+    }
+  ]
+}

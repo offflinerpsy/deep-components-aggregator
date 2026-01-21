@@ -1,0 +1,20 @@
+# /catalog layout chunk referenced
+src="/_next/static/chunks/app/layout-92d44b9736860856.js"
+
+# Status for referenced layout chunk
+path=/_next/static/chunks/app/layout-92d44b9736860856.js
+HTTP/1.1 200 OK
+Cache-Control: public, max-age=31536000, immutable
+Accept-Ranges: bytes
+Last-Modified: Wed, 21 Jan 2026 07:38:01 GMT
+ETag: W/"81ec-19bdf7d2e85"
+Content-Type: application/javascript; charset=UTF-8
+Content-Length: 33260
+Vary: Accept-Encoding
+Date: Wed, 21 Jan 2026 07:44:05 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+
+
+# Disk layout chunk(s)
+layout-92d44b9736860856.js

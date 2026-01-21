@@ -17,7 +17,7 @@
 ┌────────────────────────────────────────────────────────┐
 │               NGINX (Reverse Proxy)                     │
 │   • SSL Termination (Let's Encrypt)                    │
-│   • Location / → localhost:3001 (Next.js)              │
+│   • Location / → localhost:3000 (Next.js)              │
 │   • X-Accel-Buffering: no (для SSE)                    │
 │   • proxy_buffering off (live стримы)                  │
 └────────────────┬───────────────────────────────────────┘
@@ -25,7 +25,7 @@
                  ↓
 ┌────────────────────────────────────────────────────────┐
 │          FRONTEND LAYER (Next.js 14 App Router)        │
-│               Port: 3001 (PM2: deep-v0)                │
+│               Port: 3000 (PM2: deep-v0)                │
 │   Path: /opt/deep-agg/v0-components-aggregator-page/   │
 │                                                         │
 │   ┌─────────────────────────────────────────────────┐  │
@@ -39,10 +39,8 @@
 │   ┌─────────────────────────────────────────────────┐  │
 │   │  Next.js Rewrites (next.config.mjs)             │  │
 │   ├─────────────────────────────────────────────────┤  │
-│   │  /api/cache     → http://localhost:9201/api/cache│ │
-│   │  /api/live      → http://localhost:9201/api/live │ │
-│   │  /api/product/* → http://localhost:9201/api/...  │ │
-│   │  /api/offers/*  → http://localhost:9201/api/...  │ │
+│   │  /api/:path*    → http://127.0.0.1:9201/api/:path*│ │
+│   │  /auth/:path*   → http://127.0.0.1:9201/auth/:path*││
 │   └─────────────────────────────────────────────────┘  │
 │                                                         │
 │   Компоненты:                                          │
@@ -60,23 +58,19 @@
 │   ┌─────────────────────────────────────────────────┐  │
 │   │  API Endpoints                                  │  │
 │   ├─────────────────────────────────────────────────┤  │
-│   │  GET  /api/cache?q=резистор                     │  │
-│   │       → queryNorm(RU→EN) → SQLite lookup        │  │
-│   │       → Response: { rows: [...], mode: cache }  │  │
+│   │  GET  /api/vitrine/list?q=резистор              │  │
+│   │       → normalizeQuery(RU→EN) → SQLite FTS5      │  │
+│   │       → Response: { ok, rows: [...], meta }      │  │
 │   │                                                  │  │
-│   │  GET  /api/live?q=resistor                      │  │
+│   │  GET  /api/live/search?q=resistor               │  │
 │   │       → SSE stream (text/event-stream)          │  │
 │   │       → X-Accel-Buffering: no                   │  │
 │   │       → Heartbeat `: ping\n\n` каждые 15s       │  │
 │   │       → События: data: {...}\n\n                │  │
 │   │                                                  │  │
-│   │  GET  /api/product/:mpn                         │  │
-│   │       → SQLite + парсеры (DigiKey/Mouser)       │  │
-│   │       → Response: { mpn, specs, images, docs }  │  │
-│   │                                                  │  │
-│   │  GET  /api/offers/:mpn                          │  │
-│   │       → OEMstrade API (через proxy)             │  │
-│   │       → Response: [{ region, price, stock }]    │  │
+│   │  GET  /api/product?mpn=LM317T                   │  │
+│   │       → merged из DigiKey/Mouser/TME/Farnell     │  │
+│   │       → Response: { ok, product: {...}, meta }   │  │
 │   └─────────────────────────────────────────────────┘  │
 │                                                         │
 │   ┌─────────────────────────────────────────────────┐  │
@@ -131,31 +125,23 @@ Browser → GET /results?q=резистор → Next.js (SSR)
 ### 2. Next.js делает rewrite
 
 ```
-Next.js → GET http://localhost:9201/api/cache?q=резистор
+Next.js → GET http://127.0.0.1:9201/api/vitrine/list?q=резистор
 ```
 
 ### 3. Backend обрабатывает
 
 ```javascript
-// server.js
-app.get('/api/cache', async (req, res) => {
-  const q = req.query.q
-  const qNorm = queryNorm(q)  // "резистор" → "resistor"
-  
-  // Lookup в SQLite
-  const rows = await db.all(
-    'SELECT * FROM search_results WHERE query_norm = ? AND created_at > ?',
-    [qNorm, Date.now() - 7 * 86400 * 1000]
-  )
-  
-  res.json({ rows, mode: 'cache' })
+// api/vitrine.mjs
+app.get('/api/vitrine/list', (req, res) => {
+  // normalizeQuery: "резистор" → "resistor" (RU→EN + synonyms)
+  // SQLite FTS5 lookup → { ok, rows, meta }
 })
 ```
 
 ### 4. Если кэш пустой — Live поиск
 
 ```
-Browser → EventSource('/api/live?q=resistor')
+Browser → EventSource('/api/live/search?q=resistor')
   ↓
 Backend SSE Stream:
   : ping\n\n
@@ -265,7 +251,7 @@ module.exports = {
     {
       name: 'deep-v0',         // Frontend
       script: 'npm',
-      args: 'start -- -p 3001',
+      args: 'start -- -p 3000',
       cwd: '/opt/deep-agg/v0-components-aggregator-page',
       instances: 1
     }
@@ -284,7 +270,7 @@ server {
   ssl_certificate_key /etc/letsencrypt/live/prosnab.tech/privkey.pem;
   
   location / {
-    proxy_pass http://127.0.0.1:3001;
+    proxy_pass http://127.0.0.1:3000;
     proxy_http_version 1.1;
     proxy_set_header Upgrade $http_upgrade;
     proxy_set_header Connection 'upgrade';

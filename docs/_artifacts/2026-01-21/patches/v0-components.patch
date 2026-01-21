@@ -1,0 +1,395 @@
+diff --git a/app/catalog/[...slug]/page.tsx b/app/catalog/[...slug]/page.tsx
+index 1ca67fa..e5ce492 100644
+--- a/app/catalog/[...slug]/page.tsx
++++ b/app/catalog/[...slug]/page.tsx
+@@ -3,6 +3,28 @@ import { notFound } from 'next/navigation';
+ import ResultsClient from '@/components/ResultsClient';
+ import ResultsShell from '@/components/ResultsShell';
+ 
++type VitrineRow = {
++  source: string
++  mpn: string
++  manufacturer: string
++  title: string
++  description_short?: string
++  regions?: string[]
++  stock?: number
++  min_price?: number
++  min_currency?: string
++  min_price_rub?: number
++  image_url?: string | null
++  price_breaks?: Array<{ qty: number; price: number; currency: string; price_rub: number; source?: string }>
++  availability?: any
++}
++
++type VitrinePayload = {
++  ok: boolean
++  rows: VitrineRow[]
++  meta?: any
++}
++
+ /**
+  * Fetch category data by slug
+  */
+@@ -49,6 +71,33 @@ async function fetchBreadcrumb(slug: string) {
+   return data.breadcrumb || [];
+ }
+ 
++async function fetchVitrineSSR({ q, limit }: { q: string; limit: number }): Promise<VitrinePayload | null> {
++  const isServer = typeof window === 'undefined'
++  const baseUrl = isServer ? 'http://localhost:9201' : ''
++
++  const qs = new URLSearchParams()
++  if (q) qs.set('q', q)
++  qs.set('limit', String(limit))
++
++  const url = `${baseUrl}/api/vitrine/list?${qs.toString()}`
++  const res = await fetch(url, { cache: 'no-store' })
++  if (!res.ok) return null
++
++  const ct = res.headers.get('content-type') || ''
++  if (!ct.includes('application/json')) return null
++
++  return res.json()
++}
++
++async function fetchLeafInitial({ q, categoryName }: { q: string; categoryName: string }): Promise<VitrinePayload | null> {
++  const effectiveQuery = q || categoryName
++  const byCategory = await fetchVitrineSSR({ q: effectiveQuery, limit: 10 })
++  if (byCategory?.ok && Array.isArray(byCategory.rows) && byCategory.rows.length > 0) return byCategory
++
++  // Fallback: if category has no cached hits yet, show global vitrine so the page isn't empty.
++  return fetchVitrineSSR({ q: '', limit: 10 })
++}
++
+ /**
+  * Dynamic Catalog Category Page
+  */
+@@ -75,6 +124,8 @@ export default async function CategoryPage({
+   // Leaf category - show search interface with ResultsClient
+   if (category.is_leaf) {
+     const searchQuery = typeof q === 'string' ? q : '';
++
++    const initial = await fetchLeafInitial({ q: searchQuery, categoryName: category.name })
+     
+     return (
+       <ResultsShell>
+@@ -102,9 +153,21 @@ export default async function CategoryPage({
+           <h2 className="text-2xl font-bold mb-6">
+             <span className="gradient-text">{category.name}</span>
+           </h2>
++
++          {!searchQuery && (
++            <div className="mb-6 text-sm text-muted-foreground">
++              Показаны 10 популярных позиций из кэша. Введите запрос, чтобы запустить поиск по всем источникам.
++            </div>
++          )}
+           
+           {/* ResultsClient for SSE search, filters, sorting */}
+-          <ResultsClient initial={null} q={searchQuery} />
++          <ResultsClient
++            initial={initial}
++            q={searchQuery}
++            category={category.name}
++            cacheQuery={searchQuery || category.name}
++            previewLimit={10}
++          />
+         </main>
+       </ResultsShell>
+     );
+diff --git a/app/catalog/page.tsx b/app/catalog/page.tsx
+index 9e3f95a..4a55e9f 100644
+--- a/app/catalog/page.tsx
++++ b/app/catalog/page.tsx
+@@ -3,6 +3,8 @@ import { getCategoryVisual } from '@/lib/category-visuals';
+ import { ChevronRight } from 'lucide-react';
+ import CategoryIcon from './CategoryIcon';
+ 
++export const dynamic = 'force-dynamic';
++
+ interface Category {
+   id: number;
+   name: string;
+@@ -175,10 +177,10 @@ export default async function CatalogPage() {
+                 <div>
+                   <h3 className="font-semibold mb-2">Как работает каталог</h3>
+                   <p className="text-sm text-muted-foreground">
+-                    Наш каталог — это навигация по компонентам. При выборе категории запускается 
+-                    <strong> живой поиск</strong> по множеству источников 
+-                    в режиме реального времени. Результаты агрегируются и выводятся с актуальными ценами 
+-                    и наличием на складе.
++                    Каталог — это навигация по категориям. В конечной категории мы показываем 
++                    <strong> 10 позиций из кэша</strong> (быстро, без лишних обращений к источникам).
++                    Если нужно найти конкретную модель — введите запрос в строке поиска: тогда запустится
++                    <strong> живой поиск</strong> по всем источникам.
+                   </p>
+                 </div>
+               </div>
+diff --git a/components/ResultsClient.tsx b/components/ResultsClient.tsx
+index e9dc3cb..e069364 100644
+--- a/components/ResultsClient.tsx
++++ b/components/ResultsClient.tsx
+@@ -5,6 +5,8 @@ import { useRouter, usePathname } from 'next/navigation'
+ import { AutocompleteSearch } from './AutocompleteSearch'
+ import { useNavigationOverlay } from './navigation/NavigationOverlay'
+ import { DataTable, type DataTableColumn } from './ui/data-table'
++import { Button } from './ui/button'
++import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from './ui/sheet'
+ import { cn } from '@/lib/utils'
+ import { ChevronDown, ChevronUp, Package, Clock, TrendingDown } from 'lucide-react'
+ 
+@@ -263,7 +265,37 @@ function SourceDetails({ sources, isExpanded }: { sources: SourceInfo[]; isExpan
+   )
+ }
+ 
+-export default function ResultsClient({ initial, q, category }: { initial: SSRPayload | null, q: string, category?: string }) {
++const SEARCH_BURST_KEY = 'deepagg.search.ts'
++
++function readBurstTimestamps(): number[] {
++  if (typeof window === 'undefined') return []
++  const raw = window.localStorage?.getItem(SEARCH_BURST_KEY) || ''
++  if (!raw) return []
++  return raw
++    .split(',')
++    .map(v => Number(v))
++    .filter(n => Number.isFinite(n) && n > 0)
++}
++
++function writeBurstTimestamps(values: number[]) {
++  if (typeof window === 'undefined') return
++  if (!window.localStorage) return
++  window.localStorage.setItem(SEARCH_BURST_KEY, values.join(','))
++}
++
++export default function ResultsClient({
++  initial,
++  q,
++  category,
++  cacheQuery,
++  previewLimit,
++}: {
++  initial: SSRPayload | null
++  q: string
++  category?: string
++  cacheQuery?: string
++  previewLimit?: number
++}) {
+   const router = useRouter()
+   const pathname = usePathname()
+   const { done } = useNavigationOverlay()
+@@ -288,6 +320,14 @@ export default function ResultsClient({ initial, q, category }: { initial: SSRPa
+   const [sortKey, setSortKey] = useState<string | null>(null)
+   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc')
+ 
++  const previewStep = typeof previewLimit === 'number' && previewLimit > 0 ? previewLimit : 10
++  const isCatalogPreview = !q && !!cacheQuery && typeof previewLimit === 'number'
++  const [previewCount, setPreviewCount] = useState(previewStep)
++
++  const [assistOpen, setAssistOpen] = useState(false)
++  const [assistMode, setAssistMode] = useState<'more' | 'search-burst'>('more')
++  const [pendingSearch, setPendingSearch] = useState<string>('')
++
+   // Если есть данные из кэша - сигналим done()
+   useEffect(() => {
+     if (initial?.rows && initial.rows.length > 0) {
+@@ -376,6 +416,40 @@ export default function ResultsClient({ initial, q, category }: { initial: SSRPa
+     })
+   }, [grouped, filters])
+ 
++  const visibleRows = useMemo(() => {
++    if (!isCatalogPreview) return filtered
++    return filtered.slice(0, previewCount)
++  }, [filtered, isCatalogPreview, previewCount])
++
++  const loadMoreCache = useCallback(() => {
++    if (!isCatalogPreview) return
++    if (!cacheQuery) return
++
++    const nextCount = previewCount + previewStep
++    setPreviewCount(nextCount)
++
++    const qs = new URLSearchParams()
++    if (cacheQuery) qs.set('q', cacheQuery)
++    qs.set('limit', String(nextCount))
++
++    fetch('/api/vitrine/list?' + qs.toString(), { cache: 'no-store' })
++      .then(res => (res.ok ? res.json() : null))
++      .then(payload => {
++        if (!payload || payload.ok !== true) return
++        if (!Array.isArray(payload.rows)) return
++        setRows(payload.rows)
++      })
++      .catch(() => undefined)
++  }, [cacheQuery, isCatalogPreview, previewCount, previewStep])
++
++  const shouldGateSearch = useCallback((searchQ: string) => {
++    const now = Date.now()
++    const recent = readBurstTimestamps().filter(ts => now - ts < 60_000)
++    const next = [...recent, now].slice(-25)
++    writeBurstTimestamps(next)
++    return next.length > 10
++  }, [])
++
+   const toggleExpand = useCallback((mpn: string) => {
+     setExpandedRows(prev => {
+       const next = new Set(prev)
+@@ -627,7 +701,17 @@ export default function ResultsClient({ initial, q, category }: { initial: SSRPa
+       <div className="flex justify-center mb-6">
+         <AutocompleteSearch
+           onSearch={(searchQ) => {
+-            router.push(pathname + '?q=' + encodeURIComponent(searchQ))
++            const trimmed = String(searchQ || '').trim()
++            if (!trimmed) return
++
++            if (shouldGateSearch(trimmed)) {
++              setAssistMode('search-burst')
++              setPendingSearch(trimmed)
++              setAssistOpen(true)
++              return
++            }
++
++            router.push(pathname + '?q=' + encodeURIComponent(trimmed))
+           }}
+           placeholder="Поиск компонентов..."
+           initialValue={searchValue}
+@@ -636,9 +720,9 @@ export default function ResultsClient({ initial, q, category }: { initial: SSRPa
+       </div>
+ 
+       <DataTable
+-        data={filtered}
++        data={visibleRows}
+         columns={columns}
+-        loading={isLoading && filtered.length === 0}
++        loading={isLoading && visibleRows.length === 0}
+         headerSlot={filtersHeader}
+         onRowClick={handleRowClick}
+         mobileCardRender={renderMobileCard}
+@@ -646,17 +730,126 @@ export default function ResultsClient({ initial, q, category }: { initial: SSRPa
+         expandedRowKeys={expandedRows}
+         getRowKey={(row) => row.mpn}
+         itemsPerPage={20}
+-        showPagination={true}
++        showPagination={!isCatalogPreview}
+         hoverable={true}
+         bordered={true}
+         compact={true}
+-        emptyMessage={!q ? 'Введите запрос в поисковую строку выше' : 'Нет данных для отображения'}
++        emptyMessage={!q ? (isCatalogPreview ? 'Пока нет кэшированных позиций. Введите запрос в поиске выше.' : 'Введите запрос в поисковую строку выше') : 'Нет данных для отображения'}
+         externalSort={{
+           key: sortKey,
+           direction: sortOrder,
+           onSort: handleSort
+         }}
+       />
++
++      {isCatalogPreview && filtered.length > previewCount && (
++        <div className="bg-card border border-border rounded-xl p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
++          <div className="text-sm text-muted-foreground">
++            Показано {Math.min(previewCount, filtered.length)} из {filtered.length} позиций из кэша.
++          </div>
++          <div className="flex items-center gap-2">
++            <Button
++              type="button"
++              variant="outline"
++              onClick={() => {
++                setAssistMode('more')
++                setAssistOpen(true)
++              }}
++            >
++              Показать ещё
++            </Button>
++            <Button
++              type="button"
++              onClick={() => {
++                const seed = String(cacheQuery || category || '').trim()
++                if (!seed) return
++                router.push(pathname + '?q=' + encodeURIComponent(seed))
++              }}
++            >
++              Поиск по всем источникам
++            </Button>
++          </div>
++        </div>
++      )}
++
++      <Sheet open={assistOpen} onOpenChange={setAssistOpen}>
++        <SheetContent side="bottom" className="max-w-3xl mx-auto rounded-t-2xl">
++          <SheetHeader>
++            <SheetTitle>
++              {assistMode === 'search-burst'
++                ? 'Похоже, вы ищете наугад — давайте уточним'
++                : 'Подсказать, как быстрее найти нужное?'}
++            </SheetTitle>
++            <SheetDescription>
++              {assistMode === 'search-burst'
++                ? 'Слишком много поисков подряд. Если скажете, что именно нужно, получится быстрее и точнее.'
++                : 'Категории показывают короткую подборку из кэша. Для точного результата лучше искать по MPN или по параметрам.'}
++            </SheetDescription>
++          </SheetHeader>
++
++          <div className="mt-4 space-y-4">
++            <div className="text-sm text-muted-foreground space-y-1">
++              <div>• Есть точная модель (MPN) или ищете тип компонента?</div>
++              <div>• Важен корпус (SOT-23/QFN/0603) или параметры (V/I/точность)?</div>
++              <div>• Если есть производитель — добавьте его в запрос.</div>
++            </div>
++
++            <div className="flex flex-wrap gap-2">
++              {['LM358', 'STM32F103C8T6', 'BSS138 SOT-23', 'резистор 10k 0603'].map((ex) => (
++                <Button
++                  key={ex}
++                  type="button"
++                  variant="outline"
++                  size="sm"
++                  onClick={() => {
++                    setAssistOpen(false)
++                    router.push(pathname + '?q=' + encodeURIComponent(ex))
++                  }}
++                >
++                  {ex}
++                </Button>
++              ))}
++            </div>
++
++            {assistMode === 'search-burst' && pendingSearch && (
++              <div className="bg-muted/30 border border-border rounded-xl p-3 text-sm">
++                Последний запрос: <span className="font-mono text-primary">{pendingSearch}</span>
++              </div>
++            )}
++
++            <div className="flex flex-col sm:flex-row gap-2 sm:justify-end">
++              {assistMode === 'more' && (
++                <Button
++                  type="button"
++                  variant="outline"
++                  onClick={() => {
++                    setAssistOpen(false)
++                    loadMoreCache()
++                  }}
++                >
++                  Показать ещё 10 из кэша
++                </Button>
++              )}
++
++              {assistMode === 'search-burst' && pendingSearch && (
++                <Button
++                  type="button"
++                  onClick={() => {
++                    setAssistOpen(false)
++                    router.push(pathname + '?q=' + encodeURIComponent(pendingSearch))
++                  }}
++                >
++                  Искать всё равно
++                </Button>
++              )}
++
++              <Button type="button" variant="secondary" onClick={() => setAssistOpen(false)}>
++                Понял(а), уточню запрос
++              </Button>
++            </div>
++          </div>
++        </SheetContent>
++      </Sheet>
+     </div>
+   )
+ }
